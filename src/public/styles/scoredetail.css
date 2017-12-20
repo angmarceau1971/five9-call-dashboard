@@ -49,7 +49,7 @@ h2, h3 {
 }
 
 /* Links insde the dropdown */
-.dropdown-content a {
+.dropdown-content button {
     color: black;
     padding: 16px 16px;
     text-decoration: none;
@@ -58,8 +58,9 @@ h2, h3 {
 }
 
 /* chnage color of dropdown links on hover */
-.dropdown-content a:hover {
-        background-color: #5d1c1c;
+.dropdown-content button:hover {
+    background-color: #5d1c1c;
+    cursor: pointer;
 }
 
 /* show the dropdown menu on hover */
