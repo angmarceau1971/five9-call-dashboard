@@ -11,7 +11,11 @@
     "build:dev": "NODE_ENV=develop npm run build"
   },
   "author": "Nathan Clonts",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kokopelli314/five9-call-dashboard"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "compression": "^1.7.0",
