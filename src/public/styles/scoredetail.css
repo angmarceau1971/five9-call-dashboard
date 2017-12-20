@@ -1,9 +1,15 @@
+body, body button  {
+    color: #ddd;
+}
+
+
 h1 {
     font-weight: lighter;
 }
 h2, h3 {
     font-weight: normal;
 }
+
 /* style dropdown menu */
 .dropm {
     background-color: #2b2b2d;
@@ -27,12 +33,13 @@ h2, h3 {
 
 /* Container - needed to position the dropdown content */
 .dropdown {
-    position: fixed;
+    position: absolute;
     display: inline-block;
     box-shadow: 0 1px 5px rgba(0,0,0,1),
                 0 1px 30px rgba(0,0,0,1),
                 0 4px 20px rgba(0,0,0,1),
                 0 1px 4px rgba(0,0,0,1);
+    z-index: 1;
 }
 /* dropdown button format */
 
@@ -49,7 +56,6 @@ h2, h3 {
 
 /* Links insde the dropdown */
 .dropdown-content button {
-    color: black;
     padding: 16px 16px;
     text-decoration: none;
     display: block;
@@ -109,22 +115,7 @@ content is shown */
 .round-button:hover {
     border: none;
     background-color: #9e5555;
-    color: black;
 }
-/* .button-test {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    left: 2em;
-    margin: 1em;
-    border-radius: 40px;
-    text-align: center;
-    line-height: 40px;
-    color: #7a7c82;
-    font-size: 1.5em;
-    background-color: #5d1c1c;
-} */
 
 .drop-down {
     width: 40px;
@@ -160,18 +151,15 @@ content is shown */
     margin: auto;
 }
 .scorecard-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-.scorecard-wrapper .stats-box{
-    color: #CCC;
+    margin: 3em 1em;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1em;
+
 }
 
 .scorecard-wrapper .metric-wrapper {
-    width: 33%;
-    min-width: 200px;
+    min-width: 220px;
 }
 
 .green {
