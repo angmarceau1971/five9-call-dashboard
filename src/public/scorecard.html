@@ -2,48 +2,50 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Scorecard</title>
+        <title>TestDesign</title>
         <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-        <link href="styles/base.css" rel="stylesheet" type="text/css">
-        <link href="styles/scorecard.css" rel="stylesheet" type="text/css">
+        <link href="styles/scorebase.css" rel="stylesheet" type="text/css">
+        <link href="styles/scoredetail.css" rel="stylesheet" type="text/css">
     </head>
 
     <body>
+
     <div id="app" class="content-wrapper">
+        <div class="dropdown">
+            <button class="dropm">&#9776;</button>
+            <div class="dropdown-content">
+                <button
+                    class="insidedrop"
+                    @click="$store.commit('toggleEditMode')"
+                    id="toggle-edit-mode">
+                    <a> Edit Mode </a>
+                </button>
+                <button class="insidedrop"
+                    v-if="$store.state.editMode"
+                    @click="exportLayout"
+                    id="export-layout">
+                    <a> Format </a>
+                </button>
+                <button class="insidedrop"
+                    v-if="$store.state.editMode"
+                    @click="exportLayout"
+                    id="export-layout">
+                    <a> Export </a>
+                </button>
+                <button class="insidedrop"> <a>Link 3</a> </button>
+            </div>
+        </div>
+        
         <div class="scorecard-wrapper">
-            <draggable v-model="layout.cards" class="drag-area">
-                <card
-                    v-for="(card, i) in layout.cards"
-                    v-bind="card"
-                    :key="i"
-                ></card>
-            </draggable>
+            <card
+                v-for="(card, i) in layout.cards"
+                v-bind="card"
+                :key="i"
+            ></card>
         </div>
 
-        <button
-            class="add-button"
-            v-if="$store.state.editMode"
-            @click="addCard"
-        >+</button>
-
-        <button
-            @click="$store.commit('toggleEditMode')"
-            id="toggle-edit-mode">
-            Edit Mode
-        </button>
-        <button
-            v-if="$store.state.editMode"
-            @click="exportLayout"
-            id="export-layout">
-            Export
-        </button>
-        <button
-          class="button-test"
-          v-if="$store.state.editMode">
-          ->
-        </button>
     </div>
     </body>
 
