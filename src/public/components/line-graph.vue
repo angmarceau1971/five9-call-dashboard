@@ -12,8 +12,9 @@ Accepts data prop with structure:
 <template>
 <div class="line-graph">
     <div ref="graph-wrap" class="graph-wrap">
-        <svg @click="toggleTable" @mousemove="mouseover" :width="width" :height="height">
-            <text :x="55" :y="10">{{ yField }}</text>
+        <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
+                :width="width" :height="height">
+            <text class="title" :x="55" :y="10">{{ yField }}</text>
             <g class="axis" ref="yaxis" :style="{transform: `translate(20px,${margin.top}px)`}"></g>
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
                 <path class="area" :d="paths.area" />
@@ -172,11 +173,11 @@ export default {
             // draw axes
             d3.select(this.$refs.yaxis)
                 .call(d3.axisLeft(this.scaled.y))
-                .selectAll('path, .tick line').attr('stroke', '#ccc');
-            d3.select(this.$refs.yaxis).selectAll('text').attr('#444');
+                .selectAll('path, .tick line')
+                .attr('stroke', '#ccc');
+            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
         },
         mouseover({ offsetX }) {
-            // console.log(offsetX);
             if (this.points.length > 0) {
                 const x = offsetX - this.margin.left;
                 const closestPoint = this.getClosestPoint(x);
@@ -188,14 +189,17 @@ export default {
                 }
             }
         },
+        mouseleave() {
+            this.paths.selector = '';
+        },
         getClosestPoint(x) {
             return this.points
-                .map((point, index) => ({ x:
-                    point.x,
+                .map((point, index) => ({
+                    x: point.x,
                     diff: Math.abs(point.x - x),
                     index,
                 }))
-                .reduce((memo, val) => (memo.diff < val.diff ? memo : val));
+                .reduce((least, val) => (least.diff < val.diff ? least : val));
         }
     }
 };
@@ -212,7 +216,9 @@ export default {
     .graph-wrap text {
         text-anchor: middle;
         font-size: 0.8em;
+        fill: #ddd;
     }
+
 
     h1, .content {
       margin-left: 20px;
@@ -237,5 +243,10 @@ export default {
     }
     .axis {
         font-size: 0.5em;
+    }
+    .selector {
+        stroke: hsla(0, 0%, 100%, 0.7);
+        stroke-width: 1.0;
+        fill: none;
     }
 </style>
