@@ -24,7 +24,6 @@
                 </button>
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
-                    @click="exportLayout"
                     id="export-layout">
                     Format
                 </button>
@@ -33,6 +32,12 @@
                     @click="exportLayout"
                     id="export-layout">
                     Export
+                </button>
+                <button class="insidedrop"
+                    v-if="$store.state.editMode"
+                    @click="addCard"
+                    id="export-layout">
+                    Add Card
                 </button>
             </div>
         </div>

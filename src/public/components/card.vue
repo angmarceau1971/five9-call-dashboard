@@ -84,7 +84,6 @@ export default {
         // Drag and drop handling
         dragstartHandler(event) {
             if (!this.$store.state.editMode) return;
-            console.log(this.id);
             event.dataTransfer.setData('text/plain', this.id);
         }
     }
@@ -93,7 +92,10 @@ export default {
 
 
 <style>
-.metric-wrapper > * {
+.card > * {
     margin: 2em 0;
+}
+.card {
+    transition: all 1s;
 }
 </style>

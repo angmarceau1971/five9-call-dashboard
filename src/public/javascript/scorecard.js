@@ -44,8 +44,6 @@ closeRate.widgets = [
     }
 ];
 
-
-
 const dtv = {
     title: 'DIRECTV Sales',
     id: 'card:1',
@@ -73,6 +71,7 @@ dtv.widgets = [
         }
     },
 ];
+
 
 const layout = {
     cards: [
@@ -191,7 +190,8 @@ const vm = new Vue({
         },
         addCard: function() {
             const newCard = {
-                'title': '',
+                'title': '' + this.layout.cards.length,
+                'id': 'card:' + this.layout.cards.length,
                 'data': [],
                 'widgets': []
             };
@@ -211,56 +211,4 @@ function download(text, name, type) {
     a.href = URL.createObjectURL(file);
     a.download = name;
     a.click();
-}
-
-
-//
-// $(document).ready(() => {
-//     const g1 = gauge('#gauge-wrapper-1', {
-//         size: 200,
-//         clipWidth: 200,
-//         clipHeight: 200,
-//         minValue: 0,
-//         maxValue: 1,
-//         labelFormat: d3.format('.0%'),
-//         ringWidth: 10,
-//         arcColorFn: d3.interpolateHsl(d3.hsl(60,0.9,0.5), d3.hsl(120,0.7,0.55)),
-//         majorTicks: 3
-//     });
-//
-//     g1.render();
-//     g1.update(0.515);
-// });
-
-
-/**
- * Simple object check.
- * @param item
- * @returns {boolean}
- */
-function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-
-/**
- * Deep merge two objects.
- * @param target
- * @param ...sources
- */
-function mergeDeep(target, ...sources) {
-    if (!sources.length) return target;
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
-                mergeDeep(target[key], source[key]);
-            } else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-
-    return mergeDeep(target, ...sources);
 }

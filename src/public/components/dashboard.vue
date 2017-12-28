@@ -15,9 +15,11 @@ import Card from './card.vue';
 
 export default {
     props: ['layout'],
+
     components: {
         'card': Card
     },
+
     methods: {
         // Drag and drop to move cards
         dragoverHandler: function(event) {
@@ -26,18 +28,22 @@ export default {
         },
         dropHandler: function(event) {
             if (!this.$store.state.editMode) return;
+
             const id = event.dataTransfer.getData('text');
             const thisCard = this.$refs[id][0];
-
-            console.log('dropping ' + id + ' w/ ordering ' + thisCard.layoutOrder);
-            console.log(this.$refs);
 
             // determine what order the cards should be in
             let newLayout = [];
             Object.assign(newLayout, this.layout);
             let getLeft = (card) => this.$refs[card.id][0].$el.offsetLeft;
+            console.log(`---------_______________--------`);
             newLayout.cards.sort((a, b) => {
-                return getLeft(a) < getLeft(b) ? 1 : -1;
+                let leftA = a.id == id ? event.clientX : getLeft(a);
+                let leftB = b.id == id ? event.clientX : getLeft(b);
+                console.log(`-      -      -`);
+                console.log(`${a.id}: ${leftA}`);
+                console.log(`${b.id}: ${leftB}`);
+                return leftA < leftB ? -1 : +1;
             });
 
             // Update the layoutOrder property for each card
@@ -47,10 +53,7 @@ export default {
 
             // Update the layout
             this.$emit('update-layout', newLayout);
-
         }
     }
-}
-
-
+};
 </script>

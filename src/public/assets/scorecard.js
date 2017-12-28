@@ -722,8 +722,6 @@ closeRate.widgets = [
     }
 ];
 
-
-
 const dtv = {
     title: 'DIRECTV Sales',
     id: 'card:1',
@@ -751,6 +749,7 @@ dtv.widgets = [
         }
     },
 ];
+
 
 const layout = {
     cards: [
@@ -869,7 +868,8 @@ const vm = new Vue({
         },
         addCard: function() {
             const newCard = {
-                'title': '',
+                'title': '' + this.layout.cards.length,
+                'id': 'card:' + this.layout.cards.length,
                 'data': [],
                 'widgets': []
             };
@@ -889,58 +889,6 @@ function download(text, name, type) {
     a.href = URL.createObjectURL(file);
     a.download = name;
     a.click();
-}
-
-
-//
-// $(document).ready(() => {
-//     const g1 = gauge('#gauge-wrapper-1', {
-//         size: 200,
-//         clipWidth: 200,
-//         clipHeight: 200,
-//         minValue: 0,
-//         maxValue: 1,
-//         labelFormat: d3.format('.0%'),
-//         ringWidth: 10,
-//         arcColorFn: d3.interpolateHsl(d3.hsl(60,0.9,0.5), d3.hsl(120,0.7,0.55)),
-//         majorTicks: 3
-//     });
-//
-//     g1.render();
-//     g1.update(0.515);
-// });
-
-
-/**
- * Simple object check.
- * @param item
- * @returns {boolean}
- */
-function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-
-/**
- * Deep merge two objects.
- * @param target
- * @param ...sources
- */
-function mergeDeep(target, ...sources) {
-    if (!sources.length) return target;
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
-                mergeDeep(target[key], source[key]);
-            } else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-
-    return mergeDeep(target, ...sources);
 }
 
 
@@ -1690,7 +1638,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.metric-wrapper > * {\r\n    margin: 2em 0;\n}\r\n", ""]);
+exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\r\n", ""]);
 
 // exports
 
@@ -1789,7 +1737,6 @@ const singleValue = {
         // Drag and drop handling
         dragstartHandler(event) {
             if (!this.$store.state.editMode) return;
-            console.log(this.id);
             event.dataTransfer.setData('text/plain', this.id);
         }
     }
@@ -1930,9 +1877,11 @@ if (false) {(function () {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     props: ['layout'],
+
     components: {
         'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */]
     },
+
     methods: {
         // Drag and drop to move cards
         dragoverHandler: function(event) {
@@ -1941,18 +1890,22 @@ if (false) {(function () {
         },
         dropHandler: function(event) {
             if (!this.$store.state.editMode) return;
+
             const id = event.dataTransfer.getData('text');
             const thisCard = this.$refs[id][0];
-
-            console.log('dropping ' + id + ' w/ ordering ' + thisCard.layoutOrder);
-            console.log(this.$refs);
 
             // determine what order the cards should be in
             let newLayout = [];
             Object.assign(newLayout, this.layout);
             let getLeft = (card) => this.$refs[card.id][0].$el.offsetLeft;
+            console.log(`---------_______________--------`);
             newLayout.cards.sort((a, b) => {
-                return getLeft(a) < getLeft(b) ? 1 : -1;
+                let leftA = a.id == id ? event.clientX : getLeft(a);
+                let leftB = b.id == id ? event.clientX : getLeft(b);
+                console.log(`-      -      -`);
+                console.log(`${a.id}: ${leftA}`);
+                console.log(`${b.id}: ${leftB}`);
+                return leftA < leftB ? -1 : +1;
             });
 
             // Update the layoutOrder property for each card
@@ -1962,12 +1915,9 @@ if (false) {(function () {
 
             // Update the layout
             this.$emit('update-layout', newLayout);
-
         }
     }
 });
-
-
 
 
 /***/ }),
