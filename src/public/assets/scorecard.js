@@ -674,7 +674,7 @@ if (false) {(function () {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_line_graph_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_data_table_vue__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_card_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_dashboard_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format_js__ = __webpack_require__(4);
 
 
@@ -694,7 +694,11 @@ let dtvData = [{"Date": "2017-11-01","DIRECTV Sales": "2","Rolling Total": "2","
 let closeRateData = [{"Date": "2017-11-01","Close Rate": "0.59","Sales": "24","Calls": "62"}, {"Date": "2017-11-02","Close Rate": "0.50","Sales": "25","Calls": "68"}, {"Date": "2017-11-03","Close Rate": "0.40","Sales": "17","Calls": "42"}, {"Date": "2017-11-04","Close Rate": "0.40","Sales": "25","Calls": "62"}, {"Date": "2017-11-05","Close Rate": "0.37","Sales": "20","Calls": "53"}, {"Date": "2017-11-06","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-07","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-08","Close Rate": "0.51","Sales": "24","Calls": "54"}, {"Date": "2017-11-09","Close Rate": "0.58","Sales": "16","Calls": "28"}, {"Date": "2017-11-10","Close Rate": "0.44","Sales": "20","Calls": "45"}, {"Date": "2017-11-11","Close Rate": "0.57","Sales": "17","Calls": "30"}, {"Date": "2017-11-12","Close Rate": "0.41","Sales": "17","Calls": "41"}, {"Date": "2017-11-13","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-14","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-15","Close Rate": "0.56","Sales": "23","Calls": "41"}, {"Date": "2017-11-16","Close Rate": "0.35","Sales": "18","Calls": "51"}, {"Date": "2017-11-17","Close Rate": "0.41","Sales": "17","Calls": "41"}, {"Date": "2017-11-18","Close Rate": "0.58","Sales": "20","Calls": "35"}, {"Date": "2017-11-19","Close Rate": "0.59","Sales": "15","Calls": "25"}, {"Date": "2017-11-20","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-21","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-22","Close Rate": "0.58","Sales": "25","Calls": "43"}, {"Date": "2017-11-23","Close Rate": "0.44","Sales": "22","Calls": "51"}, {"Date": "2017-11-24","Close Rate": "0.50","Sales": "23","Calls": "46"}, {"Date": "2017-11-25","Close Rate": "0.51","Sales": "22","Calls": "43"}, {"Date": "2017-11-26","Close Rate": "0.36","Sales": "15","Calls": "41"}, {"Date": "2017-11-27","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-28","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-29","Close Rate": "0.38","Sales": "16","Calls": "42"}, {"Date": "2017-11-30","Close Rate": "0.47","Sales": "26","Calls": "55"}]
 
 
-const closeRate = {'title': 'Close Rate'};
+const closeRate = {
+    title: 'Close Rate',
+    id: 'card:0',
+    layoutOrder: 0
+};
 closeRate.data = closeRateData;
 closeRate.widgets = [
     {
@@ -720,7 +724,11 @@ closeRate.widgets = [
 
 
 
-const dtv = { 'title': 'DIRECTV Sales' };
+const dtv = {
+    title: 'DIRECTV Sales',
+    id: 'card:1',
+    layoutOrder: 1
+};
 dtv.data = dtvData;
 dtv.widgets = [
     {
@@ -848,12 +856,11 @@ const vm = new Vue({
     el: '#app',
     store,
     data: {
-        layout: layout,
-        menuIsActive: false
+        layout: layout
     },
 
     components: {
-        'card': __WEBPACK_IMPORTED_MODULE_2__components_card_vue__["a" /* default */]
+        'dashboard': __WEBPACK_IMPORTED_MODULE_2__components_dashboard_vue__["a" /* default */]
     },
 
     methods: {
@@ -865,11 +872,11 @@ const vm = new Vue({
                 'title': '',
                 'data': [],
                 'widgets': []
-            }
+            };
             this.layout.cards.push(newCard);
         },
-        toggleMenu: function() {
-            this.menuIsActive = !this.menuIsActive
+        updateLayout: function(newLayout) {
+            this.layout = newLayout;
         }
     }
 });
@@ -1725,6 +1732,10 @@ exports.push([module.i, "\n.metric-wrapper > * {\r\n    margin: 2em 0;\n}\r\n", 
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -1754,7 +1765,7 @@ const singleValue = {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    props: ['title', 'widgets', 'data', 'meta'],
+    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],
     components: {
         'single-value': singleValue,
         'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */],
@@ -1774,6 +1785,12 @@ const singleValue = {
         },
         unhoverDate: function(date) {
             this.highlightedDate = null;
+        },
+        // Drag and drop handling
+        dragstartHandler(event) {
+            if (!this.$store.state.editMode) return;
+            console.log(this.id);
+            event.dataTransfer.setData('text/plain', this.id);
         }
     }
 });
@@ -1790,7 +1807,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "metric-wrapper stats-box" },
+    {
+      staticClass: "card metric-wrapper stats-box",
+      style: { order: _vm.layoutOrder },
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
     [
       _c("h2", { staticClass: "descriptor" }, [_vm._v(_vm._s(_vm.title))]),
       _vm._v(" "),
@@ -1831,6 +1853,154 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-3bec8029", esExports)
+  }
+}
+
+/***/ }),
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(26);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\dashboard.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c21f7d6a", Component.options)
+  } else {
+    hotAPI.reload("data-v-c21f7d6a", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(19);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: ['layout'],
+    components: {
+        'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */]
+    },
+    methods: {
+        // Drag and drop to move cards
+        dragoverHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            event.preventDefault();
+        },
+        dropHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            const id = event.dataTransfer.getData('text');
+            const thisCard = this.$refs[id][0];
+
+            console.log('dropping ' + id + ' w/ ordering ' + thisCard.layoutOrder);
+            console.log(this.$refs);
+
+            // determine what order the cards should be in
+            let newLayout = [];
+            Object.assign(newLayout, this.layout);
+            let getLeft = (card) => this.$refs[card.id][0].$el.offsetLeft;
+            newLayout.cards.sort((a, b) => {
+                return getLeft(a) < getLeft(b) ? 1 : -1;
+            });
+
+            // Update the layoutOrder property for each card
+            newLayout.cards.forEach((card, i) => {
+                card.layoutOrder = i;
+            });
+
+            // Update the layout
+            this.$emit('update-layout', newLayout);
+
+        }
+    }
+});
+
+
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "dashboard scorecard-wrapper",
+      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
+    },
+    _vm._l(_vm.layout.cards, function(card, i) {
+      return _c(
+        "card",
+        _vm._b({ key: i, ref: card.id, refInFor: true }, "card", card, false)
+      )
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
   }
 }
 

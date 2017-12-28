@@ -1,6 +1,6 @@
 import LineGraph from '../components/line-graph.vue';
 import DataTable from '../components/data-table.vue';
-import Card from '../components/card.vue';
+import Dashboard from '../components/dashboard.vue';
 import { formatValue } from './scorecard-format.js';
 
 
@@ -16,7 +16,11 @@ let dtvData = [{"Date": "2017-11-01","DIRECTV Sales": "2","Rolling Total": "2","
 let closeRateData = [{"Date": "2017-11-01","Close Rate": "0.59","Sales": "24","Calls": "62"}, {"Date": "2017-11-02","Close Rate": "0.50","Sales": "25","Calls": "68"}, {"Date": "2017-11-03","Close Rate": "0.40","Sales": "17","Calls": "42"}, {"Date": "2017-11-04","Close Rate": "0.40","Sales": "25","Calls": "62"}, {"Date": "2017-11-05","Close Rate": "0.37","Sales": "20","Calls": "53"}, {"Date": "2017-11-06","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-07","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-08","Close Rate": "0.51","Sales": "24","Calls": "54"}, {"Date": "2017-11-09","Close Rate": "0.58","Sales": "16","Calls": "28"}, {"Date": "2017-11-10","Close Rate": "0.44","Sales": "20","Calls": "45"}, {"Date": "2017-11-11","Close Rate": "0.57","Sales": "17","Calls": "30"}, {"Date": "2017-11-12","Close Rate": "0.41","Sales": "17","Calls": "41"}, {"Date": "2017-11-13","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-14","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-15","Close Rate": "0.56","Sales": "23","Calls": "41"}, {"Date": "2017-11-16","Close Rate": "0.35","Sales": "18","Calls": "51"}, {"Date": "2017-11-17","Close Rate": "0.41","Sales": "17","Calls": "41"}, {"Date": "2017-11-18","Close Rate": "0.58","Sales": "20","Calls": "35"}, {"Date": "2017-11-19","Close Rate": "0.59","Sales": "15","Calls": "25"}, {"Date": "2017-11-20","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-21","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-22","Close Rate": "0.58","Sales": "25","Calls": "43"}, {"Date": "2017-11-23","Close Rate": "0.44","Sales": "22","Calls": "51"}, {"Date": "2017-11-24","Close Rate": "0.50","Sales": "23","Calls": "46"}, {"Date": "2017-11-25","Close Rate": "0.51","Sales": "22","Calls": "43"}, {"Date": "2017-11-26","Close Rate": "0.36","Sales": "15","Calls": "41"}, {"Date": "2017-11-27","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-28","Close Rate": "N/A","Sales": "0","Calls": "0"}, {"Date": "2017-11-29","Close Rate": "0.38","Sales": "16","Calls": "42"}, {"Date": "2017-11-30","Close Rate": "0.47","Sales": "26","Calls": "55"}]
 
 
-const closeRate = {'title': 'Close Rate'};
+const closeRate = {
+    title: 'Close Rate',
+    id: 'card:0',
+    layoutOrder: 0
+};
 closeRate.data = closeRateData;
 closeRate.widgets = [
     {
@@ -42,7 +46,11 @@ closeRate.widgets = [
 
 
 
-const dtv = { 'title': 'DIRECTV Sales' };
+const dtv = {
+    title: 'DIRECTV Sales',
+    id: 'card:1',
+    layoutOrder: 1
+};
 dtv.data = dtvData;
 dtv.widgets = [
     {
@@ -170,12 +178,11 @@ const vm = new Vue({
     el: '#app',
     store,
     data: {
-        layout: layout,
-        menuIsActive: false
+        layout: layout
     },
 
     components: {
-        'card': Card
+        'dashboard': Dashboard
     },
 
     methods: {
@@ -187,11 +194,11 @@ const vm = new Vue({
                 'title': '',
                 'data': [],
                 'widgets': []
-            }
+            };
             this.layout.cards.push(newCard);
         },
-        toggleMenu: function() {
-            this.menuIsActive = !this.menuIsActive
+        updateLayout: function(newLayout) {
+            this.layout = newLayout;
         }
     }
 });

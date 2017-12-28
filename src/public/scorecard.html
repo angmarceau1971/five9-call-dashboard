@@ -32,19 +32,15 @@
                     v-if="$store.state.editMode"
                     @click="exportLayout"
                     id="export-layout">
-                    Export 
+                    Export
                 </button>
-                <button class="insidedrop"> Link 3 </button>
             </div>
         </div>
 
-        <div class="scorecard-wrapper">
-            <card
-                v-for="(card, i) in layout.cards"
-                v-bind="card"
-                :key="i"
-            ></card>
-        </div>
+        <dashboard
+            :layout="layout"
+            @update-layout="updateLayout"
+        ></dashboard>
 
     </div>
     </body>

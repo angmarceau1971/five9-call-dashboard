@@ -1,5 +1,9 @@
 <template>
-<div class="metric-wrapper stats-box">
+<div class="card metric-wrapper stats-box"
+        v-bind:style="{ order: layoutOrder }"
+        :draggable="$store.state.editMode"
+        @dragstart="dragstartHandler">
+
     <h2 class="descriptor">{{ title }}</h2>
     <single-value
         v-for="(widget, i) in widgetsOfType('single-value')"
@@ -56,7 +60,7 @@ const singleValue = {
 };
 
 export default {
-    props: ['title', 'widgets', 'data', 'meta'],
+    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],
     components: {
         'single-value': singleValue,
         'data-table': DataTable,
@@ -76,6 +80,12 @@ export default {
         },
         unhoverDate: function(date) {
             this.highlightedDate = null;
+        },
+        // Drag and drop handling
+        dragstartHandler(event) {
+            if (!this.$store.state.editMode) return;
+            console.log(this.id);
+            event.dataTransfer.setData('text/plain', this.id);
         }
     }
 }
