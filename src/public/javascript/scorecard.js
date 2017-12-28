@@ -190,15 +190,17 @@ const vm = new Vue({
         },
         addCard: function() {
             const newCard = {
-                'title': '' + this.layout.cards.length,
-                'id': 'card:' + this.layout.cards.length,
-                'data': [],
-                'widgets': []
+                title: '' + this.layout.cards.length,
+                id: 'card:' + this.layout.cards.length,
+                layoutOrder: -1,
+                data: [],
+                widgets: []
             };
+            console.log(newCard);
             this.layout.cards.push(newCard);
         },
         updateLayout: function(newLayout) {
-            this.layout = newLayout;
+            Object.assign(this.layout, newLayout);
         }
     }
 });

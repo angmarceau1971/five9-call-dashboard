@@ -868,15 +868,17 @@ const vm = new Vue({
         },
         addCard: function() {
             const newCard = {
-                'title': '' + this.layout.cards.length,
-                'id': 'card:' + this.layout.cards.length,
-                'data': [],
-                'widgets': []
+                title: '' + this.layout.cards.length,
+                id: 'card:' + this.layout.cards.length,
+                layoutOrder: -1,
+                data: [],
+                widgets: []
             };
+            console.log(newCard);
             this.layout.cards.push(newCard);
         },
         updateLayout: function(newLayout) {
-            this.layout = newLayout;
+            Object.assign(this.layout, newLayout);
         }
     }
 });
@@ -1893,18 +1895,16 @@ if (false) {(function () {
 
             const id = event.dataTransfer.getData('text');
             const thisCard = this.$refs[id][0];
-
-            // determine what order the cards should be in
             let newLayout = [];
             Object.assign(newLayout, this.layout);
             let getLeft = (card) => this.$refs[card.id][0].$el.offsetLeft;
-            console.log(`---------_______________--------`);
+
+            // determine what order the cards should be in
             newLayout.cards.sort((a, b) => {
+                // Each card's position is the mouse X if this is the card being
+                // dropped; otherwise, use the left side of the element
                 let leftA = a.id == id ? event.clientX : getLeft(a);
                 let leftB = b.id == id ? event.clientX : getLeft(b);
-                console.log(`-      -      -`);
-                console.log(`${a.id}: ${leftA}`);
-                console.log(`${b.id}: ${leftB}`);
                 return leftA < leftB ? -1 : +1;
             });
 
