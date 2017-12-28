@@ -130,7 +130,9 @@ export default {
         },
         createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
         createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),
-        createValueSelector: d3.area().x(d => d.x).y0(d => d.max).y1(0),
+        createValueSelector(point) {
+            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
+        },
         initialize() {
             this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
             this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
@@ -245,7 +247,7 @@ export default {
         font-size: 0.5em;
     }
     .selector {
-        stroke: hsla(0, 0%, 100%, 0.7);
+        stroke: hsla(207, 84%, 85%, 0.7);
         stroke-width: 1.0;
         fill: none;
     }
