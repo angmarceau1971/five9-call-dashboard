@@ -881,18 +881,18 @@ const vm = new Vue({
             Object.assign(this.layout, newLayout);
         },
         updateCard: function(cardId, newCard) {
-            console.log('updateCard ')
-                console.log(newCard)
-                console.log(
-                    this.layout.cards.findIndex((card) => card.id == cardId));
-            let oldCard = this.layout.cards[
-                this.layout.cards.findIndex((card) => card.id == cardId)
-            ];
-            console.log(oldCard);
-            Object.assign(oldCard, newCard);
+            let oldCardIndex =
+                this.layout.cards.findIndex((card) => card.id == cardId);
+            let oldCard = this.layout.cards[oldCardIndex];
 
-            console.log(newCard);
-            // oldCard = newCard;
+            // Create a new card object that has all properties from the
+            // new card and the old one (to include properties that aren't
+            // defined in `newCard`)
+            let newCardComplete = Object.assign({}, oldCard, newCard);
+
+            // Use `Vue.set` to trigger reactivity
+            // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+            Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
         }
     }
 });
@@ -1570,7 +1570,7 @@ if (false) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(31);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1621,7 +1621,7 @@ if (false) {(function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(26);
 //
 //
 //
@@ -2021,71 +2021,12 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "dashboard scorecard-wrapper",
-      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
-    },
-    [
-      _vm._l(_vm.layout.cards, function(card, i) {
-        return _c(
-          "card",
-          _vm._b(
-            {
-              key: i,
-              ref: card.id,
-              refInFor: true,
-              on: { "edit-card": _vm.editCard }
-            },
-            "card",
-            card,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm.editingCard
-        ? _c(
-            "card-editor",
-            _vm._b(
-              { on: { "exit-edit": _vm.exitEdit } },
-              "card-editor",
-              _vm.editedCard,
-              false
-            )
-          )
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
-  }
-}
-
-/***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(30);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(28)
+  __webpack_require__(27)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2131,13 +2072,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(29);
+var content = __webpack_require__(28);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2157,7 +2098,7 @@ if(false) {
 }
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(true);
@@ -2171,7 +2112,7 @@ exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2205,7 +2146,7 @@ exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2257,6 +2198,65 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-9d3c827e", esExports)
+  }
+}
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "dashboard scorecard-wrapper",
+      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
+    },
+    [
+      _vm._l(_vm.layout.cards, function(card, i) {
+        return _c(
+          "card",
+          _vm._b(
+            {
+              key: i,
+              ref: card.id,
+              refInFor: true,
+              on: { "edit-card": _vm.editCard }
+            },
+            "card",
+            card,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm.editingCard
+        ? _c(
+            "card-editor",
+            _vm._b(
+              { on: { "exit-edit": _vm.exitEdit } },
+              "card-editor",
+              _vm.editedCard,
+              false
+            )
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
   }
 }
 

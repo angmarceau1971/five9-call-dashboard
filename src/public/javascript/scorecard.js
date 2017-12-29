@@ -203,18 +203,18 @@ const vm = new Vue({
             Object.assign(this.layout, newLayout);
         },
         updateCard: function(cardId, newCard) {
-            console.log('updateCard ')
-                console.log(newCard)
-                console.log(
-                    this.layout.cards.findIndex((card) => card.id == cardId));
-            let oldCard = this.layout.cards[
-                this.layout.cards.findIndex((card) => card.id == cardId)
-            ];
-            console.log(oldCard);
-            Object.assign(oldCard, newCard);
+            let oldCardIndex =
+                this.layout.cards.findIndex((card) => card.id == cardId);
+            let oldCard = this.layout.cards[oldCardIndex];
 
-            console.log(newCard);
-            // oldCard = newCard;
+            // Create a new card object that has all properties from the
+            // new card and the old one (to include properties that aren't
+            // defined in `newCard`)
+            let newCardComplete = Object.assign({}, oldCard, newCard);
+
+            // Use `Vue.set` to trigger reactivity
+            // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+            Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
         }
     }
 });
