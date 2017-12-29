@@ -879,6 +879,20 @@ const vm = new Vue({
         },
         updateLayout: function(newLayout) {
             Object.assign(this.layout, newLayout);
+        },
+        updateCard: function(cardId, newCard) {
+            console.log('updateCard ')
+                console.log(newCard)
+                console.log(
+                    this.layout.cards.findIndex((card) => card.id == cardId));
+            let oldCard = this.layout.cards[
+                this.layout.cards.findIndex((card) => card.id == cardId)
+            ];
+            console.log(oldCard);
+            Object.assign(oldCard, newCard);
+
+            console.log(newCard);
+            // oldCard = newCard;
         }
     }
 });
@@ -1607,6 +1621,7 @@ if (false) {(function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(27);
 //
 //
 //
@@ -1619,6 +1634,14 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -1626,10 +1649,31 @@ if (false) {(function () {
     props: ['layout'],
 
     components: {
-        'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */]
+        'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */],
+        'card-editor': __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__["a" /* default */]
+    },
+
+    data: function() {
+        return {
+            editingCard: false,
+            editedCard: null
+        }
     },
 
     methods: {
+        // Edit a card
+        editCard: function(cardId) {
+            console.log(cardId);
+            this.editingCard = true;
+            this.editedCard = this.layout.cards.find((card) => card.id == cardId);
+        },
+        exitEdit: function(cardId, card) {
+            this.editingCard = false;
+            console.log(card);
+            this.$emit('update-card', cardId, card);
+            this.editedCard = '';
+        },
+
         // Drag and drop to move cards
         dragoverHandler: function(event) {
             if (!this.$store.state.editMode) return;
@@ -1786,7 +1830,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?3b382711"],"names":[],"mappings":";AA8FA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n        v-bind:style=\"{ order: layoutOrder }\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">\r\n\r\n    <h2 class=\"descriptor\">{{ title }}</h2>\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"i\"\r\n    ></single-value>\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div>\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null\r\n        }\r\n    },\r\n    methods: {\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Drag and drop handling\r\n        dragstartHandler(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card .edit-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.5em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    top: 0;\r\n    right: 0;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?0a4e8f34"],"names":[],"mappings":";AAoGA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,iBAAA;IACA,YAAA;IACA,WAAA;IACA,OAAA;IACA,SAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n        v-bind:style=\"{ order: layoutOrder }\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">\r\n\r\n    <h2 class=\"descriptor\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"i\"\r\n    ></single-value>\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div>\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null\r\n        }\r\n    },\r\n    methods: {\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Drag and drop handling\r\n        dragstartHandler(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card .edit-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.5em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    top: 0;\r\n    right: 0;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1799,6 +1843,12 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line_graph_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1911,6 +1961,21 @@ var render = function() {
     [
       _c("h2", { staticClass: "descriptor" }, [_vm._v(_vm._s(_vm.title))]),
       _vm._v(" "),
+      this.$store.state.editMode
+        ? _c(
+            "button",
+            {
+              staticClass: "edit-button",
+              on: {
+                click: function($event) {
+                  _vm.$emit("edit-card", _vm.id)
+                }
+              }
+            },
+            [_vm._v("☰")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _vm._l(_vm.widgetsOfType("single-value"), function(widget, i) {
         return _c(
           "single-value",
@@ -1966,12 +2031,37 @@ var render = function() {
       staticClass: "dashboard scorecard-wrapper",
       on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
     },
-    _vm._l(_vm.layout.cards, function(card, i) {
-      return _c(
-        "card",
-        _vm._b({ key: i, ref: card.id, refInFor: true }, "card", card, false)
-      )
-    })
+    [
+      _vm._l(_vm.layout.cards, function(card, i) {
+        return _c(
+          "card",
+          _vm._b(
+            {
+              key: i,
+              ref: card.id,
+              refInFor: true,
+              on: { "edit-card": _vm.editCard }
+            },
+            "card",
+            card,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm.editingCard
+        ? _c(
+            "card-editor",
+            _vm._b(
+              { on: { "exit-edit": _vm.exitEdit } },
+              "card-editor",
+              _vm.editedCard,
+              false
+            )
+          )
+        : _vm._e()
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -1982,6 +2072,191 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
+  }
+}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(31);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(28)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\card-editor.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9d3c827e", Component.options)
+  } else {
+    hotAPI.reload("data-v-9d3c827e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(29);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("419b5586", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./card-editor.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./card-editor.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;\r\n    height: 400px;\r\n    background-color: rgba(100,100,100,0.95);\n}\n.modal button {\r\n    color: #333;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card-editor.vue?4d535638"],"names":[],"mappings":";AA+BA;IACA,gBAAA;IACA,aAAA;IACA,cAAA;IACA,yCAAA;CACA;AACA;IACA,YAAA;CACA","file":"card-editor.vue","sourcesContent":["<template>\r\n<div class=\"modal\">\r\n    <h1>{{ newCard.title }}</h1>\r\n    <input v-model=\"newCard.title\" />\r\n\r\n    <button\r\n        @click=\"$emit('exit-edit', newCard.id, newCard)\"\r\n    >Done</button>\r\n</div>\r\n\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: ['id', 'title'],\r\n    data: function() {\r\n        return {\r\n            newCard: {\r\n                id: this.id,\r\n                title: this.title\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n</script>\r\n\r\n\r\n<style>\r\n.modal {\r\n    position: fixed;\r\n    width: 500px;\r\n    height: 400px;\r\n    background-color: rgba(100,100,100,0.95);\r\n}\r\n.modal button {\r\n    color: #333;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: ['id', 'title'],
+    data: function() {
+        return {
+            newCard: {
+                id: this.id,
+                title: this.title
+            }
+        }
+    }
+});
+
+
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal" }, [
+    _c("h1", [_vm._v(_vm._s(_vm.newCard.title))]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.newCard.title,
+          expression: "newCard.title"
+        }
+      ],
+      domProps: { value: _vm.newCard.title },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.$set(_vm.newCard, "title", $event.target.value)
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            _vm.$emit("exit-edit", _vm.newCard.id, _vm.newCard)
+          }
+        }
+      },
+      [_vm._v("Done")]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9d3c827e", esExports)
   }
 }
 

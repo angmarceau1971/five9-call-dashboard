@@ -201,6 +201,20 @@ const vm = new Vue({
         },
         updateLayout: function(newLayout) {
             Object.assign(this.layout, newLayout);
+        },
+        updateCard: function(cardId, newCard) {
+            console.log('updateCard ')
+                console.log(newCard)
+                console.log(
+                    this.layout.cards.findIndex((card) => card.id == cardId));
+            let oldCard = this.layout.cards[
+                this.layout.cards.findIndex((card) => card.id == cardId)
+            ];
+            console.log(oldCard);
+            Object.assign(oldCard, newCard);
+
+            console.log(newCard);
+            // oldCard = newCard;
         }
     }
 });

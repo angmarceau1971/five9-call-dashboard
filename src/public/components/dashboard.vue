@@ -5,22 +5,51 @@
         v-bind="card"
         :key="i"
         :ref="card.id"
+        @edit-card="editCard"
     ></card>
+
+    <card-editor
+        v-if="editingCard"
+        v-bind="editedCard"
+        @exit-edit="exitEdit"
+    ></card-editor>
 </div>
 </template>
 
 
 <script>
 import Card from './card.vue';
+import CardEditor from './card-editor.vue';
 
 export default {
     props: ['layout'],
 
     components: {
-        'card': Card
+        'card': Card,
+        'card-editor': CardEditor
+    },
+
+    data: function() {
+        return {
+            editingCard: false,
+            editedCard: null
+        }
     },
 
     methods: {
+        // Edit a card
+        editCard: function(cardId) {
+            console.log(cardId);
+            this.editingCard = true;
+            this.editedCard = this.layout.cards.find((card) => card.id == cardId);
+        },
+        exitEdit: function(cardId, card) {
+            this.editingCard = false;
+            console.log(card);
+            this.$emit('update-card', cardId, card);
+            this.editedCard = '';
+        },
+
         // Drag and drop to move cards
         dragoverHandler: function(event) {
             if (!this.$store.state.editMode) return;

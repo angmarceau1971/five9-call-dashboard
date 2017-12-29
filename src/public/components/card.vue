@@ -5,6 +5,12 @@
         @dragstart="dragstartHandler">
 
     <h2 class="descriptor">{{ title }}</h2>
+
+    <button v-if="this.$store.state.editMode"
+        class="edit-button"
+        @click="$emit('edit-card', id)"
+    >&#9776;</button>
+
     <single-value
         v-for="(widget, i) in widgetsOfType('single-value')"
         v-bind="widget"
@@ -97,5 +103,25 @@ export default {
 }
 .card {
     transition: all 1s;
+}
+
+.card .edit-button {
+    display: inline;
+    text-decoration: none;
+    position: absolute;
+    font-size: 1.5em;
+    color: #fff;
+    margin: 4%;
+    top: 0;
+    right: 0;
+    width: 2em;
+    height: 2em;
+    align-content: center;
+    justify-content: center;
+    background-color: rgba(100,100,100,0.5);
+    border-radius: 2em;
+}
+.card .edit-button:hover {
+    background-color: rgba(100,100,100,0.3);
 }
 </style>
