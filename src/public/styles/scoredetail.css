@@ -152,7 +152,7 @@ content is shown */
 .scorecard-wrapper {
     margin: 3em 1em;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 1em;
 
 }

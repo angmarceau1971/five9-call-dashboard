@@ -190,7 +190,7 @@ const vm = new Vue({
         },
         addCard: function() {
             const newCard = {
-                title: '' + this.layout.cards.length,
+                title: 'card:' + this.layout.cards.length,
                 id: 'card:' + this.layout.cards.length,
                 layoutOrder: -1,
                 data: [],
