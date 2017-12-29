@@ -1705,23 +1705,23 @@ if (false) {(function () {
             newLayout.cards.sort((a, b) => {
                 // If neither element is the dropped card, compare positions
                 if (a.id != id && b.id != id) {
-                    if (top(a) > top(b)) {
+                    if (top(a) < top(b)) {
                         return -1;
                     }
                     else if (top(b) < top(a)) {
-                        return 1;
+                        return +1;
                     }
-                    return 0;
+                    return left(a) < left(b) ? -1 : +1;
                 }
                 // If card `a` is selected...
                 if (a.id == id) {
                     // move forward if it's below the bottom of `b`
-                    if (event.clientY > bottom(b)) {
+                    if (event.pageY > bottom(b)) {
                         return 1;
                     }
                     // move forward if it's below the top of `b` and to the
                     // of `b`
-                    if (event.clientY > top(b) && event.clientX > left(b)) {
+                    if (event.pageY > top(b) && event.pageX > left(b)) {
                         return 1;
                     }
                     // otherwise, let card `b` move ahead
@@ -1729,10 +1729,10 @@ if (false) {(function () {
                 }
                 // ...If card `b` was selected, do the same.
                 if (b.id == id) {
-                    if (event.clientY > bottom(a)) {
+                    if (event.pageY > bottom(a)) {
                         return -1;
                     }
-                    if (event.clientY > top(a) && event.clientX > left(a)) {
+                    if (event.pageY > top(a) && event.pageX > left(a)) {
                         return -1;
                     }
                     return 1;
