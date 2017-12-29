@@ -12,6 +12,7 @@
         v-if="editingCard"
         v-bind="editedCard"
         @exit-edit="exitEdit"
+        @delete-card="deleteCard"
     ></card-editor>
 </div>
 </template>
@@ -37,17 +38,21 @@ export default {
     },
 
     methods: {
-        // Edit a card
+        // Edit or delete a card
         editCard: function(cardId) {
-            console.log(cardId);
             this.editingCard = true;
             this.editedCard = this.layout.cards.find((card) => card.id == cardId);
         },
-        exitEdit: function(cardId, card) {
+        exitEdit: function(saveChanges, cardId, card) {
             this.editingCard = false;
-            console.log(card);
-            this.$emit('update-card', cardId, card);
             this.editedCard = '';
+            if (!saveChanges) return;
+
+            this.$emit('update-card', cardId, card);
+        },
+        deleteCard: function(cardId) {
+            this.exitEdit(false);
+            this.$emit('delete-card', cardId);
         },
 
         // Drag and drop to move cards
@@ -92,7 +97,7 @@ export default {
                     // otherwise, let card `b` move ahead
                     return -1;
                 }
-                // ...If card `b` was selected, do the same
+                // ...If card `b` was selected, do the same.
                 if (b.id == id) {
                     if (event.clientY > bottom(a)) {
                         return -1;

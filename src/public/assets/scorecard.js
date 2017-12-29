@@ -893,6 +893,12 @@ const vm = new Vue({
             // Use `Vue.set` to trigger reactivity
             // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
             Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
+        },
+        deleteCard: function(cardId) {
+            console.log('delete')
+            let cardIndex =
+                this.layout.cards.findIndex((card) => card.id == cardId);
+            Vue.delete(this.layout.cards, cardIndex);
         }
     }
 });
@@ -1641,6 +1647,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -1661,17 +1668,21 @@ if (false) {(function () {
     },
 
     methods: {
-        // Edit a card
+        // Edit or delete a card
         editCard: function(cardId) {
-            console.log(cardId);
             this.editingCard = true;
             this.editedCard = this.layout.cards.find((card) => card.id == cardId);
         },
-        exitEdit: function(cardId, card) {
+        exitEdit: function(saveChanges, cardId, card) {
             this.editingCard = false;
-            console.log(card);
-            this.$emit('update-card', cardId, card);
             this.editedCard = '';
+            if (!saveChanges) return;
+
+            this.$emit('update-card', cardId, card);
+        },
+        deleteCard: function(cardId) {
+            this.exitEdit(false);
+            this.$emit('delete-card', cardId);
         },
 
         // Drag and drop to move cards
@@ -1716,7 +1727,7 @@ if (false) {(function () {
                     // otherwise, let card `b` move ahead
                     return -1;
                 }
-                // ...If card `b` was selected, do the same
+                // ...If card `b` was selected, do the same.
                 if (b.id == id) {
                     if (event.clientY > bottom(a)) {
                         return -1;
@@ -1830,7 +1841,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card .edit-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.5em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    top: 0;\r\n    right: 0;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?0a4e8f34"],"names":[],"mappings":";AAoGA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,iBAAA;IACA,YAAA;IACA,WAAA;IACA,OAAA;IACA,SAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n        v-bind:style=\"{ order: layoutOrder }\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">\r\n\r\n    <h2 class=\"descriptor\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"i\"\r\n    ></single-value>\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div>\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null\r\n        }\r\n    },\r\n    methods: {\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Drag and drop handling\r\n        dragstartHandler(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card .edit-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.5em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    top: 0;\r\n    right: 0;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?602617bc"],"names":[],"mappings":";AA8GA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n        v-bind:style=\"{ order: layoutOrder }\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">\r\n\r\n    <h2 class=\"descriptor\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"i\"\r\n    ></single-value>\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div>\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null\r\n        }\r\n    },\r\n    methods: {\r\n        //\r\n        addWidget: function() {\r\n\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Drag and drop handling\r\n        dragstartHandler(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1843,6 +1854,10 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line_graph_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format__ = __webpack_require__(4);
+//
+//
+//
+//
 //
 //
 //
@@ -1923,9 +1938,15 @@ const singleValue = {
         }
     },
     methods: {
+        //
+        addWidget: function() {
+
+        },
+        // Return widgets of a given type (data-table, line-graph, etc.)
         widgetsOfType: function(type) {
             return this.widgets.filter((widget) => widget['component'] == type);
         },
+        // React to user hovering over a day
         hoverDate: function(date) {
             this.highlightedDate = date;
         },
@@ -1973,6 +1994,14 @@ var render = function() {
               }
             },
             [_vm._v("☰")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      this.$store.state.editMode
+        ? _c(
+            "button",
+            { staticClass: "add-button", on: { click: _vm.addWidget } },
+            [_vm._v("+")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -2106,7 +2135,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;\r\n    height: 400px;\r\n    background-color: rgba(100,100,100,0.95);\n}\n.modal button {\r\n    color: #333;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card-editor.vue?4d535638"],"names":[],"mappings":";AA+BA;IACA,gBAAA;IACA,aAAA;IACA,cAAA;IACA,yCAAA;CACA;AACA;IACA,YAAA;CACA","file":"card-editor.vue","sourcesContent":["<template>\r\n<div class=\"modal\">\r\n    <h1>{{ newCard.title }}</h1>\r\n    <input v-model=\"newCard.title\" />\r\n\r\n    <button\r\n        @click=\"$emit('exit-edit', newCard.id, newCard)\"\r\n    >Done</button>\r\n</div>\r\n\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: ['id', 'title'],\r\n    data: function() {\r\n        return {\r\n            newCard: {\r\n                id: this.id,\r\n                title: this.title\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n</script>\r\n\r\n\r\n<style>\r\n.modal {\r\n    position: fixed;\r\n    width: 500px;\r\n    height: 400px;\r\n    background-color: rgba(100,100,100,0.95);\r\n}\r\n.modal button {\r\n    color: #333;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"card-editor.vue","sourceRoot":""}]);
 
 // exports
 
@@ -2116,6 +2145,19 @@ exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2143,8 +2185,6 @@ exports.push([module.i, "\n.modal {\r\n    position: fixed;\r\n    width: 500px;
 });
 
 
-
-
 /***/ }),
 /* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2156,6 +2196,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "modal" }, [
     _c("h1", [_vm._v(_vm._s(_vm.newCard.title))]),
+    _vm._v(" "),
+    _c("h3", [_vm._v("Title")]),
     _vm._v(" "),
     _c("input", {
       directives: [
@@ -2177,17 +2219,44 @@ var render = function() {
       }
     }),
     _vm._v(" "),
-    _c(
-      "button",
-      {
-        on: {
-          click: function($event) {
-            _vm.$emit("exit-edit", _vm.newCard.id, _vm.newCard)
+    _c("div", { staticClass: "button-wrapper" }, [
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              _vm.$emit("exit-edit", true, _vm.newCard.id, _vm.newCard)
+            }
           }
-        }
-      },
-      [_vm._v("Done")]
-    )
+        },
+        [_vm._v("Save")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              _vm.$emit("exit-edit", false)
+            }
+          }
+        },
+        [_vm._v("Cancel")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "delete",
+          on: {
+            click: function($event) {
+              _vm.$emit("delete-card", _vm.id)
+            }
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -2238,7 +2307,9 @@ var render = function() {
         ? _c(
             "card-editor",
             _vm._b(
-              { on: { "exit-edit": _vm.exitEdit } },
+              {
+                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
+              },
               "card-editor",
               _vm.editedCard,
               false

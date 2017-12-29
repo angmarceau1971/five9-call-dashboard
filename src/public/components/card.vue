@@ -10,6 +10,10 @@
         class="edit-button"
         @click="$emit('edit-card', id)"
     >&#9776;</button>
+    <button v-if="this.$store.state.editMode"
+        class="add-button"
+        @click="addWidget"
+    >+</button>
 
     <single-value
         v-for="(widget, i) in widgetsOfType('single-value')"
@@ -78,9 +82,15 @@ export default {
         }
     },
     methods: {
+        //
+        addWidget: function() {
+
+        },
+        // Return widgets of a given type (data-table, line-graph, etc.)
         widgetsOfType: function(type) {
             return this.widgets.filter((widget) => widget['component'] == type);
         },
+        // React to user hovering over a day
         hoverDate: function(date) {
             this.highlightedDate = date;
         },
@@ -105,15 +115,13 @@ export default {
     transition: all 1s;
 }
 
-.card .edit-button {
+.card button {
     display: inline;
     text-decoration: none;
     position: absolute;
-    font-size: 1.5em;
+    font-size: 1.25em;
     color: #fff;
     margin: 4%;
-    top: 0;
-    right: 0;
     width: 2em;
     height: 2em;
     align-content: center;
@@ -121,7 +129,16 @@ export default {
     background-color: rgba(100,100,100,0.5);
     border-radius: 2em;
 }
-.card .edit-button:hover {
+.card button:hover {
     background-color: rgba(100,100,100,0.3);
 }
+.card .edit-button {
+    top: 0;
+    left: 0;
+}
+.card .add-button {
+    top: 0;
+    right: 0;
+}
+
 </style>

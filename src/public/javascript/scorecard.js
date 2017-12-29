@@ -215,6 +215,12 @@ const vm = new Vue({
             // Use `Vue.set` to trigger reactivity
             // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
             Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
+        },
+        deleteCard: function(cardId) {
+            console.log('delete')
+            let cardIndex =
+                this.layout.cards.findIndex((card) => card.id == cardId);
+            Vue.delete(this.layout.cards, cardIndex);
         }
     }
 });

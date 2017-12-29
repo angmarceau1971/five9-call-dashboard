@@ -1,11 +1,24 @@
 <template>
 <div class="modal">
     <h1>{{ newCard.title }}</h1>
+    <h3>Title</h3>
     <input v-model="newCard.title" />
 
-    <button
-        @click="$emit('exit-edit', newCard.id, newCard)"
-    >Done</button>
+
+    <div class="button-wrapper">
+        <button
+            @click="$emit('exit-edit', true, newCard.id, newCard)"
+        >Save</button>
+
+        <button
+            @click="$emit('exit-edit', false)"
+        >Cancel</button>
+
+        <button
+            class="delete"
+            @click="$emit('delete-card', id)"
+        >Delete</button>
+    </div>
 </div>
 
 </template>
@@ -23,19 +36,9 @@ export default {
         }
     }
 }
-
-
 </script>
 
 
 <style>
-.modal {
-    position: fixed;
-    width: 500px;
-    height: 400px;
-    background-color: rgba(100,100,100,0.95);
-}
-.modal button {
-    color: #333;
-}
+
 </style>
