@@ -1,10 +1,11 @@
 <template>
 <div class="card metric-wrapper stats-box"
-        v-bind:style="{ order: layoutOrder }"
-        :draggable="$store.state.editMode"
-        @dragstart="dragstartHandler">
+    v-bind:style="{ order: layoutOrder }"
+    @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
-    <h2 class="descriptor">{{ title }}</h2>
+    <!-- Card is draggable by the title -->
+    <h2 class="title descriptor" :draggable="$store.state.editMode"
+        @dragstart="dragstartHandler">{{ title }}</h2>
 
     <button v-if="this.$store.state.editMode"
         class="edit-button"
@@ -15,11 +16,15 @@
         @click="addWidget"
     >+</button>
 
+
     <single-value
         v-for="(widget, i) in widgetsOfType('single-value')"
         v-bind="widget"
+        :id="i"
         :key="i"
-    ></single-value>
+        @dragstart-widget="dragstartWidgetHandler"
+        ></single-value>
+
 
     <line-graph
         v-for="(widget, i) in widgetsOfType('line-graph')"
@@ -51,7 +56,10 @@ import { formatValue } from '../javascript/scorecard-format';
 const singleValue = {
     props: ['value', 'title', 'fieldName'],
     template: `
-        <div>
+        <div class="single-value"
+            :draggable="$store.state.editMode"
+            @dragstart="dragstartHandler"
+            >
             <h3>{{ title }}</h3>
             <p class="metric"
               :class="formatted.styleClass">
@@ -66,6 +74,11 @@ const singleValue = {
         formatted: function() {
             return formatValue(this.value, this.field);
         }
+    },
+    methods: {
+        dragstartHandler: function(event) {
+            this.$emit('dragstart-widget', event, this.$props);
+        }
     }
 };
 
@@ -78,11 +91,12 @@ export default {
     },
     data: function() {
         return {
-            highlightedDate: null
+            highlightedDate: null,
+            draggingWidget: true
         }
     },
     methods: {
-        //
+        // add a new widget to the cardj
         addWidget: function() {
 
         },
@@ -97,10 +111,55 @@ export default {
         unhoverDate: function(date) {
             this.highlightedDate = null;
         },
-        // Drag and drop handling
-        dragstartHandler(event) {
+        // Card drag and drop handling
+        dragstartHandler: function(event) {
             if (!this.$store.state.editMode) return;
+            console.log('dragging card');
             event.dataTransfer.setData('text/plain', this.id);
+        },
+        // Widget drag and drop handling
+        dragstartWidgetHandler: function(event, widget) {
+            if (!this.$store.state.editMode) return;
+            this.draggingWidget = true;
+            const dragData = {
+                cardId: this.id,
+                widgetId: widget.id
+            };
+            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+            console.log('dragWidget');
+        },
+        dragWidgetHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            event.preventDefault();
+            console.log('dragoverCard');
+        },
+        dropWidgetHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            let dragData;
+            try {
+                // Try to parse dragData as JSON and prevent other drag/drop
+                // effects
+                dragData = JSON.parse(
+                    event.dataTransfer.getData('text/plain'));
+                event.preventDefault();
+                event.stopPropagation();
+            // If dragData isn't JSON, move along
+            } catch (err) {
+                if (err instanceof SyntaxError) {
+                    return;
+                }
+            }
+
+            // If this widget is being dropped in a different card, ignore
+            if (dragData.cardId != this.id) return;
+
+            console.log('this is it')
+            
+
+        },
+        dropWidget: function(event) {
+            console.log('widget dropped!')
+            console.log(event);
         }
     }
 }

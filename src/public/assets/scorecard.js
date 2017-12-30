@@ -1664,6 +1664,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -1857,7 +1858,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?602617bc"],"names":[],"mappings":";AA8GA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n        v-bind:style=\"{ order: layoutOrder }\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">\r\n\r\n    <h2 class=\"descriptor\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"i\"\r\n    ></single-value>\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div>\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null\r\n        }\r\n    },\r\n    methods: {\r\n        //\r\n        addWidget: function() {\r\n\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Drag and drop handling\r\n        dragstartHandler(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?5b266904"],"names":[],"mappings":";AAyKA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    v-bind:style=\"{ order: layoutOrder }\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\" :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :id=\"i\"\r\n        :key=\"i\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        ></single-value>\r\n\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\n\r\nconst singleValue = {\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div class=\"single-value\"\r\n            :draggable=\"$store.state.editMode\"\r\n            @dragstart=\"dragstartHandler\"\r\n            >\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    },\r\n    methods: {\r\n        dragstartHandler: function(event) {\r\n            this.$emit('dragstart-widget', event, this.$props);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the cardj\r\n        addWidget: function() {\r\n\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            console.log('dragging card');\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n            console.log('dragWidget');\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n            console.log('dragoverCard');\r\n        },\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            console.log('this is it')\r\n            \r\n\r\n        },\r\n        dropWidget: function(event) {\r\n            console.log('widget dropped!')\r\n            console.log(event);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1913,6 +1914,11 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -1923,7 +1929,10 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 const singleValue = {
     props: ['value', 'title', 'fieldName'],
     template: `
-        <div>
+        <div class="single-value"
+            :draggable="$store.state.editMode"
+            @dragstart="dragstartHandler"
+            >
             <h3>{{ title }}</h3>
             <p class="metric"
               :class="formatted.styleClass">
@@ -1938,6 +1947,11 @@ const singleValue = {
         formatted: function() {
             return Object(__WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
         }
+    },
+    methods: {
+        dragstartHandler: function(event) {
+            this.$emit('dragstart-widget', event, this.$props);
+        }
     }
 };
 
@@ -1950,11 +1964,12 @@ const singleValue = {
     },
     data: function() {
         return {
-            highlightedDate: null
+            highlightedDate: null,
+            draggingWidget: true
         }
     },
     methods: {
-        //
+        // add a new widget to the cardj
         addWidget: function() {
 
         },
@@ -1969,10 +1984,55 @@ const singleValue = {
         unhoverDate: function(date) {
             this.highlightedDate = null;
         },
-        // Drag and drop handling
-        dragstartHandler(event) {
+        // Card drag and drop handling
+        dragstartHandler: function(event) {
             if (!this.$store.state.editMode) return;
+            console.log('dragging card');
             event.dataTransfer.setData('text/plain', this.id);
+        },
+        // Widget drag and drop handling
+        dragstartWidgetHandler: function(event, widget) {
+            if (!this.$store.state.editMode) return;
+            this.draggingWidget = true;
+            const dragData = {
+                cardId: this.id,
+                widgetId: widget.id
+            };
+            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+            console.log('dragWidget');
+        },
+        dragWidgetHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            event.preventDefault();
+            console.log('dragoverCard');
+        },
+        dropWidgetHandler: function(event) {
+            if (!this.$store.state.editMode) return;
+            let dragData;
+            try {
+                // Try to parse dragData as JSON and prevent other drag/drop
+                // effects
+                dragData = JSON.parse(
+                    event.dataTransfer.getData('text/plain'));
+                event.preventDefault();
+                event.stopPropagation();
+            // If dragData isn't JSON, move along
+            } catch (err) {
+                if (err instanceof SyntaxError) {
+                    return;
+                }
+            }
+
+            // If this widget is being dropped in a different card, ignore
+            if (dragData.cardId != this.id) return;
+
+            console.log('this is it')
+            
+
+        },
+        dropWidget: function(event) {
+            console.log('widget dropped!')
+            console.log(event);
         }
     }
 });
@@ -1992,11 +2052,18 @@ var render = function() {
     {
       staticClass: "card metric-wrapper stats-box",
       style: { order: _vm.layoutOrder },
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
+      on: { dragover: _vm.dragWidgetHandler, drop: _vm.dropWidgetHandler }
     },
     [
-      _c("h2", { staticClass: "descriptor" }, [_vm._v(_vm._s(_vm.title))]),
+      _c(
+        "h2",
+        {
+          staticClass: "title descriptor",
+          attrs: { draggable: _vm.$store.state.editMode },
+          on: { dragstart: _vm.dragstartHandler }
+        },
+        [_vm._v(_vm._s(_vm.title))]
+      ),
       _vm._v(" "),
       this.$store.state.editMode
         ? _c(
@@ -2024,7 +2091,16 @@ var render = function() {
       _vm._l(_vm.widgetsOfType("single-value"), function(widget, i) {
         return _c(
           "single-value",
-          _vm._b({ key: i }, "single-value", widget, false)
+          _vm._b(
+            {
+              key: i,
+              attrs: { id: i },
+              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
+            },
+            "single-value",
+            widget,
+            false
+          )
         )
       }),
       _vm._v(" "),

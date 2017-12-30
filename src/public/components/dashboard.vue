@@ -1,5 +1,6 @@
 <template>
-<div class="dashboard scorecard-wrapper" @dragover="dragoverHandler" @drop="dropHandler">
+<div class="dashboard scorecard-wrapper"
+    @dragover="dragoverHandler" @drop="dropHandler">
     <card
         v-for="(card, i) in layout.cards"
         v-bind="card"
