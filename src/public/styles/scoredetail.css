@@ -9,6 +9,10 @@ h2, h3 {
     font-weight: normal;
 }
 
+.file-import-wrapper input {
+    float: right;
+}
+
 /* Modals for editing  */
 .modal {
     position: fixed;

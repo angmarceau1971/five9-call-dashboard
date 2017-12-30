@@ -22,17 +22,27 @@
                     id="toggle-edit-mode">
                     Edit Mode
                 </button>
+
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
                     id="export-layout">
                     Format
                 </button>
+
+                <button class="insidedrop"
+                    v-if="$store.state.editMode"
+                    @click="clickImport"
+                    id="import-layout">
+                    Import
+                </button>
+
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
                     @click="exportLayout"
                     id="export-layout">
                     Export
                 </button>
+
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
                     @click="addCard"
@@ -41,6 +51,13 @@
                 </button>
             </div>
         </div>
+
+        <input type="file" id="file-input"
+            v-if="$store.state.editMode"
+            v-show="false"
+            @change="importLayout"
+            ref="fileInput" />
+
 
         <dashboard
             :layout="layout"

@@ -863,6 +863,22 @@ const vm = new Vue({
     },
 
     methods: {
+        clickImport: function() {
+            this.$refs.fileInput.click();
+        },
+        importLayout: function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = JSON.parse(e.target.result);
+                console.log(contents);
+                this.layout = Object.assign({}, contents);
+            }.bind(this);
+            reader.readAsText(file);
+        },
         exportLayout: function() {
             download(layout, 'test.json', 'text/plain');
         },
