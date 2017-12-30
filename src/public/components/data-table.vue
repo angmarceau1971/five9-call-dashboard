@@ -23,8 +23,10 @@
 
 <script>
 import DataTableRow from './data-table-row.vue';
+import WidgetBase from './widget-base.vue';
 
 export default {
+    extends: WidgetBase,
     props: ['data', 'highlightedDate'],
     components: {
         'data-table-row': DataTableRow

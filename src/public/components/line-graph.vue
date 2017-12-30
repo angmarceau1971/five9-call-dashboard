@@ -38,8 +38,10 @@ Accepts data prop with structure:
 <script>
 
 import DataTable from './data-table.vue';
+import WidgetBase from './widget-base.vue';
 
 const props = {
+    extends: WidgetBase,
     xField: {default: 'x'},
     yField: {default: 'y'},
     data: {

@@ -51,9 +51,10 @@
 import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
 import { formatValue } from '../javascript/scorecard-format';
-
+import WidgetBase from './widget-base.vue';
 
 const singleValue = {
+    extends: WidgetBase,
     props: ['value', 'title', 'fieldName'],
     template: `
         <div class="single-value"
@@ -73,11 +74,6 @@ const singleValue = {
         },
         formatted: function() {
             return formatValue(this.value, this.field);
-        }
-    },
-    methods: {
-        dragstartHandler: function(event) {
-            this.$emit('dragstart-widget', event, this.$props);
         }
     }
 };
@@ -154,7 +150,7 @@ export default {
             if (dragData.cardId != this.id) return;
 
             console.log('this is it')
-            
+
 
         },
         dropWidget: function(event) {
