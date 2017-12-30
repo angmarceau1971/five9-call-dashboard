@@ -22,6 +22,7 @@
 <script>
 import Card from './card.vue';
 import CardEditor from './card-editor.vue';
+import { sortOrder } from './drag-n-drop-sort.js';
 
 export default {
     props: ['layout'],
@@ -68,47 +69,12 @@ export default {
             const thisCard = this.$refs[id][0];
             let newLayout = [];
             Object.assign(newLayout, this.layout);
-            let left = (card) => this.$refs[card.id][0].$el.offsetLeft;
-            let top  = (card) => this.$refs[card.id][0].$el.offsetTop;
-            let bottom = (card) => top(card) + this.$refs[card.id][0].$el.clientHeight;
 
             // Determine what order the cards should be in
-            newLayout.cards.sort((a, b) => {
-                // If neither element is the dropped card, compare positions
-                if (a.id != id && b.id != id) {
-                    if (top(a) < top(b)) {
-                        return -1;
-                    }
-                    else if (top(b) < top(a)) {
-                        return +1;
-                    }
-                    return left(a) < left(b) ? -1 : +1;
-                }
-                // If card `a` is selected...
-                if (a.id == id) {
-                    // move forward if it's below the bottom of `b`
-                    if (event.pageY > bottom(b)) {
-                        return 1;
-                    }
-                    // move forward if it's below the top of `b` and to the
-                    // of `b`
-                    if (event.pageY > top(b) && event.pageX > left(b)) {
-                        return 1;
-                    }
-                    // otherwise, let card `b` move ahead
-                    return -1;
-                }
-                // ...If card `b` was selected, do the same.
-                if (b.id == id) {
-                    if (event.pageY > bottom(a)) {
-                        return -1;
-                    }
-                    if (event.pageY > top(a) && event.pageX > left(a)) {
-                        return -1;
-                    }
-                    return 1;
-                }
-            });
+            let el = (card) => this.$refs[card.id][0].$el;
+            newLayout.cards.sort((a, b) =>
+                sortOrder(el(a), el(b), event, id)
+            );
 
             // Update the layoutOrder property for each card
             newLayout.cards.forEach((card, i) => {

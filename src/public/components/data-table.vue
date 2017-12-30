@@ -1,5 +1,7 @@
 <template>
-<div class="data-table-wrapper">
+<div class="data-table-wrapper"
+    :draggable="$store.state.editMode"
+    @dragstart="dragstartHandler">
     <table class="data-table">
         <thead>
             <tr>

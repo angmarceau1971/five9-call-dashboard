@@ -10,7 +10,9 @@ Accepts data prop with structure:
  -->
 
 <template>
-<div class="line-graph">
+<div class="line-graph"
+    :draggable="$store.state.editMode"
+    @dragstart="dragstartHandler">
     <div ref="graph-wrap" class="graph-wrap">
         <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
                 :width="width" :height="height">
@@ -41,7 +43,6 @@ import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
 
 const props = {
-    extends: WidgetBase,
     xField: {default: 'x'},
     yField: {default: 'y'},
     data: {
@@ -60,6 +61,7 @@ const props = {
 };
 
 export default {
+    extends: WidgetBase,
     name: 'line-graph',
 
     props,

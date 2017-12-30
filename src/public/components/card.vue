@@ -1,5 +1,6 @@
 <template>
 <div class="card metric-wrapper stats-box"
+    :id="id"
     v-bind:style="{ order: layoutOrder }"
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
@@ -23,7 +24,7 @@
         :id="i"
         :key="i"
         @dragstart-widget="dragstartWidgetHandler"
-        ></single-value>
+    ></single-value>
 
 
     <line-graph
@@ -32,6 +33,7 @@
         :x-field="widget.fieldNames.x"
         :y-field="widget.fieldNames.y"
         :key="widget.id"
+        @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
     <data-table
@@ -41,6 +43,7 @@
         :data="data"
         :highlightedDate="highlightedDate"
         :key="i"
+        @dragstart-widget="dragstartWidgetHandler"
     ></data-table>
 </div>
 </template>
@@ -149,13 +152,7 @@ export default {
             // If this widget is being dropped in a different card, ignore
             if (dragData.cardId != this.id) return;
 
-            console.log('this is it')
 
-
-        },
-        dropWidget: function(event) {
-            console.log('widget dropped!')
-            console.log(event);
         }
     }
 }
