@@ -21,28 +21,30 @@
     <single-value
         v-for="(widget, i) in widgetsOfType('single-value')"
         v-bind="widget"
-        :id="i"
-        :key="i"
+        :key="widget.id"
+        :ref="widget.id"
         @dragstart-widget="dragstartWidgetHandler"
     ></single-value>
 
 
     <line-graph
         v-for="(widget, i) in widgetsOfType('line-graph')"
+        v-bind="widget"
         :data="data"
-        :x-field="widget.fieldNames.x"
-        :y-field="widget.fieldNames.y"
         :key="widget.id"
+        :ref="widget.id"
         @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
     <data-table
         v-for="(widget, i) in widgetsOfType('data-table')"
-        @hoverDate="hoverDate"
-        @unhoverDate="unhoverDate"
+        v-bind="widget"
         :data="data"
         :highlightedDate="highlightedDate"
-        :key="i"
+        :key="widget.id"
+        :ref="widget.id"
+        @hoverDate="hoverDate"
+        @unhoverDate="unhoverDate"
         @dragstart-widget="dragstartWidgetHandler"
     ></data-table>
 </div>
@@ -50,11 +52,11 @@
 
 
 <script>
-
+import WidgetBase from './widget-base.vue';
 import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
 import { formatValue } from '../javascript/scorecard-format';
-import WidgetBase from './widget-base.vue';
+import { sortOrder } from './drag-n-drop-sort.js';
 
 const singleValue = {
     extends: WidgetBase,
@@ -95,7 +97,7 @@ export default {
         }
     },
     methods: {
-        // add a new widget to the cardj
+        // add a new widget to the card
         addWidget: function() {
 
         },
@@ -152,7 +154,16 @@ export default {
             // If this widget is being dropped in a different card, ignore
             if (dragData.cardId != this.id) return;
 
+            // Otherwise sort widgets and update the dashboard
+            let newWidgets = [];
+            Object.assign(newWidgets, this.widgets);
 
+            let el = (widget) => this.$refs[widget.id][0].$el;
+            newWidgets.sort((a, b) =>
+                sortOrder(a, b, event, dragData.widgetId, el)
+            );
+
+            this.$emit('update-widgets', newWidgets, this.id);
         }
     }
 }

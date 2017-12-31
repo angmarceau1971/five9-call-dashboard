@@ -752,20 +752,23 @@ const closeRate = {
 closeRate.data = closeRateData;
 closeRate.widgets = [
     {
+        'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'Close Rate',
         'value': 0.5561
     },
     {
+        'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'Close Rate',
         'value': 0.5047
     },
     {
+        'id': 'widget:2',
         'component': 'line-graph',
-        'fieldNames': {
+        'fields': {
             x: 'Date',
             y: 'Close Rate'
         }
@@ -780,20 +783,23 @@ const dtv = {
 dtv.data = dtvData;
 dtv.widgets = [
     {
+        'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'DIRECTV Sales',
         'value': 1
     },
     {
+        'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'DIRECTV Sales',
         'value': 23
     },
     {
+        'id': 'widget:2',
         'component': 'line-graph',
-        'fieldNames': {
+        'fields': {
             x: 'Date',
             y: 'DIRECTV Sales'
         }
@@ -1015,7 +1021,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 150px;\n}\n.graph-wrap text[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke: steelblue;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 84%, 85%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue?b458e7d2"],"names":[],"mappings":";AAuNA;IACA,gBAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,kBAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA","file":"line-graph.vue","sourcesContent":["<!--\r\nLine graph component.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n\r\n -->\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @click=\"toggleTable\" @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ yField }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(20px,${margin.top}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n            </g>\r\n        </svg>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nconst props = {\r\n    xField: {default: 'x'},\r\n    yField: {default: 'y'},\r\n    data: {\r\n        type: Array,\r\n        default: () => []\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 40,\r\n            right: 10,\r\n            top: 15,\r\n            bottom: 10,\r\n        }),\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            highlightedDate: null,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.yField]);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function() { this.update(); },\r\n        data: function() { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable() {\r\n            this.showTable = !this.showTable;\r\n        },\r\n\r\n        hoverDate(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        onResize() {\r\n            this.width = this.$refs['graph-wrap'].offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            const parseTime = d3.timeParse('%Y-%m-%d');\r\n            for (let d of this.data) {\r\n                d[this.yField] *= 1;\r\n                if (isNaN(d[this.yField])) d[this.yField] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.xField])));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            let goal = this.$store.getters.field(this.yField).goal;\r\n            let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                ({\r\n                    x: this.scaled.x(xVal),\r\n                    y: this.scaled.y(goal)\r\n                })\r\n            );\r\n            this.paths.goalLine = this.createLine(goalPoints);\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(parseTime(d[this.xField])),\r\n                    y: this.scaled.y(d[this.yField]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n        },\r\n        mouseover({ offsetX }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const closestPoint = this.getClosestPoint(x);\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 150px;\r\n    }\r\n    .graph-wrap text {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke: steelblue;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 84%, 85%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 150px;\n}\n.graph-wrap text[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke: steelblue;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 84%, 85%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue?2af0e69f"],"names":[],"mappings":";AAwNA;IACA,gBAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,kBAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA","file":"line-graph.vue","sourcesContent":["<!--\r\nLine graph component.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n\r\n -->\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @click=\"toggleTable\" @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fields.y }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(20px,${margin.top}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n            </g>\r\n        </svg>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    data: {\r\n        type: Array,\r\n        default: () => []\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 40,\r\n            right: 10,\r\n            top: 15,\r\n            bottom: 10,\r\n        }),\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            highlightedDate: null,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function() { this.update(); },\r\n        data: function() { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable() {\r\n            this.showTable = !this.showTable;\r\n        },\r\n\r\n        hoverDate(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        onResize() {\r\n            this.width = this.$refs['graph-wrap'].offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            const parseTime = d3.timeParse('%Y-%m-%d');\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.fields.x])));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            let goal = this.$store.getters.field(this.fields.y).goal;\r\n            let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                ({\r\n                    x: this.scaled.x(xVal),\r\n                    y: this.scaled.y(goal)\r\n                })\r\n            );\r\n            this.paths.goalLine = this.createLine(goalPoints);\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(parseTime(d[this.fields.x])),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n        },\r\n        mouseover({ offsetX }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const closestPoint = this.getClosestPoint(x);\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 150px;\r\n    }\r\n    .graph-wrap text {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke: steelblue;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 84%, 85%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1105,8 +1111,9 @@ module.exports = function listToStyles (parentId, list) {
 
 
 const props = {
-    xField: {default: 'x'},
-    yField: {default: 'y'},
+    fields: {
+        type: Object
+    },
     data: {
         type: Array,
         default: () => []
@@ -1160,7 +1167,7 @@ const props = {
             return { width, height };
         },
         ceil() {
-            return d3.max(this.data, (d) => d[this.yField]);
+            return d3.max(this.data, (d) => d[this.fields.y]);
         }
     },
 
@@ -1209,16 +1216,16 @@ const props = {
             this.initialize();
             const parseTime = d3.timeParse('%Y-%m-%d');
             for (let d of this.data) {
-                d[this.yField] *= 1;
-                if (isNaN(d[this.yField])) d[this.yField] = 0;
+                d[this.fields.y] *= 1;
+                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
             }
 
-            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.xField])));
+            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.fields.x])));
             this.scaled.y.domain([0, this.ceil]);
             this.points = [];
 
             // Draw goal line
-            let goal = this.$store.getters.field(this.yField).goal;
+            let goal = this.$store.getters.field(this.fields.y).goal;
             let goalPoints = this.scaled.x.domain().map((xVal) =>
                 ({
                     x: this.scaled.x(xVal),
@@ -1230,8 +1237,8 @@ const props = {
             // Create graph points
             for (let d of this.data) {
                 this.points.push({
-                    x: this.scaled.x(parseTime(d[this.xField])),
-                    y: this.scaled.y(d[this.yField]),
+                    x: this.scaled.x(parseTime(d[this.fields.x])),
+                    y: this.scaled.y(d[this.fields.y]),
                     max: this.height,
                 });
             }
@@ -1512,6 +1519,7 @@ if (false) {
 //
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+    props: ['id'],
     methods: {
         dragstartHandler: function(event) {
             this.$emit('dragstart-widget', event, this.$props);
@@ -1606,7 +1614,7 @@ var render = function() {
           },
           [
             _c("text", { staticClass: "title", attrs: { x: 55, y: 10 } }, [
-              _vm._v(_vm._s(_vm.yField))
+              _vm._v(_vm._s(_vm.fields.y))
             ]),
             _vm._v(" "),
             _c("g", {
@@ -1680,7 +1688,7 @@ if (false) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(34);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1732,7 +1740,8 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(33);
+//
 //
 //
 //
@@ -1792,6 +1801,16 @@ if (false) {(function () {
             this.$emit('delete-card', cardId);
         },
 
+        //
+        updateWidgets: function(newWidgets, cardId) {
+            console.log(newWidgets);
+            let newCard = {};
+            Object.assign(newCard, this.layout.cards[cardId]);
+            newCard.widgets = newWidgets;
+            console.log(newCard);
+            this.$emit('update-card', cardId, newCard);
+        },
+
         // Drag and drop to move cards
         dragoverHandler: function(event) {
             if (!this.$store.state.editMode) return;
@@ -1808,7 +1827,7 @@ if (false) {(function () {
             // Determine what order the cards should be in
             let el = (card) => this.$refs[card.id][0].$el;
             newLayout.cards.sort((a, b) =>
-                Object(__WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__["a" /* sortOrder */])(el(a), el(b), event, id)
+                Object(__WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, id, el)
             );
 
             // Update the layoutOrder property for each card
@@ -1913,7 +1932,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?21df1742"],"names":[],"mappings":";AAkKA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    v-bind:style=\"{ order: layoutOrder }\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\" :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :id=\"i\"\r\n        :key=\"i\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></single-value>\r\n\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        :data=\"data\"\r\n        :x-field=\"widget.fieldNames.x\"\r\n        :y-field=\"widget.fieldNames.y\"\r\n        :key=\"widget.id\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"i\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nconst singleValue = {\r\n    extends: WidgetBase,\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div class=\"single-value\"\r\n            :draggable=\"$store.state.editMode\"\r\n            @dragstart=\"dragstartHandler\"\r\n            >\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the cardj\r\n        addWidget: function() {\r\n\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            console.log('dragging card');\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n            console.log('dragWidget');\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n            console.log('dragoverCard');\r\n        },\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    transition: all 1s;\n}\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?19c094c1"],"names":[],"mappings":";AA6KA;IACA,cAAA;CACA;AACA;IACA,mBAAA;CACA;AAEA;IACA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;IACA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    v-bind:style=\"{ order: layoutOrder }\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\" :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"this.$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <single-value\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></single-value>\r\n\r\n\r\n    <line-graph\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <data-table\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nconst singleValue = {\r\n    extends: WidgetBase,\r\n    props: ['value', 'title', 'fieldName'],\r\n    template: `\r\n        <div class=\"single-value\"\r\n            :draggable=\"$store.state.editMode\"\r\n            @dragstart=\"dragstartHandler\"\r\n            >\r\n            <h3>{{ title }}</h3>\r\n            <p class=\"metric\"\r\n              :class=\"formatted.styleClass\">\r\n                {{ formatted.value }}\r\n            </p>\r\n        </div>\r\n    `,\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        }\r\n    }\r\n};\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],\r\n    components: {\r\n        'single-value': singleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            console.log('dragging card');\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n            console.log('dragWidget');\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n            console.log('dragoverCard');\r\n        },\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card > * {\r\n    margin: 2em 0;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n}\r\n\r\n.card button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1923,10 +1942,13 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line_graph_vue__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__widget_base_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drag_n_drop_sort_js__ = __webpack_require__(33);
+//
+//
 //
 //
 //
@@ -1986,7 +2008,7 @@ exports.push([module.i, "\n.card > * {\r\n    margin: 2em 0;\n}\n.card {\r\n    
 
 
 const singleValue = {
-    extends: __WEBPACK_IMPORTED_MODULE_3__widget_base_vue__["a" /* default */],
+    extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
     props: ['value', 'title', 'fieldName'],
     template: `
         <div class="single-value"
@@ -2005,7 +2027,7 @@ const singleValue = {
             return this.$store.getters.field(this.fieldName);
         },
         formatted: function() {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
+            return Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
         }
     }
 };
@@ -2014,8 +2036,8 @@ const singleValue = {
     props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],
     components: {
         'single-value': singleValue,
-        'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */],
-        'line-graph': __WEBPACK_IMPORTED_MODULE_1__line_graph_vue__["a" /* default */]
+        'data-table': __WEBPACK_IMPORTED_MODULE_1__data_table_vue__["a" /* default */],
+        'line-graph': __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__["a" /* default */]
     },
     data: function() {
         return {
@@ -2024,7 +2046,7 @@ const singleValue = {
         }
     },
     methods: {
-        // add a new widget to the cardj
+        // add a new widget to the card
         addWidget: function() {
 
         },
@@ -2081,7 +2103,16 @@ const singleValue = {
             // If this widget is being dropped in a different card, ignore
             if (dragData.cardId != this.id) return;
 
+            // Otherwise sort widgets and update the dashboard
+            let newWidgets = [];
+            Object.assign(newWidgets, this.widgets);
 
+            let el = (widget) => this.$refs[widget.id][0].$el;
+            newWidgets.sort((a, b) =>
+                Object(__WEBPACK_IMPORTED_MODULE_4__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, dragData.widgetId, el)
+            );
+
+            this.$emit('update-widgets', newWidgets, this.id);
         }
     }
 });
@@ -2143,8 +2174,9 @@ var render = function() {
           "single-value",
           _vm._b(
             {
-              key: i,
-              attrs: { id: i },
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
               on: { "dragstart-widget": _vm.dragstartWidgetHandler }
             },
             "single-value",
@@ -2155,27 +2187,43 @@ var render = function() {
       }),
       _vm._v(" "),
       _vm._l(_vm.widgetsOfType("line-graph"), function(widget, i) {
-        return _c("line-graph", {
-          key: widget.id,
-          attrs: {
-            data: _vm.data,
-            "x-field": widget.fieldNames.x,
-            "y-field": widget.fieldNames.y
-          },
-          on: { "dragstart-widget": _vm.dragstartWidgetHandler }
-        })
+        return _c(
+          "line-graph",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              attrs: { data: _vm.data },
+              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
+            },
+            "line-graph",
+            widget,
+            false
+          )
+        )
       }),
       _vm._v(" "),
       _vm._l(_vm.widgetsOfType("data-table"), function(widget, i) {
-        return _c("data-table", {
-          key: i,
-          attrs: { data: _vm.data, highlightedDate: _vm.highlightedDate },
-          on: {
-            hoverDate: _vm.hoverDate,
-            unhoverDate: _vm.unhoverDate,
-            "dragstart-widget": _vm.dragstartWidgetHandler
-          }
-        })
+        return _c(
+          "data-table",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              attrs: { data: _vm.data, highlightedDate: _vm.highlightedDate },
+              on: {
+                hoverDate: _vm.hoverDate,
+                unhoverDate: _vm.unhoverDate,
+                "dragstart-widget": _vm.dragstartWidgetHandler
+              }
+            },
+            "data-table",
+            widget,
+            false
+          )
+        )
       })
     ],
     2
@@ -2422,71 +2470,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "dashboard scorecard-wrapper",
-      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
-    },
-    [
-      _vm._l(_vm.layout.cards, function(card, i) {
-        return _c(
-          "card",
-          _vm._b(
-            {
-              key: i,
-              ref: card.id,
-              refInFor: true,
-              on: { "edit-card": _vm.editCard }
-            },
-            "card",
-            card,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm.editingCard
-        ? _c(
-            "card-editor",
-            _vm._b(
-              {
-                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
-              },
-              "card-editor",
-              _vm.editedCard,
-              false
-            )
-          )
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
-  }
-}
-
-/***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = sortOrder;
-let left = (el) => el.offsetLeft;
-let top  = (el) => el.offsetTop;
-let bottom = (el) => top(el) + el.clientHeight;
 
 /**
  * Compares element positions and determine which one should be placed first.
@@ -2497,13 +2481,17 @@ let bottom = (el) => top(el) + el.clientHeight;
  * For the element that was dropped, the mouse's X and Y values are used instead
  * of the top and left.
  *
- * @param  {element} a card DOM element
- * @param  {element} b other card element for comparison
+ * @param  {element} a      card DOM element
+ * @param  {element} b      other card element for comparison
  * @param  {String}  dropId ID of element that was dropped
- * @return {Integer}   Order for sort function: -1 if a first, +1 if b first, 0
- *                      if tied.
+ * @return {Integer}        Order for sort function: -1 if a first,
+ *                          +1 if b first, 0 if tied.
  */
-function sortOrder(a, b, event, dropId) {
+function sortOrder(a, b, event, dropId, el) {
+    let left = (x) => el(x).offsetLeft;
+    let top  = (x) => el(x).offsetTop;
+    let bottom = (x) => top(x) + el(x).clientHeight;
+
     // If neither element is the dropped card, compare positions
     if (a.id != dropId && b.id != dropId) {
         if (top(a) < top(b)) {
@@ -2540,6 +2528,70 @@ function sortOrder(a, b, event, dropId) {
     }
 };
 
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "dashboard scorecard-wrapper",
+      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
+    },
+    [
+      _vm._l(_vm.layout.cards, function(card, i) {
+        return _c(
+          "card",
+          _vm._b(
+            {
+              key: i,
+              ref: card.id,
+              refInFor: true,
+              on: {
+                "edit-card": _vm.editCard,
+                "update-widgets": _vm.updateWidgets
+              }
+            },
+            "card",
+            card,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm.editingCard
+        ? _c(
+            "card-editor",
+            _vm._b(
+              {
+                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
+              },
+              "card-editor",
+              _vm.editedCard,
+              false
+            )
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
+  }
+}
 
 /***/ })
 /******/ ]);

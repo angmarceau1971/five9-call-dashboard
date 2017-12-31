@@ -16,7 +16,7 @@ Accepts data prop with structure:
     <div ref="graph-wrap" class="graph-wrap">
         <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
                 :width="width" :height="height">
-            <text class="title" :x="55" :y="10">{{ yField }}</text>
+            <text class="title" :x="55" :y="10">{{ fields.y }}</text>
             <g class="axis" ref="yaxis" :style="{transform: `translate(20px,${margin.top}px)`}"></g>
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
                 <path class="area" :d="paths.area" />
@@ -43,8 +43,9 @@ import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
 
 const props = {
-    xField: {default: 'x'},
-    yField: {default: 'y'},
+    fields: {
+        type: Object
+    },
     data: {
         type: Array,
         default: () => []
@@ -98,7 +99,7 @@ export default {
             return { width, height };
         },
         ceil() {
-            return d3.max(this.data, (d) => d[this.yField]);
+            return d3.max(this.data, (d) => d[this.fields.y]);
         }
     },
 
@@ -147,16 +148,16 @@ export default {
             this.initialize();
             const parseTime = d3.timeParse('%Y-%m-%d');
             for (let d of this.data) {
-                d[this.yField] *= 1;
-                if (isNaN(d[this.yField])) d[this.yField] = 0;
+                d[this.fields.y] *= 1;
+                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
             }
 
-            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.xField])));
+            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.fields.x])));
             this.scaled.y.domain([0, this.ceil]);
             this.points = [];
 
             // Draw goal line
-            let goal = this.$store.getters.field(this.yField).goal;
+            let goal = this.$store.getters.field(this.fields.y).goal;
             let goalPoints = this.scaled.x.domain().map((xVal) =>
                 ({
                     x: this.scaled.x(xVal),
@@ -168,8 +169,8 @@ export default {
             // Create graph points
             for (let d of this.data) {
                 this.points.push({
-                    x: this.scaled.x(parseTime(d[this.xField])),
-                    y: this.scaled.y(d[this.yField]),
+                    x: this.scaled.x(parseTime(d[this.fields.x])),
+                    y: this.scaled.y(d[this.fields.y]),
                     max: this.height,
                 });
             }

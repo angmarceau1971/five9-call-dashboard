@@ -7,6 +7,7 @@
         :key="i"
         :ref="card.id"
         @edit-card="editCard"
+        @update-widgets="updateWidgets"
     ></card>
 
     <card-editor
@@ -57,6 +58,16 @@ export default {
             this.$emit('delete-card', cardId);
         },
 
+        //
+        updateWidgets: function(newWidgets, cardId) {
+            console.log(newWidgets);
+            let newCard = {};
+            Object.assign(newCard, this.layout.cards[cardId]);
+            newCard.widgets = newWidgets;
+            console.log(newCard);
+            this.$emit('update-card', cardId, newCard);
+        },
+
         // Drag and drop to move cards
         dragoverHandler: function(event) {
             if (!this.$store.state.editMode) return;
@@ -73,7 +84,7 @@ export default {
             // Determine what order the cards should be in
             let el = (card) => this.$refs[card.id][0].$el;
             newLayout.cards.sort((a, b) =>
-                sortOrder(el(a), el(b), event, id)
+                sortOrder(a, b, event, id, el)
             );
 
             // Update the layoutOrder property for each card

@@ -24,20 +24,23 @@ const closeRate = {
 closeRate.data = closeRateData;
 closeRate.widgets = [
     {
+        'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'Close Rate',
         'value': 0.5561
     },
     {
+        'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'Close Rate',
         'value': 0.5047
     },
     {
+        'id': 'widget:2',
         'component': 'line-graph',
-        'fieldNames': {
+        'fields': {
             x: 'Date',
             y: 'Close Rate'
         }
@@ -52,20 +55,23 @@ const dtv = {
 dtv.data = dtvData;
 dtv.widgets = [
     {
+        'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'DIRECTV Sales',
         'value': 1
     },
     {
+        'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'DIRECTV Sales',
         'value': 23
     },
     {
+        'id': 'widget:2',
         'component': 'line-graph',
-        'fieldNames': {
+        'fields': {
             x: 'Date',
             y: 'DIRECTV Sales'
         }
