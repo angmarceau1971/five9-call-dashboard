@@ -124,7 +124,6 @@ content is shown */
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 1em;
-
 }
 
 .scorecard-wrapper .metric-wrapper {

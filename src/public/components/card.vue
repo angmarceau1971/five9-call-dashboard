@@ -1,7 +1,7 @@
 <template>
 <div class="card metric-wrapper stats-box"
     :id="id"
-    v-bind:style="{ order: layoutOrder }"
+    :style="{ order: layoutOrder }"
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
     <!-- Card is draggable by the title -->
@@ -23,6 +23,8 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
+        :style="{ order: widget.layoutOrder }"
+        class="widget"
         @dragstart-widget="dragstartWidgetHandler"
     ></single-value>
 
@@ -33,6 +35,8 @@
         :data="data"
         :key="widget.id"
         :ref="widget.id"
+        :style="{ order: widget.layoutOrder }"
+        class="widget"
         @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
@@ -43,6 +47,8 @@
         :highlightedDate="highlightedDate"
         :key="widget.id"
         :ref="widget.id"
+        :style="{ order: widget.layoutOrder }"
+        class="widget"
         @hoverDate="hoverDate"
         @unhoverDate="unhoverDate"
         @dragstart-widget="dragstartWidgetHandler"
@@ -162,6 +168,10 @@ export default {
             newWidgets.sort((a, b) =>
                 sortOrder(a, b, event, dragData.widgetId, el)
             );
+            // assign a layout order based on sort
+            newWidgets.forEach((widget, i) => {
+                widget.layoutOrder = i;
+            });
 
             this.$emit('update-widgets', newWidgets, this.id);
         }
@@ -171,8 +181,17 @@ export default {
 
 
 <style>
-.card > * {
-    margin: 2em 0;
+.card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 3em;
+}
+
+/* Since the card's grid determines margins, remove margins from the first
+ * child of each widget.
+*/
+.card > .widget > *:first-child {
+    margin-top: 0em;
 }
 .card {
     transition: all 1s;
