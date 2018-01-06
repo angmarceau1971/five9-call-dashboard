@@ -195,8 +195,10 @@ export default {
 }
 .card {
     transition: all 1s;
+    padding: 0.5em;
 }
 
+/* Buttons to edit card and/or add widgets */
 .card button {
     display: inline;
     text-decoration: none;
