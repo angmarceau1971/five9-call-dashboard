@@ -7,6 +7,7 @@
         :key="i"
         :ref="card.id"
         @edit-card="editCard"
+        @modify-widget="modifyWidget"
         @update-widgets="updateWidgets"
     ></card>
 
@@ -58,13 +59,28 @@ export default {
             this.$emit('delete-card', cardId);
         },
 
-        //
+        /**
+         * Modify a single widget.
+         * @param  {Object} newWidget object to replace old widget with
+         * @param  {String} widgetId  id of widget within card
+         * @param  {String} cardId    id of card containing widget
+         * @emits  modify-widget event to app Vue instance
+         */
+        modifyWidget: function(newWidget, widgetId, cardId) {
+            this.$emit('modify-widget', newWidget, widgetId, cardId);
+        },
+
+        /**
+         * Update all widgets. Used to change order of widgets after drag and
+         * drop actions.
+         * @param  {Array}  newWidgets all of the new widgets
+         * @param  {String} cardId     card that is being modified
+         * @emits  update-card Event to app's Vue instance
+         */
         updateWidgets: function(newWidgets, cardId) {
-            console.log(newWidgets);
             let newCard = {};
             Object.assign(newCard, this.layout.cards[cardId]);
             newCard.widgets = newWidgets;
-            console.log(newCard);
             this.$emit('update-card', cardId, newCard);
         },
 

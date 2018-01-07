@@ -19,7 +19,8 @@ let closeRateData = [{"Date": "2017-11-01","Close Rate": "0.59","Sales": "24","C
 const closeRate = {
     title: 'Close Rate',
     id: 'card:0',
-    layoutOrder: 0
+    layoutOrder: 0,
+    columns: 1
 };
 closeRate.data = closeRateData;
 closeRate.widgets = [
@@ -50,7 +51,8 @@ closeRate.widgets = [
 const dtv = {
     title: 'DIRECTV Sales',
     id: 'card:1',
-    layoutOrder: 1
+    layoutOrder: 1,
+    columns: 2
 };
 dtv.data = dtvData;
 dtv.widgets = [
@@ -182,6 +184,7 @@ const store = new Vuex.Store({
 const vm = new Vue({
     el: '#app',
     store,
+
     data: {
         layout: layout
     },
@@ -239,10 +242,18 @@ const vm = new Vue({
             Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
         },
         deleteCard: function(cardId) {
-            console.log('delete')
             let cardIndex =
                 this.layout.cards.findIndex((card) => card.id == cardId);
             Vue.delete(this.layout.cards, cardIndex);
+        },
+        modifyWidget: function(newWidget, widgetId, cardId) {
+            let card = this.layout.cards.find((c) => c.id == cardId);
+            let oldWidgetIndex = card.widgets.findIndex((w) => w.id == widgetId);
+            let oldWidget = card.widgets[oldWidgetIndex];
+            
+            // see updateCard function for explanation
+            let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
+            Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
         }
     }
 });

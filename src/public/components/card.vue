@@ -1,7 +1,7 @@
 <template>
 <div class="card metric-wrapper stats-box"
     :id="id"
-    :style="{ order: layoutOrder }"
+    :style="gridPositioning"
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
     <!-- Card is draggable by the title -->
@@ -26,6 +26,7 @@
         :style="{ order: widget.layoutOrder }"
         class="widget"
         @dragstart-widget="dragstartWidgetHandler"
+        @modify-widget="modifyWidget"
     ></single-value>
 
 
@@ -61,51 +62,40 @@
 import WidgetBase from './widget-base.vue';
 import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
+import SingleValue from './single-value.vue';
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
 
-const singleValue = {
-    extends: WidgetBase,
-    props: ['value', 'title', 'fieldName'],
-    template: `
-        <div class="single-value"
-            :draggable="$store.state.editMode"
-            @dragstart="dragstartHandler"
-            >
-            <h3>{{ title }}</h3>
-            <p class="metric"
-              :class="formatted.styleClass">
-                {{ formatted.value }}
-            </p>
-        </div>
-    `,
-    computed: {
-        field: function() {
-            return this.$store.getters.field(this.fieldName);
-        },
-        formatted: function() {
-            return formatValue(this.value, this.field);
-        }
-    }
-};
-
 export default {
-    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id'],
+    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],
     components: {
-        'single-value': singleValue,
+        'single-value': SingleValue,
         'data-table': DataTable,
         'line-graph': LineGraph
     },
     data: function() {
         return {
             highlightedDate: null,
-            draggingWidget: true
+            draggingWidget: true,
+            gridPositioning: {
+                'order': this.layoutOrder,
+                'grid-column': `span ${this.columns}`
+            }
         }
     },
     methods: {
         // add a new widget to the card
         addWidget: function() {
 
+        },
+        /**
+         * Update a widget in this card
+         * @param  {Object} newWidget object to replace with
+         * @param  {String} id        for widget being modified
+         * @return
+         */
+        modifyWidget: function(newWidget, id) {
+            this.$emit('modify-widget', newWidget, id, this.id);
         },
         // Return widgets of a given type (data-table, line-graph, etc.)
         widgetsOfType: function(type) {
@@ -121,7 +111,6 @@ export default {
         // Card drag and drop handling
         dragstartHandler: function(event) {
             if (!this.$store.state.editMode) return;
-            console.log('dragging card');
             event.dataTransfer.setData('text/plain', this.id);
         },
         // Widget drag and drop handling
@@ -133,13 +122,16 @@ export default {
                 widgetId: widget.id
             };
             event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-            console.log('dragWidget');
         },
         dragWidgetHandler: function(event) {
             if (!this.$store.state.editMode) return;
             event.preventDefault();
-            console.log('dragoverCard');
         },
+        /**
+         * Handles dropping a widget on this card, sorting all the widgets.
+         * @param  {Event} event for window drop action
+         * @emits  update-widget event to Dashboard component
+         */
         dropWidgetHandler: function(event) {
             if (!this.$store.state.editMode) return;
             let dragData;
@@ -199,7 +191,8 @@ export default {
 }
 
 /* Buttons to edit card and/or add widgets */
-.card button {
+.card .edit-button,
+.card .add-button {
     display: inline;
     text-decoration: none;
     position: absolute;
@@ -213,7 +206,8 @@ export default {
     background-color: rgba(100,100,100,0.5);
     border-radius: 2em;
 }
-.card button:hover {
+.card .edit-button:hover,
+.card .add-button:hover {
     background-color: rgba(100,100,100,0.3);
 }
 .card .edit-button {
