@@ -66,7 +66,8 @@ export default {
             }
         },
         deleteObject: function() {
-
+            this.editingNow = false;
+            this.$emit('modify-widget', {});
         }
     }
 }

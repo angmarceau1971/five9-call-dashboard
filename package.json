@@ -17,6 +17,9 @@
     "url": "https://github.com/kokopelli314/five9-call-dashboard"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.36",
+    "@babel/preset-env": "^7.0.0-beta.36",
+    "babel-loader": "^8.0.0-beta.0",
     "body-parser": "^1.17.2",
     "compression": "^1.7.0",
     "cors": "^2.8.4",
@@ -27,6 +30,7 @@
     "moment-timezone": "^0.5.14",
     "mongoose": "^4.12.4",
     "pm2": "^2.7.2",
+    "ramda": "^0.25.0",
     "topojson": "^3.0.2",
     "xml": "^1.0.1",
     "xml2js": "^0.4.19"

@@ -2,6 +2,8 @@ import LineGraph from '../components/line-graph.vue';
 import DataTable from '../components/data-table.vue';
 import Dashboard from '../components/dashboard.vue';
 import { formatValue } from './scorecard-format.js';
+const isEmpty = require('ramda/src/isEmpty');
+
 
 
 let ahtData = [{"Date": "2017-11-01","AHT": "12:25","ACW": "12:35","Hold": "12:31","Calls": "62"}, {"Date": "2017-11-02","AHT": "12:51","ACW": "12:23","Hold": "12:35","Calls": "68"}, {"Date": "2017-11-03","AHT": "12:29","ACW": "12:25","Hold": "12:38","Calls": "42"}, {"Date": "2017-11-04","AHT": "12:42","ACW": "12:46","Hold": "12:31","Calls": "62"}, {"Date": "2017-11-05","AHT": "12:16","ACW": "12:23","Hold": "12:16","Calls": "53"}, {"Date": "2017-11-06","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-07","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-08","AHT": "12:24","ACW": "12:25","Hold": "12:20","Calls": "54"}, {"Date": "2017-11-09","AHT": "12:35","ACW": "12:24","Hold": "12:18","Calls": "28"}, {"Date": "2017-11-10","AHT": "12:22","ACW": "12:33","Hold": "12:30","Calls": "45"}, {"Date": "2017-11-11","AHT": "12:04","ACW": "12:40","Hold": "12:26","Calls": "30"}, {"Date": "2017-11-12","AHT": "12:59","ACW": "12:46","Hold": "12:46","Calls": "41"}, {"Date": "2017-11-13","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-14","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-15","AHT": "12:28","ACW": "12:25","Hold": "12:39","Calls": "41"}, {"Date": "2017-11-16","AHT": "12:34","ACW": "12:37","Hold": "12:29","Calls": "51"}, {"Date": "2017-11-17","AHT": "12:17","ACW": "12:23","Hold": "12:21","Calls": "41"}, {"Date": "2017-11-18","AHT": "12:44","ACW": "12:45","Hold": "12:24","Calls": "35"}, {"Date": "2017-11-19","AHT": "12:00","ACW": "12:25","Hold": "12:25","Calls": "25"}, {"Date": "2017-11-20","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-21","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-22","AHT": "12:30","ACW": "12:44","Hold": "12:20","Calls": "43"}, {"Date": "2017-11-23","AHT": "12:16","ACW": "12:26","Hold": "12:16","Calls": "51"}, {"Date": "2017-11-24","AHT": "12:21","ACW": "12:25","Hold": "12:45","Calls": "46"}, {"Date": "2017-11-25","AHT": "12:20","ACW": "12:47","Hold": "12:37","Calls": "43"}, {"Date": "2017-11-26","AHT": "12:37","ACW": "12:35","Hold": "12:18","Calls": "41"}, {"Date": "2017-11-27","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-28","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-29","AHT": "12:38","ACW": "12:35","Hold": "12:29","Calls": "42"}, {"Date": "2017-11-30","AHT": "12:56","ACW": "12:28","Hold": "12:22","Calls": "55"}]
@@ -246,14 +248,26 @@ const vm = new Vue({
                 this.layout.cards.findIndex((card) => card.id == cardId);
             Vue.delete(this.layout.cards, cardIndex);
         },
+        /**
+         * Update a widget. If newWidget is an empty object ({}), delete the
+         * old widget.
+         * @param  {Object} newWidget object to replace old widget with
+         * @param  {String} widgetId
+         * @param  {String} cardId    ID for container card
+         * @return
+         */
         modifyWidget: function(newWidget, widgetId, cardId) {
             let card = this.layout.cards.find((c) => c.id == cardId);
             let oldWidgetIndex = card.widgets.findIndex((w) => w.id == widgetId);
             let oldWidget = card.widgets[oldWidgetIndex];
-            
-            // see updateCard function for explanation
-            let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
-            Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
+
+            if (isEmpty(newWidget)) {
+                Vue.delete(card.widgets, oldWidgetIndex);
+            } else {
+                // see updateCard function for explanation
+                let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
+                Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
+            }
         }
     }
 });
