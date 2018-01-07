@@ -113,8 +113,8 @@ export default {
     },
 
     watch: {
-        width: function() { this.update(); },
-        data: function() { this.update(); }
+        width: function(newWidth) { this.update(); },
+        data: function(newData) { this.update(); }
     },
 
     methods: {
@@ -130,7 +130,8 @@ export default {
         },
 
         onResize() {
-            this.width = this.$refs['graph-wrap'].offsetWidth;
+            // Set width equal to card -- grandparent element
+            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
             this.height = this.$refs['graph-wrap'].offsetHeight;
         },
         createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
@@ -214,11 +215,15 @@ export default {
 
 
 <style scoped>
+    .line-graph {
+        max-width: 100%;
+    }
     .graph-wrap:hover {
         cursor: pointer;
     }
     .graph-wrap {
         height: 150px;
+        width: 100%;
     }
     .graph-wrap text {
         text-anchor: middle;
