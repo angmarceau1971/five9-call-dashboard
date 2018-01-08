@@ -1,5 +1,5 @@
 /**
- * Editor for cards and widgets.
+ * Editor for widgets.
  */
 <template>
     <div class="editor-wrapper">

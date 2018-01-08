@@ -1,3 +1,11 @@
+/**
+ * Dashboard component. Contains a list of Card components.
+ *
+ * Listens for events to modify cards and widgets, and bubbles up to app instance.
+ *
+ * Handles dragging and dropping of child cards to move them around.
+ *
+ */
 <template>
 <div class="dashboard scorecard-wrapper"
     @dragover="dragoverHandler" @drop="dropHandler">

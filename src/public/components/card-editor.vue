@@ -1,3 +1,6 @@
+/**
+ * Form to edit and delete Cards. Emits events to parent Dashboard component.
+ */
 <template>
 <div class="modal">
     <h1>{{ newCard.title }}</h1>

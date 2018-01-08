@@ -1,3 +1,6 @@
+/**
+ * Widget that displays a single value with a (optional) title.
+ */
 <template>
 <div class="single-value"
     :draggable="$store.state.editMode"

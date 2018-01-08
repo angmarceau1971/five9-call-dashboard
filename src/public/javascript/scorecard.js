@@ -164,6 +164,11 @@ const fields = [
 ];
 
 
+/**
+ * Vuex is used to see if app is in edit mode (editMode Boolean), and store
+ * field (meta) data.
+ * @type {Vuex}
+ */
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {

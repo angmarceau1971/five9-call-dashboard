@@ -1,4 +1,6 @@
-
+/**
+ * Base Component that should be extended by all widgets.
+ */
 <script>
 import Editor from './editor.vue';
 
@@ -12,5 +14,5 @@ export default {
             this.$emit('dragstart-widget', event, this.$props);
         }
     }
-}
+};
 </script>

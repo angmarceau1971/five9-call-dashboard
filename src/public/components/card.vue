@@ -1,3 +1,13 @@
+/**
+ * Container for widget components.
+ * Contains various functionality:
+ *  - Handles drag and drop events for each widget within it
+ *  - Can be dragged around other cards by dragging the title h2 (this is handled
+ *      in the Dashboard component, Card's parent)
+ *  - When widgets are modified, Card receives `modify-widget` events and bubbles
+ *      them up to the parent Dashboard
+ */
+
 <template>
 <div class="card metric-wrapper stats-box"
     :id="id"
@@ -5,43 +15,42 @@
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
     <!-- Card is draggable by the title -->
-    <h2 class="title descriptor" :draggable="$store.state.editMode"
+    <h2 class="title descriptor"
+        :draggable="$store.state.editMode"
         @dragstart="dragstartHandler">{{ title }}</h2>
 
-    <button v-if="this.$store.state.editMode"
+    <button v-if="$store.state.editMode"
         class="edit-button"
         @click="$emit('edit-card', id)"
     >&#9776;</button>
-    <button v-if="this.$store.state.editMode"
+    <button v-if="$store.state.editMode"
         class="add-button"
         @click="addWidget"
     >+</button>
 
 
-    <single-value
+    <!-- Widget components -->
+    <single-value class="widget"
         v-for="(widget, i) in widgetsOfType('single-value')"
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
         :style="{ order: widget.layoutOrder }"
-        class="widget"
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
     ></single-value>
 
-
-    <line-graph
+    <line-graph class="widget"
         v-for="(widget, i) in widgetsOfType('line-graph')"
         v-bind="widget"
         :data="data"
         :key="widget.id"
         :ref="widget.id"
         :style="{ order: widget.layoutOrder }"
-        class="widget"
         @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
-    <data-table
+    <data-table class="widget"
         v-for="(widget, i) in widgetsOfType('data-table')"
         v-bind="widget"
         :data="data"
@@ -49,7 +58,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="{ order: widget.layoutOrder }"
-        class="widget"
         @hoverDate="hoverDate"
         @unhoverDate="unhoverDate"
         @dragstart-widget="dragstartWidgetHandler"
@@ -77,8 +85,10 @@ export default {
         return {
             highlightedDate: null,
             draggingWidget: true,
+            // CSS Grid positioning
             gridPositioning: {
                 'order': this.layoutOrder,
+                // number of columns wide
                 'grid-column': `span ${this.columns}`
             }
         }
@@ -101,6 +111,7 @@ export default {
         widgetsOfType: function(type) {
             return this.widgets.filter((widget) => widget['component'] == type);
         },
+
         // React to user hovering over a day
         hoverDate: function(date) {
             this.highlightedDate = date;
@@ -108,11 +119,13 @@ export default {
         unhoverDate: function(date) {
             this.highlightedDate = null;
         },
+
         // Card drag and drop handling
         dragstartHandler: function(event) {
             if (!this.$store.state.editMode) return;
             event.dataTransfer.setData('text/plain', this.id);
         },
+
         // Widget drag and drop handling
         dragstartWidgetHandler: function(event, widget) {
             if (!this.$store.state.editMode) return;
@@ -127,6 +140,7 @@ export default {
             if (!this.$store.state.editMode) return;
             event.preventDefault();
         },
+
         /**
          * Handles dropping a widget on this card, sorting all the widgets.
          * @param  {Event} event for window drop action

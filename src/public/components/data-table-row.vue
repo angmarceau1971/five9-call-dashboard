@@ -1,3 +1,6 @@
+/**
+ * Component to display a single table row of data. Child of DataTable widgets.
+ */
 <template>
     <tr v-bind:class="{ highlight: isHighlighted }">
         <td
