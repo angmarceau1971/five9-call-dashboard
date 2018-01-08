@@ -1,7 +1,17 @@
 # Five9 Call Dashboard
-Real-time call dashboard using Five9's SOAP APIs, allowing you to groups skills and show current wait times, service levels, calls in queue, and agents staffed to handle the calls. Also included is a maps page showing calls by ZIP3 code using [D3](https://d3js.org/ "D3") to create a [choropleth](https://bl.ocks.org/mbostock/4060606 "example of a choropleth").
+Real-time dashboards using Five9 APIs.
+
+##### Queues :palm_tree:
+* Shows current max wait times, service levels, number of calls waiting, and agents staffed for __groups of skills__. 
+
+##### Maps :earth_americas:
+* Displays calls received by ZIP3 code. Option to show calls as percentage of customer base from Looker. 
+
+##### Scorecard :chart_with_upwards_trend:
+* In-progress, Vue-based dashboard to display agent and team metrics.
 
 This uses Express as an intermediate server to get Five9 data and store it in MongoDB, then pass it along to the client. VanillaJS and jQuery are used on the client side for updating the view.
+
 
 ### Install
 Clone the project, go to the new directory and install dependencies:
@@ -26,6 +36,17 @@ module.exports.FIVE9_PASSWORD = 'admin_password';
 
 // Insert MongoDB URI here
 module.exports.MONGODB_URI = 'mongodb://localhost/five9-report-data-collection';
+
+// Only include the following if using Looker for customer base information
+// Looker API constants
+module.exports.LOOKER_API_PATH = '/api/3.0/';
+module.exports.LOOKER_API_HOSTNAME = 'yourdomain.looker.com';
+module.exports.LOOKER_CLIENT_ID = 'zzzz';
+module.exports.LOOKER_CLIENT_SECRET = 'zzzz';
+module.exports.LOOKER_LOOK_ID = '1234';
+// Looker Look fields
+module.exports.LOOKER_FIELD_ZIP_CODE = 'zip.field.name';
+module.exports.LOOKER_FIELD_CUSTOMER_COUNT = 'customer.count.field.name';
 ```
 
 Fire up the server:
@@ -34,11 +55,22 @@ Fire up the server:
 npm start
 ```
 
-Then travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser.
+Then travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser. Happy queue-watching!
 
-Type in your Supervisor-level Five9 credentials, then add a widget and (optionally) put in comma-separated skill names.
+The agent scorecard dashboards use Vue, so need to be transpiled with:
 
-Happy queue-watching!
+```
+webpack --watch
+```
+
+
+### Testing
+Mocha and Chai are used for testing. Start the server and run `mocha`.
+
+
+### Credentials required
+As mentioned above, administrator-level Five9 credentials are required to pull reports. Supervisor-level credentials are needed to retrieve real-time queue information. This will effectively "lock up" one instance of each credentials type.
+
 
 ### Code structure
 All client-side files (HTML, JS, and CSS) are in the `src/public` directory.
