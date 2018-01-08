@@ -252,7 +252,7 @@ app.post('/api/reboot-server', async (req, res) => {
     try {
         log.message(`--------LOGGER: reboot requested by client at ${moment()}.`);
         log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
-        // Authenticate user. TODO: allow admin level only.
+        // Authenticate user
         const hasPermission = await verify.hasPermission(req.body['authorization']);
         if (!hasPermission) { // exit if no permission
             res.set('Content-Type', 'application/text');
@@ -276,7 +276,7 @@ app.post('/api/reload-data', async (req, res) => {
 
         log.message(`---- Reports database reload requested by client for ${JSON.stringify(times)} ----`);
 
-        // Authenticate user. TODO: allow admin level only.
+        // Authenticate user
         const hasPermission = await verify.hasPermission(req.body['authorization']);
         if (!hasPermission) { // exit if no permission
             res.set('Content-Type', 'application/text');
