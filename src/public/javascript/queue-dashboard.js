@@ -94,7 +94,8 @@ function refreshView(data, serviceLevelData) {
             agentsOnCall = 0,
             agentsReady = 0,
             serviceLevel = 0,
-            callsOffered = 0;
+            callsOffered = 0,
+            abandons = 0;
 
         for (let i=0; i < data.length; i++) {
             let queue = data[i];
@@ -108,16 +109,18 @@ function refreshView(data, serviceLevelData) {
                 agentsOnCall = Math.max(agentsOnCall, queue['AgentsOnCall']);
                 agentsReady = Math.max(agentsReady, queue['AgentsReadyForCalls']);
 
-                // SL metrics
+                // Calculate SL and abandon rate
                 let metrics = serviceLevelData.reduce((totals, current) => {
                     if (current.skill == queue['SkillName']) {
                         totals.serviceLevel += current.serviceLevel;
                         totals.calls += current.calls;
+                        totals.abandons += current.abandons;
                     }
                     return totals;
-                }, { serviceLevel: 0, calls: 0 });
+                }, { serviceLevel: 0, calls: 0, abandons: 0 });
                 serviceLevel += metrics.serviceLevel;
                 callsOffered += metrics.calls;
+                abandons += metrics.abandons;
 
                 // Add to list of skills in queue
                 if (queue['CallsInQueue'] > 0) {
@@ -129,6 +132,7 @@ function refreshView(data, serviceLevelData) {
                 }
             }
         }
+
         // Format wait time from seconds to MM:SS or HH:MM:SS
         let waitString = formatWaitTime(maxWait);
 
@@ -136,7 +140,11 @@ function refreshView(data, serviceLevelData) {
         let SLpercent = callsOffered == 0
             ? 'N/A'
             : Math.round(100 * serviceLevel / callsOffered) + '%';
+        let abandonRate = callsOffered == 0
+            ? 'N/A'
+            : Math.round(100 * abandons / callsOffered) + '%';
         $(gizmoElement).find('.metric.service-level').text(SLpercent);
+        $(gizmoElement).find('.metric.abandon-rate').text(abandonRate);
         $(gizmoElement).find('.calls-in-sl').text(serviceLevel);
         $(gizmoElement).find('.calls-out-of-sl').text(callsOffered - serviceLevel);
 

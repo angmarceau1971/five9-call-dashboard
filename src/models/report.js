@@ -24,6 +24,7 @@ const dataFeedSchema = mongoose.Schema({
     date: Date,
     calls: { type: Number, default: 0 },
     serviceLevel: { type: Number, default: 0 },
+    abandons: { type: Number, default: 0 }
 });
 
 
@@ -35,13 +36,14 @@ function getHeadersFromCsv(csvHeaderLine) {
     const oldHeaders = csvHeaderLine.split(',');
     const newHeaders = [];
     const lookup = {
-        'SKILL':    'skill',
-        'DATE':     'date',
+        'SKILL':                'skill',
+        'DATE':                 'date',
         'Global.strSugarZipCode':   'zipCode',
-        'CALLS':    'calls',
-        'SERVICE LEVEL count':      'serviceLevel',
-        'SERVICE LEVEL':            'serviceLevel'
-    }
+        'CALLS':                'calls',
+        'SERVICE LEVEL count':  'serviceLevel',
+        'SERVICE LEVEL':        'serviceLevel',
+        'ABANDONED':            'abandons'
+    };
     for (let i=0; i < oldHeaders.length; i++) {
         let header = oldHeaders[i];
         // Assign the lookup value if this header is found; otherwise, leave it as is
@@ -104,13 +106,15 @@ async function getServiceLevelData(params) {
             { $group: {
                 _id: '$skill',
                 calls: { $sum: '$calls' },
-                serviceLevel: { $sum: '$serviceLevel' }
+                serviceLevel: { $sum: '$serviceLevel' },
+                abandons: { $sum: '$abandons' }
             } },
             { $project: { // name key as `skill` instead of `_id`
                 _id: 0,
                 skill: '$_id',
                 calls: '$calls',
-                serviceLevel: '$serviceLevel'
+                serviceLevel: '$serviceLevel',
+                abandons: '$abandons'
             } }
         // Respond with the data
         ], (err, data) => {
@@ -206,6 +210,7 @@ async function refreshDatabase(time, reportModel, reportName) {
                 // cast calls and SL as numbers
                 res['calls'] *= 1;
                 res['serviceLevel'] *= 1;
+                res['abandons'] *= 1;
 
                 // Leave only left 5 digits of zip code
                 res['zipCode'] = res['zipCode'].substr(0, 5);
@@ -213,7 +218,10 @@ async function refreshDatabase(time, reportModel, reportName) {
                 // Set interval in Date format
                 let datestring = res.date + ' ' + res['HALF HOUR'];
                 delete res['HALF HOUR'];
-                res.date = moment.tz(moment(datestring, 'YYYY/MM/DD HH:mm'), 'America/Los_Angeles').toDate();
+                res.date = moment.tz(
+                    moment(datestring, 'YYYY/MM/DD HH:mm'),
+                    'America/Los_Angeles'
+                ).toDate();
 
                 data.push(res);
                 return resolve(data);
