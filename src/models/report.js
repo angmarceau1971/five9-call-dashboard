@@ -40,7 +40,9 @@ function getHeadersFromCsv(csvHeaderLine) {
         'CALLS':                'calls',
         'SERVICE LEVEL count':  'serviceLevel',
         'SERVICE LEVEL':        'serviceLevel',
-        'ABANDONED':            'abandons'
+        'ABANDONED':            'abandons',
+        'AGENT':                'agentUsername',
+        'AGENT NAME':           'agentName'
     };
     const oldHeaders = csvHeaderLine.split(',');
     // Return updated header from lookup table; if not found, just return the
