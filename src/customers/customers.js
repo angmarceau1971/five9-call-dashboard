@@ -31,7 +31,7 @@ const Customers = mongoose.model('Customers', customersSchema);
  * @param  {Number} interval in ms to re-run after
  * @return {Promise} Resolves once the Customers table is updated.
  */
-async function refreshData(interval) {
+async function scheduleUpdate(interval) {
     log.message('Updating Customers database');
     // Authenticate, get data from Looker and format for easy consumption
     let auth = await getAuthToken(secure.LOOKER_CLIENT_ID, secure.LOOKER_CLIENT_SECRET);
@@ -44,7 +44,7 @@ async function refreshData(interval) {
     return new Promise ((resolve, reject) => {
         Customers.collection.insert(data, (err, docs) => {
             // Repeat function after interval
-            setTimeout(() => refreshData(interval), interval);
+            setTimeout(() => scheduleUpdate(interval), interval);
             if (err) {
                 log.error(`Error inserting data in Customers model: ${err}`);
                 reject(err);
@@ -81,8 +81,9 @@ function format(data) {
  * @return {String}               Access token for future API requests
  */
 async function getAuthToken(client_id, client_secret) {
-    let res = await lookerRequest(`client_id=${client_id}&client_secret=${client_secret}`,
-                                 'login', '');
+    let res = await lookerRequest(
+        `client_id=${client_id}&client_secret=${client_secret}`, 'login', ''
+    );
     return JSON.parse(res.body)['access_token'];
 }
 
@@ -107,8 +108,10 @@ async function getJsonData(auth) {
  * @param  {String} auth authentication token received from Looker
  * @param  {String} [method='POST']
  * @param  {String} [contentType='application/x-www-form-urlencoded']
- * @return {Promise} Resolves to object: { body: response body,
- *                   statusCode: response status code}
+ * @return {Promise} Resolves to object: {
+ *                      body: response body,
+ *                      statusCode: response status code
+ *                   }
  */
 function lookerRequest(message, endpoint, auth, method='POST',
                        contentType='application/x-www-form-urlencoded') {
@@ -169,5 +172,5 @@ function lookerRequest(message, endpoint, auth, method='POST',
 
 
 module.exports.getData = getData;
-module.exports.refreshData = refreshData;
+module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.Customers = Customers;

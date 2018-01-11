@@ -338,7 +338,7 @@ const server = app.listen(port, async () => {
         });
 
         // Update customers database from Looker every 8 hours
-        customers.refreshData(8 * 3600 * 1000);
+        customers.scheduleUpdate(8 * 3600 * 1000);
 
         // Update queue stats every 15 seconds
         // Five9 stats API has a limit of 500 requests per hour
@@ -350,7 +350,7 @@ const server = app.listen(port, async () => {
         users.scheduleUpdate(12 * 60 * 60 * 1000);
 
     } catch (err) {
-        log.error(`Error occurred on server:` + err);
+        log.error(`Error occurred on server: ` + err);
     }
 });
 

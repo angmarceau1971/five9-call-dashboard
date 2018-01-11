@@ -33,8 +33,6 @@ const DataFeed = mongoose.model('DataFeed', dataFeedSchema);
 
 // Returns array with nice field names, from Five9 CSV report header string.
 function getHeadersFromCsv(csvHeaderLine) {
-    const oldHeaders = csvHeaderLine.split(',');
-    const newHeaders = [];
     const lookup = {
         'SKILL':                'skill',
         'DATE':                 'date',
@@ -44,16 +42,15 @@ function getHeadersFromCsv(csvHeaderLine) {
         'SERVICE LEVEL':        'serviceLevel',
         'ABANDONED':            'abandons'
     };
-    for (let i=0; i < oldHeaders.length; i++) {
-        let header = oldHeaders[i];
-        // Assign the lookup value if this header is found; otherwise, leave it as is
+    const oldHeaders = csvHeaderLine.split(',');
+    // Return updated header from lookup table; if not found, just return the
+    // original header.
+    return oldHeaders.map((header) => {
         if (lookup.hasOwnProperty(header)) {
-            newHeaders.push(lookup[header]);
-        } else {
-            newHeaders.push(header);
+            return lookup[header];
         }
-    }
-    return newHeaders;
+        return header;
+    });
 }
 
 
