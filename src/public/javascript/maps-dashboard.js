@@ -16,8 +16,8 @@ $(document).ready(() => {
         if (timeout != null) {
             clearTimeout(timeout);
         }
-        // Update map every 3 minutes
-        startUpdatingMap(callMap, 3*60);
+        // Update map every 4 minutes
+        startUpdatingMap(callMap, 4*60);
     });
 
     // Listen for changes to the filter settings
