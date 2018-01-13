@@ -16,15 +16,32 @@ mongoose.Promise = global.Promise;
 //////////////////////////////////////////
 // MongoDB database definitions
 //////////////////////////////////////////
-// Schema for report data
+// Schema for call log report data
 const dataFeedSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     skill: String,
     zipCode: String,
-    date: Date,
+    date: Date, // Date and time
     calls: { type: Number, default: 0 },
     serviceLevel: { type: Number, default: 0 },
     abandons: { type: Number, default: 0 }
+});
+// Schema for ACD queue report data
+const acdFeedSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    agentUsername: String,
+    agentName: String,
+    agentGroup: String,
+    callId: Number,
+    skill: String,
+    date: Date, // Date and time
+    calls: { type: Number, default: 0 },
+    // duration-based fields are stored as seconds
+    handleTime: Number,
+    holdTime: Number,
+    conferenceTime: Number,
+    acwTime: Number,
+    speedOfAnswer: Number
 });
 
 
@@ -34,15 +51,20 @@ const DataFeed = mongoose.model('DataFeed', dataFeedSchema);
 // Returns array with nice field names, from Five9 CSV report header string.
 function getHeadersFromCsv(csvHeaderLine) {
     const lookup = {
-        'SKILL':                'skill',
-        'DATE':                 'date',
+        'SKILL':            'skill',
+        'DATE':             'date',
         'Global.strSugarZipCode':   'zipCode',
         'CALLS':                'calls',
         'SERVICE LEVEL count':  'serviceLevel',
-        'SERVICE LEVEL':        'serviceLevel',
-        'ABANDONED':            'abandons',
-        'AGENT':                'agentUsername',
-        'AGENT NAME':           'agentName'
+        'SERVICE LEVEL':    'serviceLevel',
+        'ABANDONED':        'abandons',
+        'AGENT':            'agentUsername',
+        'AGENT NAME':       'agentName',
+        'AGENT GROUP':      'agentGroup',
+        'HANDLE TIME':      'handleTime',
+        'CONFERENCE TIME':  'conferenceTime',
+        'AFTER CALL WORK TIME': 'acwTime',
+        'SPEED OF ANSWER':  'speedOfAnswer'
     };
     const oldHeaders = csvHeaderLine.split(',');
     // Return updated header from lookup table; if not found, just return the
