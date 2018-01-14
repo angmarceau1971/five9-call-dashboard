@@ -324,10 +324,10 @@ const server = app.listen(port, async () => {
         // Connect and reconnect if disconnected.
         let connect = async () => {
             await mongoose.connect(secure.MONGODB_URI, {
-    	           useMongoClient: true,
-    	           keepAlive: 1000,
-                   connectTimeoutMS: 10000,
-                   reconnectTries: Number.MAX_VALUE
+	           useMongoClient: true,
+	           keepAlive: 1000,
+               connectTimeoutMS: 10000,
+               reconnectTries: Number.MAX_VALUE
     	    });
         };
         connect();
