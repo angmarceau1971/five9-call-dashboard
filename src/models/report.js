@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
-
 //////////////////////////////////////////
 // MongoDB database definitions
 //////////////////////////////////////////
@@ -232,7 +231,6 @@ async function refreshDatabase(time, reportModel, reportName) {
     const csvData = await five9.getReportResults(reportParameters);
     const csvHeader = csvData.substr(0, csvData.indexOf('\n'));
 
-
     // Parse CSV data into `data` array
     const data = [];
     await new Promise((resolve, reject) => { // wrap in promise to allow await
@@ -284,6 +282,13 @@ function parseRow(model, row) {
         parsed.agentGroup = row.agentGroup;
         parsed.callId = row.callId;
         datestring = row.date + ' ' + row['QUARTER HOUR'];
+
+        let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
+        parsed.handleTime = seconds(row.handleTime);
+        parsed.holdTime = seconds(row.holdTime);
+        parsed.conferenceTime = seconds(row.conferenceTime);
+        parsed.acwTime = seconds(row.acwTime);
+        parsed.speedOfAnswer = seconds(row.speedOfAnswer);
     }
     else {
         log.error('report.parseRow called without model!')
