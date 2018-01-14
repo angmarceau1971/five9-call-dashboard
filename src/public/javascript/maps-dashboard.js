@@ -106,14 +106,7 @@ async function updateMap(callMap) {
         }));
 
     // if any zips with calls are missing from customerData, add them here
-    let missing = callData
-                    .filter((d) => d.zipCode != ''
-                                && !customerData.hasOwnProperty(d.zipCode))
-                    .map((d) => ({
-                        zipCode: d.zipCode,
-                        calls: d.calls,
-                        customers: 0
-                    }));
+    let missing = getZipsWithoutCustomers(callData, customerData);
     data.concat(missing);
 
     // Determine the field being mapped -- total calls or per customer
@@ -190,8 +183,22 @@ async function getCustomerData() {
 
         customerCount.lastUpdated = moment();
     }
-
     return customerCount.data;
+}
+
+
+function getZipsWithoutCustomers(callData, customerData) {
+    callData
+        .filter((d) => isZipWithoutCustomers(d.zipCode, customerData))
+        .map((d) => ({
+            zipCode: d.zipCode,
+            calls: d.calls,
+            customers: 0
+        }));
+}
+
+function isZipWithoutCustomers(zip, customerData) {
+    return (zip != '' && !customerData.hasOwnProperty(zip));
 }
 
 // Determines start/end times chosen by user
