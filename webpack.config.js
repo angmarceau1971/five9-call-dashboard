@@ -6,7 +6,7 @@ module.exports = {
     context: __dirname,
 
     entry: {
-        scorecard: './src/public/javascript/scorecard.js'
+        scorecard: ['babel-polyfill', './src/public/javascript/scorecard.js']
     },
 
     output: {
