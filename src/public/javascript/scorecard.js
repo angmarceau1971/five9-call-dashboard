@@ -2,6 +2,7 @@ import LineGraph from '../components/line-graph.vue';
 import DataTable from '../components/data-table.vue';
 import Dashboard from '../components/dashboard.vue';
 import { formatValue } from './scorecard-format.js';
+import { API_URL } from './local_settings.js';
 const isEmpty = require('ramda/src/isEmpty');
 
 
@@ -201,6 +202,36 @@ const vm = new Vue({
     },
 
     methods: {
+        postAcd: function() {
+            const url = 'statistics';
+            const apiURL = API_URL + url; // defined in api_url.js
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    foo: 'bar'
+                })
+            }
+
+            return fetch(apiURL, requestOptions)
+                .then(async (response) => {
+                    // if (response.status == 504) notifyServer504(parameters, url); // debugging
+                    if (!response.ok) {
+                        let bodyText = await response.text();
+                        throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
+                    }
+                    return response;
+                }).then((response) => {
+                    return response;
+                }).catch((err) => {
+                    error(err);
+                });
+        },
+
         clickImport: function() {
             this.$refs.fileInput.click();
         },

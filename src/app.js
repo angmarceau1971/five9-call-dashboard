@@ -92,17 +92,12 @@ app.get('/admin', async (req, res) => {
 //                 for, comma-separated. Matches "like" Five9 skill names.
 ///////////////////////////
 
-/**
- * Wrapper to catch errors in API calls
- * @param  {Function} fn Express route handler
- * @return {Function} route handler with error-catching for Promise awaits
- */
-function asyncMiddleware(fn) {
-    return function(req, res, next) {
-        return Promise.resolve(fn(req, res, next))
-            .catch(next);
-    }
-}
+
+app.post('/api/statistics', async (req, res) => {
+    console.log(req.body);
+    res.status(200).send();
+});
+
 
 // Five9 current queue statistics (ACDStatus endpoint at Five9)
 app.post('/api/queue-stats', async (req, res) => {
