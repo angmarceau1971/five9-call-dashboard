@@ -245,6 +245,7 @@ async function refreshDatabase(time, reportModel, reportName) {
     });
 
     // Insert the new data
+    if (data.length == 0) return;
     return new Promise ((resolve, reject) => {
         reportModel.collection.insert(data, (err, docs) => {
             if (err) {
