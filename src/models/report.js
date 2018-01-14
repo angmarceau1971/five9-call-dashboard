@@ -45,8 +45,9 @@ const acdFeedSchema = mongoose.Schema({
 });
 
 
-// Model to represent report data
+// Models to represent report data
 const DataFeed = mongoose.model('DataFeed', dataFeedSchema);
+const AcdFeed  = mongoose.model('AcdFeed',  acdFeedSchema);
 
 // Returns array with nice field names, from Five9 CSV report header string.
 function getHeadersFromCsv(csvHeaderLine) {
@@ -55,6 +56,7 @@ function getHeadersFromCsv(csvHeaderLine) {
         'DATE':             'date',
         'Global.strSugarZipCode':   'zipCode',
         'CALLS':                'calls',
+        'CALL ID':              'callId',
         'SERVICE LEVEL count':  'serviceLevel',
         'SERVICE LEVEL':    'serviceLevel',
         'ABANDONED':        'abandons',
@@ -108,7 +110,10 @@ async function scheduleUpdate(interval) {
  * @return {Promise}
  */
 async function loadData(time) {
-    return await refreshDatabase(time, DataFeed, 'Dashboard - Data Feed');
+    return await Promise.all([
+        refreshDatabase(time, DataFeed, 'Dashboard - Data Feed'),
+        refreshDatabase(time, AcdFeed,  'Dashboard - ACD Feed')
+    ]);
 }
 
 // Summarize call and service level data by skill. Params should give start
@@ -193,10 +198,15 @@ async function getData(timeFilter, reportModel) {
 }
 
 
-// Update Five9 data in MongoDB
+/**
+ * Update Five9 data in MongoDB.
+ * @param  {Object} time        object with start and end datetimes
+ * @param  {Object} reportModel MongoDB model to update
+ * @param  {String} reportName  name of Five9 custom report to pull
+ * @return {Promise}            resolves when data loads
+ */
 async function refreshDatabase(time, reportModel, reportName) {
     log.message(`Updating Report database with ${reportName}`);
-    const data = [];
 
     // Remove today's old data
     await new Promise ((resolve, reject) => {
@@ -223,31 +233,18 @@ async function refreshDatabase(time, reportModel, reportName) {
     const csvHeader = csvData.substr(0, csvData.indexOf('\n'));
 
 
-    // Parse CSV data
+    // Parse CSV data into `data` array
+    const data = [];
     await new Promise((resolve, reject) => { // wrap in promise to allow await
-        csv( { delimiter: ',', headers: getHeadersFromCsv(csvHeader) } )
+        csv({ delimiter: ',', headers: getHeadersFromCsv(csvHeader) })
             .fromString(csvData)
             .on('json', (res) => {
-                // cast calls and SL as numbers
-                res['calls'] *= 1;
-                res['serviceLevel'] *= 1;
-                res['abandons'] *= 1;
-
-                // Leave only left 5 digits of zip code
-                res['zipCode'] = res['zipCode'].substr(0, 5);
-
-                // Set interval in Date format
-                let datestring = res.date + ' ' + res['HALF HOUR'];
-                delete res['HALF HOUR'];
-                res.date = moment.tz(
-                    moment(datestring, 'YYYY/MM/DD HH:mm'),
-                    'America/Los_Angeles'
-                ).toDate();
-
-                data.push(res);
-                return resolve(data);
-            }).on('error', reject);
-        });
+                let datum = parseRow(reportModel, res);
+                data.push(datum);
+            })
+            .on('done', () => resolve(data))
+            .on('error', reject);
+    });
 
     // Insert the new data
     return new Promise ((resolve, reject) => {
@@ -262,6 +259,46 @@ async function refreshDatabase(time, reportModel, reportName) {
     });
 }
 
+/**
+ * Takes Five9 data, responds with data formatted for database.
+ * @param  {Object} model Mongo collection being updated
+ * @param  {Object} row   initial data from Five9
+ * @return {Object}       formatted data to insert in collection
+ */
+function parseRow(model, row) {
+    let datestring;
+    const parsed = {};
+
+    if (model == DataFeed) {
+        parsed.serviceLevel = row.serviceLevel * 1;
+        parsed.abandons = row.abandons * 1;
+
+        // Leave only left 5 digits of zip code
+        parsed.zipCode = row.zipCode.substr(0, 5);
+        // Set interval in Date format
+        datestring = row.date + ' ' + row['HALF HOUR'];
+    }
+    else if (model == AcdFeed) {
+        parsed.agentUsername = row.agentUsername;
+        parsed.agentName = row.agentName;
+        parsed.agentGroup = row.agentGroup;
+        parsed.callId = row.callId;
+        datestring = row.date + ' ' + row['QUARTER HOUR'];
+    }
+    else {
+        log.error('report.parseRow called without model!')
+    }
+
+    // Shared fields
+    parsed.skill = row.skill;
+    parsed.calls = row.calls * 1;
+    parsed.date = moment.tz(
+        moment(datestring, 'YYYY/MM/DD HH:mm'),
+        'America/Los_Angeles'
+    ).toDate();
+
+    return parsed;
+}
 
 
 // Store callbacks that come in while the database is updating
