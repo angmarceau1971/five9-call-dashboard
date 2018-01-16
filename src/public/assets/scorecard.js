@@ -10653,7 +10653,15 @@ var vm = new Vue({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          foo: 'bar'
+          filter: {
+            agentGroup: {
+              $in: ['Customer Care', 'Sales']
+            },
+            date: {
+              start: '2018-01-14T00:00:00',
+              end: '2018-01-16T00:00:00'
+            }
+          }
         })
       };
       return fetch(apiURL, requestOptions).then(
@@ -10680,9 +10688,18 @@ var vm = new Vue({
                   throw new Error("Server responded with ".concat(response.status, " ").concat(response.statusText, ": ").concat(bodyText));
 
                 case 5:
+                  _context.t0 = console;
+                  _context.next = 8;
+                  return response.json();
+
+                case 8:
+                  _context.t1 = _context.sent;
+
+                  _context.t0.log.call(_context.t0, _context.t1);
+
                   return _context.abrupt("return", response);
 
-                case 6:
+                case 11:
                 case "end":
                   return _context.stop();
               }
@@ -10696,7 +10713,7 @@ var vm = new Vue({
       }()).then(function (response) {
         return response;
       }).catch(function (err) {
-        error(err);
+        console.log(err);
       });
     },
     clickImport: function clickImport() {

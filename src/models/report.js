@@ -115,11 +115,51 @@ async function loadData(time) {
     ]);
 }
 
+
+/**
+ * Get agent statistics from the ACD Queue data source.
+ * 
+ * @param  {Object} filter for MongoDB. Requires date.start and date.end.
+ * @return {Array} JSON data matching query
+ */
+async function getScorecardStatistics({ filter }) {
+    function createFilter(obj) {
+        return Object.keys(obj)
+            .filter((key) => key != 'date')
+            .map((key) => ({
+                [key]: obj[key]
+            }));
+    }
+
+    return new Promise((resolve, reject) => {
+        AcdFeed.aggregate([
+            { $match: {
+                $and: [
+                    { date: {
+                        $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                        $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                    } },
+                    ...createFilter(filter)
+                ]
+            } },
+            // Summarize by skill
+            { $group: {
+                _id: { skill: '$skill', agentUsername: '$agentUsername' },
+                calls: { $sum: '$calls' },
+                handleTime: { $sum: '$handleTime' }
+            } }
+        ], (err, data) => {
+            if (err) reject(err);
+            resolve(data);
+        });
+    });
+}
+
 // Summarize call and service level data by skill. Params should give start
 // and end time for data.
 async function getServiceLevelData(params) {
     return new Promise((resolve, reject) => {
-        DataFeed.aggregate( [
+        DataFeed.aggregate([
             // Filter for the selected date and skills
             { $match:
                 { date: {
@@ -145,7 +185,7 @@ async function getServiceLevelData(params) {
         ], (err, data) => {
             if (err) reject(err);
             resolve(data);
-        })
+        });
     });
 }
 
@@ -258,6 +298,7 @@ async function refreshDatabase(time, reportModel, reportName) {
     });
 }
 
+
 /**
  * Takes Five9 data, responds with data formatted for database.
  * @param  {Object} model Mongo collection being updated
@@ -333,6 +374,7 @@ module.exports.addUpdateListener = addUpdateListener;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;
+module.exports.getScorecardStatistics = getScorecardStatistics;
 module.exports.DataFeed = DataFeed;
 module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;

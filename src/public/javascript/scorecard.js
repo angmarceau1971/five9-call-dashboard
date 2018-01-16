@@ -213,9 +213,17 @@ const vm = new Vue({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    foo: 'bar'
+                    filter: {
+                        agentGroup: {
+                            $in: ['Customer Care', 'Sales'],
+                        },
+                        date: {
+                            start: '2018-01-14T00:00:00',
+                            end: '2018-01-16T00:00:00',
+                        }
+                    }
                 })
-            }
+            };
 
             return fetch(apiURL, requestOptions)
                 .then(async (response) => {
@@ -224,11 +232,12 @@ const vm = new Vue({
                         let bodyText = await response.text();
                         throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
                     }
+                    console.log(await response.json());
                     return response;
                 }).then((response) => {
                     return response;
                 }).catch((err) => {
-                    error(err);
+                    console.log(err);
                 });
         },
 

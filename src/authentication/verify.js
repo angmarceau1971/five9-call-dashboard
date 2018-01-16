@@ -14,6 +14,8 @@ const users = require('./users');
 // Returns true if user has permissions; otherwise false.
 // ${auth} should be base64 encoded 'username:password' string
 async function hasPermission(auth) {
+    if (!auth) return false;
+
     // Log this username
     const decoded = Buffer.from(auth, 'base64').toString();
     const username = decoded.split(':')[0];
@@ -50,7 +52,7 @@ async function hasAgentPermission(auth) {
     const decoded = Buffer.from(auth, 'base64').toString();
     const [username, password] = decoded.split(':');
 
-    
+
 }
 
 module.exports.hasPermission = hasPermission;
