@@ -1,13 +1,15 @@
+import { API_URL } from './local_settings';
+
 // Map of U.S. with ZIP3 areas colored by calls offered.
 // Offers methods to create/draw the map and update when new data is received.
-class CallMap {
+export default class CallMap {
     /**
      * Create and draw map on initial run
      * @param  {Object}  data d3.nest data object with zipcode as key and fields as values
      * @param  {String}  field to map (calls or callsPerCustomer)
      * @return {Promise} resolves when complete
      */
-    async create(data, field) {
+    create(data, field) {
         // Taken from d3.schemeBlues[9]
         this.colors = ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"];
 
@@ -169,6 +171,4 @@ class CallMap {
           .select('.domain')
             .remove();
     }
-
-
 }

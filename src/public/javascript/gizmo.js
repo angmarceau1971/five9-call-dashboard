@@ -1,14 +1,14 @@
 
 // Handling of queue gizmo widgets
-function gizmoManager() {
+export default function GizmoManager() {
     // Object storing info on filters & names for each gizmo-widget
-    let gizmos = null;
+    this.gizmos = null;
     // ID tracking
-    let lastGizmoId = 0;
+    this.lastGizmoId = 0;
     // which gizmo has a menu open?
-    let openGizmoMenu = null;
+    this.openGizmoMenu = null;
 
-    function build(id=null) {
+    this.build = function(id=null) {
         let template = document.getElementById('gizmo-template');
         let gizmo = template.cloneNode(true);
 
@@ -18,41 +18,41 @@ function gizmoManager() {
 
         // Create an ID and append to DOM
         if (id == null) {
-            id = 'gizmo-' + (lastGizmoId+1);
-            lastGizmoId++;
+            id = 'gizmo-' + (this.lastGizmoId+1);
+            this.lastGizmoId++;
         }
         gizmo.id = id;
         $('.gizmo-wrapper').append(gizmo);
 
         // Add to gizmos object, but don't overwrite existing ones
-        if (!gizmos[id]) {
-            gizmos[id] = {
+        if (!this.gizmos[id]) {
+            this.gizmos[id] = {
                 name: 'New one!',
                 skillFilter: []
             }
         }
         // set name for DOM
-        $(gizmo).find('.department-name').html(gizmos[id].name);
+        $(gizmo).find('.department-name').html(this.gizmos[id].name);
 
-        setupInteractions(id);
+        this.setupInteractions(id);
         return id;
     }
 
-    function remove(gizmoID) {
+    this.remove = function(gizmoID) {
         document.getElementById(gizmoID).remove();
-        delete gizmos[gizmoID];
-        save();
+        delete this.gizmos[gizmoID];
+        this.save();
     }
 
     // Which gizmo is currently edited in the skill menu? This function will
     // update that gizmo's attributes.
-    function updateCurrent(name, skills) {
-        gizmos[openGizmoMenu].name        = name;
-        gizmos[openGizmoMenu].skillFilter = skillStringToArray(skills);
+    this.updateCurrent = function(name, skills) {
+        this.gizmos[openGizmoMenu].name        = name;
+        this.gizmos[openGizmoMenu].skillFilter = this.skillStringToArray(skills);
     }
 
     // Set up menu interactions for a gizmo with the given ID
-    function setupInteractions(id) {
+    this.setupInteractions = function(id) {
         let gizmo = $('#' + id);
 
         // Skills menu
@@ -60,14 +60,14 @@ function gizmoManager() {
             // Show the modal...
             $('.modal').css('display', 'block');
             // Track currently open menu...
-            openGizmoMenu = id;
+            this.openGizmoMenu = id;
             // And set modal values to match this gizmo
-            $('.modal').find('.gizmo-name').val(gizmos[id].name);
-            $('.modal').find('.skills').val(gizmos[id].skillFilter);
+            $('.modal').find('.gizmo-name').val(this.gizmos[id].name);
+            $('.modal').find('.skills').val(this.gizmos[id].skillFilter);
         });
 
         // Show/hide queue list
-        gizmos[id].showQueueList = false;
+        this.gizmos[id].showQueueList = false;
         gizmo.find('.show-skills-list').click(function (event) {
             gizmo.find('.show-skills-list').toggleClass('selected');
             gizmo.find('.queue-list').toggleClass('hidden');
@@ -80,7 +80,7 @@ function gizmoManager() {
     );
     $('.modal').find('.remove').click(() => {
         $('.modal').css('display', 'none');
-        remove(openGizmoMenu);
+        remove(this.openGizmoMenu);
     });
     $(window).click((event) => {
         if ($(event.target).is('.modal'))
@@ -90,49 +90,40 @@ function gizmoManager() {
     $('.modal .save').click(() => {
         const name   = $('.modal .gizmo-name').val();
         const skills = $('.modal .skills').val();
-        $('#' + openGizmoMenu).find('.department-name').html(name);
-        updateCurrent(name, skills);
-        save();
+        $('#' + this.openGizmoMenu).find('.department-name').html(name);
+        this.updateCurrent(name, skills);
+        this.save();
     });
     // Listen for add-gizmo button
     $('.add-gizmo').click(() => {
-        let newID = build();
+        let newID = this.build();
         // save current state to local storage
-        save();
+        this.save();
     });
 
 
     // Save gizmos to local storage
-    function save() {
+    this.save = function() {
         const data = JSON.stringify(gizmos);
         localStorage.setItem('user_gizmos', data);
     }
 
     // Load gizmos from local storage on startup
-    function load() {
+    this.load = function() {
         let data = localStorage.getItem('user_gizmos');
         if (!data) {
-            gizmos = {};
+            this.gizmos = {};
         } else {
-            gizmos = JSON.parse(data);
-            console.log('Loading gizmos:', gizmos);
+            this.gizmos = JSON.parse(data);
+            console.log('Loading gizmos:', this.gizmos);
             // Build view
-            for (const id of Object.keys(gizmos)) {
-                build(id);
-                lastGizmoId++;
+            for (const id of Object.keys(this.gizmos)) {
+                this.build(id);
+                this.lastGizmoId++;
             };
         }
     }
 
 
-    load();
-    // Module exports
-    let exports = {};
-    exports.build = build;
-    exports.gizmos = gizmos;
-    exports.updateCurrent = updateCurrent;
-    exports.save = save;
-    exports.load = load;
-    exports.remove = remove;
-    return exports;
+    this.load();
 }

@@ -1,3 +1,8 @@
+import { error } from './utility';
+import * as api from './api';
+import './interactions';
+import CallMap from './maps';
+
 // General functions to initiate the call map dashboard.
 // Uses the CallMap class defined in maps.js to draw the D3 map.
 
@@ -93,7 +98,7 @@ async function updateMap(callMap) {
 
     // get all the datas
     let customerData = await getCustomerData();
-    const callData = await getReportResults(params, 'maps');
+    const callData = await api.getReportResults(params, 'maps');
 
     // build data object off of customerData zip codes
     let data = Object.keys(customerData)
@@ -172,7 +177,7 @@ const customerCount = {
 async function getCustomerData() {
     // reload data from server if it's been 6+ hours since the last update
     if (customerCount.lastUpdated.isBefore(moment().subtract(6, 'hours'))) {
-        let rawData = await getReportResults({}, 'customers');
+        let rawData = await api.getReportResults({}, 'customers');
 
         // Convert array of objects to a single object, with zipcode as key
         // and customer count as volue

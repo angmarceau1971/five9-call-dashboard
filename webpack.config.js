@@ -6,7 +6,9 @@ module.exports = {
     context: __dirname,
 
     entry: {
-        scorecard: ['babel-polyfill', './src/public/javascript/scorecard.js']
+        scorecard: ['./src/public/javascript/scorecard.js'],
+        queues: ['./src/public/javascript/queue-dashboard.js'],
+        map: ['./src/public/javascript/maps-dashboard.js']
     },
 
     output: {
@@ -35,13 +37,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                use: [
+                     'babel-loader'
+                ]
             }
-        ],
+        ]
     }
 }

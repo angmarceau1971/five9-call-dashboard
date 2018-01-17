@@ -1,3 +1,6 @@
+import { getAuthString } from './utility.js';
+import { API_URL } from './local_settings.js';
+
 ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract useful data from Five9.
 // These functions interact with our server, which then passes
@@ -5,7 +8,7 @@
 ////////////////////////////////////////////////////////////////
 
 // Get real-time stats
-async function queueStats() {
+export async function queueStats() {
     const auth = getAuthString($('.username').val(), $('.password').val());
     const params = { authorization: auth };
 
@@ -16,7 +19,7 @@ async function queueStats() {
 
 // Get CSV string of report results from Five9
 // ${type}: 'maps' or 'service-level'
-async function getReportResults(params, type) {
+export async function getReportResults(params, type) {
     const auth = getAuthString($('.username').val(), $('.password').val());
     params['authorization'] = auth;
 
@@ -27,25 +30,8 @@ async function getReportResults(params, type) {
 
 
 // ${reportType} : either 'maps' or 'service-level'
-async function getReportData(parameters, reportType) {
-    const apiURL = API_URL + 'reports/' + reportType; // defined in api_url.js
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(parameters)
-    };
-    return fetch(apiURL, requestOptions)
-        .then(async (response) => {
-            if (!response.ok) {
-                let bodyText = await response.text();
-                throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
-            }
-            return response;
-        });
+export async function getReportData(parameters, reportType) {
+    return request(parameters, 'reports/' + reportType);
 }
 
 
@@ -98,7 +84,7 @@ function getFaultStringFromData(data) {
 
 // Given a requestType, returns JSON to submit to server in POST request.
 // requestType should match Five9 API command.
-function getParameters(requestType) {
+export function getParameters(requestType) {
     let params = {};
     // Initiate session
     if (requestType == 'setSessionParameters') {

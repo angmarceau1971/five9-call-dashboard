@@ -1,3 +1,8 @@
+import { error, formatAMPM } from './utility';
+import * as api from './api';
+import './interactions';
+import GizmoManager from './gizmo';
+
 // timeout to pause event loop when needed
 let timeout = null;
 
@@ -5,7 +10,7 @@ let timeout = null;
 let gizmo = null;
 
 $(document).ready(() => {
-    gizmo = gizmoManager();
+    gizmo = new GizmoManager();
 
     // listen for sign-in button press
     $('.begin-session').click(async (event) => {
@@ -43,13 +48,14 @@ async function runQueueDashboard() {
 
         try {
             // Retrieve current queue stats
-            data = await queueStats();
+            data = await api.queueStats();
 
             // Get SL stats
             time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
             time.end   = moment().format('YYYY-MM-DD') + 'T23:59:59';
             try {
-                slData = await getReportResults(time, 'service-level');
+                slData = await api.getReportResults(time, 'service-level');
+                // slData = [];
             } catch (err) {
                 error(err, `An error occurred when getting service level data.`);
                 $('#message').text('An error occurred while retrieving service level data.');

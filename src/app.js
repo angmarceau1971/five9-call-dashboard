@@ -102,7 +102,6 @@ app.post('/api/statistics', async (req, res) => {
         return;
     }
 
-    // res.status(200).send();
     handleReportRequest(req, res, report.getScorecardStatistics);
 });
 

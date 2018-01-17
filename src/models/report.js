@@ -48,7 +48,12 @@ const acdFeedSchema = mongoose.Schema({
 const DataFeed = mongoose.model('DataFeed', dataFeedSchema);
 const AcdFeed  = mongoose.model('AcdFeed',  acdFeedSchema);
 
-// Returns array with nice field names, from Five9 CSV report header string.
+//
+/**
+ * Returns array with nice field names, from Five9 CSV report header string.
+ * @param  {String} csvHeaderLine first (header) line of Five9 CSV report
+ * @return {Array} field names in form that's in lookup (to match database)
+ */
 function getHeadersFromCsv(csvHeaderLine) {
     const lookup = {
         'SKILL':            'skill',
@@ -118,13 +123,15 @@ async function loadData(time) {
 
 /**
  * Get agent statistics from the ACD Queue data source.
- * 
+ *
  * @param  {Object} filter for MongoDB. Requires date.start and date.end.
  * @return {Array} JSON data matching query
  */
 async function getScorecardStatistics({ filter }) {
+    // transform filter object into MongoDB-style $match
     function createFilter(obj) {
         return Object.keys(obj)
+            // dates parsed separately
             .filter((key) => key != 'date')
             .map((key) => ({
                 [key]: obj[key]
@@ -148,6 +155,7 @@ async function getScorecardStatistics({ filter }) {
                 calls: { $sum: '$calls' },
                 handleTime: { $sum: '$handleTime' }
             } }
+
         ], (err, data) => {
             if (err) reject(err);
             resolve(data);
@@ -247,7 +255,7 @@ async function getData(timeFilter, reportModel) {
 async function refreshDatabase(time, reportModel, reportName) {
     log.message(`Updating Report database with ${reportName}`);
 
-    // Remove today's old data
+    // Remove today's old data. (Wrapped in Promise to use await)
     await new Promise ((resolve, reject) => {
         reportModel.remove({
             date: {
@@ -300,9 +308,9 @@ async function refreshDatabase(time, reportModel, reportName) {
 
 
 /**
- * Takes Five9 data, responds with data formatted for database.
+ * Takes one row of Five9 data, responds with data formatted for database.
  * @param  {Object} model Mongo collection being updated
- * @param  {Object} row   initial data from Five9
+ * @param  {Object} row   initial data from Five9 in { field: value } form
  * @return {Object}       formatted data to insert in collection
  */
 function parseRow(model, row) {
