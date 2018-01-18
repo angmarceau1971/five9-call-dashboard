@@ -228,14 +228,6 @@ function formatWaitTime(seconds) {
     return wait.toISOString().substr(11, 8); // HH:MM:SS
 }
 
-
-// Breaks down "skill1, skill2 , skill3" string
-//          to ['skill1','skill2','skill3'] array
-function skillStringToArray(skillString) {
-    if (skillString == '') return [];
-    return skillString.split(',').map((skill) => skill.trim());
-}
-
 // Return formatted column / key assignments
 // Takes JSON generated from original Five9 SOAP API response
 function jsonToViewData(json,

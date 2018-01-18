@@ -3,10 +3,8 @@
 export default function GizmoManager() {
     // Object storing info on filters & names for each gizmo-widget
     this.gizmos = null;
-    // ID tracking
-    this.lastGizmoId = 0;
     // which gizmo has a menu open?
-    this.openGizmoMenu = null;
+    this.openGizmoId = null;
 
     this.build = function(id=null) {
         let template = document.getElementById('gizmo-template');
@@ -18,8 +16,7 @@ export default function GizmoManager() {
 
         // Create an ID and append to DOM
         if (id == null) {
-            id = 'gizmo-' + (this.lastGizmoId+1);
-            this.lastGizmoId++;
+            id = this.nextGizmoId();
         }
         gizmo.id = id;
         $('.gizmo-wrapper').append(gizmo);
@@ -47,8 +44,8 @@ export default function GizmoManager() {
     // Which gizmo is currently edited in the skill menu? This function will
     // update that gizmo's attributes.
     this.updateCurrent = function(name, skills) {
-        this.gizmos[openGizmoMenu].name        = name;
-        this.gizmos[openGizmoMenu].skillFilter = this.skillStringToArray(skills);
+        this.gizmos[this.openGizmoId].name        = name;
+        this.gizmos[this.openGizmoId].skillFilter = skillStringToArray(skills);
     }
 
     // Set up menu interactions for a gizmo with the given ID
@@ -60,51 +57,62 @@ export default function GizmoManager() {
             // Show the modal...
             $('.modal').css('display', 'block');
             // Track currently open menu...
-            this.openGizmoMenu = id;
+            this.openGizmoId = id;
             // And set modal values to match this gizmo
             $('.modal').find('.gizmo-name').val(this.gizmos[id].name);
             $('.modal').find('.skills').val(this.gizmos[id].skillFilter);
-        });
+        }.bind(this));
 
         // Show/hide queue list
         this.gizmos[id].showQueueList = false;
         gizmo.find('.show-skills-list').click(function (event) {
             gizmo.find('.show-skills-list').toggleClass('selected');
             gizmo.find('.queue-list').toggleClass('hidden');
-        });
+        }.bind(this));
     }
 
+    // Get a new ID string in the form 'gizmo-<integer>'
+    this.nextGizmoId = function() {
+        if (!this.gizmos) return 'gizmo-0';
+        let lastId = Math.max(
+            ...Object.keys(this.gizmos).map((id) =>
+                id.split('-')[1]
+            )
+        );
+        return `gizmo-${lastId + 1}`;
+    };
+
     // set up modal window for editing skills.
-    $('.modal').find('.close, .cancel, .save').click(() =>
+    $('.modal').find('.close, .cancel, .save').click(function closeModal() {
         $('.modal').css('display', 'none')
-    );
-    $('.modal').find('.remove').click(() => {
-        $('.modal').css('display', 'none');
-        remove(this.openGizmoMenu);
     });
-    $(window).click((event) => {
+    $('.modal').find('.remove').click(function deleteGizmo() {
+        $('.modal').css('display', 'none');
+        this.remove(this.openGizmoId);
+    }.bind(this));
+    $(window).click(function closeModal(event) {
         if ($(event.target).is('.modal'))
             $('.modal').css('display', 'none');
-    });
+    }.bind(this));
     // Listen for skill filter updates
-    $('.modal .save').click(() => {
+    $('.modal .save').click(function updateSkillFilter() {
         const name   = $('.modal .gizmo-name').val();
         const skills = $('.modal .skills').val();
-        $('#' + this.openGizmoMenu).find('.department-name').html(name);
+        $('#' + this.openGizmoId).find('.department-name').html(name);
         this.updateCurrent(name, skills);
         this.save();
-    });
+    }.bind(this));
     // Listen for add-gizmo button
-    $('.add-gizmo').click(() => {
+    $('.add-gizmo').click(function addGizmo() {
         let newID = this.build();
         // save current state to local storage
         this.save();
-    });
+    }.bind(this));
 
 
     // Save gizmos to local storage
     this.save = function() {
-        const data = JSON.stringify(gizmos);
+        const data = JSON.stringify(this.gizmos);
         localStorage.setItem('user_gizmos', data);
     }
 
@@ -119,11 +127,16 @@ export default function GizmoManager() {
             // Build view
             for (const id of Object.keys(this.gizmos)) {
                 this.build(id);
-                this.lastGizmoId++;
             };
         }
     }
 
-
     this.load();
+}
+
+// Breaks down "skill1, skill2 , skill3" string
+//          to ['skill1','skill2','skill3'] array
+function skillStringToArray(skillString) {
+    if (skillString == '') return [];
+    return skillString.split(',').map((skill) => skill.trim());
 }
