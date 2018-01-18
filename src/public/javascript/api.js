@@ -1,4 +1,4 @@
-import { getAuthString } from './utility.js';
+import { error, getAuthString } from './utility.js';
 import { API_URL } from './local_settings.js';
 
 ////////////////////////////////////////////////////////////////
@@ -95,8 +95,8 @@ export function getParameters(requestType) {
                     { 'idleTimeOut': 1800 },
                     { 'statisticsRange': 'CurrentDay' },
                     { 'rollingPeriod': 'Minutes10' }
-                ] }
-            ]
+                ]
+            } ]
         }
     }
     // Get real-time call stats

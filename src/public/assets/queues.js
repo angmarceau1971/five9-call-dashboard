@@ -65,6 +65,16 @@
 /************************************************************************/
 /******/ ({
 
+/***/ 1:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+
 /***/ 10:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -74,7 +84,7 @@
 /* unused harmony export getReportData */
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract useful data from Five9.
@@ -128,7 +138,7 @@ async function request(parameters, url = 'statistics') {
   }).then(response => {
     return response;
   }).catch(err => {
-    error(err);
+    Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["a" /* error */])(err);
   });
 }
 
@@ -209,16 +219,6 @@ $(document).ready(() => {
     $('.credentials-cover-toggle').text('Logged In');
   });
 });
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
-
 
 /***/ }),
 

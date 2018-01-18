@@ -174,6 +174,15 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 /*
@@ -255,7 +264,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -473,15 +482,6 @@ function applyToTag (styleElement, obj) {
     styleElement.appendChild(document.createTextNode(css))
   }
 }
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
 
 
 /***/ }),
@@ -907,7 +907,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_data_table_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_dashboard_vue__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__local_settings_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__local_settings_js__ = __webpack_require__(1);
 
 
 
@@ -1806,7 +1806,7 @@ var content = __webpack_require__(20);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7034c06e", content, false);
+var update = __webpack_require__(3)("7034c06e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1825,7 +1825,7 @@ if(false) {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -2105,7 +2105,7 @@ var content = __webpack_require__(24);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5e100a93", content, false);
+var update = __webpack_require__(3)("5e100a93", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2124,7 +2124,7 @@ if(false) {
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -2413,7 +2413,7 @@ var content = __webpack_require__(32);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("f189e898", content, false);
+var update = __webpack_require__(3)("f189e898", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2432,7 +2432,7 @@ if(false) {
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -3002,7 +3002,7 @@ var content = __webpack_require__(41);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("4911ebf4", content, false);
+var update = __webpack_require__(3)("4911ebf4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3021,7 +3021,7 @@ if(false) {
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -3559,7 +3559,7 @@ var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("419b5586", content, false);
+var update = __webpack_require__(3)("419b5586", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3578,7 +3578,7 @@ if(false) {
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
