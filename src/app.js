@@ -92,16 +92,7 @@ app.get('/admin', async (req, res) => {
 //                 for, comma-separated. Matches "like" Five9 skill names.
 ///////////////////////////
 
-
 app.post('/api/statistics', async (req, res) => {
-    // Authenticate user
-    const hasPermission = await verify.hasPermission(req.body['authorization']);
-    if (!hasPermission) {
-        res.set('Content-Type', 'application/text');
-        res.status(401).send('Could not authenticate your user.');
-        return;
-    }
-
     handleReportRequest(req, res, report.getScorecardStatistics);
 });
 
@@ -208,34 +199,6 @@ async function handleReportRequest(req, res, dataGetter) {
     }
 }
 
-// Return ZIP3 JSON
-app.get('/api/zip3-data', async (req, res) => {
-    try {
-        log.message(`API - ZIP3 data request from ${req.connection.remoteAddress}`);
-
-        // return JSON zip data
-        let dir = path.join(__dirname + '/public/zip3-albers.json');
-        res.sendFile(dir);
-    } catch (err) {
-        res.set('Content-Type', 'application/text');
-        res.status(500).send('An error occurred on the server when getting zip3 data.');
-    }
-});
-
-// Return U.S. states JSON
-app.get('/api/states', async (req, res) => {
-    try {
-        log.message(`API - States geo data request from ${req.connection.remoteAddress}`);
-
-        // return JSON zip data
-        let dir = path.join(__dirname + '/public/states-albers.json');
-        res.sendFile(dir);
-    } catch (err) {
-        res.set('Content-Type', 'application/text');
-        res.status(500).send('An error occurred on the server when getting U.S. states data.');
-    }
-});
-
 // Notify server that a 502 has occurred
 app.get('/api/notify-504', async (req, res) => {
     res.set('Content-Type', 'application/text');
@@ -296,7 +259,7 @@ app.post('/api/reload-data', async (req, res) => {
 });
 
 async function reloadReports(time) {
-    // verify user input format
+    // Verify user input format and basic value-checking
     let bad = '';
     if (!moment(time.end, 'YYYY-MM-DDTHH:mm:ss', true).isValid())
         bad = time.end;
@@ -309,8 +272,37 @@ async function reloadReports(time) {
         moment(time.end, 'YYYY-MM-DDTHH:mm:ss'))
         throw new Error(`Start time's gotta be less than end time! Come on, you turkey.`);
 
-    // It passed the test... I guess. Reload the data!
+    // It passed the test... Reload the data!
     return await report.loadData(time);
+}
+
+// Return ZIP3 JSON
+app.get('/api/zip3-data', async (req, res) => {
+    await sendPublicFile('zip3-albers.json', req, res);
+});
+
+// Return U.S. states JSON
+app.get('/api/states', async (req, res) => {
+    await sendPublicFile('states-albers.json', req, res);
+});
+
+/**
+ * Send public GeoJSON file in response
+ * @param  {String} fileName in /public/ folder
+ * @param  {Object} req      Express request object
+ * @param  {Object} res      Express response object
+ */
+async function sendPublicFile(fileName, req, res) {
+    try {
+        log.message(`${fileName} file request from ${req.connection.remoteAddress}`);
+
+        // return JSON zip data
+        let dir = path.join(__dirname + `/public/${fileName}`);
+        res.sendFile(dir);
+    } catch (err) {
+        res.set('Content-Type', 'application/text');
+        res.status(500).send('An error occurred on the server when getting U.S. states data.');
+    }
 }
 
 
@@ -355,6 +347,5 @@ const server = app.listen(port, async () => {
         log.error(`Error occurred on server: ` + err);
     }
 });
-
 
 module.exports = server;
