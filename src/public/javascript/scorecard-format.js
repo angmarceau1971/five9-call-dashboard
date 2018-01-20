@@ -7,7 +7,6 @@ let comparators = {
 export function formatValue(value, field) {
     let formattedValue, style;
 
-
     if (!field) {
         return {
             value: value,
@@ -24,7 +23,6 @@ export function formatValue(value, field) {
     } else {
         style = '';
     }
-
 
     if (field.format.type == 'Number') {
         formattedValue = d3.format(field.format.string)(value);

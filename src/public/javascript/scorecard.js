@@ -5,10 +5,88 @@ import { formatValue } from './scorecard-format.js';
 import { API_URL } from './local_settings.js';
 const isEmpty = require('ramda/src/isEmpty');
 
-
-
-let ahtData = [{"Date": "2017-11-01","AHT": "12:25","ACW": "12:35","Hold": "12:31","Calls": "62"}, {"Date": "2017-11-02","AHT": "12:51","ACW": "12:23","Hold": "12:35","Calls": "68"}, {"Date": "2017-11-03","AHT": "12:29","ACW": "12:25","Hold": "12:38","Calls": "42"}, {"Date": "2017-11-04","AHT": "12:42","ACW": "12:46","Hold": "12:31","Calls": "62"}, {"Date": "2017-11-05","AHT": "12:16","ACW": "12:23","Hold": "12:16","Calls": "53"}, {"Date": "2017-11-06","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-07","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-08","AHT": "12:24","ACW": "12:25","Hold": "12:20","Calls": "54"}, {"Date": "2017-11-09","AHT": "12:35","ACW": "12:24","Hold": "12:18","Calls": "28"}, {"Date": "2017-11-10","AHT": "12:22","ACW": "12:33","Hold": "12:30","Calls": "45"}, {"Date": "2017-11-11","AHT": "12:04","ACW": "12:40","Hold": "12:26","Calls": "30"}, {"Date": "2017-11-12","AHT": "12:59","ACW": "12:46","Hold": "12:46","Calls": "41"}, {"Date": "2017-11-13","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-14","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-15","AHT": "12:28","ACW": "12:25","Hold": "12:39","Calls": "41"}, {"Date": "2017-11-16","AHT": "12:34","ACW": "12:37","Hold": "12:29","Calls": "51"}, {"Date": "2017-11-17","AHT": "12:17","ACW": "12:23","Hold": "12:21","Calls": "41"}, {"Date": "2017-11-18","AHT": "12:44","ACW": "12:45","Hold": "12:24","Calls": "35"}, {"Date": "2017-11-19","AHT": "12:00","ACW": "12:25","Hold": "12:25","Calls": "25"}, {"Date": "2017-11-20","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-21","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-22","AHT": "12:30","ACW": "12:44","Hold": "12:20","Calls": "43"}, {"Date": "2017-11-23","AHT": "12:16","ACW": "12:26","Hold": "12:16","Calls": "51"}, {"Date": "2017-11-24","AHT": "12:21","ACW": "12:25","Hold": "12:45","Calls": "46"}, {"Date": "2017-11-25","AHT": "12:20","ACW": "12:47","Hold": "12:37","Calls": "43"}, {"Date": "2017-11-26","AHT": "12:37","ACW": "12:35","Hold": "12:18","Calls": "41"}, {"Date": "2017-11-27","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-28","AHT": "N/A","ACW": "N/A","Hold": "N/A","Calls": "0"}, {"Date": "2017-11-29","AHT": "12:38","ACW": "12:35","Hold": "12:29","Calls": "42"}, {"Date": "2017-11-30","AHT": "12:56","ACW": "12:28","Hold": "12:22","Calls": "55"}]
-
+let ahtData = [
+  {
+    "_id": {
+      "skill": "DISPATCH_IVR_OPT_OUT_APPT_MT",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 1,
+    "handleTime": 154
+  },
+  {
+    "_id": {
+      "skill": "SALES_RES_TRANSFER_NONCOM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 2,
+    "handleTime": 1046
+  },
+  {
+    "_id": {
+      "skill": "RESELLER_RES_SALES_COM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 1,
+    "handleTime": 63
+  },
+  {
+    "_id": {
+      "skill": "SALES_RES_VENDOR_TRANSFER_NONCOM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 1,
+    "handleTime": 524
+  },
+  {
+    "_id": {
+      "skill": "DISPATCH_IVR_OPT_OUT_APPT_CT",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 2,
+    "handleTime": 471
+  },
+  {
+    "_id": {
+      "skill": "SALES_RES_COM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 16,
+    "handleTime": 7790
+  },
+  {
+    "_id": {
+      "skill": "SALES_RES_SCHEDULE_FUTURE_NONCOM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 1,
+    "handleTime": 10
+  },
+  {
+    "_id": {
+      "skill": "SALES_SMB_COM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 1,
+    "handleTime": 226
+  },
+  {
+    "_id": {
+      "skill": "SALES_RES_FUTURE_NONCOM",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 4,
+    "handleTime": 1200
+  },
+  {
+    "_id": {
+      "skill": "CARE_QUESTIONS",
+      "agentUsername": "user@example.com"
+    },
+    "calls": 3,
+    "handleTime": 1151
+  }
+];
 
 let productivityData = [{"Date": "2017-11-01","Productivity": "0.86"}, {"Date": "2017-11-02","Productivity": "0.86"}, {"Date": "2017-11-03","Productivity": "0.86"}, {"Date": "2017-11-04","Productivity": "0.92"}, {"Date": "2017-11-05","Productivity": "0.84"}, {"Date": "2017-11-06","Productivity": "N/A"}, {"Date": "2017-11-07","Productivity": "N/A"}, {"Date": "2017-11-08","Productivity": "0.86"}, {"Date": "2017-11-09","Productivity": "0.93"}, {"Date": "2017-11-10","Productivity": "0.93"}, {"Date": "2017-11-11","Productivity": "0.87"}, {"Date": "2017-11-12","Productivity": "0.86"}, {"Date": "2017-11-13","Productivity": "N/A"}, {"Date": "2017-11-14","Productivity": "N/A"}, {"Date": "2017-11-15","Productivity": "0.86"}, {"Date": "2017-11-16","Productivity": "0.84"}, {"Date": "2017-11-17","Productivity": "0.93"}, {"Date": "2017-11-18","Productivity": "0.92"}, {"Date": "2017-11-19","Productivity": "0.84"}, {"Date": "2017-11-20","Productivity": "N/A"}, {"Date": "2017-11-21","Productivity": "N/A"}, {"Date": "2017-11-22","Productivity": "0.86"}, {"Date": "2017-11-23","Productivity": "0.79"}, {"Date": "2017-11-24","Productivity": "0.88"}, {"Date": "2017-11-25","Productivity": "0.90"}, {"Date": "2017-11-26","Productivity": "0.80"}, {"Date": "2017-11-27","Productivity": "N/A"}, {"Date": "2017-11-28","Productivity": "N/A"}, {"Date": "2017-11-29","Productivity": "0.83"}, {"Date": "2017-11-30","Productivity": "0.83"}]
 
@@ -83,11 +161,44 @@ dtv.widgets = [
     },
 ];
 
+const aht = {
+    title: 'Average Handle Time',
+    id: 'card:2',
+    layoutOrder: 2,
+    columns: 1,
+    datasources: ['AHT']
+};
+aht.data = ahtData;
+aht.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Today',
+        'fieldName': 'AHT',
+        'value': '10:00'
+    },
+    {
+        'id': 'widget:1',
+        'component': 'single-value',
+        'title': 'Month to Date',
+        'fieldName': 'AHT',
+        'value': '09:30'
+    },
+    {
+        'id': 'widget:2',
+        'component': 'line-graph',
+        'fields': {
+            x: 'Date',
+            y: 'AHT'
+        }
+    },
+];
 
 const layout = {
     cards: [
         closeRate,
-        dtv
+        dtv,
+        aht
     ]
 };
 
@@ -96,6 +207,9 @@ const datasources = {
     'DIRECTV': {
         fields: [ 'DTV Sales', 'Rolling Total', 'Pacing', 'Delta' ],
         refreshRate: 24*3600 // daily
+    },
+    'AHT': {
+        fields: ['handleTime', 'calls']
     }
 };
 
@@ -150,6 +264,7 @@ const fields = [
     {
         displayName: 'AHT',
         fieldName: 'AHT',
+        calculation: 'handleTime / calls',
         hasGoal: true,
         goal: 0,
         goalThresholds: [
@@ -188,13 +303,18 @@ const store = new Vuex.Store({
     }
 });
 
+const dataValues = {
+    'AHT': ahtData
+};
 
 const vm = new Vue({
     el: '#app',
     store,
 
     data: {
-        layout: layout
+        layout: layout,
+        datasources: datasources,
+        dataValues: dataValues
     },
 
     components: {
@@ -202,6 +322,11 @@ const vm = new Vue({
     },
 
     methods: {
+        updateData: function() {
+
+        },
+
+
         postAcd: function() {
             const url = 'statistics';
             const apiURL = API_URL + url; // defined in api_url.js
@@ -232,7 +357,8 @@ const vm = new Vue({
                         let bodyText = await response.text();
                         throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
                     }
-                    console.log(await response.json());
+                    // console.log(await response.json());
+                    download(await response.json(), 'data.json', 'text/plain');
                     return response;
                 }).then((response) => {
                     return response;

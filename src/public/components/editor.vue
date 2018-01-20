@@ -21,6 +21,9 @@
             <h3>Title</h3>
             <input v-model="newObject.title" />
 
+            <h3>Field</h3>
+            <input v-model="newObject.fieldName" />
+
             <div class="button-wrapper">
                 <button
                     @click="exit(true)"
@@ -40,6 +43,9 @@
 </template>
 
 <script>
+const clone = require('ramda/src/clone');
+
+
 export default {
     props: ['initialObject'],
     data: function() {
@@ -50,7 +56,7 @@ export default {
     },
     // Create a copy of the passed-in object on creation
     mounted() {
-        Object.assign(this.newObject, this.initialObject);
+        this.newObject = clone(this.initialObject);
     },
     methods: {
         edit: function() {
@@ -72,6 +78,7 @@ export default {
     }
 }
 </script>
+
 
 <style>
 .editor-wrapper {

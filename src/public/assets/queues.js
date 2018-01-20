@@ -60,20 +60,10 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 66);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ 1:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
-
-
-/***/ }),
 
 /***/ 10:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -84,7 +74,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* unused harmony export getReportData */
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract useful data from Five9.
@@ -222,6 +212,16 @@ $(document).ready(() => {
 
 /***/ }),
 
+/***/ 2:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+
 /***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -262,15 +262,15 @@ function getAuthString(username, password) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(67);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
 
-/***/ 67:
+/***/ 70:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -279,7 +279,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(71);
 
 
 
@@ -496,13 +496,6 @@ function formatWaitTime(seconds) {
   }
 
   return wait.toISOString().substr(11, 8); // HH:MM:SS
-} // Breaks down "skill1, skill2 , skill3" string
-//          to ['skill1','skill2','skill3'] array
-
-
-function skillStringToArray(skillString) {
-  if (skillString == '') return [];
-  return skillString.split(',').map(skill => skill.trim());
 } // Return formatted column / key assignments
 // Takes JSON generated from original Five9 SOAP API response
 
@@ -531,19 +524,18 @@ function jsonToViewData(json, includeFields = ['Skill Name', 'Calls In Queue', '
 
 /***/ }),
 
-/***/ 68:
+/***/ 71:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = GizmoManager;
-// Handling of queue gizmo widgets
+// Handling of queue gizmo widgets.
+// Manages state and DOM (modals to edit skills & name).
 function GizmoManager() {
   // Object storing info on filters & names for each gizmo-widget
-  this.gizmos = null; // ID tracking
+  this.gizmos = null; // which gizmo has a menu open?
 
-  this.lastGizmoId = 0; // which gizmo has a menu open?
-
-  this.openGizmoMenu = null;
+  this.openGizmoId = null;
 
   this.build = function (id = null) {
     let template = document.getElementById('gizmo-template');
@@ -553,8 +545,7 @@ function GizmoManager() {
     gizmo.classList.add('gizmo'); // Create an ID and append to DOM
 
     if (id == null) {
-      id = 'gizmo-' + (this.lastGizmoId + 1);
-      this.lastGizmoId++;
+      id = this.nextGizmoId();
     }
 
     gizmo.id = id;
@@ -582,8 +573,8 @@ function GizmoManager() {
 
 
   this.updateCurrent = function (name, skills) {
-    this.gizmos[openGizmoMenu].name = name;
-    this.gizmos[openGizmoMenu].skillFilter = this.skillStringToArray(skills);
+    this.gizmos[this.openGizmoId].name = name;
+    this.gizmos[this.openGizmoId].skillFilter = skillStringToArray(skills);
   }; // Set up menu interactions for a gizmo with the given ID
 
 
@@ -594,45 +585,54 @@ function GizmoManager() {
       // Show the modal...
       $('.modal').css('display', 'block'); // Track currently open menu...
 
-      this.openGizmoMenu = id; // And set modal values to match this gizmo
+      this.openGizmoId = id; // And set modal values to match this gizmo
 
       $('.modal').find('.gizmo-name').val(this.gizmos[id].name);
       $('.modal').find('.skills').val(this.gizmos[id].skillFilter);
-    }); // Show/hide queue list
+    }.bind(this)); // Show/hide queue list
 
     this.gizmos[id].showQueueList = false;
     gizmo.find('.show-skills-list').click(function (event) {
       gizmo.find('.show-skills-list').toggleClass('selected');
       gizmo.find('.queue-list').toggleClass('hidden');
-    });
+    }.bind(this));
+  }; // Get a new ID string in the form 'gizmo-<integer>'
+
+
+  this.nextGizmoId = function () {
+    if (!this.gizmos) return 'gizmo-0';
+    let lastId = Math.max(...Object.keys(this.gizmos).map(id => id.split('-')[1]));
+    return `gizmo-${lastId + 1}`;
   }; // set up modal window for editing skills.
 
 
-  $('.modal').find('.close, .cancel, .save').click(() => $('.modal').css('display', 'none'));
-  $('.modal').find('.remove').click(() => {
+  $('.modal').find('.close, .cancel, .save').click(function closeModal() {
     $('.modal').css('display', 'none');
-    remove(this.openGizmoMenu);
   });
-  $(window).click(event => {
+  $('.modal').find('.remove').click(function deleteGizmo() {
+    $('.modal').css('display', 'none');
+    this.remove(this.openGizmoId);
+  }.bind(this));
+  $(window).click(function closeModal(event) {
     if ($(event.target).is('.modal')) $('.modal').css('display', 'none');
-  }); // Listen for skill filter updates
+  }.bind(this)); // Listen for skill filter updates
 
-  $('.modal .save').click(() => {
+  $('.modal .save').click(function updateSkillFilter() {
     const name = $('.modal .gizmo-name').val();
     const skills = $('.modal .skills').val();
-    $('#' + this.openGizmoMenu).find('.department-name').html(name);
+    $('#' + this.openGizmoId).find('.department-name').html(name);
     this.updateCurrent(name, skills);
     this.save();
-  }); // Listen for add-gizmo button
+  }.bind(this)); // Listen for add-gizmo button
 
-  $('.add-gizmo').click(() => {
+  $('.add-gizmo').click(function addGizmo() {
     let newID = this.build(); // save current state to local storage
 
     this.save();
-  }); // Save gizmos to local storage
+  }.bind(this)); // Save gizmos to local storage
 
   this.save = function () {
-    const data = JSON.stringify(gizmos);
+    const data = JSON.stringify(this.gizmos);
     localStorage.setItem('user_gizmos', data);
   }; // Load gizmos from local storage on startup
 
@@ -648,7 +648,6 @@ function GizmoManager() {
 
       for (const id of Object.keys(this.gizmos)) {
         this.build(id);
-        this.lastGizmoId++;
       }
 
       ;
@@ -656,6 +655,12 @@ function GizmoManager() {
   };
 
   this.load();
+} // Breaks down "skill1, skill2 , skill3" string
+//          to ['skill1','skill2','skill3'] array
+
+function skillStringToArray(skillString) {
+  if (skillString == '') return [];
+  return skillString.split(',').map(skill => skill.trim());
 }
 
 /***/ })

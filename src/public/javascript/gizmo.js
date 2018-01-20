@@ -1,5 +1,6 @@
 
-// Handling of queue gizmo widgets
+// Handling of queue gizmo widgets.
+// Manages state and DOM (modals to edit skills & name).
 export default function GizmoManager() {
     // Object storing info on filters & names for each gizmo-widget
     this.gizmos = null;
