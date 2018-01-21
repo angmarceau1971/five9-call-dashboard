@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 69);
+/******/ 	return __webpack_require__(__webpack_require__.s = 70);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -69,9 +69,10 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["c"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getReportResults;
 /* unused harmony export getReportData */
+/* harmony export (immutable) */ __webpack_exports__["b"] = getStatistics;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -101,8 +102,12 @@ async function getReportResults(params, type) {
   return data;
 } // ${reportType} : either 'maps' or 'service-level'
 
-async function getReportData(parameters, reportType) {
+function getReportData(parameters, reportType) {
   return request(parameters, 'reports/' + reportType);
+}
+async function getStatistics(filter) {
+  const response = await request(filter, 'statistics');
+  return await response.json();
 } // Make a request to server with given parameters (from getParameters)
 
 async function request(parameters, url = 'statistics') {
@@ -216,7 +221,7 @@ $(document).ready(() => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'https://nathanclonts.com/dashboard/api/';
+const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
 
 
@@ -231,14 +236,15 @@ const API_URL = 'https://nathanclonts.com/dashboard/api/';
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
 function error(err, message = 'Uh oh.') {
-  $('#message').text(`Whoops! An error occurred. ${err.message}. ${message}`);
-  console.log('Error log:');
-  console.error(err); // timestamp
-
+  // Log to console
   let newDate = new Date();
   newDate.setTime(Date.now());
   let dateString = newDate.toTimeString();
   console.log(dateString);
+  console.log('Error log:');
+  console.error(err); // update message
+
+  $('#message').text(`Whoops! An error occurred. ${err.message}. ${message}`);
 } // Nicely formatted time
 
 function formatAMPM(date) {
@@ -262,15 +268,15 @@ function getAuthString(username, password) {
 
 /***/ }),
 
-/***/ 69:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(70);
+module.exports = __webpack_require__(71);
 
 
 /***/ }),
 
-/***/ 70:
+/***/ 71:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -279,7 +285,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(72);
 
 
 
@@ -324,7 +330,7 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
@@ -524,7 +530,7 @@ function jsonToViewData(json, includeFields = ['Skill Name', 'Calls In Queue', '
 
 /***/ }),
 
-/***/ 71:
+/***/ 72:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

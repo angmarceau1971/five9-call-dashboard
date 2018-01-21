@@ -1,9 +1,13 @@
 import LineGraph from '../components/line-graph.vue';
 import DataTable from '../components/data-table.vue';
 import Dashboard from '../components/dashboard.vue';
+import * as api from './api.js';
 import { formatValue } from './scorecard-format.js';
 import { API_URL } from './local_settings.js';
+
+// Node libraries
 const isEmpty = require('ramda/src/isEmpty');
+const sift = require('sift');
 
 let ahtData = [
   {
@@ -175,23 +179,35 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AHT',
-        'value': '10:00'
+        'value': '599'
     },
     {
         'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AHT',
-        'value': '09:30'
-    },
-    {
-        'id': 'widget:2',
-        'component': 'line-graph',
-        'fields': {
-            x: 'Date',
-            y: 'AHT'
+        'value': '650',
+        'filter': {
+            agentGroup: {
+                $in: ['Customer Care', 'Sales'],
+            },
+            agentUsername: {
+                $in: ['<Current User>']
+            },
+            date: {
+                start: '2018-01-01T00:00:00',
+                end: '2018-01-31T00:00:00',
+            }
         }
     },
+    // {
+    //     'id': 'widget:2',
+    //     'component': 'line-graph',
+    //     'fields': {
+    //         x: 'Date',
+    //         y: 'AHT'
+    //     }
+    // },
 ];
 
 const layout = {
@@ -266,7 +282,7 @@ const fields = [
         fieldName: 'AHT',
         calculation: 'handleTime / calls',
         hasGoal: true,
-        goal: 0,
+        goal: 600,
         goalThresholds: [
 
         ],
@@ -274,7 +290,7 @@ const fields = [
         descriptor: 'See these tips for ways to lower handle time!',
         format: {
             type: 'Time',
-            string: 'mm:ss'
+            string: 'm:ss'
         }
     }
 ];
@@ -289,11 +305,17 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         fields: fields,
-        editMode: true
+        editMode: true,
+        ahtData: ahtData
     },
     getters: {
         field: (state) => (fieldName) => {
             return state.fields.find((f) => f.fieldName == fieldName);
+        },
+        getData: (state) => (filter) => {
+            return sift(filter, ahtData.map((d) =>
+                Object.assign({}, d, d._id)
+            ));
         }
     },
     mutations: {
@@ -314,7 +336,8 @@ const vm = new Vue({
     data: {
         layout: layout,
         datasources: datasources,
-        dataValues: dataValues
+        dataValues: dataValues,
+        currentAgent: ''
     },
 
     components: {
@@ -327,44 +350,27 @@ const vm = new Vue({
         },
 
 
-        postAcd: function() {
-            const url = 'statistics';
-            const apiURL = API_URL + url; // defined in api_url.js
-
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+        postAcd: async function() {
+            const params = {
+                filter: {
+                    // agentGroup: {
+                    //     $in: ['Customer Care', 'Sales'],
+                    // },
+                    agentUsername: {
+                        $eq: this.currentAgent.trim()
+                    },
+                    date: {
+                        start: '2018-01-01T00:00:00',
+                        end: '2018-02-01T00:00:00',
+                    },
                 },
-                body: JSON.stringify({
-                    filter: {
-                        agentGroup: {
-                            $in: ['Customer Care', 'Sales'],
-                        },
-                        date: {
-                            start: '2018-01-14T00:00:00',
-                            end: '2018-01-16T00:00:00',
-                        }
-                    }
-                })
+                fields: {
+                    sum: ['calls', 'handleTime']
+                },
+                groupBy: ['agentUsername', 'skill']
             };
-
-            return fetch(apiURL, requestOptions)
-                .then(async (response) => {
-                    // if (response.status == 504) notifyServer504(parameters, url); // debugging
-                    if (!response.ok) {
-                        let bodyText = await response.text();
-                        throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
-                    }
-                    // console.log(await response.json());
-                    download(await response.json(), 'data.json', 'text/plain');
-                    return response;
-                }).then((response) => {
-                    return response;
-                }).catch((err) => {
-                    console.log(err);
-                });
+            const data = await api.getStatistics(params);
+            console.log(data);
         },
 
         clickImport: function() {

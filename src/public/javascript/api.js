@@ -30,10 +30,14 @@ export async function getReportResults(params, type) {
 
 
 // ${reportType} : either 'maps' or 'service-level'
-export async function getReportData(parameters, reportType) {
+export function getReportData(parameters, reportType) {
     return request(parameters, 'reports/' + reportType);
 }
 
+export async function getStatistics(filter) {
+    const response = await request(filter, 'statistics');
+    return await response.json();
+}
 
 // Make a request to server with given parameters (from getParameters)
 async function request(parameters, url='statistics') {

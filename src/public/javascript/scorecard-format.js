@@ -27,7 +27,9 @@ export function formatValue(value, field) {
     if (field.format.type == 'Number') {
         formattedValue = d3.format(field.format.string)(value);
     } else if (field.format.type == 'Time') {
-        formattedValue = moment(value).format(field.format.string);
+        formattedValue = moment('2018-01-01').startOf('day')
+            .seconds(value)
+            .format(field.format.string);
     } else {
         formattedValue = value;
     }

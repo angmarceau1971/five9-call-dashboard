@@ -125,36 +125,66 @@ async function loadData(time) {
  * Get agent statistics from the ACD Queue data source.
  *
  * @param  {Object} filter for MongoDB. Requires date.start and date.end.
- * @return {Array} JSON data matching query
+ * @return {Promise} resolves to JSON data matching query
  */
-async function getScorecardStatistics({ filter }) {
+async function getScorecardStatistics({ filter, fields, groupBy }) {
     // transform filter object into MongoDB-style $match
     function createFilter(obj) {
+        // remove dates - parsed separately
         return Object.keys(obj)
-            // dates parsed separately
             .filter((key) => key != 'date')
             .map((key) => ({
                 [key]: obj[key]
             }));
     }
 
+    // create $group-ings off the fields in the groupBy array
+    function createGroup(groupBy, fields) {
+        let group = {
+            _id: groupBy.reduce((result, field) => {
+                    result[field] = `$${field}`;
+                    return result;
+                }, {})
+        };
+        group = fields.sum.reduce((result, field) => {
+            result[field] = { $sum: `$${field}` };
+            return result;
+        }, group);
+        return group;
+    }
+
     return new Promise((resolve, reject) => {
         AcdFeed.aggregate([
-            { $match: {
-                $and: [
-                    { date: {
-                        $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
-                        $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
-                    } },
-                    ...createFilter(filter)
-                ]
-            } },
-            // Summarize by skill
-            { $group: {
-                _id: { skill: '$skill', agentUsername: '$agentUsername' },
-                calls: { $sum: '$calls' },
-                handleTime: { $sum: '$handleTime' }
-            } }
+            {
+                $match: {
+                    $and: [
+                        {
+                            date: {
+                                $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                                $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                            }
+                        },
+                        ...createFilter(filter)
+                    ]
+                }
+            }, {
+                $addFields: {
+                    dateDay: {
+                        '$dateToString': { format: '%Y-%m-%d', date: '$date' }
+                    }
+                }
+            }, {
+                // $group: createGroup(groupBy, fields)
+                $group: {
+                    _id: {
+                        dateDay: '$dateDay',
+                        skill: '$skill',
+                        agentUsername: '$agentUsername'
+                    },
+                    calls: { $sum: '$calls' },
+                    handleTime: { $sum: '$handleTime' }
+                }
+            }
 
         ], (err, data) => {
             if (err) reject(err);
