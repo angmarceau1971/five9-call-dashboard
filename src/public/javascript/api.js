@@ -2,40 +2,46 @@ import { error, getAuthString } from './utility.js';
 import { API_URL } from './local_settings.js';
 
 ////////////////////////////////////////////////////////////////
-// Functions to retrieve and extract useful data from Five9.
-// These functions interact with our server, which then passes
-// requests on to Five9's server.
+// Functions to retrieve and extract data from Five9.
+// These functions interact with our server, which houses data
+// and formats data originating in Five9 reports.
 ////////////////////////////////////////////////////////////////
 
-// Get real-time stats
-export async function queueStats() {
-    const auth = getAuthString($('.username').val(), $('.password').val());
-    const params = { authorization: auth };
 
-    const response = await request(params, 'queue-stats');
+// Get agent/ACD statistics
+export async function getStatistics(filter) {
+    const response = await request(filter, 'statistics');
     return await response.json();
 }
 
 
-// Get CSV string of report results from Five9
-// ${type}: 'maps' or 'service-level'
-export async function getReportResults(params, type) {
+// Get real-time stats
+export async function queueStats() {
+    return getData({}, 'queue-stats');
+}
+
+/**
+ * Get CSV string of report results from Five9
+ * @param  {Object} params [description]
+ * @param  {String} type   `maps` or `service-level`
+ * @return {Object}        JSON data
+ */
+export function getReportResults(params, type) {
+    return getData(params, `reports/${type}`);
+}
+
+
+/**
+ *  Helper function that pulls credentials from DOM, then makes request to server.
+ * @param  {Object} parameters POSTed to server
+ * @param  {String} endpoint   at server's API
+ * @return {Object}            JSON data
+ */
+async function getData(parameters, endpoint) {
     const auth = getAuthString($('.username').val(), $('.password').val());
-    params['authorization'] = auth;
+    parameters['authorization'] = auth;
 
-    const response = await getReportData(params, type);
-    const data = await response.json();
-    return data;
-}
-
-
-// ${reportType} : either 'maps' or 'service-level'
-export function getReportData(parameters, reportType) {
-    return request(parameters, 'reports/' + reportType);
-}
-
-export async function getStatistics(filter) {
-    const response = await request(filter, 'statistics');
+    const response = await request(parameters, endpoint);
     return await response.json();
 }
 
