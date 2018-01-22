@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import * as filters from '../javascript/filters';
+import * as filters from '../javascript/filters'; // TODO: dropdown for date types
 
 const clone = require('ramda/src/clone');
 
