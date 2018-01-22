@@ -2,6 +2,7 @@ const secure_settings = require('../secure_settings.js');
 const https = require('https');
 const log = require('../helpers/log');
 const parseString = require('xml2js').parseString; // parse XML to JSON
+const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 const xml = require('xml');
 
 
@@ -51,14 +52,13 @@ function sendRequest(message, auth, requestType) {
         // Send the data
         req.write(message);
 
-        // abort on timeout of 300 seconds
+        // abort on timeout of 55 seconds
         req.on('socket', (socket) => {
-            socket.setTimeout(300000);
+            socket.setTimeout(55000);
             socket.on('timeout', () => {
-                log.error(`----- Five9 request timed out`);
                 log.log(`----- Five9 request timed out`);
                 req.abort();
-                reject(new Error('Five9 request timed out.'));
+                reject(new pt.TimeoutError('Five9 request timed out.'));
             });
         });
 
@@ -68,6 +68,7 @@ function sendRequest(message, auth, requestType) {
             reject(e);
         });
     });
+
 }
 
 

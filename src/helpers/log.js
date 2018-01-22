@@ -5,8 +5,10 @@ function message(text) {
     console.log(`[${moment()}] ${text}`);
 }
 
+// Log to both error and normal log file
 function error(text) {
     console.error(`[${moment()}] ${text}`);
+    message(text);
 }
 
 module.exports.message = message;
