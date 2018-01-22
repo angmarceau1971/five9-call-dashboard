@@ -60,22 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 73);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ({
 
 /***/ 0:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
-
-
-/***/ }),
-
-/***/ 2:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -116,7 +106,17 @@ function getAuthString(username, password) {
 
 /***/ }),
 
-/***/ 3:
+/***/ 1:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+
+/***/ 2:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -124,8 +124,8 @@ function getAuthString(username, password) {
 /* harmony export (immutable) */ __webpack_exports__["c"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getReportResults;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract data from Five9.
@@ -251,47 +251,24 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
-
-/***/ }),
-
-/***/ 73:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(74);
+module.exports = __webpack_require__(33);
 
 
 /***/ }),
 
-/***/ 74:
+/***/ 33:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(34);
 
 
 
@@ -514,11 +491,11 @@ function reportTimeRange() {
 
 /***/ }),
 
-/***/ 75:
+/***/ 34:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__local_settings__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__local_settings__ = __webpack_require__(1);
  // Map of U.S. with ZIP3 areas colored by calls offered.
 // Offers methods to create/draw the map and update when new data is received.
 
@@ -645,6 +622,29 @@ class CallMap {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = CallMap;
 
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports) {
+
+// Handles UI interaction for login form
+$(document).ready(() => {
+  // show Login form
+  $('.credentials-cover-toggle').click(() => {
+    $('.credentials-form').removeClass('out-of-the-way');
+    $('.credentials-cover').addClass('out-of-the-way');
+  }); // listen for sign-in button press
+
+  $('.begin-session').click(async event => {
+    // prevent redirection
+    event.preventDefault(); // clear Five9 credentials box and update Login button text
+
+    $('.credentials-form').addClass('out-of-the-way');
+    $('.credentials-cover').removeClass('out-of-the-way');
+    $('.credentials-cover-toggle').text('Logged In');
+  });
+});
 
 /***/ })
 

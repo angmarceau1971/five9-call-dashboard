@@ -43,8 +43,9 @@
 </template>
 
 <script>
-const clone = require('ramda/src/clone');
+import * as filters from '../javascript/filters';
 
+const clone = require('ramda/src/clone');
 
 export default {
     props: ['initialObject'],

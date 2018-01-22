@@ -1,13 +1,13 @@
 import LineGraph from '../components/line-graph.vue';
 import DataTable from '../components/data-table.vue';
 import Dashboard from '../components/dashboard.vue';
-import * as api from './api.js';
-import { formatValue } from './scorecard-format.js';
-import { API_URL } from './local_settings.js';
+import * as api from './api';
+import { formatValue } from './scorecard-format';
+import { API_URL } from './local_settings';
+import * as filters from './filters';
 
 // Node libraries
 const isEmpty = require('ramda/src/isEmpty');
-const clone = require('ramda/src/clone');
 const sift = require('sift');
 
 let ahtData = [
@@ -307,7 +307,7 @@ const store = new Vuex.Store({
             return state.fields.find((f) => f.fieldName == fieldName);
         },
         getData: (state) => (filter, field) => {
-            const filt = cleanFilter(filter, state.currentUser);
+            const filt = filters.clean(filter, state.currentUser);
             let result = sift(filt, state.ahtData.map((d) =>
                 Object.assign({}, d, d._id)
             ));
@@ -327,43 +327,6 @@ const store = new Vuex.Store({
         }
     }
 });
-
-function cleanFilter(original, currentUser) {
-    let filter = clone(original);
-
-    // Clean up dates
-    if (filter.date == '<today>') {
-        let today = moment().startOf('day');
-        filter.dateDay = {
-            $gte: today.toDate(),
-            $lt:  today.add(1, 'days').toDate()
-        }
-    }
-    else if (filter.date == '<yesterday>') {
-        let today = moment().$gteOf('day');
-        filter.dateDay = {
-            $gte: today.add(-1, 'days').toDate(),
-            $lt:  today.toDate()
-        }
-    }
-    else if (filter.date == '<month-to-date>') {
-        filter.dateDay = {
-            $gte: moment().startOf('month').toDate(),
-            $lt:  moment().endOf('month').toDate()
-        }
-    }
-    // @todo - may want datetimes
-    delete filter.date;
-
-    // Insert actual username
-    if (filter.agentUsername.$in.includes('<current user>')) {
-        filter.agentUsername.$in[
-            filter.agentUsername.$in.indexOf('<current user>')
-        ] = currentUser;
-    }
-
-    return filter;
-}
 
 
 const dataValues = {
