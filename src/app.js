@@ -171,12 +171,12 @@ app.post('/api/reports/customers', async (req, res) => {
 async function handleReportRequest(req, res, dataGetter) {
     try {
         // // Authenticate user
-        // const hasPermission = await verify.hasPermission(req.body['authorization']);
-        // if (!hasPermission) {
-        //     res.set('Content-Type', 'application/text');
-        //     res.status(401).send('Could not authenticate your user.');
-        //     return;
-        // }
+        const hasPermission = await verify.hasPermission(req.body['authorization']);
+        if (!hasPermission) {
+            res.set('Content-Type', 'application/text');
+            res.status(401).send('Could not authenticate your user.');
+            return;
+        }
 
         // Send data as response when loaded
         async function sendResponse() {

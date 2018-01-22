@@ -8,7 +8,8 @@ module.exports = {
     entry: {
         scorecard: ['./src/public/javascript/scorecard.js'],
         queues: ['./src/public/javascript/queue-dashboard.js'],
-        map: ['./src/public/javascript/maps-dashboard.js']
+        map: ['./src/public/javascript/maps-dashboard.js'],
+        admin: ['./src/public/javascript/admin.js']
     },
 
     output: {

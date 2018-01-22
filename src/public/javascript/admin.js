@@ -1,3 +1,8 @@
+import './interactions';
+import * as api from './api';
+import { API_URL } from './local_settings';
+import { getAuthString } from './utility';
+
 // Handles UI interaction for login form
 
 $(document).ready(() => {

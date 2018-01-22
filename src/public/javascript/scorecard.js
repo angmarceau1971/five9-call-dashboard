@@ -7,6 +7,7 @@ import { API_URL } from './local_settings.js';
 
 // Node libraries
 const isEmpty = require('ramda/src/isEmpty');
+const clone = require('ramda/src/clone');
 const sift = require('sift');
 
 let ahtData = [
@@ -179,41 +180,33 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AHT',
-        'value': '599'
+        'value': 599,
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            date: '<today>'
+        }
     },
     {
         'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AHT',
-        'value': '650',
+        'value': 650,
         'filter': {
-            agentGroup: {
-                $in: ['Customer Care', 'Sales'],
-            },
             agentUsername: {
-                $in: ['<Current User>']
+                $in: ['<current user>']
             },
-            date: {
-                start: '2018-01-01T00:00:00',
-                end: '2018-01-31T00:00:00',
-            }
+            date: '<month-to-date>'
         }
-    },
-    // {
-    //     'id': 'widget:2',
-    //     'component': 'line-graph',
-    //     'fields': {
-    //         x: 'Date',
-    //         y: 'AHT'
-    //     }
-    // },
+    }
 ];
 
 const layout = {
     cards: [
-        closeRate,
-        dtv,
+        // closeRate,
+        // dtv,
         aht
     ]
 };
@@ -306,24 +299,72 @@ const store = new Vuex.Store({
     state: {
         fields: fields,
         editMode: true,
-        ahtData: ahtData
+        ahtData: ahtData,
+        currentUser: ''
     },
     getters: {
         field: (state) => (fieldName) => {
             return state.fields.find((f) => f.fieldName == fieldName);
         },
-        getData: (state) => (filter) => {
-            return sift(filter, ahtData.map((d) =>
+        getData: (state) => (filter, field) => {
+            const filt = cleanFilter(filter, state.currentUser);
+            let result = sift(filt, state.ahtData.map((d) =>
                 Object.assign({}, d, d._id)
             ));
+            console.log(result);
+            return result;
         }
     },
     mutations: {
         toggleEditMode(state) {
             state.editMode = !state.editMode;
+        },
+        updateData(state, newData) {
+            state.ahtData = newData;
+        },
+        updateUser(state, newUsername) {
+            state.currentUser = newUsername;
         }
     }
 });
+
+function cleanFilter(original, currentUser) {
+    let filter = clone(original);
+
+    // Clean up dates
+    if (filter.date == '<today>') {
+        let today = moment().startOf('day');
+        filter.dateDay = {
+            $gte: today.toDate(),
+            $lt:  today.add(1, 'days').toDate()
+        }
+    }
+    else if (filter.date == '<yesterday>') {
+        let today = moment().$gteOf('day');
+        filter.dateDay = {
+            $gte: today.add(-1, 'days').toDate(),
+            $lt:  today.toDate()
+        }
+    }
+    else if (filter.date == '<month-to-date>') {
+        filter.dateDay = {
+            $gte: moment().startOf('month').toDate(),
+            $lt:  moment().endOf('month').toDate()
+        }
+    }
+    // @todo - may want datetimes
+    delete filter.date;
+
+    // Insert actual username
+    if (filter.agentUsername.$in.includes('<current user>')) {
+        filter.agentUsername.$in[
+            filter.agentUsername.$in.indexOf('<current user>')
+        ] = currentUser;
+    }
+
+    return filter;
+}
+
 
 const dataValues = {
     'AHT': ahtData
@@ -336,12 +377,22 @@ const vm = new Vue({
     data: {
         layout: layout,
         datasources: datasources,
-        dataValues: dataValues,
-        currentAgent: ''
+        dataValues: dataValues
     },
 
     components: {
         'dashboard': Dashboard
+    },
+
+    computed: {
+        user: {
+            get() {
+                return this.$store.state.currentUser
+            },
+            set(value) {
+                this.$store.commit('updateUser', value)
+            }
+        }
     },
 
     methods: {
@@ -357,7 +408,7 @@ const vm = new Vue({
                     //     $in: ['Customer Care', 'Sales'],
                     // },
                     agentUsername: {
-                        $eq: this.currentAgent.trim()
+                        $eq: this.$store.state.currentUser.trim()
                     },
                     date: {
                         start: '2018-01-01T00:00:00',
@@ -370,7 +421,13 @@ const vm = new Vue({
                 groupBy: ['agentUsername', 'skill']
             };
             const data = await api.getStatistics(params);
-            console.log(data);
+            let cleaned = data.map((d) => {
+                d['dateDay'] = moment(d['dateDay']).toDate();
+                d._id.dateDay = moment(d._id.dateDay).toDate()
+                return d;
+            });
+            console.log(cleaned);
+            this.$store.commit('updateData', cleaned);
         },
 
         clickImport: function() {
