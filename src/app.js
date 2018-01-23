@@ -172,7 +172,7 @@ async function handleReportRequest(req, res, dataGetter) {
     try {
         // // Authenticate user
         console.log(app.settings.env);
-        if (app.settings.env == 'production') throw Error('auth check!');
+        if (app.settings.env != 'development') throw Error('auth check!');
         // const hasPermission = await verify.hasPermission(req.body['authorization']);
         // if (!hasPermission) {
         //     res.set('Content-Type', 'application/text');

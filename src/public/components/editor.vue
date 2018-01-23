@@ -24,6 +24,15 @@
             <h3>Field</h3>
             <input v-model="newObject.fieldName" />
 
+            <h3>Date</h3>
+            <select name="date-dropdown"
+                v-model="newObject.filter.date">
+                <option
+                    v-for="option in dateOptions"
+                    :value="option"
+                >{{ option }}</option>
+            </select>
+
             <div class="button-wrapper">
                 <button
                     @click="exit(true)"
@@ -42,6 +51,7 @@
     </div>
 </template>
 
+
 <script>
 import * as filters from '../javascript/filters'; // TODO: dropdown for date types
 
@@ -52,7 +62,8 @@ export default {
     data: function() {
         return {
             editingNow: false,
-            newObject: {}
+            newObject: {},
+            dateOptions: filters.dateOptions()
         }
     },
     // Create a copy of the passed-in object on creation
@@ -67,6 +78,7 @@ export default {
 
         },
         exit: function(saveChanges) {
+            console.log(this.newObject);
             this.editingNow = false;
             if (saveChanges) {
                 this.$emit('modify-widget', this.newObject);
@@ -87,6 +99,10 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
+}
+
+.edit-form {
+    top: -100px;
 }
 
 /* Buttons to edit card and/or add widgets */

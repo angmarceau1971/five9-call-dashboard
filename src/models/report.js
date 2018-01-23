@@ -8,6 +8,8 @@ const csv = require('csvtojson'); // CSV parsing
 const five9 = require('../helpers/five9-interface'); // Five9 interface helper functions
 const log = require('../helpers/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
+const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
+
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -284,6 +286,38 @@ async function getData(timeFilter, reportModel) {
  */
 async function refreshDatabase(time, reportModel, reportName) {
     log.message(`Updating Report database with ${reportName}`);
+    let csvData;
+
+    // Get CSV data
+    // Calls by zips data
+    const reportParameters = five9.getParameters('runReport', null,
+                        criteriaTimeStart=time.start, criteriaTimeEnd=time.end, reportName);
+
+    // If Five9 times out, respond to pending data requests with last available data
+    try {
+        csvData = await five9.getReportResults(reportParameters);
+    } catch (err) {
+        if (err instanceof pt.TimeoutError) {
+            log.error('Report: Five9 request timed out. Sending stale data.');
+            callbackUpdateListeners();
+            return new Promise((resolve) => resolve(null));
+        }
+        throw err;
+    }
+    const csvHeader = csvData.substr(0, csvData.indexOf('\n'));
+
+    // Parse CSV data into `data` array
+    const data = [];
+    await new Promise((resolve, reject) => { // wrap in promise to allow await
+        csv({ delimiter: ',', headers: getHeadersFromCsv(csvHeader) })
+            .fromString(csvData)
+            .on('json', (res) => {
+                let datum = parseRow(reportModel, res);
+                data.push(datum);
+            })
+            .on('done', () => resolve(data))
+            .on('error', reject);
+    });
 
     // Remove today's old data. (Wrapped in Promise to use await)
     await new Promise ((resolve, reject) => {
@@ -300,26 +334,6 @@ async function refreshDatabase(time, reportModel, reportName) {
                 resolve(success);
             }
         });
-    });
-
-    // Get CSV data
-    // Calls by zips data
-    const reportParameters = five9.getParameters('runReport', null,
-                        criteriaTimeStart=time.start, criteriaTimeEnd=time.end, reportName);
-    const csvData = await five9.getReportResults(reportParameters);
-    const csvHeader = csvData.substr(0, csvData.indexOf('\n'));
-
-    // Parse CSV data into `data` array
-    const data = [];
-    await new Promise((resolve, reject) => { // wrap in promise to allow await
-        csv({ delimiter: ',', headers: getHeadersFromCsv(csvHeader) })
-            .fromString(csvData)
-            .on('json', (res) => {
-                let datum = parseRow(reportModel, res);
-                data.push(datum);
-            })
-            .on('done', () => resolve(data))
-            .on('error', reject);
     });
 
     // Insert the new data

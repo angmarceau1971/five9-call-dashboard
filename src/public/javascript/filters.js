@@ -23,6 +23,12 @@ export function dateOptions() {
     return Object.keys(dateMatcher);
 }
 
+export function prettifyDateOption(option) {
+    // remove brackets
+    option.replace(/[<|>]/, '');
+
+}
+
 const dateMatcher = {
     '<today>': function() {
         let today = moment().startOf('day');
@@ -32,7 +38,7 @@ const dateMatcher = {
         }
     },
     '<yesterday>': function() {
-        let today = moment().$gteOf('day');
+        let today = moment().startOf('day');
         return {
             $gte: today.add(-1, 'days').toDate(),
             $lt:  today.toDate()

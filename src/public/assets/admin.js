@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 35);
+/******/ 	return __webpack_require__(__webpack_require__.s = 77);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -116,7 +116,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -251,22 +251,45 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 35:
+/***/ 7:
+/***/ (function(module, exports) {
+
+// Handles UI interaction for login form
+$(document).ready(() => {
+  // show Login form
+  $('.credentials-cover-toggle').click(() => {
+    $('.credentials-form').removeClass('out-of-the-way');
+    $('.credentials-cover').addClass('out-of-the-way');
+  }); // listen for sign-in button press
+
+  $('.begin-session').click(async event => {
+    // prevent redirection
+    event.preventDefault(); // clear Five9 credentials box and update Login button text
+
+    $('.credentials-form').addClass('out-of-the-way');
+    $('.credentials-cover').removeClass('out-of-the-way');
+    $('.credentials-cover-toggle').text('Logged In');
+  });
+});
+
+/***/ }),
+
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(36);
+module.exports = __webpack_require__(78);
 
 
 /***/ }),
 
-/***/ 36:
+/***/ 78:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__local_settings__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utility__ = __webpack_require__(0);
 
@@ -335,29 +358,6 @@ $(document).ready(() => {
     }).catch(err => {
       $('.message').text(`Whoops! ${err}`);
     });
-  });
-});
-
-/***/ }),
-
-/***/ 4:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
   });
 });
 
