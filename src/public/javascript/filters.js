@@ -1,5 +1,11 @@
 const clone = require('ramda/src/clone');
 
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server.
+ * @param  {Object} original    filter from widget
+ * @param  {String} currentUser current user's username
+ * @return {Object}             cleaned up filter for server
+ */
 export function clean(original, currentUser) {
     let filter = clone(original);
 
