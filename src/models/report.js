@@ -369,9 +369,8 @@ function parseRow(model, row) {
 
 
 
-
 // Calls fun() once database is finished updating
-async function addUpdateListener(fun) {
+async function onReady(fun) {
     function wait(ms) {
         return new Promise((resolve, reject) => {
             setTimeout(resolve, ms);
@@ -379,17 +378,16 @@ async function addUpdateListener(fun) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 60000) {
-        log.message(`Report.addUpdateListener called while database is updating; waiting 1000ms`);
+        log.message(`Report.onReady called while database is updating; waiting 1000ms`);
         waited += 1000;
         await wait(1000);
     }
-
     fun();
 }
 
 
 module.exports.getHeadersFromCsv = getHeadersFromCsv;
-module.exports.addUpdateListener = addUpdateListener;
+module.exports.onReady = onReady;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;

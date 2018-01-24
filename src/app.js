@@ -120,7 +120,7 @@ app.post('/api/queue-stats', async (req, res) => {
                 res.status(500).send(`An error occurred on the server while getting queue stats: ${err}`);
             }
         }
-        queue.addUpdateListener(sendResponse);
+        queue.onReady(sendResponse);
     } catch (err) {
         log.error('Error during api/queue-stats: ' + JSON.stringify(err));
         res.set('Content-Type', 'application/text');
@@ -190,7 +190,7 @@ async function handleReportRequest(req, res, dataGetter) {
                 res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
             }
         }
-        report.addUpdateListener(sendResponse);
+        report.onReady(sendResponse);
 
     } catch (err) {
         log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
