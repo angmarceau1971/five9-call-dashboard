@@ -379,7 +379,7 @@ async function addUpdateListener(fun) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 60000) {
-        log.message(`Users.isActive called while database is updating; waiting 1000ms`);
+        log.message(`Report.addUpdateListener called while database is updating; waiting 1000ms`);
         waited += 1000;
         await wait(1000);
     }
