@@ -6,90 +6,13 @@ const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 const xml = require('xml');
 
 
-// Create a request to the Five9 Statistics API.
-// Returns promise.
-function sendRequest(message, auth, requestType) {
-    let path;
-    if (requestType == 'statistics') {
-        path = '/wssupervisor/v9_5/SupervisorWebService';
-    } else if (requestType == 'configuration') {
-        path = '/wsadmin/v9_5/AdminWebService';
-    } else {
-        throw new Error(`requestType ${requestType} is not a valid type in sendRequest!`);
-    }
-
-    // Options for HTTP requests
-    const options = {
-        hostname: 'api.five9.com',
-        path: path,
-        method: 'POST',
-        headers: {
-            'Authorization': 'Basic ' + auth,
-            'Content-Type': 'text/xml;charset=UTF-8',
-            'Content-Length': Buffer.byteLength(message),
-            'SOAPAction': ''
-        }
-    };
-
-    // Wrap in promise
-    return new Promise((resolve, reject) => {
-        // Create the HTTP request
-        var req = https.request(options, (res) => {
-            //console.log('\n---------------------------------------');
-            //console.log('---- Status:', res.statusCode, res.statusMessage);
-            //console.log('---- Headers:', res.headers);
-
-            var data = [];
-            res.on('data', (d) => {
-                data.push(d);
-            });
-            res.on('end', () => {
-                var dataString = data.join('');
-                resolve({ body: dataString, statusCode: res.statusCode });
-            });
-        });
-
-        // Send the data
-        req.write(message);
-
-        // abort on timeout of 55 seconds
-        req.on('socket', (socket) => {
-            socket.setTimeout(55000);
-            socket.on('timeout', () => {
-                log.log(`----- Five9 request timed out`);
-                req.abort();
-                reject(new pt.TimeoutError('Five9 request timed out.'));
-            });
-        });
-
-        // Handle errors
-        req.on('error', (e) => {
-            log.error(e);
-            reject(e);
-        });
-    });
-
-}
-
-
 // Request - utility function for Five9 requests. Returns JSON object.
-async function request(params, requestType, multipleReturns) {
+async function request(params, requestType, multipleReturns=false) {
     const soap = jsonToSOAP(params, requestType);
     const response = await sendRequest(soap, params.authorization, requestType);
-    let jsonResult;
-    await parseString(response.body, (err, result) => {
-        jsonResult = jsonToReturnValue(result, params.service, multipleReturns);
-    });
-
-    let fault = getFaultStringFromData(jsonResult);
-    if (fault != '') {
-        const msg = `Request issue for ${requestType}: ${fault}`;
-        log.error(msg);
-        throw new Error(msg);
-    }
-
-    return jsonResult;
+    return responseToJson(response.body, params.service, multipleReturns);
 }
+
 
 // Opens a statistics API session, if not already open
 async function openStatisticsSession() {
@@ -117,6 +40,7 @@ async function openStatisticsSession() {
     return response;
 }
 
+
 // Get CSV string of report results from Five9
 async function getReportResults(params) {
     var reportResults;
@@ -135,6 +59,7 @@ async function getReportResults(params) {
     return reportResult;
 }
 
+
 // Access the Five9 `getUsersGeneralInfo` endpoint, returning the return value
 // from there as JSON.
 async function getUsersGeneralInfo() {
@@ -143,28 +68,51 @@ async function getUsersGeneralInfo() {
     return result;
 }
 
-// Gets the actual returned value/data out of JSON from the server.
-// @param returnMultiple - include multiple data points from the SOAP `return`
-//                         value. true for getUsersGeneralInfo.
-function jsonToReturnValue(json, type, returnMultiple=false) {
+
+/**
+ * Gets the actual returned value/data out of JSON from the server.
+ * @param  {Object}  json                   JSON returned from Five9 API
+ * @param  {String}  service                request endpoint
+ * @param  {Boolean} [returnMultiple] include multiple data points from the SOAP `return`
+ *                                           value. true for getUsersGeneralInfo.
+ * @return {String}                         Value returned by API
+ */
+async function responseToJson(soap, service, returnMultiple) {
+    let response;
+    await parseString(soap, (err, result) => {
+        if (err) {
+            log.error(err);
+            throw new Error(`Error parsing Five9 response: ${err.toString()}`);
+        }
+
+        let fault = getFaultStringFromData(result);
+        if (fault != '') {
+            throw new Error(`Five9 responded to ${service} with fault: ${fault}`);
+        }
+        response = result['env:Envelope']['env:Body'][0][`ns2:${service}Response`][0]['return'];
+    });
+
     if (returnMultiple) {
-        return json['env:Envelope']['env:Body'][0]['ns2:'+type+'Response'][0]
-                   ['return'];
-   } else {
-       return json['env:Envelope']['env:Body'][0]['ns2:'+type+'Response'][0]
-                  ['return'][0];
-   }
+        return response;
+    } else {
+        return response[0];
+    }
 }
 
-
-// takes JSON from server and returns text within 'faultstring' tag (if existant)
+/**
+ * takes JSON from server and returns text within 'faultstring' tag
+ * @param  {Object} data JSON from Five9 API
+ * @return {String}       fault string / description
+ */
 function getFaultStringFromData(data) {
     try {
         return data['env:Envelope']['env:Body'][0]['env:Fault'][0]['faultstring'];
     } catch (err) {
-        return '';
+        if (err instanceof TypeError) return '';
+        else throw err;
     }
 }
+
 
 // Given a requestType, returns JSON to submit to server in POST request.
 // Builds in authorization, so this should only be used after authenticating
@@ -275,6 +223,67 @@ function jsonToSOAP(json, requestType) {
 }
 
 
+// Create a request to the Five9 Statistics API.
+// Returns promise.
+function sendRequest(message, auth, requestType) {
+    let path;
+    if (requestType == 'statistics') {
+        path = '/wssupervisor/v9_5/SupervisorWebService';
+    } else if (requestType == 'configuration') {
+        path = '/wsadmin/v9_5/AdminWebService';
+    } else {
+        throw new Error(`requestType ${requestType} is not a valid type in sendRequest!`);
+    }
+
+    // Options for HTTP requests
+    const options = {
+        hostname: 'api.five9.com',
+        path: path,
+        method: 'POST',
+        headers: {
+            'Authorization': 'Basic ' + auth,
+            'Content-Type': 'text/xml;charset=UTF-8',
+            'Content-Length': Buffer.byteLength(message),
+            'SOAPAction': ''
+        }
+    };
+
+    // Wrap in promise
+    return new Promise((resolve, reject) => {
+        // Create the HTTP request
+        var req = https.request(options, (res) => {
+            var data = [];
+            res.on('data', (d) => {
+                data.push(d);
+            });
+            res.on('end', () => {
+                var dataString = data.join('');
+                resolve({ body: dataString, statusCode: res.statusCode });
+            });
+        });
+
+        // Send the data
+        req.write(message);
+
+        // abort on timeout of 55 seconds
+        req.on('socket', (socket) => {
+            socket.setTimeout(55000);
+            socket.on('timeout', () => {
+                log.log(`----- Five9 request timed out`);
+                req.abort();
+                reject(new pt.TimeoutError('Five9 request timed out.'));
+            });
+        });
+
+        // Handle errors
+        req.on('error', (e) => {
+            log.error(e);
+            reject(e);
+        });
+    });
+}
+
+
 module.exports.jsonToSOAP = jsonToSOAP;
 module.exports.request = request;
 module.exports.sendRequest = sendRequest;
@@ -282,3 +291,4 @@ module.exports.getParameters = getParameters;
 module.exports.getReportResults = getReportResults;
 module.exports.getUsersGeneralInfo = getUsersGeneralInfo;
 module.exports.openStatisticsSession = openStatisticsSession;
+module.exports.responseToJson = responseToJson;
