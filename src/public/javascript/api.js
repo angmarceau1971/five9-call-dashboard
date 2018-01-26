@@ -13,7 +13,7 @@ export async function queueStats() {
     const params = { authorization: auth };
 
     const response = await request(params, 'queue-stats');
-    return await response.json();
+    return response.json();
 }
 
 
@@ -24,8 +24,7 @@ export async function getReportResults(params, type) {
     params['authorization'] = auth;
 
     const response = await getReportData(params, type);
-    const data = await response.json();
-    return data;
+    return response.json();
 }
 
 
@@ -58,8 +57,6 @@ async function request(parameters, url='statistics') {
             return response;
         }).then((response) => {
             return response;
-        }).catch((err) => {
-            error(err);
         });
 }
 

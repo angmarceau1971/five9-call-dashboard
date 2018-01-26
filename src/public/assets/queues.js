@@ -89,7 +89,7 @@ async function queueStats() {
     authorization: auth
   };
   const response = await request(params, 'queue-stats');
-  return await response.json();
+  return response.json();
 } // Get CSV string of report results from Five9
 // ${type}: 'maps' or 'service-level'
 
@@ -97,8 +97,7 @@ async function getReportResults(params, type) {
   const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
   params['authorization'] = auth;
   const response = await getReportData(params, type);
-  const data = await response.json();
-  return data;
+  return response.json();
 } // ${reportType} : either 'maps' or 'service-level'
 
 async function getReportData(parameters, reportType) {
@@ -127,8 +126,6 @@ async function request(parameters, url = 'statistics') {
     return response;
   }).then(response => {
     return response;
-  }).catch(err => {
-    Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["a" /* error */])(err);
   });
 }
 
@@ -230,15 +227,16 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
-function error(err, message = 'Uh oh.') {
-  $('#message').text(`Whoops! An error occurred. ${err.message}. ${message}`);
-  console.log('Error log:');
-  console.error(err); // timestamp
-
+function error(err, message = '') {
+  // timestamp
   let newDate = new Date();
   newDate.setTime(Date.now());
   let dateString = newDate.toTimeString();
-  console.log(dateString);
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
 } // Nicely formatted time
 
 function formatAMPM(date) {
@@ -332,15 +330,14 @@ async function runQueueDashboard() {
       try {
         slData = await __WEBPACK_IMPORTED_MODULE_1__api__["a" /* getReportResults */](time, 'service-level'); // slData = [];
       } catch (err) {
-        Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data.`);
-        $('#message').text('An error occurred while retrieving service level data.');
+        Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
         slData = [];
       } // Update the view / DOM
 
 
       refreshView(data, slData);
     } catch (err) {
-      Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `Server responded unexpectedly, with error: ${err}. You authorized?`);
+      Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err);
     } // restart loop
 
 

@@ -1,15 +1,16 @@
 
 // Send out an error alert in console and on the page.
-export function error(err, message='Uh oh.') {
-    $('#message').text(`Whoops! An error occurred. ${err.message}. ${message}`);
-    console.log('Error log:');
-    console.error(err);
-
+export function error(err, message='') {
     // timestamp
     let newDate = new Date();
     newDate.setTime(Date.now());
     let dateString = newDate.toTimeString();
     console.log(dateString);
+
+    // Post to page
+    $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+    console.log('Error log:');
+    console.error(err);
 }
 
 // Nicely formatted time
