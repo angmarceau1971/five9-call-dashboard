@@ -22,9 +22,9 @@ const Users = mongoose.model('Users', usersSchema);
 // @param username - User to check
 // @return Boolean - This is an active user
 async function isActive(username) {
-    function wait(t) {
+    function wait(ms) {
         return new Promise((resolve, reject) => {
-            setTimeout(resolve, t);
+            setTimeout(resolve, ms);
         });
     }
     let waited = 0;

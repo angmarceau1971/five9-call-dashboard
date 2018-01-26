@@ -299,7 +299,6 @@ async function refreshDatabase(time, reportModel, reportName) {
     } catch (err) {
         if (err instanceof pt.TimeoutError) {
             log.error('Report: Five9 request timed out. Sending stale data.');
-            callbackUpdateListeners();
             return new Promise((resolve) => resolve(null));
         }
         throw err;
@@ -344,7 +343,6 @@ async function refreshDatabase(time, reportModel, reportName) {
                 log.error(`Error inserting data in report model: ${err}`);
                 reject(err);
             }
-            callbackUpdateListeners();
             resolve(docs);
         });
     });
@@ -400,29 +398,26 @@ function parseRow(model, row) {
 }
 
 
-// Store callbacks that come in while the database is updating
-// Once DB update's finished, call them back in refreshDatabase()
-let updateListeners = [];
-async function addUpdateListener(fun) {
-    if (currentlyUpdatingData) {
-        log.message(`API request arrived while updating Report database. Adding updateListener.`);
-        updateListeners.push(fun);
-    } else {
-        fun();
-    }
-}
 
-async function callbackUpdateListeners() {
-    for (var i=0; i < updateListeners.length; i++) {
-        let listenerFunction = updateListeners.pop();
-        log.message(`callbackUpdateListeners after Report refresh: calling ${listenerFunction.name}`);
-        listenerFunction();
+// Calls fun() once database is finished updating
+async function onReady(fun) {
+    function wait(ms) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, ms);
+        });
     }
+    let waited = 0;
+    while (currentlyUpdatingData && waited < 60000) {
+        log.message(`Report.onReady called while database is updating; waiting 1000ms`);
+        waited += 1000;
+        await wait(1000);
+    }
+    fun();
 }
 
 
 module.exports.getHeadersFromCsv = getHeadersFromCsv;
-module.exports.addUpdateListener = addUpdateListener;
+module.exports.onReady = onReady;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;

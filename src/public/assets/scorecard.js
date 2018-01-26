@@ -383,7 +383,20 @@ function _curry1(fn) {
 module.exports = _curry1;
 
 /***/ }),
+<<<<<<< HEAD
 /* 5 */
+=======
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+/* 3 */
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 /***/ (function(module, exports) {
 
 /*
@@ -762,9 +775,15 @@ function formatValue(value, field) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(32);
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(30);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 /* script */
 
 /* template */
@@ -812,12 +831,21 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(40);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(26)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(39);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(24)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -876,12 +904,21 @@ module.exports = _has;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(41);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(22)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(40);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(20)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -1996,7 +2033,11 @@ var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+<<<<<<< HEAD
 var update = __webpack_require__(6)("7034c06e", content, false);
+=======
+var update = __webpack_require__(4)("7034c06e", content, false);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2015,7 +2056,11 @@ if(false) {
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 exports = module.exports = __webpack_require__(5)(true);
+=======
+exports = module.exports = __webpack_require__(3)(true);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // imports
 
 
@@ -2295,7 +2340,11 @@ var content = __webpack_require__(27);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+<<<<<<< HEAD
 var update = __webpack_require__(6)("5e100a93", content, false);
+=======
+var update = __webpack_require__(4)("5e100a93", content, false);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2314,7 +2363,11 @@ if(false) {
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 exports = module.exports = __webpack_require__(5)(true);
+=======
+exports = module.exports = __webpack_require__(3)(true);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // imports
 
 
@@ -2387,10 +2440,17 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(31);
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(29);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 /* script */
 
 /* template */
@@ -2542,12 +2602,21 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(39);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(34)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(38);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(32)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -2603,7 +2672,11 @@ var content = __webpack_require__(35);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+<<<<<<< HEAD
 var update = __webpack_require__(6)("f189e898", content, false);
+=======
+var update = __webpack_require__(4)("f189e898", content, false);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2622,12 +2695,20 @@ if(false) {
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 exports = module.exports = __webpack_require__(5)(true);
+=======
+exports = module.exports = __webpack_require__(3)(true);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // imports
 
 
 // module
+<<<<<<< HEAD
 exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?71a045b5"],"names":[],"mappings":";AAgGA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n        <button\r\n            class=\"add-button\"\r\n            @click=\"add\"\r\n        >+</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <input v-model=\"newObject.fieldName\" />\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n        },\r\n        add: function() {\r\n\r\n        },\r\n        exit: function(saveChanges) {\r\n            console.log(this.newObject);\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+=======
+exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?e15d0c46"],"names":[],"mappings":";AAmFA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n        <button\r\n            class=\"add-button\"\r\n            @click=\"add\"\r\n        >+</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <input v-model=\"newObject.fieldName\" />\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {}\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n        },\r\n        add: function() {\r\n\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 
 // exports
 
@@ -2858,6 +2939,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
+<<<<<<< HEAD
           _c("h3", [_vm._v("Date")]),
           _vm._v(" "),
           _c(
@@ -2897,6 +2979,8 @@ var render = function() {
             })
           ),
           _vm._v(" "),
+=======
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
           _c("div", { staticClass: "button-wrapper" }, [
             _c(
               "button",
@@ -3102,10 +3186,17 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(57);
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(56);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 /* script */
 
 /* template */
@@ -3273,12 +3364,21 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(51);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(45)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(50);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(44)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -3334,7 +3434,11 @@ var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+<<<<<<< HEAD
 var update = __webpack_require__(6)("4911ebf4", content, false);
+=======
+var update = __webpack_require__(4)("4911ebf4", content, false);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3353,7 +3457,11 @@ if(false) {
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 exports = module.exports = __webpack_require__(5)(true);
+=======
+exports = module.exports = __webpack_require__(3)(true);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // imports
 
 
@@ -3555,10 +3663,17 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(50);
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(49);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 /* script */
 
 /* template */
@@ -3841,12 +3956,21 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(56);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(53)
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(55);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(52)
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -3902,7 +4026,11 @@ var content = __webpack_require__(54);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+<<<<<<< HEAD
 var update = __webpack_require__(6)("419b5586", content, false);
+=======
+var update = __webpack_require__(4)("419b5586", content, false);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3921,7 +4049,11 @@ if(false) {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 exports = module.exports = __webpack_require__(5)(true);
+=======
+exports = module.exports = __webpack_require__(3)(true);
+>>>>>>> 8dc03526d03d5bc9fb961c47af9ba82670740935
 // imports
 
 

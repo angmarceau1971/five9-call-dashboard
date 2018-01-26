@@ -64,7 +64,6 @@ async function refreshDatabase() {
         // add to database
         return QueueStats.collection.insert(data, (err, docs) => {
             if (err) log.error(`Error inserting data in report model: ${err}`);
-            callbackUpdateListeners();
         });
     } catch (err) {
         log.error(`Error during QueueStats update. Error: ${JSON.stringify(err)}; `
@@ -78,25 +77,6 @@ async function getData() {
     return await QueueStats.find({});
 }
 
-// Store callbacks that come in while the database is updating
-// Once DB update's finished, call them back in refreshDatabase()
-let updateListeners = [];
-async function addUpdateListener(fun) {
-    if (currentlyUpdatingData) {
-        log.message(`API request arrived while updating QueueStats database. Adding updateListener.`);
-        updateListeners.push(fun);
-    } else {
-        fun();
-    }
-}
-
-async function callbackUpdateListeners() {
-    for (var i=0; i < updateListeners.length; i++) {
-        let listenerFunction = updateListeners.pop();
-        log.message(`callbackUpdateListeners after QueueStats refresh: calling ${listenerFunction.name}`);
-        listenerFunction();
-    }
-}
 
 
 // Return formatted column / key assignments
@@ -140,6 +120,24 @@ function jsonToViewData(json,
 }
 
 
+
+// Calls fun() once database is finished updating
+async function onReady(fun) {
+    function wait(ms) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, ms);
+        });
+    }
+    let waited = 0;
+    while (currentlyUpdatingData && waited < 60000) {
+        log.message(`QueueStats.onReady called while database is updating; waiting 1000ms`);
+        waited += 1000;
+        await wait(1000);
+    }
+    fun();
+}
+
+
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getData = getData;
-module.exports.addUpdateListener = addUpdateListener;
+module.exports.onReady = onReady;
