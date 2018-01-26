@@ -4,6 +4,7 @@
 process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const should = chai.should();
+const assert = chai.assert;
 const five9 = require('../src/helpers/five9-interface');
 const parseString = require('xml2js').parseString; // parse XML to JSON
 
@@ -27,17 +28,13 @@ const faultSoap = `<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/enve
         </env:Body>
     </env:Envelope>`;
 
-describe('Testing fault string description extractor', function() {
+describe('Fault string extractor', function() {
     this.timeout(5000);
-    it('should return fault string', async function(done) {
-        let faultJson;
-        await parseString(faultSoap, (err, result) => {
-            console.log(err);
-            console.log(result);
-            // faultJson = five9.jsonToReturnValue(result, requestType);
-            faultJson = result;
-        });
-        console.log(faultJson);
-        five9.getFaultStringFromData(faultJson).should.eql(faultString);
+    it('should include fault string', async function() {
+        try {
+            let errorsOut = await five9.responseToJson(faultSoap);
+        } catch (err) {
+            err.message.should.have.string(faultString);
+        }
     });
 });

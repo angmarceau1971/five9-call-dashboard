@@ -82,7 +82,7 @@ async function responseToJson(soap, service, returnMultiple) {
     await parseString(soap, (err, result) => {
         if (err) {
             log.error(err);
-            throw new Error(`Error parsing Five9 response: ${err.toString()}`);
+            throw new Error(`Error parsing Five9 response: ${err}`);
         }
 
         let fault = getFaultStringFromData(result);
