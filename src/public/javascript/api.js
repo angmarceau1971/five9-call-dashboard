@@ -97,7 +97,7 @@ export function getParameters(requestType) {
         }
     }
     // Get real-time call stats
-    if (requestType == 'ACDStatus') {
+    if (requestType == 'getStatistics') {
         params = {
             'service': 'getStatistics',
             'settings': [ {
