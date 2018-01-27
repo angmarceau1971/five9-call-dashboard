@@ -15,7 +15,7 @@ const users = require('./users');
 // ${auth} should be base64 encoded 'username:password' string
 async function hasPermission(auth) {
     if (!auth) return false;
-    debugger;
+
     // Log this username
     const decoded = Buffer.from(auth, 'base64').toString();
     const username = decoded.split(':')[0];

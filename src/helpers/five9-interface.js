@@ -1,10 +1,10 @@
-const secure_settings = require('../secure_settings.js');
+const clone = require('ramda/src/clone');
 const https = require('https');
 const log = require('../helpers/log');
 const parseString = require('xml2js').parseString; // parse XML to JSON
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
+const secure_settings = require('../secure_settings.js');
 const xml = require('xml');
-const clone = require('ramda/src/clone');
 
 
 // Request - utility function for Five9 requests. Returns JSON object.
@@ -57,7 +57,6 @@ async function getReportResults(params) {
 
     return reportResult;
 }
-
 
 
 // Access the Five9 `getUsersGeneralInfo` endpoint, returning the return value
@@ -302,7 +301,6 @@ function addSetting(params, setting) {
     if (!temp.settings) {
         temp.settings = [];
     }
-    console.log(temp);
     temp.settings.push(setting);
     return temp;
 }
