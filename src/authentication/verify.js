@@ -30,7 +30,13 @@ async function hasPermission(auth) {
     // Create a statistics request with these credentials
     const params = { 'service': 'getMyPermissions' };
     const requestMessage = five9.jsonToSOAP(params, 'statistics');
-    let response = await five9.sendRequest(requestMessage, auth, 'statistics');
+    let response;
+    try {
+        response = await five9.sendRequest(requestMessage, auth, 'statistics');
+    } catch (err) {
+        log.error(`Error during Five9 authentication: ${err}`);
+        return false;
+    }
 
     // If server responded with success, we're good
     if (response.statusCode == 200) {

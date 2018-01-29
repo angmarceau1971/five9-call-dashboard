@@ -206,7 +206,6 @@ async function handleReportRequest(req, res, dataGetter) {
 app.get('/api/notify-504', async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        log.message(`--------LOGGER: 504 reported by client at ${moment()}`);
         log.error(`--------LOGGER: 504 reported by client at ${moment()}`);
         res.status(200).send('Thanks for the message!');
     } catch (err) {
@@ -218,7 +217,6 @@ app.get('/api/notify-504', async (req, res) => {
 app.post('/api/reboot-server', async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        log.message(`--------LOGGER: reboot requested by client at ${moment()}.`);
         log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
         // Authenticate user
         const hasPermission = await verify.hasPermission(req.body['authorization']);
@@ -254,7 +252,6 @@ app.post('/api/reload-data', async (req, res) => {
 
         await reloadReports(times);
         res.status(200).send(`Report data reloaded for ${JSON.stringify(times)}`);
-
 
     } catch (err) {
         res.status(500).send(`An error occurred on the server while attempting data reload: ${err}.`);
@@ -329,7 +326,6 @@ const server = app.listen(port, async () => {
         };
         connect();
         mongoose.connection.on('disconnected', () => {
-            log.message('DB Disconnected: reconnecting.');
             log.error('DB Disconnected: reconnecting.');
             setTimeout(connect, 3000);
         });

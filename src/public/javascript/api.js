@@ -8,10 +8,15 @@ import { API_URL } from './local_settings.js';
 ////////////////////////////////////////////////////////////////
 
 
+<<<<<<< HEAD
 // Get agent/ACD statistics
 export async function getStatistics(filter) {
     const response = await request(filter, 'statistics');
     return await response.json();
+=======
+    const response = await request(params, 'queue-stats');
+    return response.json();
+>>>>>>> origin/master
 }
 
 
@@ -20,6 +25,7 @@ export async function queueStats() {
     return getData({}, 'queue-stats');
 }
 
+<<<<<<< HEAD
 /**
  * Get CSV string of report results from Five9
  * @param  {Object} params [description]
@@ -28,6 +34,10 @@ export async function queueStats() {
  */
 export function getReportResults(params, type) {
     return getData(params, `reports/${type}`);
+=======
+    const response = await getReportData(params, type);
+    return response.json();
+>>>>>>> origin/master
 }
 
 
@@ -68,8 +78,6 @@ async function request(parameters, url='statistics') {
             return response;
         }).then((response) => {
             return response;
-        }).catch((err) => {
-            error(err);
         });
 }
 
@@ -110,7 +118,7 @@ export function getParameters(requestType) {
         }
     }
     // Get real-time call stats
-    if (requestType == 'ACDStatus') {
+    if (requestType == 'getStatistics') {
         params = {
             'service': 'getStatistics',
             'settings': [ {

@@ -55,8 +55,9 @@ async function refreshDatabase() {
 
     try {
         // Pull in the new stuff
-        params = five9.getParameters('ACDStatus');
+        params = five9.getParameters('getStatistics');
         response = await five9.request(params, 'statistics');
+
         // Get the data into a nice JSON / DB friendly format with keys + values
         // for each document
         data = jsonToViewData(response);
@@ -66,7 +67,7 @@ async function refreshDatabase() {
             if (err) log.error(`Error inserting data in report model: ${err}`);
         });
     } catch (err) {
-        log.error(`Error during QueueStats update. Error: ${JSON.stringify(err)}; `
+        log.error(`Error during QueueStats update. Error: ${err.toString()}; `
                   + `Data: ${JSON.stringify(data)}; `
                   + `openStatisticsSession response: ${JSON.stringify(response)}`);
     }
@@ -86,7 +87,6 @@ function jsonToViewData(json,
                         'CurrentLongestQueueTime', 'AgentsLoggedIn',
                         'AgentsNotReadyForCalls', 'AgentsOnCall',
                         'AgentsReadyForCalls']) {
-
     // Remove spaces from column headers
     let columns = json['columns'][0]['values'][0]['data'];
     columns = columns.map((header, i) => header.replace(/ /g, ''));

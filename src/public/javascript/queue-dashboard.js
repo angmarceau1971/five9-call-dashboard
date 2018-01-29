@@ -57,15 +57,14 @@ async function runQueueDashboard() {
                 slData = await api.getReportResults(time, 'service-level');
                 // slData = [];
             } catch (err) {
-                error(err, `An error occurred when getting service level data.`);
-                $('#message').text('An error occurred while retrieving service level data.');
+                error(err, `An error occurred when getting service level data: ${err}`);
                 slData = [];
             }
 
             // Update the view / DOM
             refreshView(data, slData);
         } catch (err) {
-            error(err, `Server responded unexpectedly, with error: ${err}. You authorized?`);
+            error(err);
         }
 
         // restart loop

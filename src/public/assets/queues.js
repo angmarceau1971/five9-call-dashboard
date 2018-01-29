@@ -134,10 +134,22 @@ const API_URL = 'http://localhost:3000/api/';
 ////////////////////////////////////////////////////////////////
 // Get agent/ACD statistics
 
+<<<<<<< HEAD
 async function getStatistics(filter) {
   const response = await request(filter, 'statistics');
   return await response.json();
 } // Get real-time stats
+=======
+async function queueStats() {
+  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
+  const params = {
+    authorization: auth
+  };
+  const response = await request(params, 'queue-stats');
+  return response.json();
+} // Get CSV string of report results from Five9
+// ${type}: 'maps' or 'service-level'
+>>>>>>> origin/master
 
 async function queueStats() {
   return getData({}, 'queue-stats');
@@ -161,9 +173,19 @@ function getReportResults(params, type) {
 
 async function getData(parameters, endpoint) {
   const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
+<<<<<<< HEAD
   parameters['authorization'] = auth;
   const response = await request(parameters, endpoint);
   return await response.json();
+=======
+  params['authorization'] = auth;
+  const response = await getReportData(params, type);
+  return response.json();
+} // ${reportType} : either 'maps' or 'service-level'
+
+async function getReportData(parameters, reportType) {
+  return request(parameters, 'reports/' + reportType);
+>>>>>>> origin/master
 } // Make a request to server with given parameters (from getParameters)
 
 
@@ -189,8 +211,6 @@ async function request(parameters, url = 'statistics') {
     return response;
   }).then(response => {
     return response;
-  }).catch(err => {
-    Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["a" /* error */])(err);
   });
 }
 
@@ -233,7 +253,7 @@ function getParameters(requestType) {
   } // Get real-time call stats
 
 
-  if (requestType == 'ACDStatus') {
+  if (requestType == 'getStatistics') {
     params = {
       'service': 'getStatistics',
       'settings': [{
@@ -295,15 +315,16 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
-function error(err, message = 'Uh oh.') {
-  $('#message').text(`Whoops! An error occurred. ${err.message}. ${message}`);
-  console.log('Error log:');
-  console.error(err); // timestamp
-
+function error(err, message = '') {
+  // timestamp
   let newDate = new Date();
   newDate.setTime(Date.now());
   let dateString = newDate.toTimeString();
-  console.log(dateString);
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
 } // Nicely formatted time
 
 function formatAMPM(date) {
@@ -398,15 +419,14 @@ async function runQueueDashboard() {
       try {
         slData = await __WEBPACK_IMPORTED_MODULE_1__api__["a" /* getReportResults */](time, 'service-level'); // slData = [];
       } catch (err) {
-        Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data.`);
-        $('#message').text('An error occurred while retrieving service level data.');
+        Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
         slData = [];
       } // Update the view / DOM
 
 
       refreshView(data, slData);
     } catch (err) {
-      Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `Server responded unexpectedly, with error: ${err}. You authorized?`);
+      Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err);
     } // restart loop
 
 
