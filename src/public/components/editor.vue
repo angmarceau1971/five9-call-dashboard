@@ -73,6 +73,10 @@ export default {
     methods: {
         edit: function() {
             this.editingNow = true;
+            // close modal on click outside window
+            document.documentElement.addEventListener('click', function(ev) {
+                if (!this.$el.contains(ev.target)) this.exit();
+            }.bind(this), false);
         },
         add: function() {
 

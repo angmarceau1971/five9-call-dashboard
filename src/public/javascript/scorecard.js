@@ -1,5 +1,3 @@
-import LineGraph from '../components/line-graph.vue';
-import DataTable from '../components/data-table.vue';
 import Dashboard from '../components/dashboard.vue';
 import * as api from './api';
 import { formatValue } from './scorecard-format';

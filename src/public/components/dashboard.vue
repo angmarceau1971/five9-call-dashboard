@@ -54,6 +54,10 @@ export default {
         editCard: function(cardId) {
             this.editingCard = true;
             this.editedCard = this.layout.cards.find((card) => card.id == cardId);
+            // close modal on click outside window
+            document.documentElement.addEventListener('click', function(ev) {
+                if (!this.$el.contains(ev.target)) this.exitEdit(false);
+            }.bind(this), false);
         },
         exitEdit: function(saveChanges, cardId, card) {
             this.editingCard = false;
