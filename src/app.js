@@ -77,6 +77,12 @@ app.get('/admin', async (req, res) => {
     res.sendFile(dir);
 });
 
+// login page for agent dashboard
+app.get('/login', async (req, res) => {
+    let dir = path.join(__dirname + '/public/auth/login.html');
+    res.sendFile(dir);
+});
+
 
 ///////////////////////////
 // API routes to get data
@@ -161,6 +167,17 @@ app.post('/api/reports/customers', async (req, res) => {
 });
 
 
+// Return ZIP3 JSON
+app.get('/api/zip3-data', async (req, res) => {
+    await sendPublicFile('zip3-albers.json', req, res);
+});
+
+// Return U.S. states JSON
+app.get('/api/states', async (req, res) => {
+    await sendPublicFile('states-albers.json', req, res);
+});
+
+
 /**
  * Handles all reporting data requests.
  * @param  {Express request} req
@@ -202,6 +219,10 @@ async function handleReportRequest(req, res, dataGetter) {
     }
 }
 
+
+///////////////////////////
+// Administrative API routes
+///////////////////////////
 // Notify server that a 502 has occurred
 app.get('/api/notify-504', async (req, res) => {
     res.set('Content-Type', 'application/text');
@@ -276,16 +297,6 @@ async function reloadReports(time) {
     return await report.loadData(time);
 }
 
-// Return ZIP3 JSON
-app.get('/api/zip3-data', async (req, res) => {
-    await sendPublicFile('zip3-albers.json', req, res);
-});
-
-// Return U.S. states JSON
-app.get('/api/states', async (req, res) => {
-    await sendPublicFile('states-albers.json', req, res);
-});
-
 /**
  * Send public GeoJSON file in response
  * @param  {String} fileName in /public/ folder
@@ -330,15 +341,15 @@ const server = app.listen(port, async () => {
             setTimeout(connect, 3000);
         });
 
-        // Update customers database from Looker every 8 hours
-        customers.scheduleUpdate(8 * 3600 * 1000);
-
-        // Update queue stats every 15 seconds
-        // Five9 stats API has a limit of 500 requests per hour
-        //      (1 request every 7.2 seconds).
-        queue.scheduleUpdate(15 * 1000);
-        // Start updating call database every 5 minutes
-        report.scheduleUpdate(5 * 60 * 1000);
+        // // Update customers database from Looker every 8 hours
+        // customers.scheduleUpdate(8 * 3600 * 1000);
+        //
+        // // Update queue stats every 15 seconds
+        // // Five9 stats API has a limit of 500 requests per hour
+        // //      (1 request every 7.2 seconds).
+        // queue.scheduleUpdate(15 * 1000);
+        // // Start updating call database every 5 minutes
+        // report.scheduleUpdate(5 * 60 * 1000);
         // Update user list every 12 hours
         users.scheduleUpdate(12 * 60 * 60 * 1000);
 

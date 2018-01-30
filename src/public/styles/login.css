@@ -1,0 +1,84 @@
+
+
+.page-container {
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    background-color: hsl(211, 44%, 94%);
+}
+
+
+.form-container {
+    max-width: 380px;
+    margin: 80px auto 180px;
+    background-color: white;
+    line-height: 1.27em;
+    border: solid 2px hsl(39, 32%, 88%);
+    border-radius: 4px;
+}
+
+.form-container form {
+    margin-top: 0;
+}
+
+.form-header {
+    padding: 30px 30px 15px;
+    border-bottom: solid 1px hsl(180, 7%, 92%);
+}
+.form-header .form-title {
+    margin: 0 0 0.5rem;
+    line-height: 1.7rem;
+}
+
+.form-body {
+    margin-top: 30px;
+    padding: 0 30px;
+}
+
+.form-row {
+    margin-bottom: 15px;
+}
+.form-row label {
+    display: block;
+    padding-left: 3px;
+    margin-bottom: 0.2rem;
+    font-size: 0.875rem;
+    color: hsl(0, 0%, 11%);
+}
+.form-row input {
+    display: block;
+    height: 40px;
+    width: 100%;
+    border: solid 1px hsl(240, 1%, 81%);
+    border-radius: 6px;
+    padding: 0.375rem;
+    line-height: normal;
+}
+
+.form-actions {
+    padding: 15px 30px 30px;
+}
+.form-actions button {
+    background: hsl(211, 71%, 43%);
+    border: solid 1px hsl(211, 71%, 43%);
+    border-radius: 4px;
+    color: white;
+    width: 100%;
+    transition: all .4s;
+    padding: 12px;
+}
+.form-actions button:hover {
+    background: hsl(211, 70%, 33%);
+    border: solid 1px hsl(211, 70%, 33%);
+}
+
+.form-information-container {
+    border-top: solid 1px hsl(240, 1%, 81%);
+    padding: 30px;
+    font-weight: 100;
+}
+
+.form-information-container h4 {
+    margin: 0 0 .5rem;
+    color: hsl(0, 0, 11%);
+}

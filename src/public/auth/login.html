@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Dashboard Login</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="../styles/base.css" rel="stylesheet" type="text/css">
+        <link href="../styles/login.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div class="page-container">
+            <div class="form-container">
+                <form action="/login" method="post">
+                    <div class="form-header">
+                        <h2 class="form-title">Log In</h2>
+                    </div>
+                    <div class="form-error"></div>
+                    <div class="form-body">
+                        <div class="form-row">
+                            <label for="username">Username</label>
+                            <input autofocus="autofocus" name="username" type="email"
+                                required="required" tabindex=1
+                            />
+                        </div>
+                        <div class="form-row">
+                            <label for="password">Password</label>
+                            <input autofocus="autofocus" name="password" type="password"
+                                required="required" tabindex=2
+                            />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="submit-form" name="commit" type="submit">Log In</button>
+                    </div>
+                </form>
+                <div class="form-information-container">
+                    <h4>How to log in?</h4>
+                    <p>
+                        Valid Five9 credentials are required to log in to this dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+    <script src="assets/queues.js" type="text/javascript"></script>
+</html>

@@ -43,6 +43,7 @@
     "moment-timezone": "^0.5.14",
     "mongoose": "^4.12.4",
     "node-sass": "^4.7.2",
+    "passport": "^0.4.0",
     "pm2": "^2.7.2",
     "promise-timeout": "^1.1.1",
     "ramda": "^0.25.0",
