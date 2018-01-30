@@ -60,12 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 74);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105,8 +104,7 @@ function getAuthString(username, password) {
 }
 
 /***/ }),
-
-/***/ 1:
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -115,8 +113,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 
 /***/ }),
-
-/***/ 3:
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -248,8 +245,7 @@ function getParameters(requestType) {
 }
 
 /***/ }),
-
-/***/ 7:
+/* 3 */
 /***/ (function(module, exports) {
 
 // Handles UI interaction for login form
@@ -271,25 +267,28 @@ $(document).ready(() => {
 });
 
 /***/ }),
-
-/***/ 74:
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(75);
+module.exports = __webpack_require__(10);
 
 
 /***/ }),
-
-/***/ 75:
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(11);
 
 
 
@@ -511,8 +510,7 @@ function reportTimeRange() {
 }
 
 /***/ }),
-
-/***/ 76:
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -645,6 +643,5 @@ class CallMap {
 
 
 /***/ })
-
-/******/ });
+/******/ ]);
 //# sourceMappingURL=map.js.map

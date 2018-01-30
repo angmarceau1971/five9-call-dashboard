@@ -14,6 +14,7 @@
 
     <div id="app" class="content-wrapper">
         <button
+            v-if="$store.state.editMode"
             style="width:100%; color:black;"
             @click="postAcd"
         >Post test</button>
@@ -72,7 +73,10 @@
             @delete-card="deleteCard"
         ></dashboard>
 
-        <input v-model="user" placeholder="Agent filter" />
+        <input v-if="$store.state.editMode"
+            v-model="user"
+            placeholder="Emulate user"
+        />
     </div>
     </body>
 

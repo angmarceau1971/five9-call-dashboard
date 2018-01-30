@@ -2,10 +2,10 @@
 Real-time dashboards using Five9 APIs.
 
 ##### Queues :palm_tree:
-* Shows current max wait times, service levels, number of calls waiting, and agents staffed for __groups of skills__. 
+* Shows current max wait times, service levels, number of calls waiting, and agents staffed for __groups of skills__.
 
 ##### Maps :earth_americas:
-* Displays calls received by ZIP3 code. Option to show calls as percentage of customer base from Looker. 
+* Displays calls received by ZIP3 code. Option to show calls as percentage of customer base from Looker.
 
 ##### Scorecard :chart_with_upwards_trend:
 * In-progress, Vue-based dashboard to display agent and team metrics.
@@ -49,19 +49,19 @@ module.exports.LOOKER_FIELD_ZIP_CODE = 'zip.field.name';
 module.exports.LOOKER_FIELD_CUSTOMER_COUNT = 'customer.count.field.name';
 ```
 
-Fire up the server:
+Use webpack to transpile the ES6 and Vue components:
+
+```
+webpack --watch
+```
+
+And fire up the server:
 
 ```
 npm start
 ```
 
-Then travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser. Happy queue-watching!
-
-The agent scorecard dashboards use Vue, so need to be transpiled with:
-
-```
-webpack --watch
-```
+Travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser. Happy queue-watching!
 
 
 ### Testing

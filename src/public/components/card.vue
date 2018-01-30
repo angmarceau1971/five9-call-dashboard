@@ -96,7 +96,8 @@ export default {
     methods: {
         // add a new widget to the card
         addWidget: function() {
-
+            let o = WidgetBase.newObject('prompt user for widget type');
+            console.log(o);
         },
         /**
          * Update a widget in this card

@@ -40,7 +40,6 @@ export default {
             return formatValue(this.value, this.field);
         },
         value: function() {
-            if (!this.filter) return 50; // @todo - git rid of!
             let data = this.$store.getters.getData(this.filter, this.fieldName);
             return sum(data, 'handleTime') / sum(data, 'calls');
         }

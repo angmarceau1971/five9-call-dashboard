@@ -8,10 +8,6 @@
             class="edit-button"
             @click="edit"
         >&#9776;</button>
-        <button
-            class="add-button"
-            @click="add"
-        >+</button>
 
         <!-- Modal form to modify the object -->
         <div class="edit-form modal"
@@ -79,7 +75,6 @@ export default {
             }.bind(this), false);
         },
         add: function() {
-
         },
         exit: function(saveChanges) {
             console.log(this.newObject);

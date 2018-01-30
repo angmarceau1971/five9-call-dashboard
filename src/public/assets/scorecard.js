@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -114,115 +114,6 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -354,10 +245,318 @@ function getParameters(requestType) {
 }
 
 /***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(14);
+module.exports = __webpack_require__(5);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(19);
+
+
+ // Node libraries
+
+const isEmpty = __webpack_require__(67);
+
+const aht = {
+  title: 'Average Handle Time',
+  id: 'card:2',
+  layoutOrder: 2,
+  columns: 1,
+  datasources: ['AHT']
+};
+aht.data = [];
+aht.widgets = [{
+  'id': 'widget:0',
+  'component': 'single-value',
+  'title': 'Today',
+  'fieldName': 'AHT',
+  'value': 599,
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<today>'
+  }
+}, {
+  'id': 'widget:1',
+  'component': 'single-value',
+  'title': 'Month to Date',
+  'fieldName': 'AHT',
+  'value': 650,
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<month-to-date>'
+  }
+}];
+const layout = {
+  cards: [// closeRate,
+  // dtv,
+  aht]
+};
+const datasources = {
+  'DIRECTV': {
+    fields: ['DTV Sales', 'Rolling Total', 'Pacing', 'Delta'],
+    refreshRate: 24 * 3600 // daily
+
+  },
+  'AHT': {
+    fields: ['handleTime', 'calls']
+  }
+};
+const dataValues = {
+  'AHT': []
+};
+Vue.use(Vuex);
+const store = __WEBPACK_IMPORTED_MODULE_1__hub__["b" /* store */];
+const vm = new Vue({
+  el: '#app',
+  store,
+  data: {
+    layout: layout,
+    datasources: datasources,
+    dataValues: dataValues
+  },
+  components: {
+    'dashboard': __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__["a" /* default */]
+  },
+  computed: {
+    user: {
+      get() {
+        return this.$store.state.currentUser;
+      },
+
+      set(value) {
+        this.$store.commit('updateUser', value);
+      }
+
+    }
+  },
+  methods: {
+    updateData: function () {},
+    postAcd: async function () {
+      return __WEBPACK_IMPORTED_MODULE_1__hub__["a" /* loadData */]();
+    },
+    clickImport: function () {
+      this.$refs.fileInput.click();
+    },
+    importLayout: function (event) {
+      const file = event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const contents = JSON.parse(e.target.result);
+        console.log(contents);
+        this.layout = Object.assign({}, contents);
+      }.bind(this);
+
+      reader.readAsText(file);
+    },
+    exportLayout: function () {
+      download(layout, 'test.json', 'text/plain');
+    },
+    addCard: function () {
+      const newCard = {
+        title: 'card:' + this.layout.cards.length,
+        id: 'card:' + this.layout.cards.length,
+        layoutOrder: -1,
+        data: [],
+        widgets: []
+      };
+      console.log(newCard);
+      this.layout.cards.push(newCard);
+    },
+    updateLayout: function (newLayout) {
+      Object.assign(this.layout, newLayout);
+    },
+    updateCard: function (cardId, newCard) {
+      let oldCardIndex = this.layout.cards.findIndex(card => card.id == cardId);
+      let oldCard = this.layout.cards[oldCardIndex]; // Create a new card object that has all properties from the
+      // new card and the old one (to include properties that aren't
+      // defined in `newCard`)
+
+      let newCardComplete = Object.assign({}, oldCard, newCard); // Use `Vue.set` to trigger reactivity
+      // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+
+      Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
+    },
+    deleteCard: function (cardId) {
+      let cardIndex = this.layout.cards.findIndex(card => card.id == cardId);
+      Vue.delete(this.layout.cards, cardIndex);
+    },
+
+    /**
+     * Update a widget. If newWidget is an empty object ({}), delete the
+     * old widget.
+     * @param  {Object} newWidget object to replace old widget with
+     * @param  {String} widgetId
+     * @param  {String} cardId    ID for container card
+     * @return
+     */
+    modifyWidget: function (newWidget, widgetId, cardId) {
+      let card = this.layout.cards.find(c => c.id == cardId);
+      let oldWidgetIndex = card.widgets.findIndex(w => w.id == widgetId);
+      let oldWidget = card.widgets[oldWidgetIndex];
+
+      if (isEmpty(newWidget)) {
+        Vue.delete(card.widgets, oldWidgetIndex);
+      } else {
+        // see updateCard function for explanation
+        let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
+        Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
+      }
+    }
+  }
+});
+
+function download(text, name, type) {
+  var a = document.createElement("a");
+  var file = new Blob([JSON.stringify(text, null, 2)], {
+    type: type
+  });
+  a.href = URL.createObjectURL(file);
+  a.download = name;
+  a.click();
+}
+
+/***/ }),
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(24);
 
 /**
  * Optimized internal one-arity curry function.
@@ -381,7 +580,7 @@ function _curry1(fn) {
 module.exports = _curry1;
 
 /***/ }),
-/* 5 */
+/* 16 */
 /***/ (function(module, exports) {
 
 /*
@@ -463,7 +662,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 6 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -482,7 +681,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(26)
+var listToStyles = __webpack_require__(34)
 
 /*
 type StyleObject = {
@@ -684,14 +883,13 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(36);
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -735,7 +933,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 9 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -806,7 +1004,7 @@ function formatValue(value, field) {
 ;
 
 /***/ }),
-/* 10 */
+/* 20 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
@@ -815,14 +1013,14 @@ function _has(prop, obj) {
 module.exports = _has;
 
 /***/ }),
-/* 11 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = clean;
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
-const clone = __webpack_require__(12);
+const clone = __webpack_require__(22);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server.
  * @param  {Object} original    filter from widget
@@ -876,12 +1074,12 @@ const dateMatcher = {
 };
 
 /***/ }),
-/* 12 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _clone = /*#__PURE__*/__webpack_require__(33);
+var _clone = /*#__PURE__*/__webpack_require__(41);
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
 /**
  * Creates a deep copy of the value which may contain (nested) `Array`s and
@@ -912,10 +1110,10 @@ var clone = /*#__PURE__*/_curry1(function clone(value) {
 module.exports = clone;
 
 /***/ }),
-/* 13 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
 /**
  * Gives a single-word string description of the (native) type of a value,
@@ -950,7 +1148,7 @@ var type = /*#__PURE__*/_curry1(function type(val) {
 module.exports = type;
 
 /***/ }),
-/* 14 */
+/* 24 */
 /***/ (function(module, exports) {
 
 function _isPlaceholder(a) {
@@ -959,18 +1157,18 @@ function _isPlaceholder(a) {
 module.exports = _isPlaceholder;
 
 /***/ }),
-/* 15 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(50);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(36)
+  __webpack_require__(44)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -1014,7 +1212,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 16 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1086,10 +1284,10 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 17 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(10);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -1103,12 +1301,12 @@ var _isArguments = function () {
 module.exports = _isArguments;
 
 /***/ }),
-/* 18 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(14);
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(24);
 
 /**
  * Optimized internal two-arity curry function.
@@ -1141,805 +1339,14 @@ function _curry2(fn) {
 module.exports = _curry2;
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(20);
-
-
-/***/ }),
-/* 20 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__local_settings__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__filters__ = __webpack_require__(11);
-
-
-
-
- // Node libraries
-
-const isEmpty = __webpack_require__(58);
-
-const sift = __webpack_require__(70);
-
-let ahtData = [];
-let productivityData = [{
-  "Date": "2017-11-01",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-02",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-03",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-04",
-  "Productivity": "0.92"
-}, {
-  "Date": "2017-11-05",
-  "Productivity": "0.84"
-}, {
-  "Date": "2017-11-06",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-07",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-08",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-09",
-  "Productivity": "0.93"
-}, {
-  "Date": "2017-11-10",
-  "Productivity": "0.93"
-}, {
-  "Date": "2017-11-11",
-  "Productivity": "0.87"
-}, {
-  "Date": "2017-11-12",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-13",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-14",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-15",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-16",
-  "Productivity": "0.84"
-}, {
-  "Date": "2017-11-17",
-  "Productivity": "0.93"
-}, {
-  "Date": "2017-11-18",
-  "Productivity": "0.92"
-}, {
-  "Date": "2017-11-19",
-  "Productivity": "0.84"
-}, {
-  "Date": "2017-11-20",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-21",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-22",
-  "Productivity": "0.86"
-}, {
-  "Date": "2017-11-23",
-  "Productivity": "0.79"
-}, {
-  "Date": "2017-11-24",
-  "Productivity": "0.88"
-}, {
-  "Date": "2017-11-25",
-  "Productivity": "0.90"
-}, {
-  "Date": "2017-11-26",
-  "Productivity": "0.80"
-}, {
-  "Date": "2017-11-27",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-28",
-  "Productivity": "N/A"
-}, {
-  "Date": "2017-11-29",
-  "Productivity": "0.83"
-}, {
-  "Date": "2017-11-30",
-  "Productivity": "0.83"
-}];
-let dtvData = [{
-  "Date": "2017-11-01",
-  "DIRECTV Sales": "2",
-  "Rolling Total": "2",
-  "Pacing": "1.36",
-  "Delta": "1"
-}, {
-  "Date": "2017-11-02",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "2",
-  "Pacing": "2.73",
-  "Delta": "-1"
-}, {
-  "Date": "2017-11-03",
-  "DIRECTV Sales": "1",
-  "Rolling Total": "3",
-  "Pacing": "4.09",
-  "Delta": "-1"
-}, {
-  "Date": "2017-11-04",
-  "DIRECTV Sales": "4",
-  "Rolling Total": "7",
-  "Pacing": "5.45",
-  "Delta": "2"
-}, {
-  "Date": "2017-11-05",
-  "DIRECTV Sales": "4",
-  "Rolling Total": "11",
-  "Pacing": "6.82",
-  "Delta": "4"
-}, {
-  "Date": "2017-11-06",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "11",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-07",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "11",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-08",
-  "DIRECTV Sales": "3",
-  "Rolling Total": "14",
-  "Pacing": "8.18",
-  "Delta": "6"
-}, {
-  "Date": "2017-11-09",
-  "DIRECTV Sales": "3",
-  "Rolling Total": "17",
-  "Pacing": "9.55",
-  "Delta": "7"
-}, {
-  "Date": "2017-11-10",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "17",
-  "Pacing": "10.91",
-  "Delta": "6"
-}, {
-  "Date": "2017-11-11",
-  "DIRECTV Sales": "4",
-  "Rolling Total": "21",
-  "Pacing": "12.27",
-  "Delta": "9"
-}, {
-  "Date": "2017-11-12",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "21",
-  "Pacing": "13.64",
-  "Delta": "7"
-}, {
-  "Date": "2017-11-13",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "21",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-14",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "21",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-15",
-  "DIRECTV Sales": "2",
-  "Rolling Total": "23",
-  "Pacing": "15",
-  "Delta": "8"
-}, {
-  "Date": "2017-11-16",
-  "DIRECTV Sales": "4",
-  "Rolling Total": "27",
-  "Pacing": "16.36",
-  "Delta": "11"
-}, {
-  "Date": "2017-11-17",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "27",
-  "Pacing": "17.73",
-  "Delta": "9"
-}, {
-  "Date": "2017-11-18",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "27",
-  "Pacing": "19.09",
-  "Delta": "8"
-}, {
-  "Date": "2017-11-19",
-  "DIRECTV Sales": "1",
-  "Rolling Total": "28",
-  "Pacing": "20.45",
-  "Delta": "8"
-}, {
-  "Date": "2017-11-20",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "28",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-21",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "28",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-22",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "28",
-  "Pacing": "21.82",
-  "Delta": "6"
-}, {
-  "Date": "2017-11-23",
-  "DIRECTV Sales": "3",
-  "Rolling Total": "31",
-  "Pacing": "23.18",
-  "Delta": "8"
-}, {
-  "Date": "2017-11-24",
-  "DIRECTV Sales": "0",
-  "Rolling Total": "31",
-  "Pacing": "24.55",
-  "Delta": "6"
-}, {
-  "Date": "2017-11-25",
-  "DIRECTV Sales": "4",
-  "Rolling Total": "35",
-  "Pacing": "25.91",
-  "Delta": "9"
-}, {
-  "Date": "2017-11-26",
-  "DIRECTV Sales": "2",
-  "Rolling Total": "37",
-  "Pacing": "27.27",
-  "Delta": "10"
-}, {
-  "Date": "2017-11-27",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "37",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-28",
-  "DIRECTV Sales": "N/A",
-  "Rolling Total": "37",
-  "Pacing": "N/A",
-  "Delta": "N/A"
-}, {
-  "Date": "2017-11-29",
-  "DIRECTV Sales": "2",
-  "Rolling Total": "39",
-  "Pacing": "28.64",
-  "Delta": "10"
-}, {
-  "Date": "2017-11-30",
-  "DIRECTV Sales": "2",
-  "Rolling Total": "41",
-  "Pacing": "30",
-  "Delta": "11"
-}];
-let closeRateData = [{
-  "Date": "2017-11-01",
-  "Close Rate": "0.59",
-  "Sales": "24",
-  "Calls": "62"
-}, {
-  "Date": "2017-11-02",
-  "Close Rate": "0.50",
-  "Sales": "25",
-  "Calls": "68"
-}, {
-  "Date": "2017-11-03",
-  "Close Rate": "0.40",
-  "Sales": "17",
-  "Calls": "42"
-}, {
-  "Date": "2017-11-04",
-  "Close Rate": "0.40",
-  "Sales": "25",
-  "Calls": "62"
-}, {
-  "Date": "2017-11-05",
-  "Close Rate": "0.37",
-  "Sales": "20",
-  "Calls": "53"
-}, {
-  "Date": "2017-11-06",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-07",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-08",
-  "Close Rate": "0.51",
-  "Sales": "24",
-  "Calls": "54"
-}, {
-  "Date": "2017-11-09",
-  "Close Rate": "0.58",
-  "Sales": "16",
-  "Calls": "28"
-}, {
-  "Date": "2017-11-10",
-  "Close Rate": "0.44",
-  "Sales": "20",
-  "Calls": "45"
-}, {
-  "Date": "2017-11-11",
-  "Close Rate": "0.57",
-  "Sales": "17",
-  "Calls": "30"
-}, {
-  "Date": "2017-11-12",
-  "Close Rate": "0.41",
-  "Sales": "17",
-  "Calls": "41"
-}, {
-  "Date": "2017-11-13",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-14",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-15",
-  "Close Rate": "0.56",
-  "Sales": "23",
-  "Calls": "41"
-}, {
-  "Date": "2017-11-16",
-  "Close Rate": "0.35",
-  "Sales": "18",
-  "Calls": "51"
-}, {
-  "Date": "2017-11-17",
-  "Close Rate": "0.41",
-  "Sales": "17",
-  "Calls": "41"
-}, {
-  "Date": "2017-11-18",
-  "Close Rate": "0.58",
-  "Sales": "20",
-  "Calls": "35"
-}, {
-  "Date": "2017-11-19",
-  "Close Rate": "0.59",
-  "Sales": "15",
-  "Calls": "25"
-}, {
-  "Date": "2017-11-20",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-21",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-22",
-  "Close Rate": "0.58",
-  "Sales": "25",
-  "Calls": "43"
-}, {
-  "Date": "2017-11-23",
-  "Close Rate": "0.44",
-  "Sales": "22",
-  "Calls": "51"
-}, {
-  "Date": "2017-11-24",
-  "Close Rate": "0.50",
-  "Sales": "23",
-  "Calls": "46"
-}, {
-  "Date": "2017-11-25",
-  "Close Rate": "0.51",
-  "Sales": "22",
-  "Calls": "43"
-}, {
-  "Date": "2017-11-26",
-  "Close Rate": "0.36",
-  "Sales": "15",
-  "Calls": "41"
-}, {
-  "Date": "2017-11-27",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-28",
-  "Close Rate": "N/A",
-  "Sales": "0",
-  "Calls": "0"
-}, {
-  "Date": "2017-11-29",
-  "Close Rate": "0.38",
-  "Sales": "16",
-  "Calls": "42"
-}, {
-  "Date": "2017-11-30",
-  "Close Rate": "0.47",
-  "Sales": "26",
-  "Calls": "55"
-}];
-const closeRate = {
-  title: 'Close Rate',
-  id: 'card:0',
-  layoutOrder: 0,
-  columns: 1
-};
-closeRate.data = closeRateData;
-closeRate.widgets = [{
-  'id': 'widget:0',
-  'component': 'single-value',
-  'title': 'Today',
-  'fieldName': 'Close Rate',
-  'value': 0.5561
-}, {
-  'id': 'widget:1',
-  'component': 'single-value',
-  'title': 'Month to Date',
-  'fieldName': 'Close Rate',
-  'value': 0.5047
-}, {
-  'id': 'widget:2',
-  'component': 'line-graph',
-  'fields': {
-    x: 'Date',
-    y: 'Close Rate'
-  }
-}];
-const dtv = {
-  title: 'DIRECTV Sales',
-  id: 'card:1',
-  layoutOrder: 1,
-  columns: 2
-};
-dtv.data = dtvData;
-dtv.widgets = [{
-  'id': 'widget:0',
-  'component': 'single-value',
-  'title': 'Today',
-  'fieldName': 'DIRECTV Sales',
-  'value': 1
-}, {
-  'id': 'widget:1',
-  'component': 'single-value',
-  'title': 'Month to Date',
-  'fieldName': 'DIRECTV Sales',
-  'value': 23
-}, {
-  'id': 'widget:2',
-  'component': 'line-graph',
-  'fields': {
-    x: 'Date',
-    y: 'DIRECTV Sales'
-  }
-}];
-const aht = {
-  title: 'Average Handle Time',
-  id: 'card:2',
-  layoutOrder: 2,
-  columns: 1,
-  datasources: ['AHT']
-};
-aht.data = ahtData;
-aht.widgets = [{
-  'id': 'widget:0',
-  'component': 'single-value',
-  'title': 'Today',
-  'fieldName': 'AHT',
-  'value': 599,
-  'filter': {
-    agentUsername: {
-      $in: ['<current user>']
-    },
-    date: '<today>'
-  }
-}, {
-  'id': 'widget:1',
-  'component': 'single-value',
-  'title': 'Month to Date',
-  'fieldName': 'AHT',
-  'value': 650,
-  'filter': {
-    agentUsername: {
-      $in: ['<current user>']
-    },
-    date: '<month-to-date>'
-  }
-}];
-const layout = {
-  cards: [// closeRate,
-  // dtv,
-  aht]
-};
-const datasources = {
-  'DIRECTV': {
-    fields: ['DTV Sales', 'Rolling Total', 'Pacing', 'Delta'],
-    refreshRate: 24 * 3600 // daily
-
-  },
-  'AHT': {
-    fields: ['handleTime', 'calls']
-  }
-};
-const fields = [// Date
-{
-  displayName: 'Date',
-  fieldName: 'Date',
-  hasGoal: false,
-  goal: 0,
-  goalThresholds: [],
-  comparator: '',
-  descriptor: '',
-  format: {
-    type: 'Time',
-    string: 'M/D/YYYY'
-  }
-}, // Sales close rate
-{
-  displayName: 'Close Rate',
-  fieldName: 'Close Rate',
-  hasGoal: true,
-  goal: 0.55,
-  goalThresholds: [0.45, 0.50, 0.55],
-  comparator: '>=',
-  descriptor: 'See these tips for greatest close rates!',
-  format: {
-    type: 'Number',
-    string: '.2%'
-  }
-}, // DIRECTV sales count
-{
-  displayName: 'DIRECTV Sales',
-  fieldName: 'DIRECTV Sales',
-  hasGoal: true,
-  goal: 1,
-  goalThresholds: [],
-  comparator: '>=',
-  descriptor: 'See these tips for greatest DTV Sales!',
-  format: {
-    type: 'Number',
-    string: 'd'
-  }
-}, // AHT - Average Handle Time
-{
-  displayName: 'AHT',
-  fieldName: 'AHT',
-  calculation: 'handleTime / calls',
-  hasGoal: true,
-  goal: 600,
-  goalThresholds: [],
-  comparator: '<=',
-  descriptor: 'See these tips for ways to lower handle time!',
-  format: {
-    type: 'Time',
-    string: 'm:ss'
-  }
-}];
-/**
- * Vuex is used to see if app is in edit mode (editMode Boolean), and store
- * field (meta) data.
- * @type {Vuex}
- */
-
-Vue.use(Vuex);
-const store = new Vuex.Store({
-  state: {
-    fields: fields,
-    editMode: true,
-    ahtData: ahtData,
-    currentUser: ''
-  },
-  getters: {
-    field: state => fieldName => {
-      return state.fields.find(f => f.fieldName == fieldName);
-    },
-    getData: state => (filter, field) => {
-      const filt = __WEBPACK_IMPORTED_MODULE_4__filters__["a" /* clean */](filter, state.currentUser);
-      let result = sift(filt, state.ahtData.map(d => Object.assign({}, d, d._id)));
-      console.log(result);
-      return result;
-    }
-  },
-  mutations: {
-    toggleEditMode(state) {
-      state.editMode = !state.editMode;
-    },
-
-    updateData(state, newData) {
-      state.ahtData = newData;
-    },
-
-    updateUser(state, newUsername) {
-      state.currentUser = newUsername;
-    }
-
-  }
-});
-const dataValues = {
-  'AHT': ahtData
-};
-const vm = new Vue({
-  el: '#app',
-  store,
-  data: {
-    layout: layout,
-    datasources: datasources,
-    dataValues: dataValues
-  },
-  components: {
-    'dashboard': __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__["a" /* default */]
-  },
-  computed: {
-    user: {
-      get() {
-        return this.$store.state.currentUser;
-      },
-
-      set(value) {
-        this.$store.commit('updateUser', value);
-      }
-
-    }
-  },
-  methods: {
-    updateData: function () {},
-    postAcd: async function () {
-      const params = {
-        filter: {
-          // agentGroup: {
-          //     $in: ['Customer Care', 'Sales'],
-          // },
-          agentUsername: {
-            $eq: this.$store.state.currentUser.trim()
-          },
-          date: {
-            start: '2018-01-01T00:00:00',
-            end: '2018-02-01T00:00:00'
-          }
-        },
-        fields: {
-          sum: ['calls', 'handleTime']
-        },
-        groupBy: ['agentUsername', 'skill']
-      };
-      const data = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getStatistics */](params);
-      let cleaned = data.map(d => {
-        d['dateDay'] = moment(d['dateDay']).toDate();
-        d._id.dateDay = moment(d._id.dateDay).toDate();
-        return d;
-      });
-      console.log(cleaned);
-      this.$store.commit('updateData', cleaned);
-    },
-    clickImport: function () {
-      this.$refs.fileInput.click();
-    },
-    importLayout: function (event) {
-      const file = event.target.files[0];
-
-      if (!file) {
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const contents = JSON.parse(e.target.result);
-        console.log(contents);
-        this.layout = Object.assign({}, contents);
-      }.bind(this);
-
-      reader.readAsText(file);
-    },
-    exportLayout: function () {
-      download(layout, 'test.json', 'text/plain');
-    },
-    addCard: function () {
-      const newCard = {
-        title: 'card:' + this.layout.cards.length,
-        id: 'card:' + this.layout.cards.length,
-        layoutOrder: -1,
-        data: [],
-        widgets: []
-      };
-      console.log(newCard);
-      this.layout.cards.push(newCard);
-    },
-    updateLayout: function (newLayout) {
-      Object.assign(this.layout, newLayout);
-    },
-    updateCard: function (cardId, newCard) {
-      let oldCardIndex = this.layout.cards.findIndex(card => card.id == cardId);
-      let oldCard = this.layout.cards[oldCardIndex]; // Create a new card object that has all properties from the
-      // new card and the old one (to include properties that aren't
-      // defined in `newCard`)
-
-      let newCardComplete = Object.assign({}, oldCard, newCard); // Use `Vue.set` to trigger reactivity
-      // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
-
-      Vue.set(this.layout.cards, oldCardIndex, newCardComplete);
-    },
-    deleteCard: function (cardId) {
-      let cardIndex = this.layout.cards.findIndex(card => card.id == cardId);
-      Vue.delete(this.layout.cards, cardIndex);
-    },
-
-    /**
-     * Update a widget. If newWidget is an empty object ({}), delete the
-     * old widget.
-     * @param  {Object} newWidget object to replace old widget with
-     * @param  {String} widgetId
-     * @param  {String} cardId    ID for container card
-     * @return
-     */
-    modifyWidget: function (newWidget, widgetId, cardId) {
-      let card = this.layout.cards.find(c => c.id == cardId);
-      let oldWidgetIndex = card.widgets.findIndex(w => w.id == widgetId);
-      let oldWidget = card.widgets[oldWidgetIndex];
-
-      if (isEmpty(newWidget)) {
-        Vue.delete(card.widgets, oldWidgetIndex);
-      } else {
-        // see updateCard function for explanation
-        let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
-        Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
-      }
-    }
-  }
-});
-
-function download(text, name, type) {
-  var a = document.createElement("a");
-  var file = new Blob([JSON.stringify(text, null, 2)], {
-    type: type
-  });
-  a.href = URL.createObjectURL(file);
-  a.download = name;
-  a.click();
-}
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(65);
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -1983,13 +1390,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 22 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(26);
 //
 //
 //
@@ -2107,18 +1514,18 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 23 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(59);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(24)
+  __webpack_require__(32)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -2162,17 +1569,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 24 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(25);
+var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("4911ebf4", content, false);
+var update = __webpack_require__(17)("4911ebf4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2188,21 +1595,21 @@ if(false) {
 }
 
 /***/ }),
-/* 25 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(true);
+exports = module.exports = __webpack_require__(16)(true);
 // imports
 
 
 // module
-exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 3em;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?3e878a80"],"names":[],"mappings":";AA6LA;IACA,cAAA;IACA,2BAAA;IACA,cAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,eAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n            // CSS Grid positioning\r\n            gridPositioning: {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 3em;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 3em;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue?6b127548"],"names":[],"mappings":";AA8LA;IACA,cAAA;IACA,2BAAA;IACA,cAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,eAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n            // CSS Grid positioning\r\n            gridPositioning: {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 3em;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 26 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /**
@@ -2235,16 +1642,16 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 27 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(26);
 //
 //
 //
@@ -2340,7 +1747,10 @@ module.exports = function listToStyles (parentId, list) {
   },
   methods: {
     // add a new widget to the card
-    addWidget: function () {},
+    addWidget: function () {
+      let o = __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */].newObject('prompt user for widget type');
+      console.log(o);
+    },
 
     /**
      * Update a widget in this card
@@ -2422,11 +1832,11 @@ module.exports = function listToStyles (parentId, list) {
 });
 
 /***/ }),
-/* 28 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(37);
 //
 //
 //
@@ -2440,22 +1850,40 @@ module.exports = function listToStyles (parentId, list) {
     dragstartHandler: function (event) {
       this.$emit('dragstart-widget', event, this.$props);
     }
+  },
+  // Utility to return a blank widget
+  newObject: function (type) {
+    return {
+      id: 'widget:' + uuidv4(),
+      component: type,
+      title: 'Hello World',
+      field: '',
+      filter: {}
+    };
   }
 });
+/**
+ * Returns unique ID number
+ * @return {String} 16-bit UUID
+ */
+
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+}
 
 /***/ }),
-/* 29 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(43);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(30)
+  __webpack_require__(38)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -2499,17 +1927,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 30 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(31);
+var content = __webpack_require__(39);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("f189e898", content, false);
+var update = __webpack_require__(17)("f189e898", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2525,29 +1953,25 @@ if(false) {
 }
 
 /***/ }),
-/* 31 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(true);
+exports = module.exports = __webpack_require__(16)(true);
 // imports
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?662056ac"],"names":[],"mappings":";AAoGA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n        <button\r\n            class=\"add-button\"\r\n            @click=\"add\"\r\n        >+</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <input v-model=\"newObject.fieldName\" />\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n\r\n        },\r\n        exit: function(saveChanges) {\r\n            console.log(this.newObject);\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?5397453a"],"names":[],"mappings":";AA+FA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <input v-model=\"newObject.fieldName\" />\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            console.log(this.newObject);\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 32 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(11);
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(21);
 //
 //
 //
@@ -2600,7 +2024,7 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    t
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(12);
+const clone = __webpack_require__(22);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -2642,12 +2066,12 @@ const clone = __webpack_require__(12);
 });
 
 /***/ }),
-/* 33 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(34);
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(42);
 
-var type = /*#__PURE__*/__webpack_require__(13);
+var type = /*#__PURE__*/__webpack_require__(23);
 
 /**
  * Copies an object.
@@ -2694,7 +2118,7 @@ function _clone(value, refFrom, refTo, deep) {
 module.exports = _clone;
 
 /***/ }),
-/* 34 */
+/* 42 */
 /***/ (function(module, exports) {
 
 function _cloneRegExp(pattern) {
@@ -2703,7 +2127,7 @@ function _cloneRegExp(pattern) {
 module.exports = _cloneRegExp;
 
 /***/ }),
-/* 35 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2714,10 +2138,6 @@ var render = function() {
   return _c("div", { staticClass: "editor-wrapper" }, [
     _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
       _vm._v("☰")
-    ]),
-    _vm._v(" "),
-    _c("button", { staticClass: "add-button", on: { click: _vm.add } }, [
-      _vm._v("+")
     ]),
     _vm._v(" "),
     _vm.editingNow
@@ -2854,17 +2274,17 @@ if (false) {
 }
 
 /***/ }),
-/* 36 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(37);
+var content = __webpack_require__(45);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("5e100a93", content, false);
+var update = __webpack_require__(17)("5e100a93", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2880,10 +2300,10 @@ if(false) {
 }
 
 /***/ }),
-/* 37 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(true);
+exports = module.exports = __webpack_require__(16)(true);
 // imports
 
 
@@ -2894,12 +2314,12 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 38 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(18);
 //
 //
 //
@@ -2952,14 +2372,14 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 });
 
 /***/ }),
-/* 39 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(49);
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -3003,11 +2423,11 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(19);
 //
 //
 //
@@ -3041,7 +2461,7 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3085,7 +2505,7 @@ if (false) {
 }
 
 /***/ }),
-/* 42 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3141,18 +2561,18 @@ if (false) {
 }
 
 /***/ }),
-/* 43 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(55);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(44)
+  __webpack_require__(52)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -3196,17 +2616,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 44 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(45);
+var content = __webpack_require__(53);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("7034c06e", content, false);
+var update = __webpack_require__(17)("7034c06e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3222,10 +2642,10 @@ if(false) {
 }
 
 /***/ }),
-/* 45 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(true);
+exports = module.exports = __webpack_require__(16)(true);
 // imports
 
 
@@ -3236,12 +2656,12 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 
 
 /***/ }),
-/* 46 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(18);
 //
 //
 //
@@ -3462,7 +2882,7 @@ const props = {
 });
 
 /***/ }),
-/* 47 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3560,14 +2980,14 @@ if (false) {
 }
 
 /***/ }),
-/* 48 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(58);
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -3611,12 +3031,12 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 49 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
 //
@@ -3657,8 +3077,6 @@ function sum(obj, key) {
       return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
     },
     value: function () {
-      if (!this.filter) return 50; // @todo - git rid of!
-
       let data = this.$store.getters.getData(this.filter, this.fieldName);
       return sum(data, 'handleTime') / sum(data, 'calls');
     }
@@ -3671,7 +3089,7 @@ function sum(obj, key) {
 });
 
 /***/ }),
-/* 50 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3715,7 +3133,7 @@ if (false) {
 }
 
 /***/ }),
-/* 51 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3846,18 +3264,18 @@ if (false) {
 }
 
 /***/ }),
-/* 52 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(64);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(53)
+  __webpack_require__(61)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(14)
 /* script */
 
 /* template */
@@ -3901,17 +3319,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 53 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(54);
+var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("419b5586", content, false);
+var update = __webpack_require__(17)("419b5586", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3927,10 +3345,10 @@ if(false) {
 }
 
 /***/ }),
-/* 54 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(true);
+exports = module.exports = __webpack_require__(16)(true);
 // imports
 
 
@@ -3941,7 +3359,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 55 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3986,7 +3404,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 });
 
 /***/ }),
-/* 56 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4071,7 +3489,7 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4136,14 +3554,163 @@ if (false) {
 }
 
 /***/ }),
-/* 58 */
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = loadData;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(21);
+/**
+ * This module controls interaction with the server.
+ *
+ * Data is made accessible through the `store` Vuex object, which all Vue
+ * components can access.
+ */
+
+
+
+const sift = __webpack_require__(79);
+
+const fields = [// Date
+{
+  displayName: 'Date',
+  fieldName: 'Date',
+  hasGoal: false,
+  goal: 0,
+  goalThresholds: [],
+  comparator: '',
+  descriptor: '',
+  format: {
+    type: 'Time',
+    string: 'M/D/YYYY'
+  }
+}, // Sales close rate
+{
+  displayName: 'Close Rate',
+  fieldName: 'Close Rate',
+  hasGoal: true,
+  goal: 0.55,
+  goalThresholds: [0.45, 0.50, 0.55],
+  comparator: '>=',
+  descriptor: 'See these tips for greatest close rates!',
+  format: {
+    type: 'Number',
+    string: '.2%'
+  }
+}, // DIRECTV sales count
+{
+  displayName: 'DIRECTV Sales',
+  fieldName: 'DIRECTV Sales',
+  hasGoal: true,
+  goal: 1,
+  goalThresholds: [],
+  comparator: '>=',
+  descriptor: 'See these tips for greatest DTV Sales!',
+  format: {
+    type: 'Number',
+    string: 'd'
+  }
+}, // AHT - Average Handle Time
+{
+  displayName: 'AHT',
+  fieldName: 'AHT',
+  calculation: 'handleTime / calls',
+  hasGoal: true,
+  goal: 600,
+  goalThresholds: [],
+  comparator: '<=',
+  descriptor: 'See these tips for ways to lower handle time!',
+  format: {
+    type: 'Time',
+    string: 'm:ss'
+  }
+}];
+/**
+ * Vuex is used to see if app is in edit mode (editMode Boolean), and store
+ * field (meta) data.
+ * @type {Vuex}
+ */
+
+const store = new Vuex.Store({
+  state: {
+    fields: fields,
+    editMode: true,
+    ahtData: [],
+    currentUser: ''
+  },
+  getters: {
+    field: state => fieldName => {
+      return state.fields.find(f => f.fieldName == fieldName);
+    },
+    getData: state => (filter, field) => {
+      const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
+      let result = sift(filt, state.ahtData.map(d => Object.assign({}, d, d._id)));
+      return result;
+    }
+  },
+  mutations: {
+    toggleEditMode(state) {
+      state.editMode = !state.editMode;
+    },
+
+    updateData(state, newData) {
+      state.ahtData = newData;
+    },
+
+    /**
+     * Set the current user
+     * @param  {Object} state
+     * @param  {String} newUsername
+     */
+    updateUser(state, newUsername) {
+      state.currentUser = newUsername;
+    },
+
+    subscribeToData(state) {}
+
+  }
+});
+/* harmony export (immutable) */ __webpack_exports__["b"] = store;
+
+async function loadData() {
+  const params = {
+    filter: {
+      // agentGroup: {
+      //     $in: ['Customer Care', 'Sales'],
+      // },
+      agentUsername: {
+        $eq: store.state.currentUser.trim()
+      },
+      date: {
+        start: '2018-01-01T00:00:00',
+        end: '2018-02-01T00:00:00'
+      }
+    },
+    fields: {
+      sum: ['calls', 'handleTime']
+    },
+    groupBy: ['agentUsername', 'skill']
+  };
+  const data = await __WEBPACK_IMPORTED_MODULE_0__api__["b" /* getStatistics */](params);
+  let cleaned = data.map(d => {
+    d['dateDay'] = moment(d['dateDay']).toDate();
+    d._id.dateDay = moment(d._id.dateDay).toDate();
+    return d;
+  });
+  console.log(cleaned);
+  store.commit('updateData', cleaned);
+}
+
+/***/ }),
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
-var empty = /*#__PURE__*/__webpack_require__(59);
+var empty = /*#__PURE__*/__webpack_require__(68);
 
-var equals = /*#__PURE__*/__webpack_require__(63);
+var equals = /*#__PURE__*/__webpack_require__(72);
 
 /**
  * Returns `true` if the given value is its type's empty value; `false`
@@ -4174,18 +3741,18 @@ var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
 module.exports = isEmpty;
 
 /***/ }),
-/* 59 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(17);
+var _isArguments = /*#__PURE__*/__webpack_require__(27);
 
-var _isArray = /*#__PURE__*/__webpack_require__(60);
+var _isArray = /*#__PURE__*/__webpack_require__(69);
 
-var _isObject = /*#__PURE__*/__webpack_require__(61);
+var _isObject = /*#__PURE__*/__webpack_require__(70);
 
-var _isString = /*#__PURE__*/__webpack_require__(62);
+var _isString = /*#__PURE__*/__webpack_require__(71);
 
 /**
  * Returns the empty value of its argument's type. Ramda defines the empty
@@ -4222,7 +3789,7 @@ var empty = /*#__PURE__*/_curry1(function empty(x) {
 module.exports = empty;
 
 /***/ }),
-/* 60 */
+/* 69 */
 /***/ (function(module, exports) {
 
 /**
@@ -4242,7 +3809,7 @@ module.exports = Array.isArray || function _isArray(val) {
 };
 
 /***/ }),
-/* 61 */
+/* 70 */
 /***/ (function(module, exports) {
 
 function _isObject(x) {
@@ -4251,7 +3818,7 @@ function _isObject(x) {
 module.exports = _isObject;
 
 /***/ }),
-/* 62 */
+/* 71 */
 /***/ (function(module, exports) {
 
 function _isString(x) {
@@ -4260,12 +3827,12 @@ function _isString(x) {
 module.exports = _isString;
 
 /***/ }),
-/* 63 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(18);
+var _curry2 = /*#__PURE__*/__webpack_require__(28);
 
-var _equals = /*#__PURE__*/__webpack_require__(64);
+var _equals = /*#__PURE__*/__webpack_require__(73);
 
 /**
  * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
@@ -4300,22 +3867,22 @@ var equals = /*#__PURE__*/_curry2(function equals(a, b) {
 module.exports = equals;
 
 /***/ }),
-/* 64 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(65);
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(74);
 
-var _containsWith = /*#__PURE__*/__webpack_require__(66);
+var _containsWith = /*#__PURE__*/__webpack_require__(75);
 
-var _functionName = /*#__PURE__*/__webpack_require__(67);
+var _functionName = /*#__PURE__*/__webpack_require__(76);
 
-var _has = /*#__PURE__*/__webpack_require__(10);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
-var identical = /*#__PURE__*/__webpack_require__(68);
+var identical = /*#__PURE__*/__webpack_require__(77);
 
-var keys = /*#__PURE__*/__webpack_require__(69);
+var keys = /*#__PURE__*/__webpack_require__(78);
 
-var type = /*#__PURE__*/__webpack_require__(13);
+var type = /*#__PURE__*/__webpack_require__(23);
 
 /**
  * private _uniqContentEquals function.
@@ -4461,7 +4028,7 @@ function _equals(a, b, stackA, stackB) {
 module.exports = _equals;
 
 /***/ }),
-/* 65 */
+/* 74 */
 /***/ (function(module, exports) {
 
 function _arrayFromIterator(iter) {
@@ -4475,7 +4042,7 @@ function _arrayFromIterator(iter) {
 module.exports = _arrayFromIterator;
 
 /***/ }),
-/* 66 */
+/* 75 */
 /***/ (function(module, exports) {
 
 function _containsWith(pred, x, list) {
@@ -4493,7 +4060,7 @@ function _containsWith(pred, x, list) {
 module.exports = _containsWith;
 
 /***/ }),
-/* 67 */
+/* 76 */
 /***/ (function(module, exports) {
 
 function _functionName(f) {
@@ -4504,10 +4071,10 @@ function _functionName(f) {
 module.exports = _functionName;
 
 /***/ }),
-/* 68 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(18);
+var _curry2 = /*#__PURE__*/__webpack_require__(28);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -4548,14 +4115,14 @@ var identical = /*#__PURE__*/_curry2(function identical(a, b) {
 module.exports = identical;
 
 /***/ }),
-/* 69 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(4);
+var _curry1 = /*#__PURE__*/__webpack_require__(15);
 
-var _has = /*#__PURE__*/__webpack_require__(10);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(17);
+var _isArguments = /*#__PURE__*/__webpack_require__(27);
 
 // cover IE < 9 keys issues
 
@@ -4628,7 +4195,7 @@ var keys = /*#__PURE__*/_curry1(_keys);
 module.exports = keys;
 
 /***/ }),
-/* 70 */
+/* 79 */
 /***/ (function(module, exports) {
 
 /*
