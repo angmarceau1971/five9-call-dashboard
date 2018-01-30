@@ -9,6 +9,53 @@ const five9 = require('../helpers/five9-interface');
 const log = require('../helpers/log');
 const users = require('./users');
 
+async function authenticate(username, password, done) {
+    let auth = getAuthString(username, password);
+    try {
+        if (!(await hasPermission(auth))) {
+            return done(null, false, { message: 'Invalid username or password.' });
+        }
+        // User is good to go
+        else {
+            return done(null, { username: username });
+        }
+    } catch (err) {
+        return done(err);
+    }
+}
+module.exports.authenticate = authenticate;
+
+
+// Middleware for page routes. Redirect to login if not authenticated.
+function middleware() {
+    return function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect('/login');
+    }
+}
+module.exports.middleware = middleware;
+
+// Middleware for API routes. Return error response if not authenticated.
+function apiMiddleware() {
+    return function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.set('Content-Type', 'application/text');
+        res.status(401).send('Could not authenticate your user.');
+    }
+}
+module.exports.apiMiddleware = apiMiddleware;
+
+
+// Combines username and password, then encodes in Base 64. Yum!
+function getAuthString(username, password) {
+   let auth = username + ':' + password;
+   return Buffer.from(auth).toString('base64');
+}
+
 
 // See if user is authorized before pulling reports.
 // Returns true if user has permissions; otherwise false.
@@ -51,6 +98,8 @@ async function hasPermission(auth) {
     log.error(`User ${username} not authenticated successfully`);
     return false;
 }
+module.exports.hasPermission = hasPermission;
+
 
 // See if agent is authorized through Agent API
 async function hasAgentPermission(auth) {
@@ -60,6 +109,4 @@ async function hasAgentPermission(auth) {
 
 
 }
-
-module.exports.hasPermission = hasPermission;
 module.exports.hasAgentPermission = hasAgentPermission;

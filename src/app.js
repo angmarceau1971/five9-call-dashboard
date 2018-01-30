@@ -3,6 +3,7 @@
 // Import libraries
 const bodyParser = require('body-parser'); // parse JSON requests
 const compression = require('compression'); // compress file to GZIP
+const cookieParser = require('cookie-parser');
 const cors = require('cors'); // CORS middleware
 const express = require('express');
 const five9 = require('./helpers/five9-interface'); // Five9 interface helper functions
@@ -11,10 +12,14 @@ const helmet = require('helmet'); // security
 const log = require('./helpers/log'); // recording updates
 const moment = require('moment'); // dates/times
 const parseString = require('xml2js').parseString; // parse XML to JSON
+const passport = require('passport'); // user authentication
+const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
 const pm2 = require('pm2'); // for server restart when requested
 const port = parseInt(process.env.PORT, 10) || 3000;
 const secure = require('./secure_settings.js'); // local/secure settings
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 ///////////////////////////
 // Data management
@@ -39,8 +44,31 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 // Parse JSON requests
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 // And throw in some security middleware for good measure...
 app.use(helmet());
+
+// Passport config
+app.use(cookieParser());
+
+var sessionSettings = {
+    secret: secure.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ url: secure.MONGODB_URI })
+}
+if (app.get('env') == 'production') {
+    app.set('trust proxy', 1);
+    sessionSettings.cookie.secure = true;
+}
+app.use(session(sessionSettings));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(verify.authenticate));
+// TODO: add Accounts module for authentication & authorization mgmt.
+passport.serializeUser((user, done) => { done(null, user.username) });
+passport.deserializeUser((username, done) => { done(null, {username:username}) });
 
 
 ///////////////////////////
@@ -66,7 +94,7 @@ app.get('/maps', async (req, res) => {
 });
 
 // scorecard
-app.get('/scorecard', async (req, res) => {
+app.get('/scorecard', verify.middleware(), async (req, res) => {
     let dir = path.join(__dirname + '/public/scorecard.html');
     res.sendFile(dir);
 });
@@ -82,6 +110,17 @@ app.get('/login', async (req, res) => {
     let dir = path.join(__dirname + '/public/auth/login.html');
     res.sendFile(dir);
 });
+// TODO: add error message
+app.get('/login-retry', async (req, res) => {
+    let dir = path.join(__dirname + '/public/auth/login.html');
+    res.sendFile(dir);
+});
+// Post login credentials for dashboard
+app.post('/login',
+    passport.authenticate('local', { successRedirect: '/scorecard',
+                                      failureRedirect: '/login-retry',
+                                      failureFlash: false } )
+);
 
 
 ///////////////////////////
@@ -98,7 +137,7 @@ app.get('/login', async (req, res) => {
 //                 for, comma-separated. Matches "like" Five9 skill names.
 ///////////////////////////
 
-app.post('/api/statistics', async (req, res) => {
+app.post('/api/statistics', verify.apiMiddleware(), async (req, res) => {
     handleReportRequest(req, res, report.getScorecardStatistics);
 });
 

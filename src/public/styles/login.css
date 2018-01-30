@@ -10,7 +10,7 @@
 
 .form-container {
     max-width: 380px;
-    margin: 80px auto 180px;
+    margin: 75px auto;
     background-color: white;
     line-height: 1.27em;
     border: solid 2px hsl(39, 32%, 88%);

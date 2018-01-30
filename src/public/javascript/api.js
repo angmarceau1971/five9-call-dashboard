@@ -56,6 +56,7 @@ async function request(parameters, url='statistics') {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(parameters)
     }
 
