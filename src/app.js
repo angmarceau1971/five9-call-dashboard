@@ -55,7 +55,10 @@ var sessionSettings = {
     secret: secure.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ url: secure.MONGODB_URI })
+    store: new MongoStore({ url: secure.MONGODB_URI }),
+    cookie: {
+        maxAge: 24 * 3600 * 1000 // expire after 1 day
+    }
 }
 if (app.get('env') == 'production') {
     app.set('trust proxy', 1);
@@ -138,7 +141,18 @@ app.post('/login',
 ///////////////////////////
 
 app.post('/api/statistics', verify.apiMiddleware(), async (req, res) => {
-    handleReportRequest(req, res, report.getScorecardStatistics);
+    report.onReady(async () => {
+        let data;
+        try {
+            data = await report.getScorecardStatistics(req.body);
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        } catch (err) {
+            log.error(`Error during scorecard retreival: ` + JSON.stringify(err));
+            res.set('Content-Type', 'application/text');
+            res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
+        }
+    })
 });
 
 
@@ -226,15 +240,13 @@ app.get('/api/states', async (req, res) => {
   */
 async function handleReportRequest(req, res, dataGetter) {
     try {
-        // // Authenticate user
-        console.log(app.settings.env);
-        if (app.settings.env != 'development') throw Error('auth check!');
-        // const hasPermission = await verify.hasPermission(req.body['authorization']);
-        // if (!hasPermission) {
-        //     res.set('Content-Type', 'application/text');
-        //     res.status(401).send('Could not authenticate your user.');
-        //     return;
-        // }
+        // Authenticate user
+        const hasPermission = await verify.hasPermission(req.body['authorization']);
+        if (!hasPermission) {
+            res.set('Content-Type', 'application/text');
+            res.status(401).send('Could not authenticate your user.');
+            return;
+        }
 
         // Send data as response when loaded
         async function sendResponse() {
