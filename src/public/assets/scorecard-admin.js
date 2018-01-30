@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 80);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -250,117 +250,47 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
-
-/***/ }),
-
-/***/ 80:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(81);
+module.exports = __webpack_require__(73);
 
 
 /***/ }),
 
-/***/ 81:
+/***/ 73:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__local_settings__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utility__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(3);
 
-
-
- // Handles UI interaction for login form
-
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.admin-panel-wrapper').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    $('.admin-panel-wrapper').removeClass('out-of-the-way');
-  }); // Listen for server reboot request
-
-  $('.reboot-server').click(async event => {
-    const auth = Object(__WEBPACK_IMPORTED_MODULE_3__utility__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-    const body = {
-      authorization: auth
-    };
-    const apiURL = __WEBPACK_IMPORTED_MODULE_2__local_settings__["a" /* API_URL */] + 'reboot-server'; // defined in api_url.js
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/text',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    $('.message').text(`Computing....`);
-    fetch(apiURL, requestOptions).then(async response => {
-      let bodyText = await response.text();
-      $('.message').text(`Response: ${response.status} ${bodyText}`);
-    }).catch(err => {
-      $('.message').text(`Whoops! that got a: ${err}. Server down much?`);
-    });
-  }); // Listen for data reload requests
-
-  $('.reload-data').click(async event => {
-    const auth = Object(__WEBPACK_IMPORTED_MODULE_3__utility__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-    const time = {
-      start: $('.start-time').val(),
-      end: $('.end-time').val()
-    };
-    const body = {
-      authorization: auth,
-      time: time
-    };
-    const apiURL = __WEBPACK_IMPORTED_MODULE_2__local_settings__["a" /* API_URL */] + 'reload-data'; // defined in api_url.js
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/text',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    $('.message').text(`Computing....`);
-    fetch(apiURL, requestOptions).then(async response => {
-      let bodyText = await response.text();
-      $('.message').text(`Response: ${response.status} ${bodyText}`);
-    }).catch(err => {
-      $('.message').text(`Whoops! ${err}`);
-    });
-  });
+const vm = new Vue({
+  el: '#admin-app',
+  data: {
+    fields: [{
+      name: 'calls',
+      defaultRefreshRate: 60 * 5
+    }, {
+      name: 'handleTime',
+      defaultRefreshRate: 60 * 5
+    }],
+    calculatedFields: [{
+      name: 'AHT',
+      calculation: '{calls} / {handleTime}'
+    }],
+    message: ''
+  },
+  components: {},
+  methods: {
+    updateField: function (field) {
+      console.log(field);
+      this.message = `Updating ${field.name}...`;
+    }
+  }
 });
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=admin.js.map
+//# sourceMappingURL=scorecard-admin.js.map

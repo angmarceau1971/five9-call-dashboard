@@ -6,10 +6,8 @@ const compression = require('compression'); // compress file to GZIP
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // CORS middleware
 const express = require('express');
-const five9 = require('./helpers/five9-interface'); // Five9 interface helper functions
 const fs = require('fs');
 const helmet = require('helmet'); // security
-const log = require('./helpers/log'); // recording updates
 const moment = require('moment'); // dates/times
 const parseString = require('xml2js').parseString; // parse XML to JSON
 const passport = require('passport'); // user authentication
@@ -17,9 +15,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
 const pm2 = require('pm2'); // for server restart when requested
 const port = parseInt(process.env.PORT, 10) || 3000;
-const secure = require('./secure_settings.js'); // local/secure settings
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+
+const fields = require('./admin/fields');
+const five9 = require('./helpers/five9-interface'); // Five9 interface helper functions
+const log = require('./helpers/log'); // recording updates
+const secure = require('./secure_settings.js'); // local/secure settings
 
 ///////////////////////////
 // Data management
@@ -99,6 +101,12 @@ app.get('/maps', async (req, res) => {
 // scorecard
 app.get('/scorecard', verify.middleware(), async (req, res) => {
     let dir = path.join(__dirname + '/public/scorecard.html');
+    res.sendFile(dir);
+});
+
+// scorecard fields
+app.get('/scorecard-admin', verify.middleware(), async (req, res) => {
+    let dir = path.join(__dirname + '/public/scorecard-admin.html');
     res.sendFile(dir);
 });
 
@@ -274,6 +282,22 @@ async function handleReportRequest(req, res, dataGetter) {
 ///////////////////////////
 // Administrative API routes
 ///////////////////////////
+// Modify available fields list
+app.put('/api/fields', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    let field = req.body.field;
+    fields.update(field);
+    res.status(200).send(`Field ${field.name} has been updated.`);
+});
+// Modify available fields list
+app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    let fields = fields.getFieldList();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(data));
+});
+
+
 // Notify server that a 502 has occurred
 app.get('/api/notify-504', async (req, res) => {
     res.set('Content-Type', 'application/text');
@@ -281,12 +305,14 @@ app.get('/api/notify-504', async (req, res) => {
         log.error(`--------LOGGER: 504 reported by client at ${moment()}`);
         res.status(200).send('Thanks for the message!');
     } catch (err) {
-        res.status(500).send('An error occurred on the server when getting U.S. states data.');
+        res.status(500).send('An error occurred on the server while being notified of 504.');
     }
 });
 
+
 // Reboot the server
 app.post('/api/reboot-server', async (req, res) => {
+    // TODO: allow admin only
     res.set('Content-Type', 'application/text');
     try {
         log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
@@ -306,8 +332,10 @@ app.post('/api/reboot-server', async (req, res) => {
     }
 });
 
+
 // Update data in a given range
 app.post('/api/reload-data', async (req, res) => {
+    // TODO: allow admin only
     res.set('Content-Type', 'application/text');
     try {
         let times = req.body['time'];
@@ -329,7 +357,6 @@ app.post('/api/reload-data', async (req, res) => {
         res.status(500).send(`An error occurred on the server while attempting data reload: ${err}.`);
     }
 });
-
 async function reloadReports(time) {
     // Verify user input format and basic value-checking
     let bad = '';
@@ -392,6 +419,7 @@ const server = app.listen(port, async () => {
             setTimeout(connect, 3000);
         });
 
+        if (process.env.NODE_ENV == 'production') throw new Error('add updates!');
         // // Update customers database from Looker every 8 hours
         // customers.scheduleUpdate(8 * 3600 * 1000);
         //
