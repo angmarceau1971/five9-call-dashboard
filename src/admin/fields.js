@@ -26,7 +26,22 @@ async function getFieldList() {
 module.exports.getFieldList = getFieldList;
 
 
-async function initializeList() {
-    
+/**
+ * Creates basic field list based on fields in Report model.
+ * Only for 1st-time creation. Will throw error if FieldList already
+ * has items.
+ * @return {Promise} resolves to array of fields
+ */
+async function initializeList(paths) {
+    return new Promise((resolve, reject) => {
+        FieldList.count({}, (err, count) => {
+            console.log(`count = ${count}`);
+            if (err) reject(err);
+            if (count > 0) reject(new Error(`${count} fields already exist.`));
+            let fields = paths;
+
+            resolve(fields);
+        })
+    });
 }
 module.exports.initializeList = initializeList;

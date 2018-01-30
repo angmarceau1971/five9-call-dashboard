@@ -425,3 +425,4 @@ module.exports.getScorecardStatistics = getScorecardStatistics;
 module.exports.DataFeed = DataFeed;
 module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;
+module.exports.acdFeedSchema = acdFeedSchema;
