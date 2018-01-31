@@ -851,21 +851,21 @@ function dateOptions() {
 }
 function prettifyDateOption(option) {
   // remove brackets
-  option.replace(/[<|>]/, '');
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
 }
 const dateMatcher = {
   '<today>': function () {
-    let today = moment().startOf('day');
     return {
-      $gte: today.toDate(),
-      $lt: today.add(1, 'days').toDate()
+      $gte: moment().startOf('day').toDate(),
+      $lt: moment().endOf('day').toDate()
     };
   },
   '<yesterday>': function () {
-    let today = moment().startOf('day');
     return {
-      $gte: today.add(-1, 'days').toDate(),
-      $lt: today.toDate()
+      $gte: moment().add(-1, 'days').startOf('day').toDate(),
+      $lt: moment().startOf('day').toDate()
     };
   },
   '<month-to-date>': function () {
@@ -1165,10 +1165,9 @@ const isEmpty = __webpack_require__(60);
 
 const aht = {
   title: 'Average Handle Time',
-  id: 'card:2',
-  layoutOrder: 2,
-  columns: 1,
-  datasources: ['AHT']
+  id: 'card:1',
+  layoutOrder: 1,
+  columns: 1
 };
 aht.data = [];
 aht.widgets = [{
@@ -1176,7 +1175,6 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Today',
   'fieldName': 'AHT',
-  'value': 599,
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1188,7 +1186,58 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Month to Date',
   'fieldName': 'AHT',
-  'value': 650,
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<month-to-date>'
+  }
+}, {
+  'id': 'widget:2',
+  'component': 'single-value',
+  'title': 'ACW Today',
+  'fieldName': 'ACW',
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<today>'
+  }
+}, {
+  'id': 'widget:3',
+  'component': 'single-value',
+  'title': 'ACW Month to Date',
+  'fieldName': 'ACW',
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<month-to-date>'
+  }
+}];
+const calls = {
+  title: 'Calls Handled',
+  id: 'card:2',
+  layoutOrder: 2,
+  columns: 1
+};
+calls.data = [];
+calls.widgets = [{
+  'id': 'widget:0',
+  'component': 'single-value',
+  'title': 'Today',
+  'fieldName': 'calls',
+  'filter': {
+    agentUsername: {
+      $in: ['<current user>']
+    },
+    date: '<today>'
+  }
+}, {
+  'id': 'widget:1',
+  'component': 'single-value',
+  'title': 'Month to Date',
+  'fieldName': 'calls',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1197,9 +1246,7 @@ aht.widgets = [{
   }
 }];
 const layout = {
-  cards: [// closeRate,
-  // dtv,
-  aht]
+  cards: [aht, calls]
 };
 const datasources = {
   'DIRECTV': {
@@ -1215,7 +1262,7 @@ const dataValues = {
   'AHT': []
 };
 Vue.use(Vuex);
-const store = __WEBPACK_IMPORTED_MODULE_1__hub__["b" /* store */];
+const store = __WEBPACK_IMPORTED_MODULE_1__hub__["a" /* store */];
 const vm = new Vue({
   el: '#app',
   store,
@@ -1239,10 +1286,14 @@ const vm = new Vue({
 
     }
   },
+
+  beforeMount() {
+    this.postAcd();
+  },
+
   methods: {
-    updateData: function () {},
     postAcd: async function () {
-      return __WEBPACK_IMPORTED_MODULE_1__hub__["a" /* loadData */]();
+      return store.dispatch('startUpdating');
     },
     clickImport: function () {
       this.$refs.fileInput.click();
@@ -3071,7 +3122,16 @@ function sum(obj, key) {
     },
     value: function () {
       let data = this.$store.getters.getData(this.filter, this.fieldName);
-      return sum(data, 'handleTime') / sum(data, 'calls');
+
+      if (this.fieldName == 'AHT') {
+        return sum(data, 'handleTime') / sum(data, 'calls');
+      } else if (this.fieldName == 'ACW') {
+        return sum(data, 'acwTime') / sum(data, 'calls');
+      } else if (this.fieldName == 'calls') {
+        return sum(data, 'calls');
+      } else {
+        throw new Error(`SingleValue component isn't expecting the field name: ${this.fieldName}`);
+      }
     }
   },
   methods: {
@@ -3551,7 +3611,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = loadData;
+/* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(11);
 /**
@@ -3608,12 +3668,26 @@ const fields = [// Date
 {
   displayName: 'AHT',
   fieldName: 'AHT',
-  calculation: 'handleTime / calls',
+  calculation: '{handleTime} / {calls}',
   hasGoal: true,
   goal: 600,
   goalThresholds: [],
   comparator: '<=',
   descriptor: 'See these tips for ways to lower handle time!',
+  format: {
+    type: 'Time',
+    string: 'm:ss'
+  }
+}, // ACW - After Call Work
+{
+  displayName: 'ACW',
+  fieldName: 'ACW',
+  calculation: '{acwTime} / {calls}',
+  hasGoal: true,
+  goal: 30,
+  goalThresholds: [],
+  comparator: '<=',
+  descriptor: 'See these tips for ways to lower ACW!',
   format: {
     type: 'Time',
     string: 'm:ss'
@@ -3630,7 +3704,8 @@ const store = new Vuex.Store({
     fields: fields,
     editMode: true,
     ahtData: [],
-    currentUser: ''
+    currentUser: '',
+    timeoutId: 0
   },
   getters: {
     field: state => fieldName => {
@@ -3638,8 +3713,8 @@ const store = new Vuex.Store({
     },
     getData: state => (filter, field) => {
       const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
-      let result = sift(filt, state.ahtData.map(d => Object.assign({}, d, d._id)));
-      return result;
+      let data = sift(filt, state.ahtData.map(d => Object.assign({}, d, d._id)));
+      return data;
     }
   },
   mutations: {
@@ -3660,11 +3735,32 @@ const store = new Vuex.Store({
       state.currentUser = newUsername;
     },
 
-    subscribeToData(state) {}
+    setTimeoutId(state, id) {
+      state.timeoutId = id;
+    }
+
+  },
+  actions: {
+    async startUpdating(context) {
+      console.log(`Refresh at ${moment()}`); // Load data from server
+
+      const data = await loadData();
+      console.log(data);
+      context.commit('updateData', data); // and schedule the next update
+
+      const frequencySeconds = 60;
+      let timeout = setTimeout(function next() {
+        context.dispatch('startUpdating');
+      }, frequencySeconds * 1000);
+      context.commit({
+        type: 'setTimeoutId',
+        value: timeout
+      });
+    }
 
   }
 });
-/* harmony export (immutable) */ __webpack_exports__["b"] = store;
+/* harmony export (immutable) */ __webpack_exports__["a"] = store;
 
 async function loadData() {
   const params = {
@@ -3681,18 +3777,17 @@ async function loadData() {
       }
     },
     fields: {
-      sum: ['calls', 'handleTime']
+      sum: ['calls', 'handleTime', 'acwTime']
     },
-    groupBy: ['agentUsername', 'skill']
+    groupBy: ['agentUsername', 'skill', 'dateDay']
   };
   const data = await __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getStatistics */](params);
-  let cleaned = data.map(d => {
+  const cleaned = data.map(d => {
     d['dateDay'] = moment(d['dateDay']).toDate();
     d._id.dateDay = moment(d._id.dateDay).toDate();
     return d;
   });
-  console.log(cleaned);
-  store.commit('updateData', cleaned);
+  return cleaned;
 }
 
 /***/ }),

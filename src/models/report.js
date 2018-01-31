@@ -176,16 +176,16 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
                     }
                 }
             }, {
-                // $group: createGroup(groupBy, fields)
-                $group: {
-                    _id: {
-                        dateDay: '$dateDay',
-                        skill: '$skill',
-                        agentUsername: '$agentUsername'
-                    },
-                    calls: { $sum: '$calls' },
-                    handleTime: { $sum: '$handleTime' }
-                }
+                $group: createGroup(groupBy, fields)
+                // $group: {
+                //     _id: {
+                //         dateDay: '$dateDay',
+                //         skill: '$skill',
+                //         agentUsername: '$agentUsername'
+                //     },
+                //     calls: { $sum: '$calls' },
+                //     handleTime: { $sum: '$handleTime' }
+                // }
             }
 
         ], (err, data) => {

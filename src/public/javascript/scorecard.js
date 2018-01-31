@@ -8,10 +8,9 @@ const isEmpty = require('ramda/src/isEmpty');
 
 const aht = {
     title: 'Average Handle Time',
-    id: 'card:2',
-    layoutOrder: 2,
-    columns: 1,
-    datasources: ['AHT']
+    id: 'card:1',
+    layoutOrder: 1,
+    columns: 1
 };
 aht.data = [];
 aht.widgets = [
@@ -20,7 +19,6 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AHT',
-        'value': 599,
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -33,7 +31,65 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AHT',
-        'value': 650,
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            date: '<month-to-date>'
+        }
+    },
+    {
+        'id': 'widget:2',
+        'component': 'single-value',
+        'title': 'ACW Today',
+        'fieldName': 'ACW',
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            date: '<today>'
+        }
+    },
+    {
+        'id': 'widget:3',
+        'component': 'single-value',
+        'title': 'ACW Month to Date',
+        'fieldName': 'ACW',
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            date: '<month-to-date>'
+        }
+    }
+];
+
+
+const calls = {
+    title: 'Calls Handled',
+    id: 'card:2',
+    layoutOrder: 2,
+    columns: 1
+};
+calls.data = [];
+calls.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Today',
+        'fieldName': 'calls',
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            date: '<today>'
+        }
+    },
+    {
+        'id': 'widget:1',
+        'component': 'single-value',
+        'title': 'Month to Date',
+        'fieldName': 'calls',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -45,9 +101,8 @@ aht.widgets = [
 
 const layout = {
     cards: [
-        // closeRate,
-        // dtv,
-        aht
+        aht,
+        calls
     ]
 };
 
@@ -97,14 +152,13 @@ const vm = new Vue({
         }
     },
 
+    beforeMount() {
+        this.postAcd();
+    },
+
     methods: {
-        updateData: function() {
-
-        },
-
-
         postAcd: async function() {
-            return hub.loadData();
+            return store.dispatch('startUpdating');
         },
 
         clickImport: function() {

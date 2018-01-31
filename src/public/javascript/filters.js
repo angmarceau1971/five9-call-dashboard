@@ -32,22 +32,21 @@ export function dateOptions() {
 export function prettifyDateOption(option) {
     // remove brackets
     option.replace(/[<|>]/, '');
-
+    // TODO: capitalize properly
+    return option;
 }
 
 const dateMatcher = {
     '<today>': function() {
-        let today = moment().startOf('day');
         return {
-            $gte: today.toDate(),
-            $lt:  today.add(1, 'days').toDate()
+            $gte: moment().startOf('day').toDate(),
+            $lt:  moment().endOf('day').toDate()
         }
     },
     '<yesterday>': function() {
-        let today = moment().startOf('day');
         return {
-            $gte: today.add(-1, 'days').toDate(),
-            $lt:  today.toDate()
+            $gte: moment().add(-1, 'days').startOf('day').toDate(),
+            $lt:  moment().startOf('day').toDate()
         }
     },
     '<month-to-date>': function() {

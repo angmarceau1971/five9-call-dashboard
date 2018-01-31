@@ -41,7 +41,18 @@ export default {
         },
         value: function() {
             let data = this.$store.getters.getData(this.filter, this.fieldName);
-            return sum(data, 'handleTime') / sum(data, 'calls');
+            if (this.fieldName == 'AHT') {
+                return sum(data, 'handleTime') / sum(data, 'calls');
+            }
+            else if (this.fieldName == 'ACW') {
+                return sum(data, 'acwTime') / sum(data, 'calls');
+            }
+            else if (this.fieldName == 'calls') {
+                return sum(data, 'calls');
+            }
+            else {
+                throw new Error(`SingleValue component isn't expecting the field name: ${this.fieldName}`);
+            }
         }
     },
     methods: {

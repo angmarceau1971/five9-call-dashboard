@@ -60,7 +60,7 @@
      {
          displayName: 'AHT',
          fieldName: 'AHT',
-         calculation: 'handleTime / calls',
+         calculation: '{handleTime} / {calls}',
          hasGoal: true,
          goal: 600,
          goalThresholds: [
@@ -72,8 +72,25 @@
              type: 'Time',
              string: 'm:ss'
          }
+     },
+     // ACW - After Call Work
+     {
+         displayName: 'ACW',
+         fieldName: 'ACW',
+         calculation: '{acwTime} / {calls}',
+         hasGoal: true,
+         goal: 30,
+         goalThresholds: [
+
+         ],
+         comparator: '<=',
+         descriptor: 'See these tips for ways to lower ACW!',
+         format: {
+             type: 'Time',
+             string: 'm:ss'
+         }
      }
- ];
+];
 
 /**
  * Vuex is used to see if app is in edit mode (editMode Boolean), and store
@@ -85,7 +102,8 @@ export const store = new Vuex.Store({
         fields: fields,
         editMode: true,
         ahtData: [],
-        currentUser: ''
+        currentUser: '',
+        timeoutId: 0
     },
     getters: {
         field: (state) => (fieldName) => {
@@ -93,10 +111,10 @@ export const store = new Vuex.Store({
         },
         getData: (state) => (filter, field) => {
             const filt = filters.clean(filter, state.currentUser);
-            let result = sift(filt, state.ahtData.map((d) =>
+            let data = sift(filt, state.ahtData.map((d) =>
                 Object.assign({}, d, d._id)
             ));
-            return result;
+            return data;
         }
     },
     mutations: {
@@ -114,8 +132,27 @@ export const store = new Vuex.Store({
         updateUser(state, newUsername) {
             state.currentUser = newUsername;
         },
-        subscribeToData(state, ) {
+        setTimeoutId(state, id) {
+            state.timeoutId = id;
+        }
+    },
+    actions: {
+        async startUpdating(context) {
+            console.log(`Refresh at ${moment()}`);
+            // Load data from server
+            const data = await loadData();
+            console.log(data);
+            context.commit('updateData', data);
 
+            // and schedule the next update
+            const frequencySeconds = 60;
+            let timeout = setTimeout(function next() {
+                context.dispatch('startUpdating');
+            }, frequencySeconds * 1000);
+            context.commit({
+                type: 'setTimeoutId',
+                value: timeout
+            });
         }
     }
 });
@@ -136,16 +173,17 @@ export async function loadData() {
             },
         },
         fields: {
-            sum: ['calls', 'handleTime']
+            sum: ['calls', 'handleTime', 'acwTime']
         },
-        groupBy: ['agentUsername', 'skill']
+        groupBy: ['agentUsername', 'skill', 'dateDay']
     };
+
     const data = await api.getStatistics(params);
-    let cleaned = data.map((d) => {
+    const cleaned = data.map((d) => {
         d['dateDay'] = moment(d['dateDay']).toDate();
         d._id.dateDay = moment(d._id.dateDay).toDate();
         return d;
     });
-    console.log(cleaned);
-    store.commit('updateData', cleaned);
+
+    return cleaned;
 }
