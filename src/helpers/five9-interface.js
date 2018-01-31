@@ -291,21 +291,6 @@ function getParameters(requestType, reportId=null, criteriaTimeStart=null,
     return params;
 }
 
-/**
- * Add a setting to a parameters object
- * @param {Object} params  parameter object from getParameters
- * @param {Object} setting in { settingName: settingValue } form
- */
-function addSetting(params, setting) {
-    let temp = clone(params);
-    if (!temp.settings) {
-        temp.settings = [];
-    }
-    temp.settings.push(setting);
-    return temp;
-}
-
-
 module.exports.jsonToSOAP = jsonToSOAP;
 module.exports.request = request;
 module.exports.sendRequest = sendRequest;
@@ -314,4 +299,3 @@ module.exports.getReportResults = getReportResults;
 module.exports.getUsersGeneralInfo = getUsersGeneralInfo;
 module.exports.openStatisticsSession = openStatisticsSession;
 module.exports.responseToJson = responseToJson;
-module.exports.addSetting = addSetting;
