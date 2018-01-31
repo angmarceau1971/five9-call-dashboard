@@ -857,7 +857,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"api-editor-table.vue","sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"api-editor-table.vue","sourceRoot":""}]);
 
 // exports
 
@@ -897,36 +897,38 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 //
 //
-
-/**
- * @prop {Function} update - function to update field
- * @prop {Function} load - function to load fields
- * @type {Array}
- */
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['update', 'load'],
+  props: ['updater', 'loader', 'headers'],
   data: function () {
     return {
-      fields: [],
-      calculatedFields: [{
-        name: 'AHT',
-        calculation: '{calls} / {handleTime}'
-      }]
+      items: []
     };
   },
   components: {},
   beforeMount: function () {
-    this.loadFields();
+    this.load();
   },
   methods: {
-    updateField: async function (field) {
-      this.$emit('message', `Updating ${field.name}...`);
-      const message = await this.update(field);
+    update: async function (item) {
+      this.$emit('message', `Updating ${item.name}...`);
+      const message = await this.updater(item);
       this.$emit('message', message);
     },
-    loadFields: async function () {
-      let fields = await this.load();
-      this.fields = fields;
+    load: async function () {
+      this.items = await this.loader();
     }
   }
 });
@@ -946,53 +948,49 @@ var render = function() {
       "table",
       { staticClass: "field-list" },
       [
-        _vm._m(0, false, false),
+        _c("thead", [
+          _c(
+            "tr",
+            [
+              _vm._l(_vm.headers, function(header) {
+                return _c("th", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(header) +
+                      "\n                "
+                  )
+                ])
+              }),
+              _vm._v(" "),
+              _c("th", [_vm._v("Save Changes")])
+            ],
+            2
+          )
+        ]),
         _vm._v(" "),
-        _vm._l(_vm.fields, function(field, i) {
-          return _c("tr", { staticClass: "row" }, [
-            _c("td", [
-              _vm._v(
-                "\n                " + _vm._s(field.name) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c("input", {
-                directives: [
+        _vm._l(_vm.items, function(item, i) {
+          return _c(
+            "tr",
+            { staticClass: "row" },
+            [
+              _vm._t("item", [_vm._m(0, true, false)], { item: item }),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: field.defaultRefreshRate,
-                    expression: "field.defaultRefreshRate"
-                  }
-                ],
-                attrs: { type: "number" },
-                domProps: { value: field.defaultRefreshRate },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                    on: {
+                      click: function($event) {
+                        _vm.update(item)
+                      }
                     }
-                    _vm.$set(field, "defaultRefreshRate", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.updateField(field)
-                    }
-                  }
-                },
-                [_vm._v("Save")]
-              )
-            ])
-          ])
+                  },
+                  [_vm._v("Save")]
+                )
+              ])
+            ],
+            2
+          )
         })
       ],
       2
@@ -1004,14 +1002,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Default Refresh Rate (sec)")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Save Changes")])
-      ])
+    return _c("p", [
+      _vm._v("\n                    This is just a dang filler! Use "),
+      _c(
+        "a",
+        {
+          attrs: {
+            href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
+          }
+        },
+        [_vm._v("slot-scope")]
+      ),
+      _vm._v(
+        "\n                    to render `td` elements in parent.\n                "
+      )
     ])
   }
 ]

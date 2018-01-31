@@ -1,24 +1,37 @@
+/**
+ * Creates a table used to modify data through API functions.
+ *
+ * The parent template is responsible for rendering table fields. See:
+ *  https://vuejs.org/v2/guide/components.html#Scoped-Slots
+ * for documentation, or ../scorecard-admin.html for example usage.
+ *
+ *  Component properties:
+ * @prop {Function} updater(item: new object) - API function to update an item on server
+ * @prop {Function} loader() - API function to load items from server
+ * @prop {Array} headers - array of string header names
+ */
+
 <template>
     <div class="field-wrapper">
         <table class="field-list">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Default Refresh Rate (sec)</th>
+                    <th v-for="header in headers">
+                        {{ header }}
+                    </th>
                     <th>Save Changes</th>
                 </tr>
             </thead>
-            <tr class="row" v-for="(field, i) in fields">
+            <tr class="row" v-for="(item, i) in items">
+                <slot name="item" :item="item">
+                    <p>
+                        This is just a dang filler! Use <a href="https://vuejs.org/v2/guide/components.html#Scoped-Slots">slot-scope</a>
+                        to render `td` elements in parent.
+                    </p>
+                </slot>
+
                 <td>
-                    {{ field.name }}
-                </td>
-                <td>
-                    <input v-model="field.defaultRefreshRate"
-                        type="number"
-                    />
-                </td>
-                <td>
-                    <button @click="updateField(field)"
+                    <button @click="update(item)"
                     >Save</button>
                 </td>
             </tr>
@@ -28,38 +41,29 @@
 
 
 <script>
-/**
- * @prop {Function} update - function to update field
- * @prop {Function} load - function to load fields
- * @type {Array}
- */
 export default {
-    props: ['update', 'load'],
+    props: ['updater', 'loader', 'headers'],
 
     data: function() {
         return {
-            fields: [],
-            calculatedFields: [
-                { name: 'AHT', calculation: '{calls} / {handleTime}' }
-            ]
+            items: []
         }
     },
 
     components: {},
 
     beforeMount: function() {
-        this.loadFields();
+        this.load();
     },
 
     methods: {
-        updateField: async function(field) {
-            this.$emit('message', `Updating ${field.name}...`);
-            const message = await this.update(field);
+        update: async function(item) {
+            this.$emit('message', `Updating ${item.name}...`);
+            const message = await this.updater(item);
             this.$emit('message', message);
         },
-        loadFields: async function() {
-            let fields = await this.load();
-            this.fields = fields;
+        load: async function() {
+            this.items = await this.loader();
         }
     }
 }

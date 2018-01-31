@@ -286,7 +286,6 @@ async function handleReportRequest(req, res, dataGetter) {
 app.put('/api/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
     let field = req.body.field;
-    console.log(field)
     fields.update(field);
     res.status(200).send(`Field ${field.name} has been updated.`);
 });
