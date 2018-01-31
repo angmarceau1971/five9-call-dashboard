@@ -120,9 +120,9 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["c"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["d"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
@@ -335,13 +335,13 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
 
       try {
-        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["a" /* getReportResults */](time, 'service-level'); // slData = [];
+        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getReportResults */](time, 'service-level'); // slData = [];
       } catch (err) {
         Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
         slData = [];

@@ -120,9 +120,9 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["c"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["d"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
@@ -282,11 +282,15 @@ const vm = new Vue({
     message: ''
   },
   components: {},
+  beforeMount: function () {
+    let fields = __WEBPACK_IMPORTED_MODULE_0__api_js__["getFieldList"]();
+  },
   methods: {
     updateField: function (field) {
       console.log(field);
       this.message = `Updating ${field.name}...`;
-    }
+    },
+    loadFields
   }
 });
 

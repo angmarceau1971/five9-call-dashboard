@@ -17,11 +17,15 @@ const vm = new Vue({
 
     components: {},
 
+    beforeMount: function() {
+        let fields = api.getFieldList();
+    },
 
     methods: {
         updateField: function(field) {
             console.log(field);
             this.message = `Updating ${field.name}...`;
-        }
+        },
+        loadFields
     }
 });

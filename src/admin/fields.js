@@ -32,15 +32,28 @@ module.exports.getFieldList = getFieldList;
  * has items.
  * @return {Promise} resolves to array of fields
  */
-async function initializeList(paths) {
+async function initializeList(paths, source) {
     return new Promise((resolve, reject) => {
         FieldList.count({}, (err, count) => {
             console.log(`count = ${count}`);
             if (err) reject(err);
             if (count > 0) reject(new Error(`${count} fields already exist.`));
-            let fields = paths;
+            let fields = Object.keys(paths)
+                // Filter for numbers and remove private properties
+                .filter((path) => paths[path].instance == 'Number')
+                .filter((path) => path[0] != '_')
+                .map((path) => {
+                    return {
+                        fieldName: path,
+                        source: source
+                    }
+                });
 
-            resolve(fields);
+            // Add to collection
+            FieldList.collection.insert(fields, (err, docs) => {
+                if (err) reject(err);
+                resolve(docs);
+            })
         })
     });
 }

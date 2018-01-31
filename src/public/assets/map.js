@@ -120,9 +120,9 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["c"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["d"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
@@ -381,7 +381,7 @@ async function updateMap(callMap) {
   params.skills = $('.skills.filter').val(); // get all the datas
 
   let customerData = await getCustomerData();
-  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["a" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
+  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
 
   let data = Object.keys(customerData).map(zip => ({
     zipCode: zip,
@@ -452,7 +452,7 @@ const customerCount = {
 async function getCustomerData() {
   // reload data from server if it's been 6+ hours since the last update
   if (customerCount.lastUpdated.isBefore(moment().subtract(6, 'hours'))) {
-    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["a" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
+    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
     // and customer count as volue
 
     customerCount.data = rawData.reduce((object, item) => {
