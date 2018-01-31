@@ -23,31 +23,11 @@
 
         <div class="section fields">
             <h2>Fields</h2>
-            <div class="field-wrapper">
-                <table class="field-list">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Default Refresh Rate (sec)</th>
-                            <th>Save Changes</th>
-                        </tr>
-                    </thead>
-                    <tr class="row" v-for="(field, i) in fields">
-                        <td>
-                            {{ field.name }}
-                        </td>
-                        <td>
-                            <input v-model="field.defaultRefreshRate"
-                                type="number"
-                            />
-                        </td>
-                        <td>
-                            <button @click="updateField(field)"
-                            >Save</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <api-editor-table
+                @message="this.updateMessage"
+                :update="fieldUpdater"
+                :load="fieldLoader"
+            ></api-editor-table>
         </div>
     </div>
     </body>

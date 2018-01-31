@@ -1,34 +1,26 @@
 import * as api from './api.js';
-
+import ApiEditorTable from '../components/api-editor-table.vue';
 
 const vm = new Vue({
     el: '#admin-app',
 
+    components: {
+        'api-editor-table': ApiEditorTable
+    },
+
     data: {
-        fields: [
-            // { name: 'calls', defaultRefreshRate: 60 * 5 },
-            // { name: 'handleTime', defaultRefreshRate: 60 * 5 }
-        ],
-        calculatedFields: [
-            { name: 'AHT', calculation: '{calls} / {handleTime}' }
-        ],
         message: ''
     },
 
-    components: {},
-
-    beforeMount: function() {
-        this.loadFields();
-    },
-
     methods: {
-        updateField: async function(field) {
-            this.message = `Updating ${field.name}...`;
-            this.message = await api.updateField(field);
+        fieldUpdater: async function(field) {
+            return api.updateField(field);
         },
-        loadFields: async function() {
-            let fields = await api.getFieldList();
-            this.fields = fields;
+        fieldLoader: function() {
+            return api.getFieldList();
+        },
+        updateMessage: function(msg) {
+            this.message = msg;
         }
     }
 });
