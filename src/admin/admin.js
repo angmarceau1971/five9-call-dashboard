@@ -2,9 +2,9 @@ const Agenda = require('agenda');
 const log = require('../helpers/log'); // recording updates
 const skill = require('./skill');
 
-function scheduleSkillChange(time, userRequesting, skillParameters) {
-
-}
+// function scheduleSkillChange(time, userRequesting, skillParameters) {
+//
+// }
 
 async function schedule(db, user, jobName, time, fun) {
     const agenda = new Agenda().mongo(db, 'jobs');
@@ -18,5 +18,4 @@ async function schedule(db, user, jobName, time, fun) {
     agenda.every(time, jobName);
     agenda.start();
 }
-
 module.exports.schedule = schedule;

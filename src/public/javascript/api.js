@@ -33,6 +33,25 @@ export function getReportResults(params, type) {
 
 
 /**
+ * List of available fields for widgets.
+ * @return {Promise} resolves to array of field objects
+ */
+export async function getFieldList() {
+    let response = await request({}, 'fields', 'GET');
+    return response.json();
+}
+/**
+ * Updates a field on server.
+ * @param  {Object}  field new object
+ * @return {Promise} resolves to array of field objects
+ */
+export async function updateField(field) {
+    let response = await request({field: field}, 'fields', 'PUT');
+    return response.text();
+}
+
+
+/**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
  * @param  {String} endpoint   at server's API
@@ -47,17 +66,19 @@ async function getData(parameters, endpoint) {
 }
 
 // Make a request to server with given parameters (from getParameters)
-async function request(parameters, url='statistics') {
+async function request(parameters, url='statistics', method='POST') {
     const apiURL = API_URL + url; // defined in api_url.js
 
     const requestOptions = {
-        method: 'POST',
+        method: method,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        credentials: 'include',
-        body: JSON.stringify(parameters)
+        credentials: 'include'
+    }
+    if (method != 'GET') {
+        requestOptions.body = JSON.stringify(parameters);
     }
 
     return fetch(apiURL, requestOptions)

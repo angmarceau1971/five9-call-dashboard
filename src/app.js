@@ -286,15 +286,17 @@ async function handleReportRequest(req, res, dataGetter) {
 app.put('/api/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
     let field = req.body.field;
+    console.log(field)
     fields.update(field);
     res.status(200).send(`Field ${field.name} has been updated.`);
 });
+
 // Modify available fields list
 app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
-    let fields = fields.getFieldList();
+    let fieldList = await fields.getFieldList();
     res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(data));
+    res.send(JSON.stringify(fieldList));
 });
 
 
@@ -302,7 +304,7 @@ app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
 app.get('/api/notify-504', async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        log.error(`--------LOGGER: 504 reported by client at ${moment()}`);
+        log.error(`--------LOGGER: 504 reported by client`);
         res.status(200).send('Thanks for the message!');
     } catch (err) {
         res.status(500).send('An error occurred on the server while being notified of 504.');

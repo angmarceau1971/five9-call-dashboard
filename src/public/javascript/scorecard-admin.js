@@ -6,8 +6,8 @@ const vm = new Vue({
 
     data: {
         fields: [
-            { name: 'calls', defaultRefreshRate: 60 * 5 },
-            { name: 'handleTime', defaultRefreshRate: 60 * 5 }
+            // { name: 'calls', defaultRefreshRate: 60 * 5 },
+            // { name: 'handleTime', defaultRefreshRate: 60 * 5 }
         ],
         calculatedFields: [
             { name: 'AHT', calculation: '{calls} / {handleTime}' }
@@ -18,14 +18,17 @@ const vm = new Vue({
     components: {},
 
     beforeMount: function() {
-        let fields = api.getFieldList();
+        this.loadFields();
     },
 
     methods: {
-        updateField: function(field) {
-            console.log(field);
+        updateField: async function(field) {
             this.message = `Updating ${field.name}...`;
+            this.message = await api.updateField(field);
         },
-        loadFields
+        loadFields: async function() {
+            let fields = await api.getFieldList();
+            this.fields = fields;
+        }
     }
 });

@@ -9,7 +9,7 @@ const chai = require('chai');
 const should = chai.should();
 const assert = chai.assert;
 const five9 = require('../src/helpers/five9-interface');
-const skill = require('../src/admin/skill.js');
+const skill = require('../src/admin/skill');
 
 const userProfile = 'WFM';
 const skills = ['TEST_DO_NOT_USE', 'OUTBOUND_DEFAULT'];

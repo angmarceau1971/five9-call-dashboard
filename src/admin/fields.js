@@ -1,10 +1,9 @@
 const log = require('../helpers/log');
 const mongoose = require('mongoose');
-const report = require('../models/report');
 
 const fieldListSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    fieldName: { type: String },
+    name: { type: String },
     defaultRefreshRate: { type: Number, default: 0 },
     source: { type: String, default: 'N/A' }
 });
@@ -13,7 +12,7 @@ const FieldList = mongoose.model('FieldList', fieldListSchema);
 
 async function update(field) {
     return FieldList.replaceOne(
-        { 'fieldName': field.name },
+        { 'name': field.name },
         field
     );
 }
@@ -33,6 +32,7 @@ module.exports.getFieldList = getFieldList;
  * @return {Promise} resolves to array of fields
  */
 async function initializeList(paths, source) {
+    // console.log(paths);
     return new Promise((resolve, reject) => {
         FieldList.count({}, (err, count) => {
             console.log(`count = ${count}`);
@@ -44,7 +44,7 @@ async function initializeList(paths, source) {
                 .filter((path) => path[0] != '_')
                 .map((path) => {
                     return {
-                        fieldName: path,
+                        name: path,
                         source: source
                     }
                 });
@@ -58,3 +58,4 @@ async function initializeList(paths, source) {
     });
 }
 module.exports.initializeList = initializeList;
+module.exports.FieldList = FieldList;

@@ -123,6 +123,8 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["c"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["d"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["e"] = updateField;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(1);
@@ -153,6 +155,27 @@ function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
 }
 /**
+ * List of available fields for widgets.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getFieldList() {
+  let response = await request({}, 'fields', 'GET');
+  return response.json();
+}
+/**
+ * Updates a field on server.
+ * @param  {Object}  field new object
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function updateField(field) {
+  let response = await request({
+    field: field
+  }, 'fields', 'PUT');
+  return response.text();
+}
+/**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
  * @param  {String} endpoint   at server's API
@@ -167,18 +190,22 @@ async function getData(parameters, endpoint) {
 } // Make a request to server with given parameters (from getParameters)
 
 
-async function request(parameters, url = 'statistics') {
+async function request(parameters, url = 'statistics', method = 'POST') {
   const apiURL = __WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + url; // defined in api_url.js
 
   const requestOptions = {
-    method: 'POST',
+    method: method,
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
-    body: JSON.stringify(parameters)
+    credentials: 'include'
   };
+
+  if (method != 'GET') {
+    requestOptions.body = JSON.stringify(parameters);
+  }
+
   return fetch(apiURL, requestOptions).then(async response => {
     if (response.status == 504) notifyServer504(parameters, url); // debugging
 
