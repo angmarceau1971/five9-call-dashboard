@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 77);
+/******/ 	return __webpack_require__(__webpack_require__.s = 79);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1016,15 +1016,15 @@ module.exports = function listToStyles (parentId, list) {
 
 /***/ }),
 
-/***/ 77:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
 
-/***/ 78:
+/***/ 80:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1034,7 +1034,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 const vm = new Vue({
-  el: '#admin-app',
+  el: '#skill-app',
   components: {
     'api-editor-table': __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__["a" /* default */]
   },
@@ -1042,14 +1042,17 @@ const vm = new Vue({
     message: ''
   },
   methods: {
-    fieldUpdater: async function (field) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["f" /* updateField */](field);
+    jobUpdater: async function (job) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["g" /* updateSkillJob */](job);
     },
-    fieldLoader: function () {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["a" /* getFieldList */]();
+    jobLoader: function () {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* getSkillJobs */]();
     },
     updateMessage: function (msg) {
       this.message = msg;
+    },
+    formatDateTime: function (d) {
+      return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
     }
   }
 });
@@ -1057,4 +1060,4 @@ const vm = new Vue({
 /***/ })
 
 /******/ });
-//# sourceMappingURL=scorecard-admin.js.map
+//# sourceMappingURL=skill.js.map

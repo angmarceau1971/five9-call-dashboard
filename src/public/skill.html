@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Scorecard Admin</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="./styles/scorebase.css" rel="stylesheet" type="text/css">
+        <link href="./styles/scoredetail.css" rel="stylesheet" type="text/css">
+        <link href="./styles/scorecard-admin.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+
+    <div id="skill-app" class="content-wrapper">
+        <h1>Skillin' It</h1>
+        <div class="section message"
+            v-show="message"
+        >
+            {{ message }}
+        </div>
+
+        <div class="section schedule">
+            <h2>Schedule</h2>
+            <p>
+                Questions on the interval format? See
+                <a href="https://crontab.guru/">crontab.guru</a> for help.
+            </p>
+            <api-editor-table
+                :loader=jobLoader
+                :updater=jobUpdater
+                :headers="['Job Name', 'Interval', 'Last Run At']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input v-model="props.item.name" />
+                    </td>
+                    <td>
+                        <input v-model="props.item.repeatInterval" />
+                    </td>
+                    <td>
+                        {{ formatDateTime(props.item.lastRunAt) }}
+                    </td>
+                </template>
+            </api-editor-table>
+        </div>
+    </div>
+    </body>
+
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vuex"></script>
+    <script src="./javascript/moment.min.js" type="text/javascript"></script>
+    <script src="javascript/moment-timezone-with-data.min.js" type="text/javascript"></script>
+    <script src="./assets/skill.js" type="text/javascript"></script>
+</html>

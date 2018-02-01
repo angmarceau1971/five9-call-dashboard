@@ -50,6 +50,25 @@ export async function updateField(field) {
     return response.text();
 }
 
+/**
+ * List of available scheduled skilling jobs.
+ * @return {Promise} resolves to array of field objects
+ */
+export async function getSkillJobs() {
+    let response = await request({}, 'skill', 'GET');
+    return response.json();
+}
+/**
+ * Updates a scheduled skilling job on server.
+ * @param  {Object}  job new object
+ * @return {Promise} resolves to server's response
+ */
+export async function updateSkillJob(job) {
+    let response = await request({job: job}, 'skill', 'PUT');
+    return response.text();
+}
+
+
 
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
@@ -64,6 +83,7 @@ async function getData(parameters, endpoint) {
     const response = await request(parameters, endpoint);
     return await response.json();
 }
+
 
 // Make a request to server with given parameters (from getParameters)
 async function request(parameters, url='statistics', method='POST') {

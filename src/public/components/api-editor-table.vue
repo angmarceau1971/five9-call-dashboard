@@ -5,10 +5,12 @@
  *  https://vuejs.org/v2/guide/components.html#Scoped-Slots
  * for documentation, or ../scorecard-admin.html for example usage.
  *
+ * A "Save Changes" button is included with each item's row. 
+ *
  *  Component properties:
  * @prop {Function} updater(item: new object) - API function to update an item on server
  * @prop {Function} loader() - API function to load items from server
- * @prop {Array} headers - array of string header names
+ * @prop {Array} headers - array of string header names.
  */
 
 <template>

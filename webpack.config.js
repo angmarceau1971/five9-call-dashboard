@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         scorecard: ['./src/public/javascript/scorecard.js'],
         'scorecard-admin': ['./src/public/javascript/scorecard-admin.js'],
+        skill: ['./src/public/javascript/skill-admin.js'],
         queues: ['./src/public/javascript/queue-dashboard.js'],
         map: ['./src/public/javascript/maps-dashboard.js'],
         admin: ['./src/public/javascript/admin.js']

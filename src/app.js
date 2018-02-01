@@ -18,6 +18,7 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
+const admin = require('./admin/admin');
 const fields = require('./admin/fields');
 const five9 = require('./helpers/five9-interface'); // Five9 interface helper functions
 const log = require('./helpers/log'); // recording updates
@@ -107,6 +108,12 @@ app.get('/scorecard', verify.middleware(), async (req, res) => {
 // scorecard fields
 app.get('/scorecard-admin', verify.middleware(), async (req, res) => {
     let dir = path.join(__dirname + '/public/scorecard-admin.html');
+    res.sendFile(dir);
+});
+
+// scheduling skill jobs
+app.get('/skill', verify.middleware(), async (req, res) => {
+    let dir = path.join(__dirname + '/public/skill.html');
     res.sendFile(dir);
 });
 
@@ -289,13 +296,26 @@ app.put('/api/fields', verify.apiMiddleware(), async (req, res) => {
     fields.update(field);
     res.status(200).send(`Field ${field.name} has been updated.`);
 });
-
 // Modify available fields list
 app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
     let fieldList = await fields.getFieldList();
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(fieldList));
+});
+
+// Modify available scheduled skilling jobs list
+app.put('/api/skill', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    admin.updateJob(req.body.job);
+    res.status(200).send(`Job has been updated.`);
+});
+// Modify available scheduled skilling jobs list
+app.get('/api/skill', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    let jobs = await admin.getScheduledJobs();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(jobs));
 });
 
 

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 82);
+/******/ 	return __webpack_require__(__webpack_require__.s = 84);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -120,11 +120,13 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["d"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["e"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["e"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["f"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["g"] = updateSkillJob;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -173,6 +175,27 @@ async function updateField(field) {
   let response = await request({
     field: field
   }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * List of available scheduled skilling jobs.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getSkillJobs() {
+  let response = await request({}, 'skill', 'GET');
+  return response.json();
+}
+/**
+ * Updates a scheduled skilling job on server.
+ * @param  {Object}  job new object
+ * @return {Promise} resolves to server's response
+ */
+
+async function updateSkillJob(job) {
+  let response = await request({
+    job: job
+  }, 'skill', 'PUT');
   return response.text();
 }
 /**
@@ -277,7 +300,7 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 // Handles UI interaction for login form
@@ -300,24 +323,24 @@ $(document).ready(() => {
 
 /***/ }),
 
-/***/ 82:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(83);
+module.exports = __webpack_require__(85);
 
 
 /***/ }),
 
-/***/ 83:
+/***/ 85:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(86);
 
 
 
@@ -540,7 +563,7 @@ function reportTimeRange() {
 
 /***/ }),
 
-/***/ 84:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
