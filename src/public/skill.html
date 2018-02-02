@@ -30,7 +30,7 @@
             <api-editor-table
                 :loader=jobLoader
                 :updater=jobUpdater
-                :headers="['Job Name', 'Interval', 'Last Run At']"
+                :headers="['Job Name', 'Interval', 'User Profile', 'Add Skills', 'Remove Skills', 'Last Run At']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -38,6 +38,15 @@
                     </td>
                     <td>
                         <input v-model="props.item.repeatInterval" />
+                    </td>
+                    <td>
+                        <input v-model="props.item.userProfile" />
+                    </td>
+                    <td>
+                        <input v-model="props.item.addSkills" />
+                    </td>
+                    <td>
+                        <input v-model="props.item.removeSkills" />
                     </td>
                     <td>
                         {{ formatDateTime(props.item.lastRunAt) }}

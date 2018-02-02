@@ -5,7 +5,7 @@
  *  https://vuejs.org/v2/guide/components.html#Scoped-Slots
  * for documentation, or ../scorecard-admin.html for example usage.
  *
- * A "Save Changes" button is included with each item's row. 
+ * A "Save Changes" button is included with each item's row.
  *
  *  Component properties:
  * @prop {Function} updater(item: new object) - API function to update an item on server
@@ -14,8 +14,8 @@
  */
 
 <template>
-    <div class="field-wrapper">
-        <table class="field-list">
+    <div class="editor-wrapper">
+        <table class="editor-list">
             <thead>
                 <tr>
                     <th v-for="header in headers">
@@ -73,5 +73,36 @@ export default {
 
 
 <style>
-
+.editor-wrapper {
+    width: 100%;
+    overflow-x: scroll;
+}
+.editor-list {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    margin: 1em;
+}
+.editor-list .row {
+    height: 50px;
+}
+th, td {
+    padding: 0 0.5rem;
+    min-width: 120px;
+}
+th {
+    text-align: left;
+}
+td {
+    border-bottom: 1px solid hsl(211, 8%, 72%);
+    align-items: center;
+}
+.editor-list button {
+    color: black;
+}
+.editor-list button:hover {
+    background-color: white;
+}
 </style>

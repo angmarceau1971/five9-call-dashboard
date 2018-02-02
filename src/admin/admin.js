@@ -19,13 +19,11 @@ module.exports.start = start;
 
 async function schedule(user, jobName, time, fun) {
     agenda.define(jobName, fun);
-    console.log(`scheduling ${jobName}`);
 
     // Schedule to run at requested times
     agenda.every(time, jobName);
     return new Promise((resolve, reject) => {
         agenda.jobs({ name: jobName }, function(err, jobs) {
-            console.log(`has scheduled ${jobName}`);
             if (err) reject(err);
             if (jobs.length > 0) resolve(jobs[0]);
             resolve(jobs);
@@ -45,7 +43,6 @@ async function cancelJob(id) {
     return new Promise((resolve, reject) => {
         agenda.cancel({ _id: oid }, async function(err, numRemoved) {
             if (err) reject(err);
-            console.log('cancelling ' + numRemoved);
             resolve();
         });
     });
