@@ -27,17 +27,21 @@
             <tr class="row" v-for="(item, i) in items">
                 <slot name="item" :item="item">
                     <p>
-                        This is just a dang filler! Use <a href="https://vuejs.org/v2/guide/components.html#Scoped-Slots">slot-scope</a>
+                        This is just a dang filler! Use
+                        <a target="_blank"
+                        href="https://vuejs.org/v2/guide/components.html#Scoped-Slots">
+                          slot-scope</a>
                         to render `td` elements in parent.
                     </p>
                 </slot>
 
                 <td>
-                    <button @click="update(item)"
+                    <button class="save-button" @click="update(item)"
                     >Save</button>
                 </td>
             </tr>
         </table>
+        <button class="add-button">+</button>
     </div>
 </template>
 
@@ -83,13 +87,13 @@ export default {
     width: 100%;
     justify-content: space-between;
     flex-direction: row;
-    margin: 1em;
+    /* margin: 1em; */
 }
 .editor-list .row {
-    height: 50px;
+    height: 3em;
 }
 th, td {
-    padding: 0 0.5rem;
+    padding: 0 0.5em;
     min-width: 120px;
 }
 th {
@@ -98,11 +102,23 @@ th {
 td {
     border-bottom: 1px solid hsl(211, 8%, 72%);
     align-items: center;
+    height: 3em;
 }
-.editor-list button {
+.editor-wrapper button {
+    box-sizing: border-box;
     color: black;
+    border: 4px solid #444;
+    min-width: 80px;
 }
-.editor-list button:hover {
+.editor-wrapper button:hover {
     background-color: white;
+}
+.editor-list .save-button {
+
+}
+.editor-wrapper .add-button {
+    font-size: 2em;
+    font-weight: lighter;
+    color: hsl(208, 57%, 62%);
 }
 </style>

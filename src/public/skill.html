@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Scorecard Admin</title>
+        <title>Skilling Admin</title>
         <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -25,7 +25,8 @@
             <h2>Schedule</h2>
             <p>
                 Questions on the interval format? See
-                <a href="https://crontab.guru/">crontab.guru</a> for help.
+                <a target="_blank" href="https://crontab.guru/">crontab.guru</a>
+                for help.
             </p>
             <api-editor-table
                 :loader=jobLoader
@@ -40,13 +41,13 @@
                         <input v-model="props.item.repeatInterval" />
                     </td>
                     <td>
-                        <input v-model="props.item.userProfile" />
+                        <input v-model="props.item.data.userProfile" />
                     </td>
                     <td>
-                        <input v-model="props.item.addSkills" />
+                        <input v-model="props.item.data.addSkills" />
                     </td>
                     <td>
-                        <input v-model="props.item.removeSkills" />
+                        <input v-model="props.item.data.removeSkills" />
                     </td>
                     <td>
                         {{ formatDateTime(props.item.lastRunAt) }}

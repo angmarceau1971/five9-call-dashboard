@@ -307,8 +307,8 @@ app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
 // Modify available scheduled skilling jobs list
 app.put('/api/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
-    console.log(req.body.job);
-    admin.updateJob('the dude', req.body.job);
+
+    const newjob = await admin.updateSkillingJob(req.body.username, req.body.job, req.body.data);
     res.status(200).send(`Job has been updated.`);
 });
 // Modify available scheduled skilling jobs list
@@ -453,6 +453,9 @@ const server = app.listen(port, async () => {
         report.scheduleUpdate(5 * 60 * 1000);
         // Update user list every 12 hours
         users.scheduleUpdate(12 * 60 * 60 * 1000);
+
+        // Start admin jobs
+        admin.start();
 
     } catch (err) {
         log.error(`Error occurred on server: ` + err);

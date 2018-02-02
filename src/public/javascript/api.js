@@ -64,7 +64,17 @@ export async function getSkillJobs() {
  * @return {Promise} resolves to server's response
  */
 export async function updateSkillJob(job) {
-    let response = await request({job: job}, 'skill', 'PUT');
+    // format data
+    const format = (skillStr) => skillStr.split(',').map((sk) => sk.trim());
+
+    ['addSkills', 'removeSkills'].map((prop) => {
+        let skills = job.data[prop];
+        if (typeof(skills) == 'string') {
+            job.data[prop] = format(skills);
+        }
+    });
+
+    let response = await request({job: job, data: job.data}, 'skill', 'PUT');
     return response.text();
 }
 

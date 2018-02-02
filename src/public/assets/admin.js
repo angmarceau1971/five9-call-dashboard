@@ -193,8 +193,19 @@ async function getSkillJobs() {
  */
 
 async function updateSkillJob(job) {
+  // format data
+  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
+
+  ['addSkills', 'removeSkills'].map(prop => {
+    let skills = job.data[prop];
+
+    if (typeof skills == 'string') {
+      job.data[prop] = format(skills);
+    }
+  });
   let response = await request({
-    job: job
+    job: job,
+    data: job.data
   }, 'skill', 'PUT');
   return response.text();
 }

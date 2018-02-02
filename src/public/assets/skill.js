@@ -307,7 +307,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    margin: 1em;\n}\n.editor-list .row {\r\n    height: 50px;\n}\nth, td {\r\n    padding: 0 0.5rem;\r\n    min-width: 120px;\n}\nth {\r\n    text-align: left;\n}\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\n}\n.editor-list button {\r\n    color: black;\n}\n.editor-list button:hover {\r\n    background-color: white;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?6f097328"],"names":[],"mappings":";AA2EA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,aAAA;CACA;AACA;IACA,kBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;CACA;AACA;IACA,aAAA;CACA;AACA;IACA,wBAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * A \"Save Changes\" button is included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use <a href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    margin: 1em;\r\n}\r\n.editor-list .row {\r\n    height: 50px;\r\n}\r\nth, td {\r\n    padding: 0 0.5rem;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n}\r\n.editor-list button {\r\n    color: black;\r\n}\r\n.editor-list button:hover {\r\n    background-color: white;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row {\r\n    height: 3em;\n}\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth {\r\n    text-align: left;\n}\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    min-width: 80px;\n}\n.editor-wrapper button:hover {\r\n    background-color: white;\n}\n.editor-list .save-button {\n}\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?179ac8b7"],"names":[],"mappings":";AA+EA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * A \"Save Changes\" button is included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n        <button class=\"add-button\">+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -318,6 +318,10 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+//
+//
+//
+//
 //
 //
 //
@@ -431,6 +435,7 @@ var render = function() {
                 _c(
                   "button",
                   {
+                    staticClass: "save-button",
                     on: {
                       click: function($event) {
                         _vm.update(item)
@@ -446,7 +451,9 @@ var render = function() {
         })
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("button", { staticClass: "add-button" }, [_vm._v("+")])
   ])
 }
 var staticRenderFns = [
@@ -455,15 +462,18 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("p", [
-      _vm._v("\n                    This is just a dang filler! Use "),
+      _vm._v(
+        "\n                    This is just a dang filler! Use\n                    "
+      ),
       _c(
         "a",
         {
           attrs: {
+            target: "_blank",
             href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
           }
         },
-        [_vm._v("slot-scope")]
+        [_vm._v("\n                      slot-scope")]
       ),
       _vm._v(
         "\n                    to render `td` elements in parent.\n                "
@@ -570,8 +580,19 @@ async function getSkillJobs() {
  */
 
 async function updateSkillJob(job) {
+  // format data
+  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
+
+  ['addSkills', 'removeSkills'].map(prop => {
+    let skills = job.data[prop];
+
+    if (typeof skills == 'string') {
+      job.data[prop] = format(skills);
+    }
+  });
   let response = await request({
-    job: job
+    job: job,
+    data: job.data
   }, 'skill', 'PUT');
   return response.text();
 }
@@ -1045,13 +1066,25 @@ const vm = new Vue({
     jobUpdater: async function (job) {
       return __WEBPACK_IMPORTED_MODULE_0__api_js__["g" /* updateSkillJob */](job);
     },
-    jobLoader: function () {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* getSkillJobs */]();
+    jobLoader: async function () {
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* getSkillJobs */]();
+      return jobs.map(job => {
+        if (!job.data) {
+          job.data = {
+            userProfile: '',
+            addSkills: '',
+            removeSkills: ''
+          };
+        }
+
+        return job;
+      });
     },
     updateMessage: function (msg) {
       this.message = msg;
     },
     formatDateTime: function (d) {
+      if (!d) return 'N/A';
       return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
     }
   }

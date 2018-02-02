@@ -11,17 +11,68 @@ const agenda = new Agenda({db: {
     collection: 'jobs'
 }});
 async function start() {
+    log.message(`About to start Agenda`)
     return new Promise((resolve, reject) => {
-        agenda.on('ready', function() { resolve(agenda.start()) });
+        agenda.on('ready', async function() {
+            log.message(`Starting Agenda`);
+            await agenda.start();
+            log.message(`Agenda has started`);
+        });
     });
 }
 module.exports.start = start;
 
-async function schedule(user, jobName, time, fun) {
-    agenda.define(jobName, fun);
+
+
+/**
+ * [scheduleSkilling description]
+ * @param  {[type]} user    [description]
+ * @param  {[type]} jobName [description]
+ * @param  {[type]} time    [description]
+ * @param  {Object} params  with keys addSkills, removeSkills, and userProfile
+ * @return {Promise}        resolves to Agenda job object created
+ */
+async function scheduleSkilling(user, jobName, time, params) {
+    const skiller = async function(job, done) {
+        try {
+            const data = job.attrs.data;
+            log.message(`Skilling with ${JSON.stringify(data)}`);
+            await skill.modifyUserProfile(data.addSkills,
+                                          data.removeSkills,
+                                          data.userProfile);
+            done();
+        } catch (err) {
+            log.error(`Admin Skilling Job Error: ${err}.`);
+            done();
+        }
+    }
+
+    return schedule(user, jobName, time, skiller, params);
+}
+module.exports.scheduleSkilling = scheduleSkilling;
+
+async function updateSkillingJob(user, job, params) {
+    await cancelJob(job._id);
+    return scheduleSkilling(user, job.name, job.repeatInterval, params);
+}
+module.exports.updateSkillingJob = updateSkillingJob;
+
+
+
+
+async function schedule(user, jobName, time, fun, data) {
+    log.message(`Scheduling job ${jobName} for ${time} with ${JSON.stringify(data)}.`);
 
     // Schedule to run at requested times
-    agenda.every(time, jobName);
+    agenda.define(jobName, fun);
+    if (data) {
+        agenda.every(time, jobName, data);
+    } else {
+        agenda.every(time, jobName);
+    }
+
+
+    // Return new job
     return new Promise((resolve, reject) => {
         agenda.jobs({ name: jobName }, function(err, jobs) {
             if (err) reject(err);
@@ -43,6 +94,7 @@ async function cancelJob(id) {
     return new Promise((resolve, reject) => {
         agenda.cancel({ _id: oid }, async function(err, numRemoved) {
             if (err) reject(err);
+            log.message(`Deleting ${numRemoved} job(s) with OID ${id}.`)
             resolve();
         });
     });

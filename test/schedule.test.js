@@ -29,10 +29,13 @@ function scheduleJob() {
         hello
     );
 }
+function scheduleSkillThing() {
+    // return admin.scheduleSkilling
+}
 
 
 describe('Scheduling a job', function() {
-    this.timeout(05000);
+    this.timeout(65000);
     function f(goToSleep) {
         console.log('its bedtime');
     }
@@ -45,15 +48,15 @@ describe('Scheduling a job', function() {
             console.log(job);
 
             const oldName = job.attrs.name;
-            const newName = 'a new name';
-
-            job.attrs.name = newName;
-            job.attrs.repeatInterval = '1 2 3 4 5';
-            let newJob = await admin.updateJob('nate_again', job, ()=>console.log('wassup'));
-
-            // clear jobs
-            admin.cancelJob(newJob);
-            return new Promise(resolve => setTimeout(resolve, 5000));
+            // const newName = 'a new name';
+            //
+            // job.attrs.name = newName;
+            // job.attrs.repeatInterval = '1 2 3 4 5';
+            // let newJob = await admin.updateJob('nate_again', job, ()=>console.log('wassup'));
+            //
+            // // clear jobs
+            admin.cancelJob(job);
+            return new Promise(resolve => setTimeout(resolve, 60000));
         });
     });
 });

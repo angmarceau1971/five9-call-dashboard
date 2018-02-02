@@ -16,13 +16,22 @@ const vm = new Vue({
         jobUpdater: async function(job) {
             return api.updateSkillJob(job);
         },
-        jobLoader: function() {
-            return api.getSkillJobs();
+        jobLoader: async function() {
+            const jobs = await api.getSkillJobs();
+            return jobs.map((job) => {
+                if (!job.data) {
+                    job.data = {
+                        userProfile: '', addSkills: '', removeSkills: ''
+                    };
+                }
+                return job;
+            });
         },
         updateMessage: function(msg) {
             this.message = msg;
         },
         formatDateTime: function(d) {
+            if (!d) return 'N/A';
             return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
         }
     }

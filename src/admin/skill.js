@@ -30,7 +30,8 @@ module.exports.modifyUserProfile = modifyUserProfile;
  * @return {Object}        JSON to process into XML Five9 request
  */
 function formatToJson(skills, userProfile, action) {
-    return skills.reduce((newList, skill) =>
-        newList.concat([{ userProfileName: userProfile}, {[action]: skill }])
-    , []);
+    return skills.reduce((newList, skill) => {
+        if (skill == '') return newList;
+        return newList.concat([{ userProfileName: userProfile}, {[action]: skill }])
+    }, []);
 }
