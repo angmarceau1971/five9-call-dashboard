@@ -10,37 +10,47 @@ const agenda = new Agenda({db: {
     address: settings.MONGODB_URI,
     collection: 'jobs'
 }});
+async function start() {
+    return new Promise((resolve, reject) => {
+        agenda.on('ready', function() { resolve(agenda.start()) });
+    });
+}
+module.exports.start = start;
 
-
-async function schedule(db, user, jobName, time, fun) {
+async function schedule(user, jobName, time, fun) {
     agenda.define(jobName, fun);
-
-    // Wait for agenda to connect
-    await new Promise(resolve => agenda.once('ready', resolve));
+    console.log(`scheduling ${jobName}`);
 
     // Schedule to run at requested times
     agenda.every(time, jobName);
-    agenda.start();
-}
-module.exports.schedule = schedule;
-
-async function updateJob(newJob) {
-    const id = new mongoose.Types.ObjectId(newJob._id);
-    console.log(newJob.name);
     return new Promise((resolve, reject) => {
-        agenda.jobs({ _id: id }, function(err, jobs) {
+        agenda.jobs({ name: jobName }, function(err, jobs) {
+            console.log(`has scheduled ${jobName}`);
             if (err) reject(err);
-            const job = jobs[0];
-            job.attrs.name = job.name;
-            job.attrs.repeatInterval = job.repeatInterval;
-            job.save(function(err) {
-                if (err) reject(err);
-                resolve(job);
-            });
+            if (jobs.length > 0) resolve(jobs[0]);
+            resolve(jobs);
         });
     });
 }
+module.exports.schedule = schedule;
+
+async function updateJob(user, job, fun) {
+    await cancelJob(job._id);
+    return schedule(user, job.name, job.repeatInterval, fun);
+}
 module.exports.updateJob = updateJob;
+
+async function cancelJob(id) {
+    const oid = new mongoose.Types.ObjectId(id);
+    return new Promise((resolve, reject) => {
+        agenda.cancel({ _id: oid }, async function(err, numRemoved) {
+            if (err) reject(err);
+            console.log('cancelling ' + numRemoved);
+            resolve();
+        });
+    });
+}
+module.exports.cancelJob = cancelJob;
 
 async function getScheduledJobs(filter={}) {
     return new Promise((resolve, reject) => {

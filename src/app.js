@@ -307,7 +307,8 @@ app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
 // Modify available scheduled skilling jobs list
 app.put('/api/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
-    admin.updateJob(req.body.job);
+    console.log(req.body.job);
+    admin.updateJob('the dude', req.body.job);
     res.status(200).send(`Job has been updated.`);
 });
 // Modify available scheduled skilling jobs list

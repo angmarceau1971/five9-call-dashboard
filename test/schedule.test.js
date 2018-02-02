@@ -16,18 +16,13 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const settings = require('../src/secure_settings');
 const admin = require('../src/admin/admin.js');
-const Agenda = require('agenda');
 
-
-let db;
 
 function scheduleJob() {
     function hello() {
         console.log(' ------- hello world! ------- ');
-        process.exit(0);
     }
     return admin.schedule(
-        db,
         'nate',
         'say hello on the regular',
         '* * * * *',
@@ -37,31 +32,28 @@ function scheduleJob() {
 
 
 describe('Scheduling a job', function() {
-    this.timeout(70000);
-    before(function setup(done) {
-        mongoose.connect(settings.MONGODB_URI, {
-           useMongoClient: true
-        });
-        db = mongoose.connection;
-        db.on('error', function() {
-            console.error.bind(console, 'connection error');
-            done();
-        });
-        db.once('open', function() {
-            done();
-        });
-    });
+    this.timeout(05000);
+    function f(goToSleep) {
+        console.log('its bedtime');
+    }
+
 
     describe('through admin', async function() {
-        it('should start printing like crazy', async function(done) {
-            // scheduleJob();
-            const agenda = new Agenda({ db: {address: settings.MONGODB_URI, collection: 'jobs'} });
-            await new Promise(resolve => agenda.once('ready', resolve));
+        it('should add a job to `jobs` collection', async function(done) {
+            await admin.start();
+            let job = await scheduleJob();
+            console.log(job);
 
-            agenda.start();
-            console.log('agenda has been started');
-            agenda.jobs({}, (err, jobs) => console.log(jobs));
-            return new Promise(resolve => setTimeout(resolve, 60000));
+            const oldName = job.attrs.name;
+            const newName = 'a new name';
+
+            job.attrs.name = newName;
+            job.attrs.repeatInterval = '1 2 3 4 5';
+            let newJob = await admin.updateJob('nate_again', job, ()=>console.log('wassup'));
+
+            // clear jobs
+            admin.cancelJob(newJob);
+            return new Promise(resolve => setTimeout(resolve, 5000));
         });
     });
 });
