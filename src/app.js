@@ -294,6 +294,7 @@ app.put('/api/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
     let field = req.body.field;
     fields.update(field);
+    res.set('Content-Type', 'application/text');
     res.status(200).send(`Field "${field.name}" has been updated.`);
 });
 // Modify available fields list
@@ -308,7 +309,8 @@ app.get('/api/fields', verify.apiMiddleware(), async (req, res) => {
 app.put('/api/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
     const newjob = await admin.updateSkillingJob(req.body.username, req.body.job, req.body.data);
-    res.status(200).send(`Job "${req.body.job.name}" has been saved.`);
+    res.set('Content-Type', 'application/text');
+    res.status(200).send(`Job "${req.body.job.data.title}" has been saved.`);
 });
 // Get list of scheduled skilling jobs
 app.get('/api/skill', verify.apiMiddleware(), async (req, res) => {
@@ -320,12 +322,11 @@ app.get('/api/skill', verify.apiMiddleware(), async (req, res) => {
 // Delete a scheduled skilling job
 app.delete('/api/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
-    console.log('deleteting ' + JSON.stringify(req.body.job));
     const numRemoved = await admin.cancelJob(req.body.job._id);
     const message = numRemoved > 0
-                    ? `Job "${req.body.job.name}" has been deleted.`
-                    : `No job found matching "${req.body.job.name}".`
-    console.log(message);
+                    ? `Job "${req.body.job.data.title}" has been deleted.`
+                    : `No job found matching "${req.body.job.data.title}".`;
+    res.set('Content-Type', 'application/text');
     res.status(200).send(message);
 });
 

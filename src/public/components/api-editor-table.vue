@@ -36,17 +36,21 @@
                 </slot>
 
                 <td>
-                    <button class="save-button" @click="update(item)"
+                    <button class="save-button" title="Save changes"
+                        @click="update(item)"
                     >Save</button>
                 </td>
                 <td>
-                    <button class="delete-button" @click="remove(item)"
+                    <button class="delete-button" title="Permanently delete row"
+                        @click="remove(item)"
                     >Delete</button>
                 </td>
             </tr>
         </table>
 
-        <button class="add-button" @click="addRow">+</button>
+        <button class="add-button" title="Add a new row"
+            @click="addRow"
+        >+</button>
     </div>
 </template>
 
@@ -84,6 +88,8 @@ export default {
             this.$emit('message', `Deleting ${item.name}...`);
             const message = await this.remover(item);
             this.$emit('message', message);
+            // Remove item from array
+            this.items = this.items.filter((el) => el !== item);
         }
     }
 }

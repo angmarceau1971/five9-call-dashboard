@@ -20,18 +20,16 @@ const vm = new Vue({
             const jobs = await api.getSkillJobs();
             return jobs.map((job) => {
                 if (!job.data) {
-                    job.data = {
-                        userProfile: '', addSkills: '', removeSkills: ''
-                    };
+                    job.data = this.jobAdder().data;
                 }
                 return job;
             });
         },
         jobAdder: function() {
             return {
-                name: '',
                 repeatInterval: '',
                 data: {
+                    title: '',
                     userProfile: '',
                     addSkills: '',
                     removeSkills: ''
