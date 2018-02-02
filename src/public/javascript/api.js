@@ -78,6 +78,10 @@ export async function updateSkillJob(job) {
     return response.text();
 }
 
+export async function deleteSkillJob(job) {
+    let response = await request({job: job}, 'skill', 'DELETE');
+    return response.text();
+}
 
 
 /**

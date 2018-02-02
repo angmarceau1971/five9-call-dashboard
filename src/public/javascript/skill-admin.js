@@ -27,6 +27,20 @@ const vm = new Vue({
                 return job;
             });
         },
+        jobAdder: function() {
+            return {
+                name: '',
+                repeatInterval: '',
+                data: {
+                    userProfile: '',
+                    addSkills: '',
+                    removeSkills: ''
+                }
+            };
+        },
+        jobRemover: async function(job) {
+            return api.deleteSkillJob(job);
+        },
         updateMessage: function(msg) {
             this.message = msg;
         },

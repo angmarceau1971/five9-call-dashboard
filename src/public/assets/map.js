@@ -120,13 +120,14 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["e"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["f"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["g"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["f"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["g"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["h"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -207,6 +208,12 @@ async function updateSkillJob(job) {
     job: job,
     data: job.data
   }, 'skill', 'PUT');
+  return response.text();
+}
+async function deleteSkillJob(job) {
+  let response = await request({
+    job: job
+  }, 'skill', 'DELETE');
   return response.text();
 }
 /**
@@ -442,7 +449,7 @@ async function updateMap(callMap) {
   params.skills = $('.skills.filter').val(); // get all the datas
 
   let customerData = await getCustomerData();
-  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
+  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
 
   let data = Object.keys(customerData).map(zip => ({
     zipCode: zip,
@@ -513,7 +520,7 @@ const customerCount = {
 async function getCustomerData() {
   // reload data from server if it's been 6+ hours since the last update
   if (customerCount.lastUpdated.isBefore(moment().subtract(6, 'hours'))) {
-    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["b" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
+    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
     // and customer count as volue
 
     customerCount.data = rawData.reduce((object, item) => {

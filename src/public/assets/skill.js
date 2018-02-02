@@ -307,7 +307,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row {\r\n    height: 3em;\n}\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth {\r\n    text-align: left;\n}\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    min-width: 80px;\n}\n.editor-wrapper button:hover {\r\n    background-color: white;\n}\n.editor-list .save-button {\n}\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?179ac8b7"],"names":[],"mappings":";AA+EA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * A \"Save Changes\" button is included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n        <button class=\"add-button\">+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row {\r\n    height: 3em;\n}\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth {\r\n    text-align: left;\n}\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button:hover {\r\n    background-color: white;\n}\n.editor-list .save-button {\n}\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?1674cadf"],"names":[],"mappings":";AA6FA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save and Delete buttons are included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td>\r\n                    <button class=\"delete-button\" @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" @click=\"addRow\">+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -366,8 +366,13 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['updater', 'loader', 'headers'],
+  props: ['updater', 'loader', 'adder', 'remover', 'headers'],
   data: function () {
     return {
       items: []
@@ -385,6 +390,15 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow
     },
     load: async function () {
       this.items = await this.loader();
+    },
+    addRow: function () {
+      let newItem = this.adder();
+      this.items.push(newItem);
+    },
+    remove: async function (item) {
+      this.$emit('message', `Deleting ${item.name}...`);
+      const message = await this.remover(item);
+      this.$emit('message', message);
     }
   }
 });
@@ -444,6 +458,21 @@ var render = function() {
                   },
                   [_vm._v("Save")]
                 )
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "delete-button",
+                    on: {
+                      click: function($event) {
+                        _vm.remove(item)
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
               ])
             ],
             2
@@ -453,7 +482,9 @@ var render = function() {
       2
     ),
     _vm._v(" "),
-    _c("button", { staticClass: "add-button" }, [_vm._v("+")])
+    _c("button", { staticClass: "add-button", on: { click: _vm.addRow } }, [
+      _vm._v("+")
+    ])
   ])
 }
 var staticRenderFns = [
@@ -507,13 +538,14 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["e"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["f"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["g"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["f"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["g"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["h"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -594,6 +626,12 @@ async function updateSkillJob(job) {
     job: job,
     data: job.data
   }, 'skill', 'PUT');
+  return response.text();
+}
+async function deleteSkillJob(job) {
+  let response = await request({
+    job: job
+  }, 'skill', 'DELETE');
   return response.text();
 }
 /**
@@ -1064,10 +1102,10 @@ const vm = new Vue({
   },
   methods: {
     jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["g" /* updateSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* updateSkillJob */](job);
     },
     jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* getSkillJobs */]();
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* getSkillJobs */]();
       return jobs.map(job => {
         if (!job.data) {
           job.data = {
@@ -1079,6 +1117,20 @@ const vm = new Vue({
 
         return job;
       });
+    },
+    jobAdder: function () {
+      return {
+        name: '',
+        repeatInterval: '',
+        data: {
+          userProfile: '',
+          addSkills: '',
+          removeSkills: ''
+        }
+      };
+    },
+    jobRemover: async function (job) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["a" /* deleteSkillJob */](job);
     },
     updateMessage: function (msg) {
       this.message = msg;

@@ -5,7 +5,7 @@
  *  https://vuejs.org/v2/guide/components.html#Scoped-Slots
  * for documentation, or ../scorecard-admin.html for example usage.
  *
- * A "Save Changes" button is included with each item's row.
+ * Save and Delete buttons are included with each item's row.
  *
  *  Component properties:
  * @prop {Function} updater(item: new object) - API function to update an item on server
@@ -39,16 +39,21 @@
                     <button class="save-button" @click="update(item)"
                     >Save</button>
                 </td>
+                <td>
+                    <button class="delete-button" @click="remove(item)"
+                    >Delete</button>
+                </td>
             </tr>
         </table>
-        <button class="add-button">+</button>
+
+        <button class="add-button" @click="addRow">+</button>
     </div>
 </template>
 
 
 <script>
 export default {
-    props: ['updater', 'loader', 'headers'],
+    props: ['updater', 'loader', 'adder', 'remover', 'headers'],
 
     data: function() {
         return {
@@ -70,6 +75,15 @@ export default {
         },
         load: async function() {
             this.items = await this.loader();
+        },
+        addRow: function() {
+            let newItem = this.adder();
+            this.items.push(newItem);
+        },
+        remove: async function(item) {
+            this.$emit('message', `Deleting ${item.name}...`);
+            const message = await this.remover(item);
+            this.$emit('message', message);
         }
     }
 }
@@ -108,6 +122,7 @@ td {
     box-sizing: border-box;
     color: black;
     border: 4px solid #444;
+    border-radius: 6px;
     min-width: 80px;
 }
 .editor-wrapper button:hover {

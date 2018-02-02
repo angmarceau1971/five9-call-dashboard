@@ -31,7 +31,10 @@
             <api-editor-table
                 :loader=jobLoader
                 :updater=jobUpdater
+                :adder=jobAdder
+                :remover=jobRemover
                 :headers="['Job Name', 'Interval', 'User Profile', 'Add Skills', 'Remove Skills', 'Last Run At']"
+                @message="updateMessage"
             >
                 <template slot="item" slot-scope="props">
                     <td>

@@ -95,7 +95,7 @@ async function cancelJob(id) {
         agenda.cancel({ _id: oid }, async function(err, numRemoved) {
             if (err) reject(err);
             log.message(`Deleting ${numRemoved} job(s) with OID ${id}.`)
-            resolve();
+            resolve(numRemoved);
         });
     });
 }
