@@ -11,7 +11,7 @@
         <link href="styles/admin.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div class="content-wrapper">
+        <div id="admin-app" class="content-wrapper">
             <!-- Login forms -->
             <div class="credentials-wrapper">
                 <form class="stats-box credentials-form" action="#">
@@ -47,7 +47,29 @@
                         <h3>Reboot the Website</h3>
                         <p>Didn't that email say not to reboot the website? Oh well, maybe it'll fix something.</p>
                         <button class="btn reboot-server">Boom</button>
-                    </div>
+
+                        <div class="section schedule">
+                            <h3>Admin Users</h3>
+                            <p>
+                                Users listed here can make all the changes you can.
+                            </p>
+                            <api-editor-table
+                                :loader=adminLoader
+                                :updater=adminUpdater
+                                :adder=adminAdder
+                                :remover=adminRemover
+                                :headers="['Username']"
+                                @message="updateMessage"
+                            >
+                                <template slot="item" slot-scope="props">
+                                    <td>
+                                        <input v-model="props.item.username" />
+                                    </td>
+                                </template>
+                            </api-editor-table>
+                        </div>
+
+                    </div>  <!-- /admin-panel-wrapper -->
 
                     <div class="stats-box credentials-cover out-of-the-way">
                         <button class="btn credentials-cover-toggle">Login</button>
@@ -60,6 +82,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
     <script src="javascript/moment.min.js" type="text/javascript"></script>
 
     <script src="assets/admin.js" type="text/javascript"></script>

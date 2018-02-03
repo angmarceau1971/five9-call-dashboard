@@ -65,7 +65,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106,6 +106,29 @@ function getAuthString(username, password) {
 
 /***/ }),
 
+/***/ 13:
+/***/ (function(module, exports) {
+
+// Handles UI interaction for login form
+$(document).ready(() => {
+  // show Login form
+  $('.credentials-cover-toggle').click(() => {
+    $('.credentials-form').removeClass('out-of-the-way');
+    $('.credentials-cover').addClass('out-of-the-way');
+  }); // listen for sign-in button press
+
+  $('.begin-session').click(async event => {
+    // prevent redirection
+    event.preventDefault(); // clear Five9 credentials box and update Login button text
+
+    $('.credentials-form').addClass('out-of-the-way');
+    $('.credentials-cover').removeClass('out-of-the-way');
+    $('.credentials-cover-toggle').text('Logged In');
+  });
+});
+
+/***/ }),
+
 /***/ 2:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -116,20 +139,23 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 3:
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["e"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["f"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["g"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["h"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["j"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["i"] = updateAdminUser;
+/* unused harmony export deleteAdminUser */
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
 
  ////////////////////////////////////////////////////////////////
@@ -210,10 +236,32 @@ async function updateSkillJob(job) {
   }, 'skill', 'PUT');
   return response.text();
 }
+/**
+ * Delete the given skilling job object.
+ * @param  {Object} job
+ * @return {Promise} resolves to response from server
+ */
+
 async function deleteSkillJob(job) {
   let response = await request({
     job: job
   }, 'skill', 'DELETE');
+  return response.text();
+}
+async function getAdminUsers() {
+  let response = await request({}, 'users/admin', 'GET');
+  return response.json();
+}
+async function updateAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'PUT');
+  return response.text();
+}
+async function deleteAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'DELETE');
   return response.text();
 }
 /**
@@ -318,29 +366,6 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 8:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
-
-/***/ }),
-
 /***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -354,9 +379,9 @@ module.exports = __webpack_require__(82);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(83);
 
@@ -403,13 +428,13 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["f" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["h" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
 
       try {
-        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* getReportResults */](time, 'service-level'); // slData = [];
+        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["e" /* getReportResults */](time, 'service-level'); // slData = [];
       } catch (err) {
         Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
         slData = [];

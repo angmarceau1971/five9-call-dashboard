@@ -96,7 +96,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .editor-wrapper {
     width: 100%;
     overflow-x: scroll;

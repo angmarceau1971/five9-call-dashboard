@@ -77,9 +77,29 @@ export async function updateSkillJob(job) {
     let response = await request({job: job, data: job.data}, 'skill', 'PUT');
     return response.text();
 }
-
+/**
+ * Delete the given skilling job object.
+ * @param  {Object} job
+ * @return {Promise} resolves to response from server
+ */
 export async function deleteSkillJob(job) {
     let response = await request({job: job}, 'skill', 'DELETE');
+    return response.text();
+}
+
+
+export async function getAdminUsers() {
+    let response = await request({}, 'users/admin', 'GET');
+    return response.json();
+}
+
+export async function updateAdminUser(user) {
+    let response = await request({user: user}, 'users/admin', 'PUT');
+    return response.text();
+}
+
+export async function deleteAdminUser(user) {
+    let response = await request({user: user}, 'users/admin', 'DELETE');
     return response.text();
 }
 

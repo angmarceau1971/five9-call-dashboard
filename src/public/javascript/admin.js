@@ -1,3 +1,4 @@
+// TODO: move jQuery to Vue
 import './interactions';
 import * as api from './api';
 import { API_URL } from './local_settings';
@@ -69,4 +70,41 @@ $(document).ready(() => {
                 $('.message').text(`Whoops! ${err}`);
             });
     });
+});
+
+
+// Handle Vue form
+import ApiEditorTable from '../components/api-editor-table.vue';
+
+const vm = new Vue({
+    el: '#admin-app',
+
+    components: {
+        'api-editor-table': ApiEditorTable
+    },
+
+    data: {
+        message: ''
+    },
+
+    methods: {
+        adminUpdater: async function(user) {
+            return api.updateAdminUser(user);
+        },
+        adminLoader: async function() {
+            const admins = await api.getAdminUsers();
+        },
+        adminAdder: function() {
+            return {
+                username: ''
+            };
+        },
+        adminRemover: async function(job) {
+            return api.deleteAdmin(job);
+        },
+        updateMessage: function(msg) {
+            $('.message').text(msg);
+            this.message = msg;
+        }
+    }
 });

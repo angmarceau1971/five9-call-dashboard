@@ -66,47 +66,6 @@
 /******/ ({
 
 /***/ 0:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
-
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
-} // Combines username and password, then encodes in Base 64. Yum!
-
-function getAuthString(username, password) {
-  let auth = username + ':' + password;
-  return btoa(auth);
-}
-
-/***/ }),
-
-/***/ 1:
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -216,105 +175,63 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 12:
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_api_editor_table_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_16a19b5a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_api_editor_table_vue__ = __webpack_require__(16);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(13)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
 
-/* template */
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
 
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_api_editor_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_16a19b5a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_api_editor_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\api-editor-table.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
 
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-16a19b5a", Component.options)
-  } else {
-    hotAPI.reload("data-v-16a19b5a", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
+} // Combines username and password, then encodes in Base 64. Yum!
 
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(14);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(5)("b15779b6", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-16a19b5a\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./api-editor-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-16a19b5a\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./api-editor-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
+function getAuthString(username, password) {
+  let auth = username + ':' + password;
+  return btoa(auth);
 }
 
 /***/ }),
 
-/***/ 14:
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row {\r\n    height: 3em;\n}\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth {\r\n    text-align: left;\n}\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button:hover {\r\n    background-color: white;\n}\n.editor-list .save-button {\n}\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?426082bd"],"names":[],"mappings":";AAmGA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save and Delete buttons are included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" title=\"Save changes\"\r\n                        @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td>\r\n                    <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                        @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper[data-v-16a19b5a] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-16a19b5a] {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row[data-v-16a19b5a] {\r\n    height: 3em;\n}\nth[data-v-16a19b5a], td[data-v-16a19b5a] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth[data-v-16a19b5a] {\r\n    text-align: left;\n}\ntd[data-v-16a19b5a] {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button[data-v-16a19b5a] {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-16a19b5a]:hover {\r\n    background-color: white;\n}\n.editor-list .save-button[data-v-16a19b5a] {\n}\n.editor-wrapper .add-button[data-v-16a19b5a] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?625aa431"],"names":[],"mappings":";AAmGA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save and Delete buttons are included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" title=\"Save changes\"\r\n                        @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td>\r\n                    <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                        @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 15:
+/***/ 11:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -411,7 +328,7 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow
 
 /***/ }),
 
-/***/ 16:
+/***/ 12:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -549,208 +466,6 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ }),
 
 /***/ 3:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["e"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["f"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["g"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["h"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
-/* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
-
- ////////////////////////////////////////////////////////////////
-// Functions to retrieve and extract data from Five9.
-// These functions interact with our server, which houses data
-// and formats data originating in Five9 reports.
-////////////////////////////////////////////////////////////////
-// Get agent/ACD statistics
-
-async function getStatistics(filter) {
-  const response = await request(filter, 'statistics');
-  return response.json();
-} // Get real-time stats
-
-async function queueStats() {
-  return getData({}, 'queue-stats');
-}
-/**
- * Get CSV string of report results from Five9
- * @param  {Object} params
- * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
- */
-
-function getReportResults(params, type) {
-  return getData(params, `reports/${type}`);
-}
-/**
- * List of available fields for widgets.
- * @return {Promise} resolves to array of field objects
- */
-
-async function getFieldList() {
-  let response = await request({}, 'fields', 'GET');
-  return response.json();
-}
-/**
- * Updates a field on server.
- * @param  {Object}  field new object
- * @return {Promise} resolves to array of field objects
- */
-
-async function updateField(field) {
-  let response = await request({
-    field: field
-  }, 'fields', 'PUT');
-  return response.text();
-}
-/**
- * List of available scheduled skilling jobs.
- * @return {Promise} resolves to array of field objects
- */
-
-async function getSkillJobs() {
-  let response = await request({}, 'skill', 'GET');
-  return response.json();
-}
-/**
- * Updates a scheduled skilling job on server.
- * @param  {Object}  job new object
- * @return {Promise} resolves to server's response
- */
-
-async function updateSkillJob(job) {
-  // format data
-  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
-
-  ['addSkills', 'removeSkills'].map(prop => {
-    let skills = job.data[prop];
-
-    if (typeof skills == 'string') {
-      job.data[prop] = format(skills);
-    }
-  });
-  let response = await request({
-    job: job,
-    data: job.data
-  }, 'skill', 'PUT');
-  return response.text();
-}
-async function deleteSkillJob(job) {
-  let response = await request({
-    job: job
-  }, 'skill', 'DELETE');
-  return response.text();
-}
-/**
- *  Helper function that pulls credentials from DOM, then makes request to server.
- * @param  {Object} parameters POSTed to server
- * @param  {String} endpoint   at server's API
- * @return {Object}            JSON data
- */
-
-async function getData(parameters, endpoint) {
-  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-  parameters['authorization'] = auth;
-  const response = await request(parameters, endpoint);
-  return await response.json();
-} // Make a request to server with given parameters (from getParameters)
-
-
-async function request(parameters, url = 'statistics', method = 'POST') {
-  const apiURL = __WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + url; // defined in api_url.js
-
-  const requestOptions = {
-    method: method,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  };
-
-  if (method != 'GET') {
-    requestOptions.body = JSON.stringify(parameters);
-  }
-
-  return fetch(apiURL, requestOptions).then(async response => {
-    if (response.status == 504) notifyServer504(parameters, url); // debugging
-
-    if (!response.ok) {
-      let bodyText = await response.text();
-      throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
-    }
-
-    return response;
-  }).then(response => {
-    return response;
-  });
-}
-
-async function notifyServer504() {
-  return fetch(__WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + 'notify-504');
-} // Gets the actual returned value/data out of JSON from the server.
-
-
-function jsonToReturnValue(json, type) {
-  return json['env:Envelope']['env:Body'][0]['ns2:' + type + 'Response'][0]['return'][0];
-} // takes JSON from server and returns text within 'faultstring' tag (if existant)
-
-
-function getFaultStringFromData(data) {
-  try {
-    return data['env:Envelope']['env:Body'][0]['env:Fault'][0]['faultstring'];
-  } catch (err) {
-    return '';
-  }
-} // Given a requestType, returns JSON to submit to server in POST request.
-// requestType should match Five9 API command.
-
-
-function getParameters(requestType) {
-  let params = {}; // Initiate session
-
-  if (requestType == 'setSessionParameters') {
-    params = {
-      'service': 'setSessionParameters',
-      'settings': [{
-        'viewSettings': [{
-          'idleTimeOut': 1800
-        }, {
-          'statisticsRange': 'CurrentDay'
-        }, {
-          'rollingPeriod': 'Minutes10'
-        }]
-      }]
-    };
-  } // Get real-time call stats
-
-
-  if (requestType == 'getStatistics') {
-    params = {
-      'service': 'getStatistics',
-      'settings': [{
-        'statisticType': 'ACDStatus'
-      }]
-    };
-  } // Credentials
-
-
-  let user = $('.username').val();
-  let pass = $('.password').val();
-  params['authorization'] = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])(user, pass);
-  return params;
-}
-
-/***/ }),
-
-/***/ 4:
 /***/ (function(module, exports) {
 
 /*
@@ -833,7 +548,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -852,7 +567,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(7)
+var listToStyles = __webpack_require__(6)
 
 /*
 type StyleObject = {
@@ -1055,7 +770,234 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 5:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["g"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["j"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["i"] = updateAdminUser;
+/* unused harmony export deleteAdminUser */
+/* unused harmony export getParameters */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
+
+ ////////////////////////////////////////////////////////////////
+// Functions to retrieve and extract data from Five9.
+// These functions interact with our server, which houses data
+// and formats data originating in Five9 reports.
+////////////////////////////////////////////////////////////////
+// Get agent/ACD statistics
+
+async function getStatistics(filter) {
+  const response = await request(filter, 'statistics');
+  return response.json();
+} // Get real-time stats
+
+async function queueStats() {
+  return getData({}, 'queue-stats');
+}
+/**
+ * Get CSV string of report results from Five9
+ * @param  {Object} params
+ * @param  {String} type   endpoint: `maps` or `service-level`
+ * @return {Object}        JSON data
+ */
+
+function getReportResults(params, type) {
+  return getData(params, `reports/${type}`);
+}
+/**
+ * List of available fields for widgets.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getFieldList() {
+  let response = await request({}, 'fields', 'GET');
+  return response.json();
+}
+/**
+ * Updates a field on server.
+ * @param  {Object}  field new object
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function updateField(field) {
+  let response = await request({
+    field: field
+  }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * List of available scheduled skilling jobs.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getSkillJobs() {
+  let response = await request({}, 'skill', 'GET');
+  return response.json();
+}
+/**
+ * Updates a scheduled skilling job on server.
+ * @param  {Object}  job new object
+ * @return {Promise} resolves to server's response
+ */
+
+async function updateSkillJob(job) {
+  // format data
+  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
+
+  ['addSkills', 'removeSkills'].map(prop => {
+    let skills = job.data[prop];
+
+    if (typeof skills == 'string') {
+      job.data[prop] = format(skills);
+    }
+  });
+  let response = await request({
+    job: job,
+    data: job.data
+  }, 'skill', 'PUT');
+  return response.text();
+}
+/**
+ * Delete the given skilling job object.
+ * @param  {Object} job
+ * @return {Promise} resolves to response from server
+ */
+
+async function deleteSkillJob(job) {
+  let response = await request({
+    job: job
+  }, 'skill', 'DELETE');
+  return response.text();
+}
+async function getAdminUsers() {
+  let response = await request({}, 'users/admin', 'GET');
+  return response.json();
+}
+async function updateAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'PUT');
+  return response.text();
+}
+async function deleteAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'DELETE');
+  return response.text();
+}
+/**
+ *  Helper function that pulls credentials from DOM, then makes request to server.
+ * @param  {Object} parameters POSTed to server
+ * @param  {String} endpoint   at server's API
+ * @return {Object}            JSON data
+ */
+
+async function getData(parameters, endpoint) {
+  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
+  parameters['authorization'] = auth;
+  const response = await request(parameters, endpoint);
+  return await response.json();
+} // Make a request to server with given parameters (from getParameters)
+
+
+async function request(parameters, url = 'statistics', method = 'POST') {
+  const apiURL = __WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + url; // defined in api_url.js
+
+  const requestOptions = {
+    method: method,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  };
+
+  if (method != 'GET') {
+    requestOptions.body = JSON.stringify(parameters);
+  }
+
+  return fetch(apiURL, requestOptions).then(async response => {
+    if (response.status == 504) notifyServer504(parameters, url); // debugging
+
+    if (!response.ok) {
+      let bodyText = await response.text();
+      throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
+    }
+
+    return response;
+  }).then(response => {
+    return response;
+  });
+}
+
+async function notifyServer504() {
+  return fetch(__WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + 'notify-504');
+} // Gets the actual returned value/data out of JSON from the server.
+
+
+function jsonToReturnValue(json, type) {
+  return json['env:Envelope']['env:Body'][0]['ns2:' + type + 'Response'][0]['return'][0];
+} // takes JSON from server and returns text within 'faultstring' tag (if existant)
+
+
+function getFaultStringFromData(data) {
+  try {
+    return data['env:Envelope']['env:Body'][0]['env:Fault'][0]['faultstring'];
+  } catch (err) {
+    return '';
+  }
+} // Given a requestType, returns JSON to submit to server in POST request.
+// requestType should match Five9 API command.
+
+
+function getParameters(requestType) {
+  let params = {}; // Initiate session
+
+  if (requestType == 'setSessionParameters') {
+    params = {
+      'service': 'setSessionParameters',
+      'settings': [{
+        'viewSettings': [{
+          'idleTimeOut': 1800
+        }, {
+          'statisticsRange': 'CurrentDay'
+        }, {
+          'rollingPeriod': 'Minutes10'
+        }]
+      }]
+    };
+  } // Get real-time call stats
+
+
+  if (requestType == 'getStatistics') {
+    params = {
+      'service': 'getStatistics',
+      'settings': [{
+        'statisticType': 'ACDStatus'
+      }]
+    };
+  } // Credentials
+
+
+  let user = $('.username').val();
+  let pass = $('.password').val();
+  params['authorization'] = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])(user, pass);
+  return params;
+}
+
+/***/ }),
+
+/***/ 6:
 /***/ (function(module, exports) {
 
 /**
@@ -1102,8 +1044,8 @@ module.exports = __webpack_require__(78);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__ = __webpack_require__(8);
 
 
 const vm = new Vue({
@@ -1116,16 +1058,99 @@ const vm = new Vue({
   },
   methods: {
     fieldUpdater: async function (field) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["g" /* updateField */](field);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* updateField */](field);
     },
     fieldLoader: function () {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* getFieldList */]();
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* getFieldList */]();
     },
     updateMessage: function (msg) {
       this.message = msg;
     }
   }
 });
+
+/***/ }),
+
+/***/ 8:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_api_editor_table_vue__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_16a19b5a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_api_editor_table_vue__ = __webpack_require__(12);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(9)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-16a19b5a"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_api_editor_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_16a19b5a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_api_editor_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\api-editor-table.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-16a19b5a", Component.options)
+  } else {
+    hotAPI.reload("data-v-16a19b5a", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(10);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("3c1253de", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-16a19b5a\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./api-editor-table.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-16a19b5a\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./api-editor-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 

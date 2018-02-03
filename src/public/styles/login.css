@@ -1,4 +1,6 @@
-
+body, html {
+    background: hsl(211, 44%, 94%);
+}
 
 .page-container {
     justify-content: center;

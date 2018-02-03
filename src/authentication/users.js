@@ -16,6 +16,7 @@ const usersSchema = mongoose.Schema({
 // Model to store users
 const Users = mongoose.model('Users', usersSchema);
 
+
 // Checks if "username" is an active user in this system.
 // Async, as this function will wait for User database updates to complete
 // before sending a response (if database is in the middle of an update).
@@ -51,19 +52,17 @@ async function scheduleUpdate(interval) {
 
 async function refreshUserDatabase(usersModel) {
     let data = await five9.getUsersGeneralInfo();
-
     // Clear the old list
     await usersModel.remove({}, (err, success) => {
         if (err) log.error(`Error deleting data in Users model: ${err}`);
     });
-
     // Only leave the `username` and `active` fields
     let cleanData = data.map((d, i) => {
         return { username: d.userName,
                  active: d.active == 'true' ? true : false
         };
     });
-
+    // Insert to collection
     return usersModel.collection.insert(cleanData, (err, docs) => {
         if (err) log.error(`Error inserting data in Users model: ${err}`);
     });
