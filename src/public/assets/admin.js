@@ -181,7 +181,6 @@ module.exports = function normalizeComponent (
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = error;
 /* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
 function error(err, message = '') {
   // timestamp
@@ -207,11 +206,6 @@ function formatAMPM(date) {
   seconds = seconds < 10 ? '0' + seconds : seconds;
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
-} // Combines username and password, then encodes in Base 64. Yum!
-
-function getAuthString(username, password) {
-  let auth = username + ':' + password;
-  return btoa(auth);
 }
 
 /***/ }),
@@ -452,29 +446,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-16a19b5a", esExports)
   }
 }
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
 
 /***/ }),
 
@@ -801,13 +772,15 @@ function applyToTag (styleElement, obj) {
 /* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["i"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
 /* unused harmony export deleteAdminUser */
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -918,6 +891,14 @@ async function deleteAdminUser(user) {
   }, 'users/admin', 'DELETE');
   return response.text();
 }
+async function rebootServer() {
+  const response = await request({}, 'reboot-server', 'POST');
+  return response.text();
+}
+async function reloadData(params) {
+  const response = request(params, 'reload-data', 'POST');
+  return response.text();
+}
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -926,8 +907,6 @@ async function deleteAdminUser(user) {
  */
 
 async function getData(parameters, endpoint) {
-  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-  parameters['authorization'] = auth;
   const response = await request(parameters, endpoint);
   return await response.json();
 } // Make a request to server with given parameters (from getParameters)
@@ -1009,12 +988,8 @@ function getParameters(requestType) {
         'statisticType': 'ACDStatus'
       }]
     };
-  } // Credentials
+  }
 
-
-  let user = $('.username').val();
-  let pass = $('.password').val();
-  params['authorization'] = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])(user, pass);
   return params;
 }
 
@@ -1123,79 +1098,29 @@ module.exports = __webpack_require__(88);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__local_settings__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utility__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_api_editor_table_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__ = __webpack_require__(8);
 // TODO: move jQuery to Vue
 
-
-
- // Handles UI interaction for login form
-
 $(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.admin-panel-wrapper').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    $('.admin-panel-wrapper').removeClass('out-of-the-way');
-  }); // Listen for server reboot request
-
+  // Listen for server reboot request
   $('.reboot-server').click(async event => {
-    const auth = Object(__WEBPACK_IMPORTED_MODULE_3__utility__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-    const body = {
-      authorization: auth
-    };
-    const apiURL = __WEBPACK_IMPORTED_MODULE_2__local_settings__["a" /* API_URL */] + 'reboot-server'; // defined in api_url.js
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/text',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
     $('.message').text(`Computing....`);
-    fetch(apiURL, requestOptions).then(async response => {
-      let bodyText = await response.text();
-      $('.message').text(`Response: ${response.status} ${bodyText}`);
-    }).catch(err => {
-      $('.message').text(`Whoops! that got a: ${err}. Server down much?`);
-    });
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["i" /* rebootServer */]();
+    $('.message').text(msg);
   }); // Listen for data reload requests
 
   $('.reload-data').click(async event => {
-    const auth = Object(__WEBPACK_IMPORTED_MODULE_3__utility__["c" /* getAuthString */])($('.username').val(), $('.password').val());
+    $('.message').text(`Computing....`);
     const time = {
       start: $('.start-time').val(),
       end: $('.end-time').val()
     };
     const body = {
-      authorization: auth,
       time: time
     };
-    const apiURL = __WEBPACK_IMPORTED_MODULE_2__local_settings__["a" /* API_URL */] + 'reload-data'; // defined in api_url.js
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/text',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    $('.message').text(`Computing....`);
-    fetch(apiURL, requestOptions).then(async response => {
-      let bodyText = await response.text();
-      $('.message').text(`Response: ${response.status} ${bodyText}`);
-    }).catch(err => {
-      $('.message').text(`Whoops! ${err}`);
-    });
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["j" /* reloadData */](body);
+    $('.message').text(msg);
   });
 }); // Handle Vue form
 
@@ -1203,17 +1128,17 @@ $(document).ready(() => {
 const vm = new Vue({
   el: '#admin-app',
   components: {
-    'api-editor-table': __WEBPACK_IMPORTED_MODULE_4__components_api_editor_table_vue__["a" /* default */]
+    'api-editor-table': __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__["a" /* default */]
   },
   data: {
     message: ''
   },
   methods: {
     adminUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_1__api__["i" /* updateAdminUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["k" /* updateAdminUser */](user);
     },
     adminLoader: async function () {
-      const admins = await __WEBPACK_IMPORTED_MODULE_1__api__["c" /* getAdminUsers */]();
+      const admins = await __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getAdminUsers */]();
     },
     adminAdder: function () {
       return {
@@ -1221,7 +1146,7 @@ const vm = new Vue({
       };
     },
     adminRemover: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_1__api__["deleteAdmin"](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["deleteAdmin"](job);
     },
     updateMessage: function (msg) {
       $('.message').text(msg);

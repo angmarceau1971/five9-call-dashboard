@@ -12,68 +12,54 @@
     </head>
     <body>
         <div id="admin-app" class="content-wrapper">
-            <!-- Login forms -->
-            <div class="credentials-wrapper">
-                <form class="stats-box credentials-form" action="#">
-                    <h3>Five9 Credentials</h3>
-                    <label for="username">Username
-                        <input type="text" class="credentials username" name="username "/>
-                    </label>
-                    <label for="password">Password
-                        <input type="password" class="credentials password" name="password" />
-                    </label>
-                    <button type="submit" class="begin-session btn">Start Session</button>
-                </form>
-
-                <div class="admin-panel-wrapper slidable out-of-the-way">
-                    <div class="stats-box uber-wrapper">
-                        <h1>Admin Panel</h1>
-                        <!-- Status message -->
-                        <p id="message" class="message">
-                            Welcome to the Administrator's panel.
+            <div class="admin-panel-wrapper">
+                <div class="stats-box uber-wrapper">
+                    <h1>Admin Panel</h1>
+                    <!-- Status message -->
+                    <p id="message" class="message">
+                        Welcome to the Administrator's panel.
+                    </p>
+                    <div class="reload-data-wrapper">
+                        <h3>Reload report data</h3>
+                        <p>
+                            Refresh the database's service level and zipcode data.
                         </p>
-                        <div class="reload-data-wrapper">
-                            <h3>Reload report data</h3>
-                            <p>
-                                Refresh the database's service level and zipcode data.
-                            </p>
-                            <div>
-                                <input type="text" class="filter start-time" placeholder="YYYY-MM-DDTHH:mm:ss" value="2017-10-16T00:00:00" />
-                                <input type="text" class="filter end-time" placeholder="YYYY-MM-DDTHH:mm:ss" value="2017-10-16T23:59:59" />
-                            </div>
-                            <button class="btn reload-data">Reload Data</button>
+                        <div>
+                            <input type="text" class="filter start-time" placeholder="YYYY-MM-DDTHH:mm:ss" value="2017-10-16T00:00:00" />
+                            <input type="text" class="filter end-time" placeholder="YYYY-MM-DDTHH:mm:ss" value="2017-10-16T23:59:59" />
                         </div>
-
-                        <h3>Reboot the Website</h3>
-                        <p>Didn't that email say not to reboot the website? Oh well, maybe it'll fix something.</p>
-                        <button class="btn reboot-server">Boom</button>
-
-                        <div class="section schedule">
-                            <h3>Admin Users</h3>
-                            <p>
-                                Users listed here can make all the changes you can.
-                            </p>
-                            <api-editor-table
-                                :loader=adminLoader
-                                :updater=adminUpdater
-                                :adder=adminAdder
-                                :remover=adminRemover
-                                :headers="['Username']"
-                                @message="updateMessage"
-                            >
-                                <template slot="item" slot-scope="props">
-                                    <td>
-                                        <input v-model="props.item.username" />
-                                    </td>
-                                </template>
-                            </api-editor-table>
-                        </div>
-
-                    </div>  <!-- /admin-panel-wrapper -->
-
-                    <div class="stats-box credentials-cover out-of-the-way">
-                        <button class="btn credentials-cover-toggle">Login</button>
+                        <button class="btn reload-data">Reload Data</button>
                     </div>
+
+                    <h3>Reboot the Website</h3>
+                    <p>Didn't that email say not to reboot the website? Oh well, maybe it'll fix something.</p>
+                    <button class="btn reboot-server">Boom</button>
+
+                    <div class="section schedule">
+                        <h3>Admin Users</h3>
+                        <p>
+                            Users listed here can make all the changes you can.
+                        </p>
+                        <api-editor-table
+                            :loader=adminLoader
+                            :updater=adminUpdater
+                            :adder=adminAdder
+                            :remover=adminRemover
+                            :headers="['Username']"
+                            @message="updateMessage"
+                        >
+                            <template slot="item" slot-scope="props">
+                                <td>
+                                    <input v-model="props.item.username" />
+                                </td>
+                            </template>
+                        </api-editor-table>
+                    </div>
+
+                </div>  <!-- /admin-panel-wrapper -->
+
+                <div class="stats-box credentials-cover out-of-the-way">
+                    <button class="btn credentials-cover-toggle">Login</button>
                 </div>
             </div>
         </div>

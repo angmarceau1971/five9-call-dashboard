@@ -26,10 +26,3 @@ export function formatAMPM(date) {
     let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
     return strTime;
 }
-
-
-// Combines username and password, then encodes in Base 64. Yum!
-export function getAuthString(username, password) {
-   let auth = username + ':' + password;
-   return btoa(auth);
-}

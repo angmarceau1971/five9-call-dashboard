@@ -26,19 +26,22 @@ async function authenticate(username, password, done) {
 module.exports.authenticate = authenticate;
 
 
-// Middleware for page routes. Redirect to login if not authenticated.
-function middleware() {
-    return function (req, res, next) {
+function isLoggedIn(level='basic') {
+    return function(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
         }
+        // If not logged in, send user to login page, then redirect back to the
+        // original page.
+        req.session.returnTo = req.url;
         res.redirect('/login');
-    }
+    };
 }
-module.exports.middleware = middleware;
+module.exports.isLoggedIn = isLoggedIn;
+
 
 // Middleware for API routes. Return error response if not authenticated.
-function apiMiddleware() {
+function apiMiddleware(level='basic') {
     return function (req, res, next) {
         if (req.isAuthenticated()) {
             return next();

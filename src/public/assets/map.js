@@ -71,7 +71,6 @@
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = error;
 /* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
 function error(err, message = '') {
   // timestamp
@@ -97,35 +96,7 @@ function formatAMPM(date) {
   seconds = seconds < 10 ? '0' + seconds : seconds;
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
-} // Combines username and password, then encodes in Base 64. Yum!
-
-function getAuthString(username, password) {
-  let auth = username + ':' + password;
-  return btoa(auth);
 }
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
 
 /***/ }),
 
@@ -147,13 +118,15 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["i"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
 /* unused harmony export deleteAdminUser */
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -264,6 +237,14 @@ async function deleteAdminUser(user) {
   }, 'users/admin', 'DELETE');
   return response.text();
 }
+async function rebootServer() {
+  const response = await request({}, 'reboot-server', 'POST');
+  return response.text();
+}
+async function reloadData(params) {
+  const response = request(params, 'reload-data', 'POST');
+  return response.text();
+}
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -272,8 +253,6 @@ async function deleteAdminUser(user) {
  */
 
 async function getData(parameters, endpoint) {
-  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-  parameters['authorization'] = auth;
   const response = await request(parameters, endpoint);
   return await response.json();
 } // Make a request to server with given parameters (from getParameters)
@@ -355,12 +334,8 @@ function getParameters(requestType) {
         'statisticType': 'ACDStatus'
       }]
     };
-  } // Credentials
+  }
 
-
-  let user = $('.username').val();
-  let pass = $('.password').val();
-  params['authorization'] = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])(user, pass);
   return params;
 }
 
@@ -381,10 +356,7 @@ module.exports = __webpack_require__(85);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maps__ = __webpack_require__(86);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(86);
 
 
  // General functions to initiate the call map dashboard.
@@ -396,9 +368,9 @@ const mapSettings = {
   display: 'total'
 };
 $(document).ready(() => {
-  let callMap = new __WEBPACK_IMPORTED_MODULE_3__maps__["a" /* default */](); // listen for sign-in and update button presses
+  let callMap = new __WEBPACK_IMPORTED_MODULE_2__maps__["a" /* default */](); // listen for update button presses
 
-  $('.begin-session, .filters-wrapper .update').click(async event => {
+  $('.filters-wrapper .update').click(async event => {
     // stop any current event loops running
     if (timeout != null) {
       clearTimeout(timeout);
@@ -408,7 +380,9 @@ $(document).ready(() => {
     startUpdatingMap(callMap, 4 * 60);
   }); // Listen for changes to the filter settings
 
-  setupFilterListeners();
+  setupFilterListeners(); // Start updating on page load
+
+  $('.filters-wrapper .update').trigger('click');
 });
 
 function setupFilterListeners() {

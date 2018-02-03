@@ -71,7 +71,6 @@
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = error;
 /* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAuthString;
 // Send out an error alert in console and on the page.
 function error(err, message = '') {
   // timestamp
@@ -97,35 +96,7 @@ function formatAMPM(date) {
   seconds = seconds < 10 ? '0' + seconds : seconds;
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
-} // Combines username and password, then encodes in Base 64. Yum!
-
-function getAuthString(username, password) {
-  let auth = username + ':' + password;
-  return btoa(auth);
 }
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports) {
-
-// Handles UI interaction for login form
-$(document).ready(() => {
-  // show Login form
-  $('.credentials-cover-toggle').click(() => {
-    $('.credentials-form').removeClass('out-of-the-way');
-    $('.credentials-cover').addClass('out-of-the-way');
-  }); // listen for sign-in button press
-
-  $('.begin-session').click(async event => {
-    // prevent redirection
-    event.preventDefault(); // clear Five9 credentials box and update Login button text
-
-    $('.credentials-form').addClass('out-of-the-way');
-    $('.credentials-cover').removeClass('out-of-the-way');
-    $('.credentials-cover-toggle').text('Logged In');
-  });
-});
 
 /***/ }),
 
@@ -147,13 +118,15 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["i"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
 /* unused harmony export deleteAdminUser */
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -264,6 +237,14 @@ async function deleteAdminUser(user) {
   }, 'users/admin', 'DELETE');
   return response.text();
 }
+async function rebootServer() {
+  const response = await request({}, 'reboot-server', 'POST');
+  return response.text();
+}
+async function reloadData(params) {
+  const response = request(params, 'reload-data', 'POST');
+  return response.text();
+}
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -272,8 +253,6 @@ async function deleteAdminUser(user) {
  */
 
 async function getData(parameters, endpoint) {
-  const auth = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])($('.username').val(), $('.password').val());
-  parameters['authorization'] = auth;
   const response = await request(parameters, endpoint);
   return await response.json();
 } // Make a request to server with given parameters (from getParameters)
@@ -355,12 +334,8 @@ function getParameters(requestType) {
         'statisticType': 'ACDStatus'
       }]
     };
-  } // Credentials
+  }
 
-
-  let user = $('.username').val();
-  let pass = $('.password').val();
-  params['authorization'] = Object(__WEBPACK_IMPORTED_MODULE_0__utility_js__["c" /* getAuthString */])(user, pass);
   return params;
 }
 
@@ -381,10 +356,7 @@ module.exports = __webpack_require__(82);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interactions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interactions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gizmo__ = __webpack_require__(83);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gizmo__ = __webpack_require__(83);
 
 
  // timeout to pause event loop when needed
@@ -393,22 +365,28 @@ let timeout = null; // Object to manage the gizmos (queue widgets)
 
 let gizmo = null;
 $(document).ready(() => {
-  gizmo = new __WEBPACK_IMPORTED_MODULE_3__gizmo__["a" /* default */](); // listen for sign-in button press
+  gizmo = new __WEBPACK_IMPORTED_MODULE_2__gizmo__["a" /* default */](); // listen for sign-in button press
 
-  $('.begin-session').click(async event => {
+  $('.play-pause').click(async event => {
     // prevent redirection
-    event.preventDefault(); // stop any current event loops running
+    event.preventDefault(); // Currently running?
+    // stop any current event loops running
 
     if (timeout != null) {
       clearTimeout(timeout);
-    } // begin updating data & page every few seconds
+      timeout = null;
+      $('.play-pause').html('&#9658;'); // show play button
+    } // Not running? Start it up
+    else {
+        $('.play-pause').html('&#10074;&#10074;'); // show pause button
+        // begin updating data & page every few seconds
 
-
-    try {
-      runQueueDashboard();
-    } catch (err) {
-      Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, 'Error occurred while queue dashboard was running.');
-    }
+        try {
+          runQueueDashboard();
+        } catch (err) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, 'Error occurred while queue dashboard was running.');
+        }
+      }
   }); // Update displayed queue list when user clicks button
 
   $('.show-skills-list').click(function (event) {
@@ -417,7 +395,9 @@ $(document).ready(() => {
     thisgizmo.showQueueList = !thisgizmo.showQueueList;
     const table = $(this).next('table.queue-list');
     createQueueList(thisgizmo, table);
-  });
+  }); // Trigger "play" button to start updating when page is loaded.
+
+  if (gizmo.gizmos.length > 0) $('.play-pause').trigger('click');
 });
 
 async function runQueueDashboard() {

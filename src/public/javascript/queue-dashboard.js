@@ -1,6 +1,5 @@
 import { error, formatAMPM } from './utility';
 import * as api from './api';
-import './interactions';
 import GizmoManager from './gizmo';
 
 // timeout to pause event loop when needed
@@ -13,19 +12,26 @@ $(document).ready(() => {
     gizmo = new GizmoManager();
 
     // listen for sign-in button press
-    $('.begin-session').click(async (event) => {
+    $('.play-pause').click(async (event) => {
         // prevent redirection
         event.preventDefault();
+
+        // Currently running?
         // stop any current event loops running
         if (timeout != null) {
             clearTimeout(timeout);
+            timeout = null;
+            $('.play-pause').html('&#9658;'); // show play button
         }
-
-        // begin updating data & page every few seconds
-        try {
-            runQueueDashboard();
-        } catch (err) {
-            error(err, 'Error occurred while queue dashboard was running.');
+        // Not running? Start it up
+        else {
+            $('.play-pause').html('&#10074;&#10074;'); // show pause button
+            // begin updating data & page every few seconds
+            try {
+                runQueueDashboard();
+            } catch (err) {
+                error(err, 'Error occurred while queue dashboard was running.');
+            }
         }
     });
 
@@ -37,6 +43,9 @@ $(document).ready(() => {
         const table = $(this).next('table.queue-list');
         createQueueList(thisgizmo, table);
     });
+
+    // Trigger "play" button to start updating when page is loaded.
+    if (gizmo.gizmos.length > 0) $('.play-pause').trigger('click');
 });
 
 

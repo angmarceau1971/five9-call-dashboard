@@ -17,6 +17,7 @@
 const express = require('express');
 const router = express.Router();
 const log = require('../helpers/log'); // recording updates
+const path = require('path');
 
 const admin = require('../admin/admin');
 const fields = require('../admin/fields');
@@ -42,18 +43,10 @@ router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
     })
 });
 
-
 // Five9 current queue statistics (ACDStatus endpoint at Five9)
-router.post('/queue-stats', async (req, res) => {
+router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {
+    log.message('queue stats request');
     try {
-        // Authenticate user
-        const hasPermission = await verify.hasPermission(req.body['authorization']);
-        if (!hasPermission) {
-            res.set('Content-Type', 'application/text');
-            res.status(401).send('Could not authenticate your user.');
-            return;
-        }
-
         // Send data as response when loaded
         async function sendResponse() {
             let data;
@@ -75,25 +68,22 @@ router.post('/queue-stats', async (req, res) => {
 });
 
 // Request data to update service level metrics
-router.post('/reports/service-level', (req, res) => {
+router.post('/reports/service-level', verify.apiMiddleware(), (req, res) => {
+    log.message('SL request');
+
     handleReportRequest(req, res, report.getServiceLevelData);
 });
 
 // Request calls by zip code for maps page
-router.post('/reports/maps', (req, res) => {
+router.post('/reports/maps', verify.apiMiddleware(), (req, res) => {
+    log.message('maps request');
+
     handleReportRequest(req, res, report.getZipCodeData);
 });
 
 // Request customer counts by zip code for maps page
-router.post('/reports/customers', async (req, res) => {
+router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
     try {
-        // Authenticate user
-        const hasPermission = await verify.hasPermission(req.body['authorization']);
-        if (!hasPermission) {
-            res.set('Content-Type', 'application/text');
-            res.status(401).send('Could not authenticate your user.');
-            return;
-        }
         // Send data
         const data = await customers.getData();
         res.set('Content-Type', 'application/json');
@@ -108,54 +98,15 @@ router.post('/reports/customers', async (req, res) => {
 
 
 // Return ZIP3 JSON
-router.get('/zip3-data', async (req, res) => {
+router.get('/zip3-data', verify.apiMiddleware(), async (req, res) => {
     await sendPublicFile('zip3-albers.json', req, res);
 });
 
 // Return U.S. states JSON
-router.get('/states', async (req, res) => {
+router.get('/states', verify.apiMiddleware(), async (req, res) => {
+    console.log('states data');
     await sendPublicFile('states-albers.json', req, res);
 });
-
-
-/**
- * Handles all reporting data requests.
- * @param  {Express request} req
- * @param  {Express response} res
- * @param  {function} dataGetter is the function that retreives actual data from DB
- *                              (either getServiceLevelData or getZipCodeData)
-  */
-async function handleReportRequest(req, res, dataGetter) {
-    try {
-        // Authenticate user
-        const hasPermission = await verify.hasPermission(req.body['authorization']);
-        if (!hasPermission) {
-            res.set('Content-Type', 'application/text');
-            res.status(401).send('Could not authenticate your user.');
-            return;
-        }
-
-        // Send data as response when loaded
-        async function sendResponse() {
-            let data;
-            try {
-                data = await dataGetter(req.body);
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
-            } catch (err) {
-                log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
-                res.set('Content-Type', 'application/text');
-                res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
-            }
-        }
-        report.onReady(sendResponse);
-
-    } catch (err) {
-        log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
-    }
-}
 
 
 ///////////////////////////
@@ -203,7 +154,7 @@ router.delete('/skill', verify.apiMiddleware(), async (req, res) => {
 });
 
 // Notify server that a 502 has occurred
-router.get('/notify-504', async (req, res) => {
+router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
         log.error(`--------LOGGER: 504 reported by client`);
@@ -220,17 +171,8 @@ router.post('/reboot-server', async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
         log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
-        // Authenticate user
-        const hasPermission = await verify.hasPermission(req.body['authorization']);
-        if (!hasPermission) { // exit if no permission
-            res.set('Content-Type', 'application/text');
-            res.status(401).send('Could not authenticate your user.');
-            return;
-        }
-
         res.status(200).send('About to reboot! Closing Express server -- should be restarted by PM2 :)');
         pm2.restart('app', (err) => log.error(`pm2 restart error ${err}`));
-
     } catch (err) {
         res.status(500).send('An error occurred on the server while attempting reboot.');
     }
@@ -238,21 +180,13 @@ router.post('/reboot-server', async (req, res) => {
 
 
 // Update data in a given range
-router.post('/reload-data', async (req, res) => {
+router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
     // TODO: allow admin only
     res.set('Content-Type', 'application/text');
     try {
         let times = req.body['time'];
 
         log.message(`---- Reports database reload requested by client for ${JSON.stringify(times)} ----`);
-
-        // Authenticate user
-        const hasPermission = await verify.hasPermission(req.body['authorization']);
-        if (!hasPermission) { // exit if no permission
-            res.set('Content-Type', 'application/text');
-            res.status(401).send('Could not authenticate your user.');
-            return;
-        }
 
         await reloadReports(times);
         res.status(200).send(`Report data reloaded for ${JSON.stringify(times)}`);
@@ -261,6 +195,7 @@ router.post('/reload-data', async (req, res) => {
         res.status(500).send(`An error occurred on the server while attempting data reload: ${err}.`);
     }
 });
+
 async function reloadReports(time) {
     // Verify user input format and basic value-checking
     let bad = '';
@@ -279,6 +214,39 @@ async function reloadReports(time) {
     return await report.loadData(time);
 }
 
+
+/**
+ * Handles all reporting data requests.
+ * @param  {Express request} req
+ * @param  {Express response} res
+ * @param  {function} dataGetter is the function that retreives actual data from DB
+ *                              (either getServiceLevelData or getZipCodeData)
+  */
+async function handleReportRequest(req, res, dataGetter) {
+    try {
+        // Send data as response when loaded
+        async function sendResponse() {
+            let data;
+            try {
+                data = await dataGetter(req.body);
+                res.set('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            } catch (err) {
+                log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
+                res.set('Content-Type', 'application/text');
+                res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
+            }
+        }
+        report.onReady(sendResponse);
+
+    } catch (err) {
+        log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
+    }
+}
+
+
 /**
  * Send public GeoJSON file in response
  * @param  {String} fileName in /public/ folder
@@ -290,11 +258,11 @@ async function sendPublicFile(fileName, req, res) {
         log.message(`${fileName} file request from ${req.connection.remoteAddress}`);
 
         // return JSON zip data
-        let dir = path.join(__dirname + `/public/${fileName}`);
+        let dir = path.join(__dirname + `/../public/${fileName}`);
         res.sendFile(dir);
     } catch (err) {
         res.set('Content-Type', 'application/text');
-        res.status(500).send('An error occurred on the server when getting U.S. states data.');
+        res.status(500).send(`An error occurred on the server when getting ${fileName} data: ${err}.`);
     }
 }
 

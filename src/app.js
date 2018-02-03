@@ -28,7 +28,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const report = require('./models/report'); // data feeds for SL & calls
 const queue  = require('./models/queue-stats'); // real-time queue feeds
-
 const users = require('./authentication/users'); // stores usernames to check auth
 const verify = require('./authentication/verify'); // check user permissions
 

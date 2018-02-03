@@ -11,43 +11,43 @@ const verify = require('../authentication/verify'); // check user permissions
 
 
 // root index page
-router.get('/', async (req, res) => {
+router.get('/', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/index.html');
     res.sendFile(dir);
 });
 
 // queue page
-router.get('/queues', async (req, res) => {
+router.get('/queues', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/queues.html');
     res.sendFile(dir);
 });
 
 // maps page
-router.get('/maps', async (req, res) => {
+router.get('/maps', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/maps.html');
     res.sendFile(dir);
 });
 
 // scorecard
-router.get('/scorecard', verify.middleware(), async (req, res) => {
+router.get('/scorecard', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/scorecard.html');
     res.sendFile(dir);
 });
 
 // scorecard fields
-router.get('/scorecard-admin', verify.middleware(), async (req, res) => {
+router.get('/scorecard-admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/scorecard-admin.html');
     res.sendFile(dir);
 });
 
 // scheduling skill jobs
-router.get('/skill', verify.middleware(), async (req, res) => {
+router.get('/skill', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/skill.html');
     res.sendFile(dir);
 });
 
 // admin panel
-router.get('/admin', async (req, res) => {
+router.get('/admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/admin.html');
     res.sendFile(dir);
 });
@@ -64,7 +64,7 @@ router.get('/login-retry', async (req, res) => {
 });
 // Post login credentials for dashboard
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/scorecard',
+    passport.authenticate('local', { successReturnToOrRedirect: '/',
                                       failureRedirect: '/login-retry',
                                       failureFlash: false } )
 );

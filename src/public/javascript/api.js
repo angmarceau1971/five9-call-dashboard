@@ -1,4 +1,4 @@
-import { error, getAuthString } from './utility.js';
+import { error } from './utility.js';
 import { API_URL } from './local_settings.js';
 
 ////////////////////////////////////////////////////////////////
@@ -104,6 +104,15 @@ export async function deleteAdminUser(user) {
 }
 
 
+export async function rebootServer() {
+    const response = await request({}, 'reboot-server', 'POST');
+    return response.text();
+}
+export async function reloadData(params) {
+    const response = request(params, 'reload-data', 'POST');
+    return response.text();
+}
+
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -111,9 +120,6 @@ export async function deleteAdminUser(user) {
  * @return {Object}            JSON data
  */
 async function getData(parameters, endpoint) {
-    const auth = getAuthString($('.username').val(), $('.password').val());
-    parameters['authorization'] = auth;
-
     const response = await request(parameters, endpoint);
     return await response.json();
 }
@@ -193,11 +199,6 @@ export function getParameters(requestType) {
             } ]
         }
     }
-
-    // Credentials
-    let user = $('.username').val();
-    let pass = $('.password').val();
-    params['authorization'] = getAuthString(user, pass);
 
     return params;
 }

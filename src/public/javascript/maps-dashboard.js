@@ -1,6 +1,5 @@
 import { error } from './utility';
 import * as api from './api';
-import './interactions';
 import CallMap from './maps';
 
 // General functions to initiate the call map dashboard.
@@ -15,8 +14,8 @@ const mapSettings = {
 $(document).ready(() => {
     let callMap = new CallMap();
 
-    // listen for sign-in and update button presses
-    $('.begin-session, .filters-wrapper .update').click(async (event) => {
+    // listen for update button presses
+    $('.filters-wrapper .update').click(async (event) => {
         // stop any current event loops running
         if (timeout != null) {
             clearTimeout(timeout);
@@ -27,6 +26,9 @@ $(document).ready(() => {
 
     // Listen for changes to the filter settings
     setupFilterListeners();
+
+    // Start updating on page load
+    $('.filters-wrapper .update').trigger('click');
 });
 
 

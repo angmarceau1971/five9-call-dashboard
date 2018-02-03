@@ -1,18 +1,28 @@
 body, html {
-    background: hsl(211, 44%, 94%);
+    /* background: hsl(211, 44%, 94%); */
+    background: linear-gradient(to right, hsl(32, 100%, 86%), hsl(210, 100%, 97%))
 }
 
 .page-container {
     justify-content: center;
     display: flex;
     width: 100%;
-    background-color: hsl(211, 44%, 94%);
+}
+.page-container .top-bar {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background: hsl(211, 0%, 98%);
+    box-shadow: 0px 0.5px 2px 0px rgba(50,50,50,0.25);
+}
+.page-container .top-bar h2 {
+    margin: 0.5em;
 }
 
 
 .form-container {
     max-width: 380px;
-    margin: 75px auto;
+    margin: 100px auto;
     background-color: white;
     line-height: 1.27em;
     border: solid 2px hsl(39, 32%, 88%);
