@@ -19,7 +19,7 @@
                     <p id="message" class="message">
                         Welcome to the Administrator's panel.
                     </p>
-                    <div class="reload-data-wrapper">
+                    <div class="section reload-data-wrapper">
                         <h3>Reload report data</h3>
                         <p>
                             Refresh the database's service level and zipcode data.
@@ -31,9 +31,11 @@
                         <button class="btn reload-data">Reload Data</button>
                     </div>
 
-                    <h3>Reboot the Website</h3>
-                    <p>Didn't that email say not to reboot the website? Oh well, maybe it'll fix something.</p>
-                    <button class="btn reboot-server">Boom</button>
+                    <div class="section reboot">
+                        <h3>Reboot the Website</h3>
+                        <p>Didn't that email say not to reboot the website? Oh well, maybe it'll fix something.</p>
+                        <button class="btn reboot-server">Boom</button>
+                    </div>
 
                     <div class="section schedule">
                         <h3>Admin Users</h3>
@@ -44,23 +46,24 @@
                             :loader=adminLoader
                             :updater=adminUpdater
                             :adder=adminAdder
-                            :remover=adminRemover
-                            :headers="['Username']"
+                            :headers="['Username', 'Is Admin?']"
                             @message="updateMessage"
                         >
                             <template slot="item" slot-scope="props">
                                 <td>
                                     <input v-model="props.item.username" />
                                 </td>
+                                <td>
+                                    <select v-model="props.item.isAdmin">
+                                        <option value="false">False</option>
+                                        <option value="true">True</option>
+                                    </select>
+                                </td>
                             </template>
                         </api-editor-table>
                     </div>
 
                 </div>  <!-- /admin-panel-wrapper -->
-
-                <div class="stats-box credentials-cover out-of-the-way">
-                    <button class="btn credentials-cover-toggle">Login</button>
-                </div>
             </div>
         </div>
     </body>

@@ -64,7 +64,7 @@ var sessionSettings = {
     saveUninitialized: false,
     store: new MongoStore({ url: secure.MONGODB_URI }),
     cookie: {
-        maxAge: 24 * 3600 * 1000 // expire after 1 day
+        maxAge: 12 * 3600 * 1000 // expire after 1 day
     }
 }
 if (app.get('env') == 'production') {

@@ -63,6 +63,12 @@ npm start
 
 Travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser. Happy queue-watching!
 
+To access some administrative pages and endpoints, you will need to update the `users` collection to set the isAdmin attribute for your user to `true`. You can do this in the command line with this command (should be executed while your node server is running / connected to the database):
+
+```
+node src/authentication/add-admin-user.script.js your_email@example.com
+```
+
 
 ### Testing
 Mocha and Chai are used for testing. Start the server and run `mocha`.

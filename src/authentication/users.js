@@ -10,7 +10,8 @@ mongoose.Promise = global.Promise;
 const usersSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     username: String,
-    active: Boolean
+    active: Boolean,
+    isAdmin: { type: Boolean, default: false }
 });
 
 // Model to store users
@@ -30,7 +31,7 @@ async function isActive(username) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 30000) {
-        log.message(`Users.isActive called while database is updating; waiting 1000ms`);
+        log.message(`Users.isActive called while database is updating; waiting 1000ms.`);
         waited += 1000;
         await wait(1000);
     }
@@ -51,6 +52,9 @@ async function scheduleUpdate(interval) {
 }
 
 async function refreshUserDatabase(usersModel) {
+    // Save original list to preserve admin status
+    let original = await Users.find({});
+
     let data = await five9.getUsersGeneralInfo();
     // Clear the old list
     await usersModel.remove({}, (err, success) => {
@@ -58,9 +62,12 @@ async function refreshUserDatabase(usersModel) {
     });
     // Only leave the `username` and `active` fields
     let cleanData = data.map((d, i) => {
-        return { username: d.userName,
-                 active: d.active == 'true' ? true : false
+        let newUser = {
+            username: d.userName,
+            active: d.active == 'true' ? true : false
         };
+        newUser.isAdmin = getAdminFromData(newUser.username, original);
+        return newUser;
     });
     // Insert to collection
     return usersModel.collection.insert(cleanData, (err, docs) => {
@@ -68,6 +75,42 @@ async function refreshUserDatabase(usersModel) {
     });
 }
 
+/**
+ * @param  {String}  username to check on
+ * @return {Boolean} true if user is an admin
+ */
+async function isAdmin(username) {
+    let user = await Users.findOne({ username: username });
+    if (!user || !user.isAdmin) return false;
+    return true;
+}
+
+function getAdminFromData(username, data) {
+    for (let i=0; i < data.length; i++) {
+        if (data[i].username == username) return data[i].isAdmin;
+    }
+    return false;
+}
+
+async function getAdminUsers() {
+    return await Users.find({ isAdmin: true });
+}
+module.exports.getAdminUsers = getAdminUsers;
+
+/**
+ * @param  {String}  username
+ * @param  {Boolean} isNowAdmin new admin status for user
+ * @return
+ */
+function updateAdminStatus(username, isNowAdmin) {
+    return Users.updateOne(
+        { username: username },
+        { $set: { 'isAdmin': isNowAdmin } }
+    );
+}
+module.exports.updateAdminStatus = updateAdminStatus;
+
+module.exports.isAdmin = isAdmin;
 module.exports.isActive = isActive;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.refreshUserDatabase = refreshUserDatabase;

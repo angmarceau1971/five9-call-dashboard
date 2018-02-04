@@ -87,19 +87,15 @@ export async function deleteSkillJob(job) {
     return response.text();
 }
 
-
 export async function getAdminUsers() {
     let response = await request({}, 'users/admin', 'GET');
-    return response.json();
+    let users = await response.json();
+    console.log(users)
+    return users;
 }
 
 export async function updateAdminUser(user) {
-    let response = await request({user: user}, 'users/admin', 'PUT');
-    return response.text();
-}
-
-export async function deleteAdminUser(user) {
-    let response = await request({user: user}, 'users/admin', 'DELETE');
+    let response = await request({user: user}, 'users/admin', 'PATCH');
     return response.text();
 }
 
@@ -125,7 +121,13 @@ async function getData(parameters, endpoint) {
 }
 
 
-// Make a request to server with given parameters (from getParameters)
+/**
+ * Make a request to server with given parameters.
+ * @param  {Object} parameters passed as body of request
+ * @param  {String} [url='statistics'] endpoint on server
+ * @param  {String} [method='POST'] HTTP action
+ * @return {Promise} response from server
+ */
 async function request(parameters, url='statistics', method='POST') {
     const apiURL = API_URL + url; // defined in api_url.js
 
@@ -148,8 +150,6 @@ async function request(parameters, url='statistics', method='POST') {
                 let bodyText = await response.text();
                 throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
             }
-            return response;
-        }).then((response) => {
             return response;
         });
 }

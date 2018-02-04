@@ -5,11 +5,14 @@
  *  https://vuejs.org/v2/guide/components.html#Scoped-Slots
  * for documentation, or ../scorecard-admin.html for example usage.
  *
- * Save and Delete buttons are included with each item's row.
+ * Save buttons are included with each item's row. A Delete button is included
+ * if a "remover" prop function is passed in.
  *
  *  Component properties:
  * @prop {Function} updater(item: new object) - API function to update an item on server
  * @prop {Function} loader() - API function to load items from server
+ * @prop {Function} adder(item: new object) - API function to add new item to server
+ * @prop {Function} remover(item: old object) - optional API function to delete item
  * @prop {Array} headers - array of string header names.
  */
 
@@ -22,6 +25,7 @@
                         {{ header }}
                     </th>
                     <th>Save Changes</th>
+                    <th v-if="!!remover">Delete</th>
                 </tr>
             </thead>
             <tr class="row" v-for="(item, i) in items">
@@ -40,7 +44,7 @@
                         @click="update(item)"
                     >Save</button>
                 </td>
-                <td>
+                <td v-if="!!remover">
                     <button class="delete-button" title="Permanently delete row"
                         @click="remove(item)"
                     >Delete</button>

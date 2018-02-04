@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 79);
+/******/ 	return __webpack_require__(__webpack_require__.s = 78);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -218,7 +218,7 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper[data-v-16a19b5a] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-16a19b5a] {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row[data-v-16a19b5a] {\r\n    height: 3em;\n}\nth[data-v-16a19b5a], td[data-v-16a19b5a] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth[data-v-16a19b5a] {\r\n    text-align: left;\n}\ntd[data-v-16a19b5a] {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button[data-v-16a19b5a] {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-16a19b5a]:hover {\r\n    background-color: white;\n}\n.editor-list .save-button[data-v-16a19b5a] {\n}\n.editor-wrapper .add-button[data-v-16a19b5a] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?625aa431"],"names":[],"mappings":";AAmGA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save and Delete buttons are included with each item's row.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" title=\"Save changes\"\r\n                        @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td>\r\n                    <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                        @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper[data-v-16a19b5a] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-16a19b5a] {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\n}\n.editor-list .row[data-v-16a19b5a] {\r\n    height: 3em;\n}\nth[data-v-16a19b5a], td[data-v-16a19b5a] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth[data-v-16a19b5a] {\r\n    text-align: left;\n}\ntd[data-v-16a19b5a] {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\n.editor-wrapper button[data-v-16a19b5a] {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-16a19b5a]:hover {\r\n    background-color: white;\n}\n.editor-list .save-button[data-v-16a19b5a] {\n}\n.editor-wrapper .add-button[data-v-16a19b5a] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/api-editor-table.vue?5bae6434"],"names":[],"mappings":";AAuGA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"api-editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                    <th v-if=\"!!remover\">Delete</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" title=\"Save changes\"\r\n                        @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td v-if=\"!!remover\">\r\n                    <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                        @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = await this.loader();\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n    /* margin: 1em; */\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -229,6 +229,10 @@ exports.push([module.i, "\n.editor-wrapper[data-v-16a19b5a] {\r\n    width: 100%
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+//
+//
+//
+//
 //
 //
 //
@@ -349,7 +353,9 @@ var render = function() {
                 ])
               }),
               _vm._v(" "),
-              _c("th", [_vm._v("Save Changes")])
+              _c("th", [_vm._v("Save Changes")]),
+              _vm._v(" "),
+              !!_vm.remover ? _c("th", [_vm._v("Delete")]) : _vm._e()
             ],
             2
           )
@@ -378,21 +384,23 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("td", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "delete-button",
-                    attrs: { title: "Permanently delete row" },
-                    on: {
-                      click: function($event) {
-                        _vm.remove(item)
-                      }
-                    }
-                  },
-                  [_vm._v("Delete")]
-                )
-              ])
+              !!_vm.remover
+                ? _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "delete-button",
+                        attrs: { title: "Permanently delete row" },
+                        on: {
+                          click: function($event) {
+                            _vm.remove(item)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ])
+                : _vm._e()
             ],
             2
           )
@@ -768,19 +776,18 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["g"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
-/* unused harmony export deleteAdminUser */
-/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -877,18 +884,14 @@ async function deleteSkillJob(job) {
 }
 async function getAdminUsers() {
   let response = await request({}, 'users/admin', 'GET');
-  return response.json();
+  let users = await response.json();
+  console.log(users);
+  return users;
 }
 async function updateAdminUser(user) {
   let response = await request({
     user: user
-  }, 'users/admin', 'PUT');
-  return response.text();
-}
-async function deleteAdminUser(user) {
-  let response = await request({
-    user: user
-  }, 'users/admin', 'DELETE');
+  }, 'users/admin', 'PATCH');
   return response.text();
 }
 async function rebootServer() {
@@ -909,7 +912,14 @@ async function reloadData(params) {
 async function getData(parameters, endpoint) {
   const response = await request(parameters, endpoint);
   return await response.json();
-} // Make a request to server with given parameters (from getParameters)
+}
+/**
+ * Make a request to server with given parameters.
+ * @param  {Object} parameters passed as body of request
+ * @param  {String} [url='statistics'] endpoint on server
+ * @param  {String} [method='POST'] HTTP action
+ * @return {Promise} response from server
+ */
 
 
 async function request(parameters, url = 'statistics', method = 'POST') {
@@ -936,8 +946,6 @@ async function request(parameters, url = 'statistics', method = 'POST') {
       throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
     }
 
-    return response;
-  }).then(response => {
     return response;
   });
 }
@@ -1029,11 +1037,68 @@ module.exports = function listToStyles (parentId, list) {
 
 /***/ }),
 
-/***/ 79:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(79);
 
+
+/***/ }),
+
+/***/ 79:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__ = __webpack_require__(8);
+
+
+const vm = new Vue({
+  el: '#skill-app',
+  components: {
+    'api-editor-table': __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__["a" /* default */]
+  },
+  data: {
+    message: ''
+  },
+  methods: {
+    jobUpdater: async function (job) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["l" /* updateSkillJob */](job);
+    },
+    jobLoader: async function () {
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["e" /* getSkillJobs */]();
+      return jobs.map(job => {
+        if (!job.data) {
+          job.data = this.jobAdder().data;
+        }
+
+        return job;
+      });
+    },
+    jobAdder: function () {
+      return {
+        repeatInterval: '',
+        data: {
+          title: '',
+          userProfile: '',
+          addSkills: '',
+          removeSkills: ''
+        }
+      };
+    },
+    jobRemover: async function (job) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["a" /* deleteSkillJob */](job);
+    },
+    updateMessage: function (msg) {
+      this.message = msg;
+    },
+    formatDateTime: function (d) {
+      if (!d) return 'N/A';
+      return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
+    }
+  }
+});
 
 /***/ }),
 
@@ -1090,63 +1155,6 @@ if (false) {(function () {
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
-
-/***/ }),
-
-/***/ 80:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__ = __webpack_require__(8);
-
-
-const vm = new Vue({
-  el: '#skill-app',
-  components: {
-    'api-editor-table': __WEBPACK_IMPORTED_MODULE_1__components_api_editor_table_vue__["a" /* default */]
-  },
-  data: {
-    message: ''
-  },
-  methods: {
-    jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* updateSkillJob */](job);
-    },
-    jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["f" /* getSkillJobs */]();
-      return jobs.map(job => {
-        if (!job.data) {
-          job.data = this.jobAdder().data;
-        }
-
-        return job;
-      });
-    },
-    jobAdder: function () {
-      return {
-        repeatInterval: '',
-        data: {
-          title: '',
-          userProfile: '',
-          addSkills: '',
-          removeSkills: ''
-        }
-      };
-    },
-    jobRemover: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* deleteSkillJob */](job);
-    },
-    updateMessage: function (msg) {
-      this.message = msg;
-    },
-    formatDateTime: function (d) {
-      if (!d) return 'N/A';
-      return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
-    }
-  }
-});
 
 /***/ }),
 

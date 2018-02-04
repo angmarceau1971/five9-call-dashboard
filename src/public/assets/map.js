@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 84);
+/******/ 	return __webpack_require__(__webpack_require__.s = 83);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -114,19 +114,18 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["g"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
-/* unused harmony export deleteAdminUser */
-/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(2);
@@ -223,18 +222,14 @@ async function deleteSkillJob(job) {
 }
 async function getAdminUsers() {
   let response = await request({}, 'users/admin', 'GET');
-  return response.json();
+  let users = await response.json();
+  console.log(users);
+  return users;
 }
 async function updateAdminUser(user) {
   let response = await request({
     user: user
-  }, 'users/admin', 'PUT');
-  return response.text();
-}
-async function deleteAdminUser(user) {
-  let response = await request({
-    user: user
-  }, 'users/admin', 'DELETE');
+  }, 'users/admin', 'PATCH');
   return response.text();
 }
 async function rebootServer() {
@@ -255,7 +250,14 @@ async function reloadData(params) {
 async function getData(parameters, endpoint) {
   const response = await request(parameters, endpoint);
   return await response.json();
-} // Make a request to server with given parameters (from getParameters)
+}
+/**
+ * Make a request to server with given parameters.
+ * @param  {Object} parameters passed as body of request
+ * @param  {String} [url='statistics'] endpoint on server
+ * @param  {String} [method='POST'] HTTP action
+ * @return {Promise} response from server
+ */
 
 
 async function request(parameters, url = 'statistics', method = 'POST') {
@@ -282,8 +284,6 @@ async function request(parameters, url = 'statistics', method = 'POST') {
       throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
     }
 
-    return response;
-  }).then(response => {
     return response;
   });
 }
@@ -341,22 +341,22 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 84:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(85);
+module.exports = __webpack_require__(84);
 
 
 /***/ }),
 
-/***/ 85:
+/***/ 84:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(85);
 
 
  // General functions to initiate the call map dashboard.
@@ -448,7 +448,7 @@ async function updateMap(callMap) {
   params.skills = $('.skills.filter').val(); // get all the datas
 
   let customerData = await getCustomerData();
-  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["e" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
+  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
 
   let data = Object.keys(customerData).map(zip => ({
     zipCode: zip,
@@ -519,7 +519,7 @@ const customerCount = {
 async function getCustomerData() {
   // reload data from server if it's been 6+ hours since the last update
   if (customerCount.lastUpdated.isBefore(moment().subtract(6, 'hours'))) {
-    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["e" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
+    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
     // and customer count as volue
 
     customerCount.data = rawData.reduce((object, item) => {
@@ -580,7 +580,7 @@ function reportTimeRange() {
 
 /***/ }),
 
-/***/ 86:
+/***/ 85:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

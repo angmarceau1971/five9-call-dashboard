@@ -39,15 +39,12 @@ const vm = new Vue({
             return api.updateAdminUser(user);
         },
         adminLoader: async function() {
-            const admins = await api.getAdminUsers();
+            return api.getAdminUsers();
         },
         adminAdder: function() {
             return {
                 username: ''
             };
-        },
-        adminRemover: async function(job) {
-            return api.deleteAdmin(job);
         },
         updateMessage: function(msg) {
             $('.message').text(msg);

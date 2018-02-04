@@ -1,4 +1,3 @@
-
 ///////////////////////////
 // API routes to get data
 // All routes need to include these parameters in the POST body:
@@ -12,7 +11,6 @@
 //      - skills : in maps/zip code endpoint, which skill names to filter
 //                 for, comma-separated. Matches "like" Five9 skill names.
 ///////////////////////////
-
 
 const express = require('express');
 const router = express.Router();
@@ -45,7 +43,6 @@ router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
 
 // Five9 current queue statistics (ACDStatus endpoint at Five9)
 router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {
-    log.message('queue stats request');
     try {
         // Send data as response when loaded
         async function sendResponse() {
@@ -69,15 +66,11 @@ router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {
 
 // Request data to update service level metrics
 router.post('/reports/service-level', verify.apiMiddleware(), (req, res) => {
-    log.message('SL request');
-
     handleReportRequest(req, res, report.getServiceLevelData);
 });
 
 // Request calls by zip code for maps page
 router.post('/reports/maps', verify.apiMiddleware(), (req, res) => {
-    log.message('maps request');
-
     handleReportRequest(req, res, report.getZipCodeData);
 });
 
@@ -104,7 +97,6 @@ router.get('/zip3-data', verify.apiMiddleware(), async (req, res) => {
 
 // Return U.S. states JSON
 router.get('/states', verify.apiMiddleware(), async (req, res) => {
-    console.log('states data');
     await sendPublicFile('states-albers.json', req, res);
 });
 
@@ -112,6 +104,14 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 ///////////////////////////
 // Administrative API routes
 ///////////////////////////
+// Get list of fields
+router.get('/fields', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    let fieldList = await fields.getFieldList();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(fieldList));
+});
+
 // Modify available fields list
 router.put('/fields', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
@@ -120,12 +120,14 @@ router.put('/fields', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     res.status(200).send(`Field "${field.name}" has been updated.`);
 });
-// Modify available fields list
-router.get('/fields', verify.apiMiddleware(), async (req, res) => {
+
+
+// Get list of scheduled skilling jobs
+router.get('/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
-    let fieldList = await fields.getFieldList();
+    let jobs = await admin.getScheduledJobs();
     res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(fieldList));
+    res.send(JSON.stringify(jobs));
 });
 
 // Modify a skilling job
@@ -135,13 +137,7 @@ router.put('/skill', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     res.status(200).send(`Job "${req.body.job.data.title}" has been saved.`);
 });
-// Get list of scheduled skilling jobs
-router.get('/skill', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
-    let jobs = await admin.getScheduledJobs();
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(jobs));
-});
+
 // Delete a scheduled skilling job
 router.delete('/skill', verify.apiMiddleware(), async (req, res) => {
     // TODO: allow admin only
@@ -152,6 +148,24 @@ router.delete('/skill', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     res.status(200).send(message);
 });
+
+//////////////////////////////////////
+// Get list of admin users
+router.get('/users/admin', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    const admins = await users.getAdminUsers();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(admins));
+});
+
+// Modify an admin users
+router.patch('/users/admin', verify.apiMiddleware(), async (req, res) => {
+    // TODO: allow admin only
+    await users.updateAdminStatus(req.body.user.username, req.body.user.isAdmin);
+    res.set('Content-Type', 'application/text');
+    res.status(200).send(`User "${req.body.user.username}" has been updated.`);
+});
+
 
 // Notify server that a 502 has occurred
 router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {

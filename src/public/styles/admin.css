@@ -1,27 +1,25 @@
 .content-wrapper {
     height: 100%;
-    max-width: 1000px;
     margin: 0 auto;
 }
 
-.uber-wrapper {
-    /*padding: auto 2em;*/
-}
 
 h1 {
     font-weight: lighter;
 }
 .admin-panel-wrapper {
-    position: absolute;
+    margin: auto;
+    max-width: 650px;
+}
+
+.admin-panel-wrapper .section {
+    margin: 4em auto;
 }
 
 .admin-panel-wrapper div {
     position: relative;
 }
 
-.reload-data-wrapper {
-    margin: 4em;
-}
 
 .reload-data-wrapper div {
     margin: 1em;

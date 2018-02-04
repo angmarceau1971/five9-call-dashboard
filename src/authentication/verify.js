@@ -2,7 +2,6 @@
 ** Helper to authenticate users before returning data to them.
 **
 **
-**
 */
 
 const five9 = require('../helpers/five9-interface');
@@ -27,8 +26,8 @@ module.exports.authenticate = authenticate;
 
 
 function isLoggedIn(level='basic') {
-    return function(req, res, next) {
-        if (req.isAuthenticated()) {
+    return async function(req, res, next) {
+        if (await isAllowed(level, req)) {
             return next();
         }
         // If not logged in, send user to login page, then redirect back to the
@@ -42,8 +41,8 @@ module.exports.isLoggedIn = isLoggedIn;
 
 // Middleware for API routes. Return error response if not authenticated.
 function apiMiddleware(level='basic') {
-    return function (req, res, next) {
-        if (req.isAuthenticated()) {
+    return async function (req, res, next) {
+        if (await isAllowed(level, req)) {
             return next();
         }
         res.set('Content-Type', 'application/text');
@@ -52,6 +51,19 @@ function apiMiddleware(level='basic') {
 }
 module.exports.apiMiddleware = apiMiddleware;
 
+
+async function isAllowed(level, req) {
+    const isAuthenticated = req.isAuthenticated();
+    if (isAuthenticated) {
+        if (level == 'basic') {
+            return true;
+        }
+        if (level == 'admin' && await users.isAdmin(req.user.username)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // Combines username and password, then encodes in Base 64. Yum!
 function getAuthString(username, password) {

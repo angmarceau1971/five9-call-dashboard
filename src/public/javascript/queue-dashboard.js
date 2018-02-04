@@ -22,6 +22,8 @@ $(document).ready(() => {
             clearTimeout(timeout);
             timeout = null;
             $('.play-pause').html('&#9658;'); // show play button
+            // Remind user that they're paused
+            $('.message').text(`Dashboard paused since ${moment()}.`);
         }
         // Not running? Start it up
         else {
