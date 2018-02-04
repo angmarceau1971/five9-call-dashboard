@@ -102,8 +102,9 @@ module.exports.getAdminUsers = getAdminUsers;
  * @param  {Boolean} isNowAdmin new admin status for user
  * @return
  */
-function updateAdminStatus(username, isNowAdmin) {
-    return Users.updateOne(
+async function updateAdminStatus(username, isNowAdmin) {
+    log.message(`Updating admin status for ${username} to ${isNowAdmin}.`);
+    return await Users.updateOne(
         { username: username },
         { $set: { 'isAdmin': isNowAdmin } }
     );
