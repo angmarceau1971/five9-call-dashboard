@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const should = chai.should();
+const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const moment = require('moment');
 
@@ -9,69 +10,125 @@ const moment = require('moment');
 const secure = require('./secure_settings.test');
 
 chai.use(chaiHttp);
-const server = require('../src/app');
+const app = require('../src/app');
 
 describe('Testing security (credentials authentication).', function() {
-    this.timeout(60000); // allow 60 seconds to complete test
+    this.timeout(20000); // allow 20 seconds to complete test
 
-    // Set up test scenarios to iterate through
-    let combos = {
-        allGood: {
-            auth: secure.goodUsername + ':' + secure.goodPassword,
-            desc: 'Credentials all good: should return success with JSON',
-            status: 200,
-            test: (res) => res.type.should.eql('application/json')
-        },
-        userBad: {
-            auth: secure.badUsername + ':' + secure.goodPassword,
-            desc: 'Username bad: should return 401 Unauthorized',
-            status: 401,
-            test: (res) => res.type.should.eql('application/text')
-        },
-        passwordBad: {
-            auth: secure.goodUsername + ':' + secure.badPassword,
-            desc: 'Password bad: should return 401 Unauthorized',
-            status: 401,
-            test: (res) => res.type.should.eql('application/text')
-        },
-        allBad: {
-            auth: secure.badUsername + ':' + secure.badPassword,
-            desc: 'Credentials all bad: should return 401 Unauthorized, ya turkey',
-            status: 401,
-            test: (res) => res.type.should.eql('application/text')
-        }
-    };
-    for (const key in combos) {
-        combos[key].auth = new Buffer(combos[key].auth).toString('base64');
-    }
-
-    let endpoints = [
-        'reports/service-level', 'reports/maps', 'queue-stats', 'reports/customers'
-    ];
-
-    const params = {};
-    params.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
-    params.end   = moment().format('YYYY-MM-DD') + 'T23:59:59';
-    params.skills = 'Care,Tech,Sales'; // for maps endpoint
-
-    // Check each API endpoint
-    for (let i in endpoints) {
-        describe(`POST ${endpoints[i]}`, () => {
-            // Test endpoint with each scenario
-            for (const key in combos) {
-                const scenario = combos[key];
-                it(scenario.desc + ' - Testing status and response type', (done) => {
-                    chai.request(server)
-                    .post(`/api/${endpoints[i]}`)
-                    .send(Object.assign(params, { authorization: scenario.auth }))
-                    .end((err, res) => {
-                        res.status.should.eql(scenario.status);
-                        scenario.test(res);
-                        done();
-                    });
+    /////////////////////////////////
+    // Test page view access
+    describe('Test page view access', function() {
+        it('good credentials should pass basic authentication', function(done) {
+            const agent = chai.request.agent(app);
+            agent.post('/login')
+                .send({ username: secure.goodUsername, password: secure.goodPassword })
+                .then(function (res) {
+                    expect(res).to.have.status(200);
+                    return agent.get('/queues')
+                        .then(function (res) {
+                            expect(res).to.have.status(200);
+                            done();
+                        });
                 });
-            }
         });
-    }
+        it('good admin credentials should pass admin authentication', function(done) {
+            const agent = chai.request.agent(app);
+            agent.post('/login')
+                .send({ username: secure.goodUsername, password: secure.goodPassword })
+                .then(function (res) {
+                    expect(res).to.have.status(200);
+                    return agent.get('/admin')
+                        .then(function (res) {
+                            expect(res).to.have.status(200);
+                            done();
+                        });
+                });
+        });
+        it('good basic credentials should be redirected from admin page', function(done) {
+            const agent = chai.request.agent(app);
+            agent.post('/login')
+                .send({ username: secure.goodUsername, password: secure.goodPassword })
+                .then(function (res) {
+                    expect(res).to.have.status(200);
+                    return agent.get('/admin')
+                        .redirects(0)
+                        // Must catch error due to Chai weirdness with redirects
+                        .then(undefined, function (err) {
+                            let res = err.response;
+                            expect(res).to.have.status(302);
+                            done();
+                        });
+                });
+        });
+        it('bad credentials should be redirected from requested page', function(done) {
+            const agent = chai.request.agent(app);
+            agent.post('/login')
+                .send({ username: secure.badUsername, password: secure.badPassword })
+                .then(function (res) {
+                    return agent.get('/queues')
+                        .redirects(0)
+                        .then(undefined, function (err) {
+                            let res = err.response;
+                            expect(res).to.have.status(302);
+                            done();
+                        });
+                });
+        });
+        it('bad password with good username should be redirected from requested page', function(done) {
+            const agent = chai.request.agent(app);
+            agent.post('/login')
+                .send({ username: secure.goodUsername, password: secure.badPassword })
+                .then(function (res) {
+                    return agent.get('/queues')
+                        .redirects(0)
+                        .then(undefined, function (err) {
+                            let res = err.response;
+                            expect(res).to.have.status(302);
+                            done();
+                        });
+                });
+        });
+    });
 
+    /////////////////////////////////
+    // Test API route access
+    const endpoints = [
+        {"route":"/queue-stats", "method":"POST", "level": "basic"},
+        {"route":"/reports/service-level", "method":"POST", "level": "basic"},
+        {"route":"/reports/maps", "method":"POST", "level": "basic"},
+        {"route":"/reports/customers", "method":"POST", "level": "basic"},
+        {"route":"/fields", "method":"GET", "level": "basic"},
+        {"route":"/skill", "method":"GET", "level": "admin"},
+        {"route":"/users/admin", "method":"GET", "level": "admin"}
+    ];
+    // parameters for data
+    const params = {};
+       params.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
+       params.end   = moment().format('YYYY-MM-DD') + 'T12:00:00';
+       params.skills = 'Care,Tech,Sales'; // for maps endpoint
+
+    describe('Test API route access', function() {
+        endpoints.forEach(function test(endpoint) {
+            const testMsg = `${endpoint.method} to ${endpoint.route} with access level "${endpoint.level}".`;
+            describe(testMsg, function() {
+                it(`tests basic authentication: should ${endpoint.level=='basic' ? 'succeed' : 'fail'}`,
+                  function(done) {
+                    const agent = chai.request.agent(app);
+                    agent.post('/login')
+                        .send({ username: secure.goodUsername, password: secure.goodPassword })
+                        .then(function (res) {
+                            const method = endpoint.method == 'POST'
+                                        ? agent.post(`/api${endpoint.route}`)
+                                        : agent.get(`/api${endpoint.route}`);
+                            return method.send(params)
+                            .then(function (res) {
+                                expect(res).to.have.status(200);
+                                expect(res).to.be.json;
+                                done();
+                            });
+                        });
+                });
+            });
+        })
+    });
 });

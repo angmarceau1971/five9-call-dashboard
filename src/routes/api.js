@@ -254,7 +254,7 @@ async function handleReportRequest(req, res, dataGetter) {
         report.onReady(sendResponse);
 
     } catch (err) {
-        log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
+        log.error(`Error during handleReportRequest(${dataGetter.name}): ${err}`);
         res.set('Content-Type', 'application/text');
         res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
     }

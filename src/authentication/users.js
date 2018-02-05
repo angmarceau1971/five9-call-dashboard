@@ -3,6 +3,8 @@ const log = require('../helpers/log');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const clone = require('ramda/src/clone');
+
 //////////////////////////////////////////
 // MongoDB database definitions
 //////////////////////////////////////////
@@ -110,6 +112,7 @@ async function updateAdminStatus(username, isNowAdmin) {
     );
 }
 module.exports.updateAdminStatus = updateAdminStatus;
+
 
 module.exports.isAdmin = isAdmin;
 module.exports.isActive = isActive;
