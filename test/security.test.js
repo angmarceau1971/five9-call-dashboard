@@ -63,20 +63,6 @@ describe('Testing security (credentials authentication).', function() {
         it('bad credentials should be redirected from requested page', function(done) {
             const agent = chai.request.agent(app);
             agent.post('/login')
-                .send({ username: secure.badUsername, password: secure.badPassword })
-                .then(function (res) {
-                    return agent.get('/queues')
-                        .redirects(0)
-                        .then(undefined, function (err) {
-                            let res = err.response;
-                            expect(res).to.have.status(302);
-                            done();
-                        });
-                });
-        });
-        it('bad password with good username should be redirected from requested page', function(done) {
-            const agent = chai.request.agent(app);
-            agent.post('/login')
                 .send({ username: secure.goodUsername, password: secure.badPassword })
                 .then(function (res) {
                     return agent.get('/queues')
@@ -103,19 +89,66 @@ describe('Testing security (credentials authentication).', function() {
     ];
     // parameters for data
     const params = {};
-       params.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
-       params.end   = moment().format('YYYY-MM-DD') + 'T12:00:00';
-       params.skills = 'Care,Tech,Sales'; // for maps endpoint
+   params.start  = moment().format('YYYY-MM-DD') + 'T00:00:00';
+   params.end    = moment().format('YYYY-MM-DD') + 'T12:00:00';
+   params.skills = 'Care,Tech,Sales'; // for maps endpoint
 
     describe('Test API route access', function() {
         endpoints.forEach(function test(endpoint) {
-            const testMsg = `${endpoint.method} to ${endpoint.route} with access level "${endpoint.level}".`;
+            let testMsg = `${endpoint.method} to ${endpoint.route} with access level "${endpoint.level}".`;
+
             describe(testMsg, function() {
-                it(`tests basic authentication: should ${endpoint.level=='basic' ? 'succeed' : 'fail'}`,
+                let basicLevel = (endpoint.level == 'basic');
+                it(`tests basic credentials: should ${basicLevel ? 'succeed' : 'fail'}`,
                   function(done) {
                     const agent = chai.request.agent(app);
                     agent.post('/login')
                         .send({ username: secure.goodUsername, password: secure.goodPassword })
+                        .then(function (res) {
+                            const method = endpoint.method == 'POST'
+                                        ? agent.post(`/api${endpoint.route}`)
+                                        : agent.get(`/api${endpoint.route}`);
+                            return method.send(params)
+                            .then(function (res) {
+                                expect(basicLevel).to.be.true;
+                                expect(res).to.have.status(200);
+                                expect(res).to.be.json;
+                                done();
+                            }, // request should error if not authenticatable
+                              function(err) {
+                                let res = err.response;
+                                expect(basicLevel).to.be.false;
+                                expect(res).to.have.status(401);
+                                expect(res).to.have.header('content-type', /(text)/);
+                                done();
+                            });
+                        });
+                });
+
+                it(`tests incorrect credentials should fail`,
+                  function(done) {
+                    const agent = chai.request.agent(app);
+                    agent.post('/login')
+                        .send({ username: secure.goodUsername, password: secure.badPassword })
+                        .then(function (res) {
+                            const method = endpoint.method == 'POST'
+                                        ? agent.post(`/api${endpoint.route}`)
+                                        : agent.get(`/api${endpoint.route}`);
+                            return method.send(params)
+                            .then(undefined, function(err) {
+                                let res = err.response;
+                                expect(res).to.have.status(401);
+                                expect(res).to.have.header('content-type', /(text)/);
+                                done();
+                            });
+                        });
+                });
+
+                it(`tests admin credentials should succeed`,
+                  function(done) {
+                    const agent = chai.request.agent(app);
+                    agent.post('/login')
+                        .send({ username: secure.adminUsername, password: secure.adminPassword })
                         .then(function (res) {
                             const method = endpoint.method == 'POST'
                                         ? agent.post(`/api${endpoint.route}`)
@@ -129,6 +162,7 @@ describe('Testing security (credentials authentication).', function() {
                         });
                 });
             });
+
         })
     });
 });

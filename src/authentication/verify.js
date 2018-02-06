@@ -39,7 +39,11 @@ function isLoggedIn(level='basic') {
 module.exports.isLoggedIn = isLoggedIn;
 
 
-// Middleware for API routes. Return error response if not authenticated.
+/**
+ * Middleware for API routes. Return error response if not authenticated.
+ * @param  {String} [level='basic'] 'basic' or 'admin'
+ * @return {Function}                Express middleware function
+ */
 function apiMiddleware(level='basic') {
     return async function (req, res, next) {
         if (await isAllowed(level, req)) {
@@ -58,7 +62,7 @@ async function isAllowed(level, req) {
         if (level == 'basic') {
             return true;
         }
-        if (level == 'admin' && await users.isAdmin(req.user.username)) {
+        if (level == 'admin' && (await users.isAdmin(req.user.username)) == true) {
             return true;
         }
     }

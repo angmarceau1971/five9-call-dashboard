@@ -106,15 +106,13 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 ///////////////////////////
 // Get list of fields
 router.get('/fields', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
     let fieldList = await fields.getFieldList();
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(fieldList));
 });
 
 // Modify available fields list
-router.put('/fields', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.put('/fields', verify.apiMiddleware('admin'), async (req, res) => {
     let field = req.body.field;
     fields.update(field);
     res.set('Content-Type', 'application/text');
@@ -123,24 +121,21 @@ router.put('/fields', verify.apiMiddleware(), async (req, res) => {
 
 
 // Get list of scheduled skilling jobs
-router.get('/skill', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.get('/skill', verify.apiMiddleware('admin'), async (req, res) => {
     let jobs = await admin.getScheduledJobs();
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(jobs));
 });
 
 // Modify a skilling job
-router.put('/skill', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.put('/skill', verify.apiMiddleware('admin'), async (req, res) => {
     const newjob = await admin.updateSkillingJob(req.body.username, req.body.job, req.body.data);
     res.set('Content-Type', 'application/text');
     res.status(200).send(`Job "${req.body.job.data.title}" has been saved.`);
 });
 
 // Delete a scheduled skilling job
-router.delete('/skill', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.delete('/skill', verify.apiMiddleware('admin'), async (req, res) => {
     const numRemoved = await admin.cancelJob(req.body.job._id);
     const message = numRemoved > 0
                     ? `Job "${req.body.job.data.title}" has been deleted.`
@@ -151,16 +146,14 @@ router.delete('/skill', verify.apiMiddleware(), async (req, res) => {
 
 //////////////////////////////////////
 // Get list of admin users
-router.get('/users/admin', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
     const admins = await users.getAdminUsers();
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(admins));
 });
 
 // Modify an admin users
-router.patch('/users/admin', verify.apiMiddleware(), async (req, res) => {
-    // TODO: allow admin only
+router.patch('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
     await users.updateAdminStatus(req.body.user.username, req.body.user.isAdmin);
     res.set('Content-Type', 'application/text');
     res.status(200).send(`User "${req.body.user.username}" has been updated.`);
@@ -180,8 +173,7 @@ router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {
 
 
 // Reboot the server
-router.post('/reboot-server', async (req, res) => {
-    // TODO: allow admin only
+router.post('/reboot-server', verify.apiMiddleware('admin'), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
         log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
@@ -195,7 +187,6 @@ router.post('/reboot-server', async (req, res) => {
 
 // Update data in a given range
 router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
-    // TODO: allow admin only
     res.set('Content-Type', 'application/text');
     try {
         let times = req.body['time'];
