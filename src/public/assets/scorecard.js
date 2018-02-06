@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -317,7 +317,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(6)
+var listToStyles = __webpack_require__(7)
 
 /*
 type StyleObject = {
@@ -750,6 +750,33 @@ function getParameters(requestType) {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(16);
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+module.exports = _curry1;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 /**
@@ -782,33 +809,6 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(19);
-
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
-}
-module.exports = _curry1;
-
-/***/ }),
 /* 8 */,
 /* 9 */,
 /* 10 */,
@@ -818,7 +818,7 @@ module.exports = _curry1;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(34);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -865,6 +865,89 @@ if (false) {(function () {
 
 /***/ }),
 /* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(18);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
+
+/**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      R.type({}); //=> "Object"
+ *      R.type(1); //=> "Number"
+ *      R.type(false); //=> "Boolean"
+ *      R.type('s'); //=> "String"
+ *      R.type(null); //=> "Null"
+ *      R.type([]); //=> "Array"
+ *      R.type(/[A-z]/); //=> "RegExp"
+ *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
+ */
+
+
+var type = /*#__PURE__*/_curry1(function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+});
+module.exports = type;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+function _isPlaceholder(a) {
+       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+}
+module.exports = _isPlaceholder;
+
+/***/ }),
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -900,42 +983,73 @@ function formatValue(value, field) {
   return {
     value: formattedValue,
     styleClass: style
-  }; // let format, styleClass;
-  // switch(field) {
-  //     case 'Date':
-  //         format = (val) => moment(val).format('MMM D');
-  //         styleClass = (val) => '';
-  //         break;
-  //
-  //     case 'Close Rate':
-  //         format = (val) => isNaN(val)
-  //                         ? 'N/A'
-  //                         : (val * 100).toFixed(0) + '%';
-  //         styleClass = (val) => isNaN(val)
-  //                         ? ''
-  //                         : val >= 0.5 ? 'green' : 'red';
-  //         break;
-  //
-  //     case 'AHT':
-  //         format = (val) => val;
-  //         styleClass = (val) => {
-  //             if (val == 'N/A') return '';
-  //             return moment(val, 'mm:ss').valueOf() <= moment('10:00', 'mm:ss').valueOf()
-  //                     ? 'green' : 'red';
-  //         };
-  //         break;
-  //
-  //     default:
-  //         format = (val) => val;
-  //         styleClass = (val) => '';
-  //         break;
-  // };
-  // return { value: format(value), styleClass: styleClass(value) };
+  };
 }
 ;
 
 /***/ }),
-/* 15 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(19);
+
+var type = /*#__PURE__*/__webpack_require__(15);
+
+/**
+ * Copies an object.
+ *
+ * @private
+ * @param {*} value The value to be copied
+ * @param {Array} refFrom Array containing the source references
+ * @param {Array} refTo Array containing the copied source references
+ * @param {Boolean} deep Whether or not to perform deep cloning.
+ * @return {*} The copied value.
+ */
+
+
+function _clone(value, refFrom, refTo, deep) {
+  var copy = function copy(copiedValue) {
+    var len = refFrom.length;
+    var idx = 0;
+    while (idx < len) {
+      if (value === refFrom[idx]) {
+        return refTo[idx];
+      }
+      idx += 1;
+    }
+    refFrom[idx + 1] = value;
+    refTo[idx + 1] = copiedValue;
+    for (var key in value) {
+      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+    }
+    return copiedValue;
+  };
+  switch (type(value)) {
+    case 'Object':
+      return copy({});
+    case 'Array':
+      return copy([]);
+    case 'Date':
+      return new Date(value.valueOf());
+    case 'RegExp':
+      return _cloneRegExp(value);
+    default:
+      return value;
+  }
+}
+module.exports = _clone;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+function _cloneRegExp(pattern) {
+                                  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
+}
+module.exports = _cloneRegExp;
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
@@ -944,14 +1058,14 @@ function _has(prop, obj) {
 module.exports = _has;
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = clean;
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
-const clone = __webpack_require__(17);
+const clone = __webpack_require__(14);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server.
  * @param  {Object} original    filter from widget
@@ -964,9 +1078,9 @@ function clean(original, currentUser) {
   let filter = clone(original); // Clean up dates
 
   let dateFn = dateMatcher[filter.date];
-  filter.dateDay = dateFn(); // @todo - may want datetimes
-
-  delete filter.date; // Insert actual username
+  filter.dateDay = dateFn();
+  filter.date = dateFn();
+  ; // Insert actual username
 
   if (filter.agentUsername.$in.includes('<current user>')) {
     filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = currentUser;
@@ -1005,90 +1119,7 @@ const dateMatcher = {
 };
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(37);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
-
-/**
- * Gives a single-word string description of the (native) type of a value,
- * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
- * attempt to distinguish user Object types any further, reporting them all as
- * 'Object'.
- *
- * @func
- * @memberOf R
- * @since v0.8.0
- * @category Type
- * @sig (* -> {*}) -> String
- * @param {*} val The value to test
- * @return {String}
- * @example
- *
- *      R.type({}); //=> "Object"
- *      R.type(1); //=> "Number"
- *      R.type(false); //=> "Boolean"
- *      R.type('s'); //=> "String"
- *      R.type(null); //=> "Null"
- *      R.type([]); //=> "Array"
- *      R.type(/[A-z]/); //=> "RegExp"
- *      R.type(() => {}); //=> "Function"
- *      R.type(undefined); //=> "Undefined"
- */
-
-
-var type = /*#__PURE__*/_curry1(function type(val) {
-  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
-});
-module.exports = type;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-function _isPlaceholder(a) {
-       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-}
-module.exports = _isPlaceholder;
-
-/***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1143,7 +1174,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1215,10 +1246,10 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(15);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -1232,12 +1263,12 @@ var _isArguments = function () {
 module.exports = _isArguments;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(19);
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(16);
 
 /**
  * Optimized internal two-arity curry function.
@@ -1270,21 +1301,21 @@ function _curry2(fn) {
 module.exports = _curry2;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(25);
+module.exports = __webpack_require__(27);
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(17);
 
 
  // Node libraries
@@ -1302,7 +1333,7 @@ aht.widgets = [{
   'id': 'widget:0',
   'component': 'single-value',
   'title': 'Today',
-  'fieldName': 'AHT',
+  'fieldName': 'Calculated.aht',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1313,7 +1344,7 @@ aht.widgets = [{
   'id': 'widget:1',
   'component': 'single-value',
   'title': 'Month to Date',
-  'fieldName': 'AHT',
+  'fieldName': 'Calculated.aht',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1324,7 +1355,7 @@ aht.widgets = [{
   'id': 'widget:2',
   'component': 'single-value',
   'title': 'ACW Today',
-  'fieldName': 'ACW',
+  'fieldName': 'Calculated.acw',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1335,7 +1366,7 @@ aht.widgets = [{
   'id': 'widget:3',
   'component': 'single-value',
   'title': 'ACW Month to Date',
-  'fieldName': 'ACW',
+  'fieldName': 'Calculated.acw',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1354,7 +1385,7 @@ calls.widgets = [{
   'id': 'widget:0',
   'component': 'single-value',
   'title': 'Today',
-  'fieldName': 'calls',
+  'fieldName': 'AcdFeed.calls',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1365,7 +1396,7 @@ calls.widgets = [{
   'id': 'widget:1',
   'component': 'single-value',
   'title': 'Month to Date',
-  'fieldName': 'calls',
+  'fieldName': 'AcdFeed.calls',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -1421,7 +1452,7 @@ const vm = new Vue({
 
   methods: {
     postAcd: async function () {
-      return store.dispatch('nextUpdate');
+      return store.dispatch('makeSubscriptions');
     },
     clickImport: function () {
       this.$refs.fileInput.click();
@@ -1499,6 +1530,7 @@ const vm = new Vue({
     }
   }
 });
+window.vm = vm;
 
 function download(text, name, type) {
   var a = document.createElement("a");
@@ -1511,11 +1543,11 @@ function download(text, name, type) {
 }
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(61);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
@@ -1562,13 +1594,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(23);
 //
 //
 //
@@ -1686,16 +1718,16 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(55);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(29)
+  __webpack_require__(31)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1741,13 +1773,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(30);
+var content = __webpack_require__(32);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1767,7 +1799,7 @@ if(false) {
 }
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -1781,16 +1813,16 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(23);
 //
 //
 //
@@ -1971,11 +2003,11 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 });
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(35);
 //
 //
 //
@@ -2011,16 +2043,16 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(39);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(34)
+  __webpack_require__(36)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2066,13 +2098,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(35);
+var content = __webpack_require__(37);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2092,7 +2124,7 @@ if(false) {
 }
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -2100,18 +2132,17 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?987bbd04"],"names":[],"mappings":";AAuGA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <!-- <input v-model=\"newObject.fieldName\" /> -->\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.name\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            console.log(this.newObject);\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?54b01156"],"names":[],"mappings":";AAqGA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(16);
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(21);
 //
 //
 //
@@ -2171,7 +2202,7 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    t
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(17);
+const clone = __webpack_require__(14);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -2198,7 +2229,6 @@ const clone = __webpack_require__(17);
     },
     add: function () {},
     exit: function (saveChanges) {
-      console.log(this.newObject);
       this.editingNow = false;
 
       if (saveChanges) {
@@ -2211,67 +2241,6 @@ const clone = __webpack_require__(17);
     }
   }
 });
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(38);
-
-var type = /*#__PURE__*/__webpack_require__(18);
-
-/**
- * Copies an object.
- *
- * @private
- * @param {*} value The value to be copied
- * @param {Array} refFrom Array containing the source references
- * @param {Array} refTo Array containing the copied source references
- * @param {Boolean} deep Whether or not to perform deep cloning.
- * @return {*} The copied value.
- */
-
-
-function _clone(value, refFrom, refTo, deep) {
-  var copy = function copy(copiedValue) {
-    var len = refFrom.length;
-    var idx = 0;
-    while (idx < len) {
-      if (value === refFrom[idx]) {
-        return refTo[idx];
-      }
-      idx += 1;
-    }
-    refFrom[idx + 1] = value;
-    refTo[idx + 1] = copiedValue;
-    for (var key in value) {
-      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
-    }
-    return copiedValue;
-  };
-  switch (type(value)) {
-    case 'Object':
-      return copy({});
-    case 'Array':
-      return copy([]);
-    case 'Date':
-      return new Date(value.valueOf());
-    case 'RegExp':
-      return _cloneRegExp(value);
-    default:
-      return value;
-  }
-}
-module.exports = _clone;
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-function _cloneRegExp(pattern) {
-                                  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
-}
-module.exports = _cloneRegExp;
 
 /***/ }),
 /* 39 */
@@ -2346,7 +2315,7 @@ var render = function() {
               }
             },
             _vm._l(_vm.$store.state.fields, function(field) {
-              return _c("option", { domProps: { value: field.name } }, [
+              return _c("option", { domProps: { value: field.fullName } }, [
                 _vm._v(
                   _vm._s(field.displayName || field.name) +
                     "\n             " +
@@ -2595,7 +2564,7 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(17);
 //
 //
 //
@@ -2828,7 +2797,7 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(13);
 //
 //
@@ -3204,7 +3173,7 @@ if (false) {(function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(17);
 //
 //
 //
@@ -3237,6 +3206,16 @@ function sum(obj, key) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
   props: ['title', 'fieldName', 'filter'],
+
+  mounted() {
+    this.$store.commit('subscribeTo', {
+      fieldNames: [this.fieldName],
+      filter: this.filter,
+      // filter for skills here
+      groupBy: ['dateDay', 'agentUsername']
+    });
+  },
+
   computed: {
     field: function () {
       return this.$store.getters.field(this.fieldName);
@@ -3247,11 +3226,11 @@ function sum(obj, key) {
     value: function () {
       let data = this.$store.getters.getData(this.filter, this.fieldName);
 
-      if (this.fieldName == 'AHT') {
+      if (this.fieldName == 'Calculated.aht') {
         return sum(data, 'handleTime') / sum(data, 'calls');
-      } else if (this.fieldName == 'ACW') {
+      } else if (this.fieldName == 'Calculated.acw') {
         return sum(data, 'acwTime') / sum(data, 'calls');
-      } else if (this.fieldName == 'calls') {
+      } else if (this.fieldName == 'AcdFeed.calls') {
         return sum(data, 'calls');
       } else {
         throw new Error(`SingleValue component isn't expecting the field name: ${this.fieldName}`);
@@ -3737,13 +3716,15 @@ if (false) {
 "use strict";
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parse__ = __webpack_require__(88);
 /**
  * This module controls interaction with the server.
  *
  * Data is made accessible through the `store` Vuex object, which all Vue
  * components can access.
  */
+
 
 
 
@@ -3825,15 +3806,22 @@ const static_fields = [// Date
 
 const store = new Vuex.Store({
   state: {
-    fields: static_fields,
+    fields: [],
     editMode: true,
     ahtData: [],
     currentUser: '',
-    timeoutId: 0
+    timeoutId: 0,
+    subscriptions: [],
+    loaders: []
   },
   getters: {
-    field: state => name => {
-      return state.fields.find(f => f.name == name);
+    /**
+     * Return field object from
+     * @param  {String} fullFieldName name in `source.name` format
+     * @return {Object}  field object
+     */
+    field: state => fullFieldName => {
+      return state.fields.find(f => f.fullName == fullFieldName);
     },
     getData: state => (filter, field) => {
       const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
@@ -3865,6 +3853,10 @@ const store = new Vuex.Store({
 
     setFields(state, fields) {
       state.fields = fields;
+    },
+
+    subscribeTo(state, parameters) {
+      state.subscriptions.push(parameters);
     }
 
   },
@@ -3873,9 +3865,86 @@ const store = new Vuex.Store({
     async startProcess(context) {
       // load fields from server
       const fields = await __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getFieldList */]();
-      console.log(fields);
       context.commit('setFields', fields);
-      context.dispatch('nextUpdate');
+      context.dispatch('makeSubscriptions'); // context.dispatch('nextUpdate');
+    },
+
+    async makeSubscriptions(context) {
+      context.state.subscriptions.map(sub => {
+        context.dispatch('makeSubscription', sub);
+      }); // const loaders = context.state.subscriptions
+      // .map(function({ fieldNames, filter, groupBy }) {
+      //     const fieldsInitial = fieldNames.map(function(name) {
+      //                     return state.fields.find((f) => f.fullName == name)
+      //                 });
+      //     const fields = parse.fieldsToServer(fieldsInitial);
+      //     const loader = {
+      //         refreshRate: 0,
+      //         parameters: {
+      //             fields: fields,
+      //             filter: filters.clean(filter),
+      //             groupBy: groupBy
+      //         }
+      //     };
+      //     loader.refreshRate = state.fields.reduce((min, f) =>
+      //                     Math.min(min, f.refreshRate), Infinity);
+      //     return loader;
+      // });
+      // loaders.forEach((loader) => {
+      //     state.commit('')
+      // });
+    },
+
+    async makeSubscription(context, {
+      fieldNames,
+      filter,
+      groupBy
+    }) {
+      const fieldsInitial = fieldNames.map(function (name) {
+        return context.state.fields.find(f => f.fullName == name);
+      });
+      const params = {
+        filter: __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, context.state.currentUser),
+        groupBy: groupBy,
+        fields: {
+          sum: __WEBPACK_IMPORTED_MODULE_2__parse__["a" /* fieldsToServer */](fieldsInitial)
+        }
+      };
+      console.log(params);
+      context.commit('updateData', (await loadData(params))); // const params = {
+      //     filter: {
+      //         // agentGroup: {
+      //         //     $in: ['Customer Care', 'Sales'],
+      //         // },
+      //         agentUsername: {
+      //             $eq: store.state.currentUser.trim()
+      //         },
+      //         date: {
+      //             start: moment().startOf('month').format(),
+      //             end:   moment().endOf('month').format(),
+      //         },
+      //     },
+      //     fields: {
+      //         sum: ['calls', 'handleTime', 'acwTime']
+      //     },
+      //     groupBy: ['agentUsername', 'skill', 'dateDay']
+      // };
+    },
+
+    async repeatingUpdate(context, ms) {
+      console.log(`Refresh at ${moment()}`); // Load data from server
+
+      const data = await loadData();
+      console.log(data);
+      context.commit('updateData', data); // and schedule the next update
+
+      let timeout = setTimeout(function next() {
+        context.dispatch('repeatingUpdate', ms);
+      }, ms);
+      context.commit({
+        type: 'setTimeoutId',
+        amount: timeout
+      });
     },
 
     // Call for each update from server
@@ -3900,31 +3969,17 @@ const store = new Vuex.Store({
 });
 /* harmony export (immutable) */ __webpack_exports__["a"] = store;
 
-async function loadData() {
-  const params = {
-    filter: {
-      // agentGroup: {
-      //     $in: ['Customer Care', 'Sales'],
-      // },
-      agentUsername: {
-        $eq: store.state.currentUser.trim()
-      },
-      date: {
-        start: moment().startOf('month').format(),
-        end: moment().endOf('month').format()
-      }
-    },
-    fields: {
-      sum: ['calls', 'handleTime', 'acwTime']
-    },
-    groupBy: ['agentUsername', 'skill', 'dateDay']
-  };
+const getField = store.getters.field;
+/* unused harmony export getField */
+
+async function loadData(params) {
   const data = await __WEBPACK_IMPORTED_MODULE_0__api__["f" /* getStatistics */](params);
   const cleaned = data.map(d => {
     d['dateDay'] = moment(d['dateDay']).toDate();
     d._id.dateDay = moment(d._id.dateDay).toDate();
     return d;
   });
+  console.log(cleaned);
   return cleaned;
 }
 
@@ -4521,7 +4576,7 @@ async function loadData() {
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
 var empty = /*#__PURE__*/__webpack_require__(65);
 
@@ -4559,9 +4614,9 @@ module.exports = isEmpty;
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(22);
+var _isArguments = /*#__PURE__*/__webpack_require__(24);
 
 var _isArray = /*#__PURE__*/__webpack_require__(66);
 
@@ -4645,7 +4700,7 @@ module.exports = _isString;
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(23);
+var _curry2 = /*#__PURE__*/__webpack_require__(25);
 
 var _equals = /*#__PURE__*/__webpack_require__(70);
 
@@ -4691,13 +4746,13 @@ var _containsWith = /*#__PURE__*/__webpack_require__(72);
 
 var _functionName = /*#__PURE__*/__webpack_require__(73);
 
-var _has = /*#__PURE__*/__webpack_require__(15);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
 var identical = /*#__PURE__*/__webpack_require__(74);
 
 var keys = /*#__PURE__*/__webpack_require__(75);
 
-var type = /*#__PURE__*/__webpack_require__(18);
+var type = /*#__PURE__*/__webpack_require__(15);
 
 /**
  * private _uniqContentEquals function.
@@ -4889,7 +4944,7 @@ module.exports = _functionName;
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(23);
+var _curry2 = /*#__PURE__*/__webpack_require__(25);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -4933,11 +4988,11 @@ module.exports = identical;
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
-var _has = /*#__PURE__*/__webpack_require__(15);
+var _has = /*#__PURE__*/__webpack_require__(20);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(22);
+var _isArguments = /*#__PURE__*/__webpack_require__(24);
 
 // cover IE < 9 keys issues
 
@@ -5008,6 +5063,54 @@ var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys
 };
 var keys = /*#__PURE__*/_curry1(_keys);
 module.exports = keys;
+
+/***/ }),
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = fieldsToServer;
+/**
+ * Handle expression parsing for calculated fields.
+ */
+
+/**
+ *
+ * @param  {String} exp expression
+ * @return {Array of Strings} names of fields needed to calculate `exp`
+ */
+function requiredFields(exp) {
+  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
+}
+
+function expressionForField(field) {
+  return field.calculation;
+}
+
+function fieldsToServer(fields) {
+  return fields.reduce((list, field) => {
+    let [source, name] = field.fullName.split('.');
+
+    if (source == 'Calculated') {
+      const f = requiredFields(expressionForField(field));
+      return list.concat(f.map(n => n.split('.')[1]));
+    }
+
+    return list.concat(name);
+  }, []);
+}
 
 /***/ })
 /******/ ]);

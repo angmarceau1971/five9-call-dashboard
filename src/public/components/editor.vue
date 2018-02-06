@@ -18,12 +18,11 @@
             <input v-model="newObject.title" />
 
             <h3>Field</h3>
-            <!-- <input v-model="newObject.fieldName" /> -->
             <select name="field-dropdown"
                 v-model="newObject.fieldName">
                 <option
                     v-for="field in $store.state.fields"
-                    :value="field.name"
+                    :value="field.fullName"
                 >{{ field.displayName || field.name }}
                  {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>
             </select>
@@ -85,7 +84,6 @@ export default {
         add: function() {
         },
         exit: function(saveChanges) {
-            console.log(this.newObject);
             this.editingNow = false;
             if (saveChanges) {
                 this.$emit('modify-widget', this.newObject);

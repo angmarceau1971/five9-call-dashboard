@@ -457,12 +457,12 @@ if (false) {
 
 /***/ }),
 
-/***/ 17:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
-var _clone = /*#__PURE__*/__webpack_require__(37);
+var _clone = /*#__PURE__*/__webpack_require__(18);
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
 /**
  * Creates a deep copy of the value which may contain (nested) `Array`s and
@@ -494,10 +494,10 @@ module.exports = clone;
 
 /***/ }),
 
-/***/ 18:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(7);
+var _curry1 = /*#__PURE__*/__webpack_require__(6);
 
 /**
  * Gives a single-word string description of the (native) type of a value,
@@ -533,13 +533,76 @@ module.exports = type;
 
 /***/ }),
 
-/***/ 19:
+/***/ 16:
 /***/ (function(module, exports) {
 
 function _isPlaceholder(a) {
        return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
 }
 module.exports = _isPlaceholder;
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(19);
+
+var type = /*#__PURE__*/__webpack_require__(15);
+
+/**
+ * Copies an object.
+ *
+ * @private
+ * @param {*} value The value to be copied
+ * @param {Array} refFrom Array containing the source references
+ * @param {Array} refTo Array containing the copied source references
+ * @param {Boolean} deep Whether or not to perform deep cloning.
+ * @return {*} The copied value.
+ */
+
+
+function _clone(value, refFrom, refTo, deep) {
+  var copy = function copy(copiedValue) {
+    var len = refFrom.length;
+    var idx = 0;
+    while (idx < len) {
+      if (value === refFrom[idx]) {
+        return refTo[idx];
+      }
+      idx += 1;
+    }
+    refFrom[idx + 1] = value;
+    refTo[idx + 1] = copiedValue;
+    for (var key in value) {
+      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+    }
+    return copiedValue;
+  };
+  switch (type(value)) {
+    case 'Object':
+      return copy({});
+    case 'Array':
+      return copy([]);
+    case 'Date':
+      return new Date(value.valueOf());
+    case 'RegExp':
+      return _cloneRegExp(value);
+    default:
+      return value;
+  }
+}
+module.exports = _clone;
+
+/***/ }),
+
+/***/ 19:
+/***/ (function(module, exports) {
+
+function _cloneRegExp(pattern) {
+                                  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
+}
+module.exports = _cloneRegExp;
 
 /***/ }),
 
@@ -636,69 +699,6 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 37:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(38);
-
-var type = /*#__PURE__*/__webpack_require__(18);
-
-/**
- * Copies an object.
- *
- * @private
- * @param {*} value The value to be copied
- * @param {Array} refFrom Array containing the source references
- * @param {Array} refTo Array containing the copied source references
- * @param {Boolean} deep Whether or not to perform deep cloning.
- * @return {*} The copied value.
- */
-
-
-function _clone(value, refFrom, refTo, deep) {
-  var copy = function copy(copiedValue) {
-    var len = refFrom.length;
-    var idx = 0;
-    while (idx < len) {
-      if (value === refFrom[idx]) {
-        return refTo[idx];
-      }
-      idx += 1;
-    }
-    refFrom[idx + 1] = value;
-    refTo[idx + 1] = copiedValue;
-    for (var key in value) {
-      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
-    }
-    return copiedValue;
-  };
-  switch (type(value)) {
-    case 'Object':
-      return copy({});
-    case 'Array':
-      return copy([]);
-    case 'Date':
-      return new Date(value.valueOf());
-    case 'RegExp':
-      return _cloneRegExp(value);
-    default:
-      return value;
-  }
-}
-module.exports = _clone;
-
-/***/ }),
-
-/***/ 38:
-/***/ (function(module, exports) {
-
-function _cloneRegExp(pattern) {
-                                  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
-}
-module.exports = _cloneRegExp;
-
-/***/ }),
-
 /***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -718,7 +718,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(6)
+var listToStyles = __webpack_require__(7)
 
 /*
 type StyleObject = {
@@ -1153,6 +1153,34 @@ function getParameters(requestType) {
 /***/ }),
 
 /***/ 6:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(16);
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+module.exports = _curry1;
+
+/***/ }),
+
+/***/ 7:
 /***/ (function(module, exports) {
 
 /**
@@ -1186,34 +1214,6 @@ module.exports = function listToStyles (parentId, list) {
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(19);
-
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
-}
-module.exports = _curry1;
-
-/***/ }),
-
 /***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1232,7 +1232,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const clone = __webpack_require__(17);
+const clone = __webpack_require__(14);
 
 const vm = new Vue({
   el: '#admin-app',

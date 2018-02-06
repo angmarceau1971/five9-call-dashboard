@@ -12,8 +12,7 @@ export function clean(original, currentUser) {
     // Clean up dates
     let dateFn = dateMatcher[filter.date];
     filter.dateDay = dateFn();
-    // @todo - may want datetimes
-    delete filter.date;
+    filter.date = dateFn();;
 
     // Insert actual username
     if (filter.agentUsername.$in.includes('<current user>')) {

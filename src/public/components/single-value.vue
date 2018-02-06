@@ -32,6 +32,13 @@ function sum(obj, key) {
 export default {
     extends: WidgetBase,
     props: ['title', 'fieldName', 'filter'],
+    mounted() {
+        this.$store.commit('subscribeTo', {
+            fieldNames: [this.fieldName],
+            filter: this.filter, // filter for skills here
+            groupBy: ['dateDay', 'agentUsername']
+        });
+    },
     computed: {
         field: function() {
             return this.$store.getters.field(this.fieldName);
@@ -41,13 +48,13 @@ export default {
         },
         value: function() {
             let data = this.$store.getters.getData(this.filter, this.fieldName);
-            if (this.fieldName == 'AHT') {
+            if (this.fieldName == 'Calculated.aht') {
                 return sum(data, 'handleTime') / sum(data, 'calls');
             }
-            else if (this.fieldName == 'ACW') {
+            else if (this.fieldName == 'Calculated.acw') {
                 return sum(data, 'acwTime') / sum(data, 'calls');
             }
-            else if (this.fieldName == 'calls') {
+            else if (this.fieldName == 'AcdFeed.calls') {
                 return sum(data, 'calls');
             }
             else {

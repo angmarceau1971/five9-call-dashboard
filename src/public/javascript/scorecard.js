@@ -18,7 +18,7 @@ aht.widgets = [
         'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
-        'fieldName': 'AHT',
+        'fieldName': 'Calculated.aht',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -30,7 +30,7 @@ aht.widgets = [
         'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
-        'fieldName': 'AHT',
+        'fieldName': 'Calculated.aht',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -42,7 +42,7 @@ aht.widgets = [
         'id': 'widget:2',
         'component': 'single-value',
         'title': 'ACW Today',
-        'fieldName': 'ACW',
+        'fieldName': 'Calculated.acw',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -54,7 +54,7 @@ aht.widgets = [
         'id': 'widget:3',
         'component': 'single-value',
         'title': 'ACW Month to Date',
-        'fieldName': 'ACW',
+        'fieldName': 'Calculated.acw',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -77,7 +77,7 @@ calls.widgets = [
         'id': 'widget:0',
         'component': 'single-value',
         'title': 'Today',
-        'fieldName': 'calls',
+        'fieldName': 'AcdFeed.calls',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -89,7 +89,7 @@ calls.widgets = [
         'id': 'widget:1',
         'component': 'single-value',
         'title': 'Month to Date',
-        'fieldName': 'calls',
+        'fieldName': 'AcdFeed.calls',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -158,7 +158,7 @@ const vm = new Vue({
 
     methods: {
         postAcd: async function() {
-            return store.dispatch('nextUpdate');
+            return store.dispatch('makeSubscriptions');
         },
 
         clickImport: function() {
@@ -238,6 +238,7 @@ const vm = new Vue({
 });
 
 
+window.vm = vm;
 
 function download(text, name, type) {
     var a = document.createElement("a");

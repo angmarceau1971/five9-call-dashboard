@@ -130,70 +130,71 @@ async function loadData(time) {
  * @return {Promise} resolves to JSON data matching query
  */
 async function getScorecardStatistics({ filter, fields, groupBy }) {
-    // transform filter object into MongoDB-style $match
-    function createFilter(obj) {
-        // remove dates - parsed separately
-        return Object.keys(obj)
-            .filter((key) => key != 'date')
-            .map((key) => ({
-                [key]: obj[key]
-            }));
-    }
-
-    // create $group-ings off the fields in the groupBy array
-    function createGroup(groupBy, fields) {
-        let group = {
-            _id: groupBy.reduce((result, field) => {
-                    result[field] = `$${field}`;
-                    return result;
-                }, {})
-        };
-        group = fields.sum.reduce((result, field) => {
-            result[field] = { $sum: `$${field}` };
-            return result;
-        }, group);
-        return group;
-    }
-
-    return new Promise((resolve, reject) => {
-        AcdFeed.aggregate([
-            {
-                $match: {
-                    $and: [
-                        {
-                            date: {
-                                $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
-                                $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
-                            }
-                        },
-                        ...createFilter(filter)
-                    ]
-                }
-            }, {
-                $addFields: {
-                    dateDay: {
-                        '$dateToString': { format: '%Y-%m-%d', date: '$date' }
-                    }
-                }
-            }, {
-                $group: createGroup(groupBy, fields)
-                // $group: {
-                //     _id: {
-                //         dateDay: '$dateDay',
-                //         skill: '$skill',
-                //         agentUsername: '$agentUsername'
-                //     },
-                //     calls: { $sum: '$calls' },
-                //     handleTime: { $sum: '$handleTime' }
-                // }
+    const aggregation = [
+        {
+            $match: {
+                $and: [
+                    {
+                        date: {
+                            $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                            $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                        }
+                    },
+                    ...createFilter(filter)
+                ]
             }
+        }, {
+            $addFields: {
+                dateDay: {
+                    '$dateToString': { format: '%Y-%m-%d', date: '$date' }
+                }
+            }
+        }, {
+            $group: createGroup(groupBy, fields)
+        }
+    ];
 
-        ], (err, data) => {
+    let data1 = await getStatisticsFrom(AcdFeed, aggregation);
+    return data1;
+}
+
+
+async function getStatisticsFrom(model, aggregation) {
+    return new Promise((resolve, reject) => {
+        model.aggregate(aggregation, (err, data) => {
             if (err) reject(err);
             resolve(data);
         });
     });
 }
+
+// transform filter object into MongoDB-style $match
+function createFilter(obj) {
+    // remove dates - parsed separately
+    return Object.keys(obj)
+        .filter((key) => key != 'date')
+        .map((key) => ({
+            [key]: obj[key]
+        }));
+}
+
+// create $group-ings off the fields in the groupBy array
+function createGroup(groupBy, fields) {
+    let group = {
+        _id: groupBy.reduce((result, field) => {
+                result[field] = `$${field}`;
+                return result;
+            }, {})
+    };
+    group = fields.sum.reduce((result, field) => {
+        result[field] = { $sum: `$${field}` };
+        return result;
+    }, group);
+    return group;
+}
+
+
+
 
 // Summarize call and service level data by skill. Params should give start
 // and end time for data.

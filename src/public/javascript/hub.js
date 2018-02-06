@@ -7,6 +7,7 @@
 
  import * as api from './api';
  import * as filters from './filters';
+ import * as parse from './parse';
  const sift = require('sift');
 
  const static_fields = [
@@ -92,6 +93,7 @@
      }
 ];
 
+
 /**
  * Vuex is used to see if app is in edit mode (editMode Boolean), and store
  * field (meta) data.
@@ -99,15 +101,22 @@
  */
 export const store = new Vuex.Store({
     state: {
-        fields: static_fields,
+        fields: [],
         editMode: true,
         ahtData: [],
         currentUser: '',
-        timeoutId: 0
+        timeoutId: 0,
+        subscriptions: [],
+        loaders: [],
     },
     getters: {
-        field: (state) => (name) => {
-            return state.fields.find((f) => f.name == name);
+        /**
+         * Return field object from
+         * @param  {String} fullFieldName name in `source.name` format
+         * @return {Object}  field object
+         */
+        field: (state) => (fullFieldName) => {
+            return state.fields.find((f) => f.fullName == fullFieldName);
         },
         getData: (state) => (filter, field) => {
             const filt = filters.clean(filter, state.currentUser);
@@ -137,17 +146,101 @@ export const store = new Vuex.Store({
         },
         setFields(state, fields) {
             state.fields = fields;
-        }
+        },
+        subscribeTo(state, parameters) {
+            state.subscriptions.push(parameters);
+        },
+
     },
     actions: {
         // Call when page first loads
         async startProcess(context) {
             // load fields from server
             const fields = await api.getFieldList();
-            console.log(fields);
             context.commit('setFields', fields);
-            context.dispatch('nextUpdate');
+            context.dispatch('makeSubscriptions');
+            // context.dispatch('nextUpdate');
         },
+
+        async makeSubscriptions(context) {
+            context.state.subscriptions.map((sub) => {
+                context.dispatch('makeSubscription', sub);
+            })
+            // const loaders = context.state.subscriptions
+            // .map(function({ fieldNames, filter, groupBy }) {
+            //     const fieldsInitial = fieldNames.map(function(name) {
+            //                     return state.fields.find((f) => f.fullName == name)
+            //                 });
+            //     const fields = parse.fieldsToServer(fieldsInitial);
+            //     const loader = {
+            //         refreshRate: 0,
+            //         parameters: {
+            //             fields: fields,
+            //             filter: filters.clean(filter),
+            //             groupBy: groupBy
+            //         }
+            //     };
+            //     loader.refreshRate = state.fields.reduce((min, f) =>
+            //                     Math.min(min, f.refreshRate), Infinity);
+            //     return loader;
+            // });
+            // loaders.forEach((loader) => {
+            //     state.commit('')
+            // });
+        },
+
+        async makeSubscription(context, { fieldNames, filter, groupBy}) {
+            const fieldsInitial = fieldNames.map(function(name) {
+                        return context.state.fields.find((f) => f.fullName == name)
+                    });
+            const params = {
+                filter: filters.clean(filter, context.state.currentUser),
+                groupBy: groupBy,
+                fields: {
+                    sum: parse.fieldsToServer(fieldsInitial)
+                }
+            }
+            console.log(params);
+            context.commit('updateData', await loadData(params));
+
+
+            // const params = {
+            //     filter: {
+            //         // agentGroup: {
+            //         //     $in: ['Customer Care', 'Sales'],
+            //         // },
+            //         agentUsername: {
+            //             $eq: store.state.currentUser.trim()
+            //         },
+            //         date: {
+            //             start: moment().startOf('month').format(),
+            //             end:   moment().endOf('month').format(),
+            //         },
+            //     },
+            //     fields: {
+            //         sum: ['calls', 'handleTime', 'acwTime']
+            //     },
+            //     groupBy: ['agentUsername', 'skill', 'dateDay']
+            // };
+        },
+
+        async repeatingUpdate(context, ms) {
+            console.log(`Refresh at ${moment()}`);
+            // Load data from server
+            const data = await loadData();
+            console.log(data);
+            context.commit('updateData', data);
+
+            // and schedule the next update
+            let timeout = setTimeout(function next() {
+                context.dispatch('repeatingUpdate', ms);
+            }, ms);
+            context.commit({
+                type: 'setTimeoutId',
+                amount: timeout
+            });
+        },
+
         // Call for each update from server
         async nextUpdate(context) {
             console.log(`Refresh at ${moment()}`);
@@ -169,26 +262,10 @@ export const store = new Vuex.Store({
     }
 });
 
+export const getField = store.getters.field;
 
-export async function loadData() {
-    const params = {
-        filter: {
-            // agentGroup: {
-            //     $in: ['Customer Care', 'Sales'],
-            // },
-            agentUsername: {
-                $eq: store.state.currentUser.trim()
-            },
-            date: {
-                start: moment().startOf('month').format(),
-                end:   moment().endOf('month').format(),
-            },
-        },
-        fields: {
-            sum: ['calls', 'handleTime', 'acwTime']
-        },
-        groupBy: ['agentUsername', 'skill', 'dateDay']
-    };
+export async function loadData(params) {
+
 
     const data = await api.getStatistics(params);
     const cleaned = data.map((d) => {
@@ -196,6 +273,6 @@ export async function loadData() {
         d._id.dateDay = moment(d._id.dateDay).toDate();
         return d;
     });
-
+    console.log(cleaned);
     return cleaned;
 }
