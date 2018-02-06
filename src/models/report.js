@@ -18,7 +18,7 @@ mongoose.Promise = global.Promise;
 // MongoDB database definitions
 //////////////////////////////////////////
 // Schema for call log report data
-const dataFeedSchema = mongoose.Schema({
+const callLogSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     skill: String,
     zipCode: String,
@@ -47,7 +47,7 @@ const acdFeedSchema = mongoose.Schema({
 
 
 // Models to represent report data
-const DataFeed = mongoose.model('DataFeed', dataFeedSchema);
+const CallLog = mongoose.model('CallLog', callLogSchema);
 const AcdFeed  = mongoose.model('AcdFeed',  acdFeedSchema);
 
 //
@@ -117,7 +117,7 @@ async function scheduleUpdate(interval) {
  */
 async function loadData(time) {
     return await Promise.all([
-        refreshDatabase(time, DataFeed, 'Dashboard - Data Feed'),
+        refreshDatabase(time, CallLog, 'Dashboard - Data Feed'),
         refreshDatabase(time, AcdFeed,  'Dashboard - ACD Feed')
     ]);
 }
@@ -199,7 +199,7 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
 // and end time for data.
 async function getServiceLevelData(params) {
     return new Promise((resolve, reject) => {
-        DataFeed.aggregate([
+        CallLog.aggregate([
             // Filter for the selected date and skills
             { $match:
                 { date: {
@@ -238,7 +238,7 @@ async function getZipCodeData(params) {
     });
 
     return new Promise((resolve, reject) => {
-        DataFeed.aggregate( [
+        CallLog.aggregate( [
             // Filter for the selected date and skills
             { $match: { $and: [
                 { date: {
@@ -359,7 +359,7 @@ function parseRow(model, row) {
     let datestring;
     const parsed = {};
 
-    if (model == DataFeed) {
+    if (model == CallLog) {
         parsed.serviceLevel = row.serviceLevel * 1;
         parsed.abandons = row.abandons * 1;
 
@@ -422,7 +422,8 @@ module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;
 module.exports.getScorecardStatistics = getScorecardStatistics;
-module.exports.DataFeed = DataFeed;
+module.exports.CallLog = CallLog;
 module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;
 module.exports.acdFeedSchema = acdFeedSchema;
+module.exports.callLogSchema = acdFeedSchema;

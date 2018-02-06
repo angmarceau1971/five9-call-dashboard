@@ -5,7 +5,11 @@ const fieldListSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: { type: String },
     defaultRefreshRate: { type: Number, default: 0 },
-    source: { type: String, default: 'N/A' }
+    source: { type: String, default: 'N/A' },
+    format: {
+        type: { type: String, default: '' },
+        string: { type: String, default: '' }
+    },
 });
 
 const FieldList = mongoose.model('FieldList', fieldListSchema);
@@ -37,7 +41,7 @@ async function initializeList(paths, source) {
         FieldList.count({}, (err, count) => {
             console.log(`count = ${count}`);
             if (err) reject(err);
-            if (count > 0) reject(new Error(`${count} fields already exist.`));
+            // if (count > 0) reject(new Error(`${count} fields already exist.`));
             let fields = Object.keys(paths)
                 // Filter for numbers and remove private properties
                 .filter((path) => paths[path].instance == 'Number')
@@ -45,7 +49,11 @@ async function initializeList(paths, source) {
                 .map((path) => {
                     return {
                         name: path,
-                        source: source
+                        source: source,
+                        format: {
+                            type: paths[path].instance,
+                            string: ''
+                        }
                     }
                 });
 

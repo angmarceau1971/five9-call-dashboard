@@ -1,7 +1,7 @@
 // Adds user with a given username via the command line
 //
 
-const users = require('./users');
+const users = require('../authentication/users');
 const mongoose = require('mongoose');
 const secure = require('../secure_settings');
 mongoose.Promise = global.Promise;

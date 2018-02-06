@@ -27,7 +27,7 @@
                 @message="this.updateMessage"
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
-                :headers="['Name', 'Default Refresh Rate (sec)']"
+                :headers="['Name', 'Default Refresh Rate (sec)', 'Type', 'Format']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -36,6 +36,16 @@
                     <td>
                         <input v-model="props.item.defaultRefreshRate"
                             type="number"
+                        />
+                    </td>
+                    <td>
+                        <input v-model="props.item.format.type"
+                            type="text"
+                        />
+                    </td>
+                    <td>
+                        <input v-model="props.item.format.string"
+                            type="text"
                         />
                     </td>
                 </template>
