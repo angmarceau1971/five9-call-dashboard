@@ -114,7 +114,7 @@ router.get('/fields', verify.apiMiddleware(), async (req, res) => {
 // Modify available fields list
 router.put('/fields', verify.apiMiddleware('admin'), async (req, res) => {
     let field = req.body.field;
-    fields.update(field);
+    let response = await fields.update(field);
     res.set('Content-Type', 'application/text');
     res.status(200).send(`Field "${field.name}" has been updated.`);
 });

@@ -128,6 +128,12 @@ td {
     align-items: center;
     height: 3em;
 }
+td input[type="text"] {
+    width: 8em;
+}
+td input[type="number"] {
+    width: 4em;
+}
 .editor-wrapper button {
     box-sizing: border-box;
     color: black;

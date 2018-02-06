@@ -21,6 +21,19 @@ const vm = new Vue({
         },
         updateMessage: function(msg) {
             this.message = msg;
+        },
+        fieldAdder: function() {
+            return {
+                name: '',
+                displayName: '',
+                defaultRefreshRate: 0,
+                format: {
+                    type: '',
+                    string: ''
+                },
+                calculatedField: true,
+                calculation: ''
+            }
         }
     }
 });

@@ -27,11 +27,20 @@
                 @message="this.updateMessage"
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
-                :headers="['Name', 'Default Refresh Rate (sec)', 'Type', 'Format']"
+                :adder="fieldAdder"
+                :headers="['Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculation', 'Data Source']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
-                        {{ props.item.name }}
+                        <input v-if="props.item.calculatedField"
+                            v-model="props.item.name"
+                            type="text"
+                        />
+                        <p v-else>{{ props.item.name }}</p>
+                    </td>
+
+                    <td>
+                        <p>{{ props.item.calculatedField }}</p>
                     </td>
                     <td>
                         <input v-model="props.item.defaultRefreshRate"
@@ -47,6 +56,18 @@
                         <input v-model="props.item.format.string"
                             type="text"
                         />
+                    </td>
+
+                    <td>
+                        <textarea v-if="props.item.calculatedField"
+                            v-model="props.item.calculation"
+                            type="text"
+                        ></textarea>
+                        <p v-else>N/A</p>
+                    </td>
+
+                    <td>
+                        <p>{{ props.item.source }}</p>
                     </td>
                 </template>
             </api-editor-table>

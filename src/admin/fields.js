@@ -1,24 +1,36 @@
 const log = require('../helpers/log');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 const fieldListSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: { type: String },
+    displayName: { type: String, default: '' },
     defaultRefreshRate: { type: Number, default: 0 },
     source: { type: String, default: 'N/A' },
     format: {
         type: { type: String, default: '' },
         string: { type: String, default: '' }
     },
+    calculatedField: { type: Boolean, default: false },
+    calculation: { type: String, default: '' }
 });
 
 const FieldList = mongoose.model('FieldList', fieldListSchema);
 
 async function update(field) {
-    return FieldList.replaceOne(
-        { 'name': field.name },
+    const oid = new mongoose.Types.ObjectId(field._id);
+    log.message(`Updating ${field.name} to: ${JSON.stringify(field)}`);
+    let response = await FieldList.replaceOne(
+        { _id: oid },
         field
     );
+    if (response.nModified > 0) {
+        log.message(`Field ${field.name} has been modified.`);
+        return response;
+    }
+    log.message(`No match for field ID. Adding new field ${field.name}.`);
+    return FieldList.collection.insert(field);
 }
 module.exports.update = update;
 
