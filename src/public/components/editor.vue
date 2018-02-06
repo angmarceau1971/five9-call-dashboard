@@ -18,7 +18,15 @@
             <input v-model="newObject.title" />
 
             <h3>Field</h3>
-            <input v-model="newObject.fieldName" />
+            <!-- <input v-model="newObject.fieldName" /> -->
+            <select name="field-dropdown"
+                v-model="newObject.fieldName">
+                <option
+                    v-for="field in $store.state.fields"
+                    :value="field.name"
+                >{{ field.displayName || field.name }}
+                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>
+            </select>
 
             <h3>Date</h3>
             <select name="date-dropdown"

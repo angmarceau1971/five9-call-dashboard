@@ -28,7 +28,7 @@
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
                 :adder="fieldAdder"
-                :headers="['Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculation', 'Data Source']"
+                :headers="['Name', 'Display Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculation', 'Data Source']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -37,6 +37,13 @@
                             type="text"
                         />
                         <p v-else>{{ props.item.name }}</p>
+                    </td>
+
+                    <td>
+                        <input
+                            v-model="props.item.displayName"
+                            type="text"
+                        />
                     </td>
 
                     <td>

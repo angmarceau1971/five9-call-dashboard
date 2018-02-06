@@ -9,11 +9,11 @@
  import * as filters from './filters';
  const sift = require('sift');
 
- const fields = [
+ const static_fields = [
      // Date
      {
          displayName: 'Date',
-         fieldName: 'Date',
+         name: 'Date',
          hasGoal: false,
          goal: 0,
          goalThresholds: [],
@@ -27,7 +27,7 @@
      // Sales close rate
      {
          displayName: 'Close Rate',
-         fieldName: 'Close Rate',
+         name: 'Close Rate',
          hasGoal: true,
          goal: 0.55,
          goalThresholds: [
@@ -45,7 +45,7 @@
      // DIRECTV sales count
      {
          displayName: 'DIRECTV Sales',
-         fieldName: 'DIRECTV Sales',
+         name: 'DIRECTV Sales',
          hasGoal: true,
          goal: 1,
          goalThresholds: [],
@@ -59,7 +59,7 @@
      // AHT - Average Handle Time
      {
          displayName: 'AHT',
-         fieldName: 'AHT',
+         name: 'AHT',
          calculation: '{handleTime} / {calls}',
          hasGoal: true,
          goal: 600,
@@ -76,7 +76,7 @@
      // ACW - After Call Work
      {
          displayName: 'ACW',
-         fieldName: 'ACW',
+         name: 'ACW',
          calculation: '{acwTime} / {calls}',
          hasGoal: true,
          goal: 30,
@@ -99,15 +99,15 @@
  */
 export const store = new Vuex.Store({
     state: {
-        fields: fields,
+        fields: static_fields,
         editMode: true,
         ahtData: [],
         currentUser: '',
         timeoutId: 0
     },
     getters: {
-        field: (state) => (fieldName) => {
-            return state.fields.find((f) => f.fieldName == fieldName);
+        field: (state) => (name) => {
+            return state.fields.find((f) => f.name == name);
         },
         getData: (state) => (filter, field) => {
             const filt = filters.clean(filter, state.currentUser);
@@ -134,10 +134,22 @@ export const store = new Vuex.Store({
         },
         setTimeoutId(state, id) {
             state.timeoutId = id;
+        },
+        setFields(state, fields) {
+            state.fields = fields;
         }
     },
     actions: {
-        async startUpdating(context) {
+        // Call when page first loads
+        async startProcess(context) {
+            // load fields from server
+            const fields = await api.getFieldList();
+            console.log(fields);
+            context.commit('setFields', fields);
+            context.dispatch('nextUpdate');
+        },
+        // Call for each update from server
+        async nextUpdate(context) {
             console.log(`Refresh at ${moment()}`);
             // Load data from server
             const data = await loadData();
@@ -147,11 +159,11 @@ export const store = new Vuex.Store({
             // and schedule the next update
             const frequencySeconds = 60;
             let timeout = setTimeout(function next() {
-                context.dispatch('startUpdating');
+                context.dispatch('nextUpdate');
             }, frequencySeconds * 1000);
             context.commit({
                 type: 'setTimeoutId',
-                value: timeout
+                amount: timeout
             });
         }
     }
@@ -168,8 +180,8 @@ export async function loadData() {
                 $eq: store.state.currentUser.trim()
             },
             date: {
-                start: '2018-01-01T00:00:00',
-                end: '2018-02-01T00:00:00',
+                start: moment().startOf('month').format(),
+                end:   moment().endOf('month').format(),
             },
         },
         fields: {

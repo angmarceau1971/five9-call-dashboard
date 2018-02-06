@@ -1,5 +1,7 @@
 import * as api from './api.js';
 import ApiEditorTable from '../components/api-editor-table.vue';
+const clone = require('ramda/src/clone');
+
 
 const vm = new Vue({
     el: '#admin-app',
@@ -14,7 +16,10 @@ const vm = new Vue({
 
     methods: {
         fieldUpdater: async function(field) {
-            return api.updateField(field);
+            let clean = clone(field);
+            clean.name = field.name.trim();
+            clean.displayName = field.displayName.trim();
+            return api.updateField(clean);
         },
         fieldLoader: function() {
             return api.getFieldList();

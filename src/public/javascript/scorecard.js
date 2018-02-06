@@ -153,12 +153,12 @@ const vm = new Vue({
     },
 
     beforeMount() {
-        this.postAcd();
+        return store.dispatch('startProcess');
     },
 
     methods: {
         postAcd: async function() {
-            return store.dispatch('startUpdating');
+            return store.dispatch('nextUpdate');
         },
 
         clickImport: function() {
