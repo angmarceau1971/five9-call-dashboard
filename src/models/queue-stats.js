@@ -47,7 +47,6 @@ async function scheduleUpdate(interval) {
 }
 
 async function refreshDatabase() {
-    log.message(`Updating QueueStats database`);
     let params, response, data;
 
     // Remove all old data
