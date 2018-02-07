@@ -42,15 +42,16 @@
                     </td>
                     <td>
                         <input v-model="props.item.repeatInterval" />
+                        <a target="_blank" :href="getCrontabUrl(props.item.repeatInterval)">?</a>
                     </td>
                     <td>
                         <input v-model="props.item.data.userProfile" />
                     </td>
                     <td>
-                        <input v-model="props.item.data.addSkills" />
+                        <textarea v-model="props.item.data.addSkills"></textarea>
                     </td>
                     <td>
-                        <input v-model="props.item.data.removeSkills" />
+                        <textarea v-model="props.item.data.removeSkills"></textarea>
                     </td>
                     <td>
                         {{ formatDateTime(props.item.lastRunAt) }}

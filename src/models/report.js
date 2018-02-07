@@ -126,10 +126,13 @@ async function loadData(time) {
 /**
  * Get agent statistics from the ACD Queue data source.
  *
- * @param  {Object} filter for MongoDB. Requires date.start and date.end.
+ * @param  {Object} filter for MongoDB. Requires date.$gte and date.$lt
+ * @param  {Object} fields to include, in format { sum: ['f1', 'f2',...] }
+ * @param  {Array}  groupBy break down / summarize by these fields
  * @return {Promise} resolves to JSON data matching query
  */
 async function getScorecardStatistics({ filter, fields, groupBy }) {
+    // Construct MongoDB aggregation object
     const aggregation = [
         {
             $match: {

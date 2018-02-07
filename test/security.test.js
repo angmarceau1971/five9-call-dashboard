@@ -114,7 +114,7 @@ describe('Testing security (credentials authentication).', function() {
                                 expect(res).to.have.status(200);
                                 expect(res).to.be.json;
                                 done();
-                            }, // request should error if not authenticatable
+                            }, // request should error if this is an admin endpoint
                               function(err) {
                                 let res = err.response;
                                 expect(basicLevel).to.be.false;

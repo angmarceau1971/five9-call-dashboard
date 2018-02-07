@@ -45,6 +45,9 @@ const vm = new Vue({
         formatDateTime: function(d) {
             if (!d) return 'N/A';
             return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
+        },
+        getCrontabUrl: function(interval) {
+            return `https://crontab.guru/#${interval.replace(/ /g, '_')}`;
         }
     }
 });

@@ -62,11 +62,12 @@ var sessionSettings = {
     secret: secure.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    rolling: true, // refresh expiration with each request
     store: new MongoStore({ url: secure.MONGODB_URI }),
     cookie: {
-        maxAge: 12 * 3600 * 1000 // expire after 1 day
+        maxAge: 24 * 3600 * 1000 // expire after 1 day
     }
-}
+};
 if (app.get('env') == 'production') {
     app.set('trust proxy', 1);
     sessionSettings.cookie.secure = true;
