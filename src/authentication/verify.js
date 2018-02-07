@@ -8,6 +8,13 @@ const five9 = require('../helpers/five9-interface');
 const log = require('../helpers/log');
 const users = require('./users');
 
+/**
+ * Passport authentication strategy.
+ * @param  {String}   username for Five9
+ * @param  {String}   password for Five9
+ * @param  {Function} done     from Passport
+ * @return {Function}          calls @param done to continue Passport process
+ */
 async function authenticate(username, password, done) {
     let auth = getAuthString(username, password);
     try {
@@ -24,7 +31,11 @@ async function authenticate(username, password, done) {
 }
 module.exports.authenticate = authenticate;
 
-
+/**
+ * Middleware for page view routes. Redirects to login page if not logged in.
+ * @param  {String}  [level='basic'] does this route require `basic` or `admin` rights?
+ * @return {Function}                middleware function
+ */
 function isLoggedIn(level='basic') {
     return async function(req, res, next) {
         if (await isAllowed(level, req)) {
@@ -33,7 +44,7 @@ function isLoggedIn(level='basic') {
         // If not logged in, send user to login page, then redirect back to the
         // original page.
         req.session.returnTo = req.url;
-        res.redirect('/login');
+        res.redirect('login');
     };
 }
 module.exports.isLoggedIn = isLoggedIn;

@@ -54,18 +54,18 @@ router.get('/admin', verify.isLoggedIn('admin'), async (req, res) => {
 
 // login page for agent dashboard
 router.get('/login', async (req, res) => {
-    let dir = path.join(__dirname + '/../public/auth/login.html');
+    let dir = path.join(__dirname + '/../public/login.html');
     res.sendFile(dir);
 });
 // TODO: add error message
 router.get('/login-retry', async (req, res) => {
-    let dir = path.join(__dirname + '/../public/auth/login.html');
+    let dir = path.join(__dirname + '/../public/login.html');
     res.sendFile(dir);
 });
 // Post login credentials for dashboard
 router.post('/login',
     passport.authenticate('local', { successReturnToOrRedirect: '/',
-                                      failureRedirect: '/login-retry',
+                                      failureRedirect: 'login-retry',
                                       failureFlash: false } )
 );
 
