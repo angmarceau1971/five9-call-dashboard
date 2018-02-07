@@ -104,11 +104,11 @@ export const store = new Vuex.Store({
     state: {
         fields: [],
         editMode: true,
-        ahtData: [],
         currentUser: '',
         timeoutId: 0,
         subscriptions: [],
         loaders: [],
+        data: {},
         datasources: {}
     },
     getters: {
@@ -120,9 +120,13 @@ export const store = new Vuex.Store({
         field: (state) => (fullFieldName) => {
             return state.fields.find((f) => f.fullName == fullFieldName);
         },
-        getData: (state) => (filter, field) => {
+        getData: (state) => (filter, datasource) => {
+            if (!state.data[datasource]) {
+                console.log(`getData: datasource ${datasource} doesn't exist.`);
+                return [];
+            }
             const filt = filters.clean(filter, state.currentUser);
-            let data = sift(filt, state.ahtData.map((d) =>
+            let data = sift(filt, state.data[datasource].map((d) =>
                 Object.assign({}, d, d._id)
             ));
             return data;
@@ -132,8 +136,8 @@ export const store = new Vuex.Store({
         toggleEditMode(state) {
             state.editMode = !state.editMode;
         },
-        updateData(state, newData) {
-            state.ahtData = newData;
+        updateData(state, newData, datasource) {
+            state.data[datasource] = newData;
         },
         /**
          * Set the current user
@@ -153,9 +157,11 @@ export const store = new Vuex.Store({
             state.subscriptions.push(parameters);
         },
         changeDatasource(state, datasource) {
-            console.log(datasource);
             const ds = clone(datasource);
             state.datasources[datasource.name] = datasource;
+        },
+        setDatasources(state, datasources) {
+            state.datasources = clone(datasources);
         }
     },
     actions: {
@@ -164,82 +170,22 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
-            context.dispatch('makeSubscriptions');
-            // context.dispatch('nextUpdate');
+            context.dispatch('nextUpdate', 10 * 1000);
         },
 
-        async makeSubscriptions(context) {
-            context.state.subscriptions.map((sub) => {
-                context.dispatch('makeSubscription', sub);
-            })
-            // const loaders = context.state.subscriptions
-            // .map(function({ fieldNames, filter, groupBy }) {
-            //     const fieldsInitial = fieldNames.map(function(name) {
-            //                     return state.fields.find((f) => f.fullName == name)
-            //                 });
-            //     const fields = parse.fieldsToServer(fieldsInitial);
-            //     const loader = {
-            //         refreshRate: 0,
-            //         parameters: {
-            //             fields: fields,
-            //             filter: filters.clean(filter),
-            //             groupBy: groupBy
-            //         }
-            //     };
-            //     loader.refreshRate = state.fields.reduce((min, f) =>
-            //                     Math.min(min, f.refreshRate), Infinity);
-            //     return loader;
-            // });
-            // loaders.forEach((loader) => {
-            //     state.commit('')
-            // });
-        },
-
-        async makeSubscription(context, { fieldNames, filter, groupBy}) {
-            const fieldsInitial = fieldNames.map(function(name) {
-                        return context.state.fields.find((f) => f.fullName == name)
-                    });
-            const params = {
-                filter: filters.clean(filter, context.state.currentUser),
-                groupBy: groupBy,
-                fields: {
-                    sum: parse.fieldsToServer(fieldsInitial)
-                }
-            }
-            console.log(params);
-            context.commit('updateData', await loadData(params));
-
-
-            // const params = {
-            //     filter: {
-            //         // agentGroup: {
-            //         //     $in: ['Customer Care', 'Sales'],
-            //         // },
-            //         agentUsername: {
-            //             $eq: store.state.currentUser.trim()
-            //         },
-            //         date: {
-            //             start: moment().startOf('month').format(),
-            //             end:   moment().endOf('month').format(),
-            //         },
-            //     },
-            //     fields: {
-            //         sum: ['calls', 'handleTime', 'acwTime']
-            //     },
-            //     groupBy: ['agentUsername', 'skill', 'dateDay']
-            // };
-        },
-
-        async repeatingUpdate(context, ms) {
+        async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
             // Load data from server
-            const data = await loadData();
-            console.log(data);
-            context.commit('updateData', data);
+            Object.keys(context.state.datasources).forEach(async function(source) {
+                const ds = context.state.datasources[source];
+                const data = await loadData(getParams(ds));
+                console.log(data);
+                context.commit('updateData', data, source);
+            });
 
             // and schedule the next update
             let timeout = setTimeout(function next() {
-                context.dispatch('repeatingUpdate', ms);
+                context.dispatch('nextUpdate', ms);
             }, ms);
             context.commit({
                 type: 'setTimeoutId',
@@ -251,9 +197,55 @@ export const store = new Vuex.Store({
 
 export const getField = store.getters.field;
 
+
+// const params = {
+//     filter: {
+//         // agentGroup: {
+//         //     $in: ['Customer Care', 'Sales'],
+//         // },
+//         agentUsername: {
+//             $eq: store.state.currentUser.trim()
+//         },
+//         date: {
+//             start: moment().startOf('month').format(),
+//             end:   moment().endOf('month').format(),
+//         },
+//     },
+//     fields: {
+//         sum: ['calls', 'handleTime', 'acwTime']
+//     },
+//     groupBy: ['agentUsername', 'skill', 'dateDay']
+// };
+
+function getParams(datasource) {
+    const params = {
+        filter: filters.clean(datasource.filter, store.state.currentUser),
+        fields: datasource.fields,
+        groupBy: datasource.groupBy
+    };
+    const paramsOld = {
+        filter: {
+            // agentGroup: {
+            //     $in: ['Customer Care', 'Sales'],
+            // },
+            agentUsername: {
+                $eq: store.state.currentUser.trim()
+            },
+            date: {
+                start: moment().startOf('month').format(),
+                end:   moment().endOf('month').format(),
+            },
+        },
+        fields: {
+            sum: ['calls', 'handleTime', 'acwTime']
+        },
+        groupBy: ['agentUsername', 'skill', 'dateDay']
+    };
+    return params;
+}
+
 export async function loadData(params) {
-
-
+    console.log(params);
     const data = await api.getStatistics(params);
     const cleaned = data.map((d) => {
         d['dateDay'] = moment(d['dateDay']).toDate();

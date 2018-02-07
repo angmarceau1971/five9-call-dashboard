@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -201,40 +201,6 @@ module.exports = _curry1;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
-
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
-}
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -316,7 +282,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -537,7 +503,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _clone = /*#__PURE__*/__webpack_require__(11);
@@ -573,6 +539,40 @@ var clone = /*#__PURE__*/_curry1(function clone(value) {
 module.exports = clone;
 
 /***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
+
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
+}
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -599,7 +599,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(6);
 
  ////////////////////////////////////////////////////////////////
@@ -1018,7 +1018,7 @@ var content = __webpack_require__(15);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("ad2ade60", content, false);
+var update = __webpack_require__(3)("ad2ade60", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1037,7 +1037,7 @@ if(false) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -1113,7 +1113,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 //
 //
 //
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -1284,7 +1284,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(33);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1384,67 +1384,6 @@ module.exports = _has;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
-/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
-/* unused harmony export prettifyDateOption */
-const clone = __webpack_require__(5);
-/**
- * Returns a cleaned / formatted copy of widget filter to pass to server.
- * @param  {Object} original    filter from widget
- * @param  {String} currentUser current user's username
- * @return {Object}             cleaned up filter for server
- */
-
-
-function clean(original, currentUser) {
-  let filter = clone(original); // Clean up dates
-
-  let dateFn = dateMatcher[filter.date];
-  filter.dateDay = dateFn();
-  filter.date = dateFn();
-  ; // Insert actual username
-
-  if (filter.agentUsername.$in.includes('<current user>')) {
-    filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = currentUser;
-  }
-
-  return filter;
-}
-function dateOptions() {
-  return Object.keys(dateMatcher);
-}
-function prettifyDateOption(option) {
-  // remove brackets
-  option.replace(/[<|>]/, ''); // TODO: capitalize properly
-
-  return option;
-}
-const dateMatcher = {
-  '<today>': function () {
-    return {
-      $gte: moment().startOf('day').toDate(),
-      $lt: moment().endOf('day').toDate()
-    };
-  },
-  '<yesterday>': function () {
-    return {
-      $gte: moment().add(-1, 'days').startOf('day').toDate(),
-      $lt: moment().startOf('day').toDate()
-    };
-  },
-  '<month-to-date>': function () {
-    return {
-      $gte: moment().startOf('month').toDate(),
-      $lt: moment().endOf('month').toDate()
-    };
-  }
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(46);
 var disposed = false
@@ -1496,7 +1435,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1568,7 +1507,7 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _has = /*#__PURE__*/__webpack_require__(20);
@@ -1585,7 +1524,7 @@ var _isArguments = function () {
 module.exports = _isArguments;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
@@ -1623,19 +1562,19 @@ function _curry2(fn) {
 module.exports = _curry2;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(27);
+module.exports = __webpack_require__(26);
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(13);
@@ -1644,9 +1583,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
  // Node libraries
 
-const isEmpty = __webpack_require__(65);
+const isEmpty = __webpack_require__(63);
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(4);
 
 const aht = {
   title: 'Average Handle Time',
@@ -1735,14 +1674,15 @@ const layout = {
   datasources: [{
     "name": "Test",
     "fields": {
-      "sum": ["calls", "handleTime"]
+      "sum": ["calls", "handleTime", "acwTime"]
     },
-    "filters": {
+    "filter": {
       "agentUsername": {
         "$eq": "<current-user>"
-      }
+      },
+      "date": "<month-to-date>"
     },
-    "groupBy": ["date", "agentUsername", "skill"],
+    "groupBy": ["dateDay", "agentUsername", "skill"],
     "refreshRate": 10
   }]
 };
@@ -1762,24 +1702,23 @@ const vm = new Vue({
   computed: {
     user: {
       get() {
-        return this.$store.state.currentUser;
+        return store.state.currentUser;
       },
 
       set(value) {
-        this.$store.commit('updateUser', value);
+        store.commit('updateUser', value);
       }
 
     }
   },
 
   beforeMount() {
+    store.commit('setDatasources', this.layout.datasources);
     return store.dispatch('startProcess');
   },
 
   methods: {
-    postAcd: async function () {
-      return store.dispatch('makeSubscriptions');
-    },
+    postAcd: async function () {},
     clickImport: function () {
       this.$refs.fileInput.click();
     },
@@ -1794,7 +1733,6 @@ const vm = new Vue({
 
       reader.onload = function (e) {
         const contents = JSON.parse(e.target.result);
-        console.log(contents);
         this.layout = Object.assign({}, contents);
       }.bind(this);
 
@@ -1811,7 +1749,6 @@ const vm = new Vue({
         data: [],
         widgets: []
       };
-      console.log(newCard);
       this.layout.cards.push(newCard);
     },
     updateLayout: function (newLayout) {
@@ -1855,7 +1792,7 @@ const vm = new Vue({
       }
     },
     ///////////////////////
-    // Date Sources
+    // Data Sources
     updateDatasourceMessage: function (message) {
       this.datasourceMessage = message;
     },
@@ -1866,7 +1803,7 @@ const vm = new Vue({
 
       const stringin = function (ds) {
         ds.fields = str(ds.fields);
-        ds.filters = str(ds.filters);
+        ds.filter = str(ds.filter);
         ds.groupBy = str(ds.groupBy);
         return ds;
       };
@@ -1877,18 +1814,15 @@ const vm = new Vue({
       return {
         name: '',
         fields: '',
-        filters: '{}',
+        filter: '{}',
         groupBy: '',
         refreshRate: 10
       };
     },
     datasourceUpdater: function (datasource) {
-      console.log('updating');
-
       try {
         let obj = getVueObject(datasource);
         obj = inputToParameters(obj);
-        console.log(obj);
         let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
 
         if (oldIndex == -1) {
@@ -1942,17 +1876,17 @@ function inputToParameters(input) {
   ds.fields = {
     sum: toArray(input.fields)
   };
-  ds.filters = toObject(input.filters);
+  ds.filter = toObject(input.filter);
   ds.groupBy = toArray(input.groupBy);
   return ds;
 }
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(61);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
@@ -1999,13 +1933,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(22);
 //
 //
 //
@@ -2123,16 +2057,16 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(55);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(31)
+  __webpack_require__(30)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2178,17 +2112,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(32);
+var content = __webpack_require__(31);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("4911ebf4", content, false);
+var update = __webpack_require__(3)("4911ebf4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2204,10 +2138,10 @@ if(false) {
 }
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -2218,16 +2152,16 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(22);
 //
 //
 //
@@ -2408,11 +2342,11 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 });
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(34);
 //
 //
 //
@@ -2449,16 +2383,16 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(39);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(36)
+  __webpack_require__(35)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2504,17 +2438,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(37);
+var content = __webpack_require__(36);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("f189e898", content, false);
+var update = __webpack_require__(3)("f189e898", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2530,10 +2464,10 @@ if(false) {
 }
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -2544,11 +2478,11 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(38);
 //
 //
 //
@@ -2617,7 +2551,7 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -2656,6 +2590,71 @@ const clone = __webpack_require__(5);
     }
   }
 });
+
+/***/ }),
+/* 38 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
+/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
+/* unused harmony export prettifyDateOption */
+const clone = __webpack_require__(4);
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server.
+ * @param  {Object} original    filter from widget
+ * @param  {String} currentUser current user's username
+ * @return {Object}             cleaned up filter for server
+ */
+
+
+function clean(original, currentUser) {
+  let filter = clone(original); // Clean up dates
+
+  let dateFn = dateMatcher[filter.date];
+  filter.date = dateFn(); // Insert actual username
+  // if (filter.agentUsername.$in.includes('<current-user>')) {
+  //     filter.agentUsername.$in[
+  //         filter.agentUsername.$in.indexOf('<current-user>')
+  //     ] = currentUser;
+  // }
+
+  if (filter.agentUsername.$eq == '<current-user>') {
+    filter.agentUsername.$eq = currentUser;
+  }
+
+  return filter;
+}
+function dateOptions() {
+  return Object.keys(dateMatcher);
+}
+function prettifyDateOption(option) {
+  // remove brackets
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
+}
+const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
+const dateMatcher = {
+  '<today>': function () {
+    return {
+      $gte: moment().startOf('day').format(formatString),
+      $lt: moment().endOf('day').format(formatString)
+    };
+  },
+  '<yesterday>': function () {
+    return {
+      $gte: moment().add(-1, 'days').startOf('day').format(formatString),
+      $lt: moment().startOf('day').format(formatString)
+    };
+  },
+  '<month-to-date>': function () {
+    return {
+      $gte: moment().startOf('month').format(formatString),
+      $lt: moment().endOf('month').format(formatString)
+    };
+  }
+};
 
 /***/ }),
 /* 39 */
@@ -2875,7 +2874,7 @@ var content = __webpack_require__(41);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("5e100a93", content, false);
+var update = __webpack_require__(3)("5e100a93", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2894,7 +2893,7 @@ if(false) {
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -3217,7 +3216,7 @@ var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("7034c06e", content, false);
+var update = __webpack_require__(3)("7034c06e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3236,7 +3235,7 @@ if(false) {
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -3251,7 +3250,7 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(18);
 //
 //
@@ -3934,7 +3933,7 @@ var content = __webpack_require__(58);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("419b5586", content, false);
+var update = __webpack_require__(3)("419b5586", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3953,7 +3952,7 @@ if(false) {
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -4165,8 +4164,8 @@ if (false) {
 "use strict";
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parse__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parse__ = __webpack_require__(87);
 /**
  * This module controls interaction with the server.
  *
@@ -4177,9 +4176,9 @@ if (false) {
 
 
 
-const sift = __webpack_require__(64);
+const sift = __webpack_require__(88);
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(4);
 
 const static_fields = [// Date
 {
@@ -4259,11 +4258,11 @@ const store = new Vuex.Store({
   state: {
     fields: [],
     editMode: true,
-    ahtData: [],
     currentUser: '',
     timeoutId: 0,
     subscriptions: [],
     loaders: [],
+    data: {},
     datasources: {}
   },
   getters: {
@@ -4275,9 +4274,14 @@ const store = new Vuex.Store({
     field: state => fullFieldName => {
       return state.fields.find(f => f.fullName == fullFieldName);
     },
-    getData: state => (filter, field) => {
+    getData: state => (filter, datasource) => {
+      if (!state.data[datasource]) {
+        console.log(`getData: datasource ${datasource} doesn't exist.`);
+        return [];
+      }
+
       const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
-      let data = sift(filt, state.ahtData.map(d => Object.assign({}, d, d._id)));
+      let data = sift(filt, state.data[datasource].map(d => Object.assign({}, d, d._id)));
       return data;
     }
   },
@@ -4286,8 +4290,8 @@ const store = new Vuex.Store({
       state.editMode = !state.editMode;
     },
 
-    updateData(state, newData) {
-      state.ahtData = newData;
+    updateData(state, newData, datasource) {
+      state.data[datasource] = newData;
     },
 
     /**
@@ -4312,9 +4316,12 @@ const store = new Vuex.Store({
     },
 
     changeDatasource(state, datasource) {
-      console.log(datasource);
       const ds = clone(datasource);
       state.datasources[datasource.name] = datasource;
+    },
+
+    setDatasources(state, datasources) {
+      state.datasources = clone(datasources);
     }
 
   },
@@ -4324,80 +4331,21 @@ const store = new Vuex.Store({
       // load fields from server
       const fields = await __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getFieldList */]();
       context.commit('setFields', fields);
-      context.dispatch('makeSubscriptions'); // context.dispatch('nextUpdate');
+      context.dispatch('nextUpdate', 10 * 1000);
     },
 
-    async makeSubscriptions(context) {
-      context.state.subscriptions.map(sub => {
-        context.dispatch('makeSubscription', sub);
-      }); // const loaders = context.state.subscriptions
-      // .map(function({ fieldNames, filter, groupBy }) {
-      //     const fieldsInitial = fieldNames.map(function(name) {
-      //                     return state.fields.find((f) => f.fullName == name)
-      //                 });
-      //     const fields = parse.fieldsToServer(fieldsInitial);
-      //     const loader = {
-      //         refreshRate: 0,
-      //         parameters: {
-      //             fields: fields,
-      //             filter: filters.clean(filter),
-      //             groupBy: groupBy
-      //         }
-      //     };
-      //     loader.refreshRate = state.fields.reduce((min, f) =>
-      //                     Math.min(min, f.refreshRate), Infinity);
-      //     return loader;
-      // });
-      // loaders.forEach((loader) => {
-      //     state.commit('')
-      // });
-    },
-
-    async makeSubscription(context, {
-      fieldNames,
-      filter,
-      groupBy
-    }) {
-      const fieldsInitial = fieldNames.map(function (name) {
-        return context.state.fields.find(f => f.fullName == name);
-      });
-      const params = {
-        filter: __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, context.state.currentUser),
-        groupBy: groupBy,
-        fields: {
-          sum: __WEBPACK_IMPORTED_MODULE_2__parse__["a" /* fieldsToServer */](fieldsInitial)
-        }
-      };
-      console.log(params);
-      context.commit('updateData', (await loadData(params))); // const params = {
-      //     filter: {
-      //         // agentGroup: {
-      //         //     $in: ['Customer Care', 'Sales'],
-      //         // },
-      //         agentUsername: {
-      //             $eq: store.state.currentUser.trim()
-      //         },
-      //         date: {
-      //             start: moment().startOf('month').format(),
-      //             end:   moment().endOf('month').format(),
-      //         },
-      //     },
-      //     fields: {
-      //         sum: ['calls', 'handleTime', 'acwTime']
-      //     },
-      //     groupBy: ['agentUsername', 'skill', 'dateDay']
-      // };
-    },
-
-    async repeatingUpdate(context, ms) {
+    async nextUpdate(context, ms) {
       console.log(`Refresh at ${moment()}`); // Load data from server
 
-      const data = await loadData();
-      console.log(data);
-      context.commit('updateData', data); // and schedule the next update
+      Object.keys(context.state.datasources).forEach(async function (source) {
+        const ds = context.state.datasources[source];
+        const data = await loadData(getParams(ds));
+        console.log(data);
+        context.commit('updateData', data, source);
+      }); // and schedule the next update
 
       let timeout = setTimeout(function next() {
-        context.dispatch('repeatingUpdate', ms);
+        context.dispatch('nextUpdate', ms);
       }, ms);
       context.commit({
         type: 'setTimeoutId',
@@ -4411,8 +4359,54 @@ const store = new Vuex.Store({
 
 const getField = store.getters.field;
 /* unused harmony export getField */
+ // const params = {
+//     filter: {
+//         // agentGroup: {
+//         //     $in: ['Customer Care', 'Sales'],
+//         // },
+//         agentUsername: {
+//             $eq: store.state.currentUser.trim()
+//         },
+//         date: {
+//             start: moment().startOf('month').format(),
+//             end:   moment().endOf('month').format(),
+//         },
+//     },
+//     fields: {
+//         sum: ['calls', 'handleTime', 'acwTime']
+//     },
+//     groupBy: ['agentUsername', 'skill', 'dateDay']
+// };
+
+function getParams(datasource) {
+  const params = {
+    filter: __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
+    fields: datasource.fields,
+    groupBy: datasource.groupBy
+  };
+  const paramsOld = {
+    filter: {
+      // agentGroup: {
+      //     $in: ['Customer Care', 'Sales'],
+      // },
+      agentUsername: {
+        $eq: store.state.currentUser.trim()
+      },
+      date: {
+        start: moment().startOf('month').format(),
+        end: moment().endOf('month').format()
+      }
+    },
+    fields: {
+      sum: ['calls', 'handleTime', 'acwTime']
+    },
+    groupBy: ['agentUsername', 'skill', 'dateDay']
+  };
+  return params;
+}
 
 async function loadData(params) {
+  console.log(params);
   const data = await __WEBPACK_IMPORTED_MODULE_0__api__["f" /* getStatistics */](params);
   const cleaned = data.map(d => {
     d['dateDay'] = moment(d['dateDay']).toDate();
@@ -4425,10 +4419,514 @@ async function loadData(params) {
 
 /***/ }),
 /* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var empty = /*#__PURE__*/__webpack_require__(64);
+
+var equals = /*#__PURE__*/__webpack_require__(68);
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
+
+
+var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
+  return x != null && equals(x, empty(x));
+});
+module.exports = isEmpty;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(23);
+
+var _isArray = /*#__PURE__*/__webpack_require__(65);
+
+var _isObject = /*#__PURE__*/__webpack_require__(66);
+
+var _isString = /*#__PURE__*/__webpack_require__(67);
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
+
+
+var empty = /*#__PURE__*/_curry1(function empty(x) {
+  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
+    return arguments;
+  }() :
+  // else
+  void 0;
+});
+module.exports = empty;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+module.exports = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports) {
+
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === '[object Object]';
+}
+module.exports = _isObject;
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+module.exports = _isString;
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(24);
+
+var _equals = /*#__PURE__*/__webpack_require__(69);
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
+
+
+var equals = /*#__PURE__*/_curry2(function equals(a, b) {
+  return _equals(a, b, [], []);
+});
+module.exports = equals;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(70);
+
+var _containsWith = /*#__PURE__*/__webpack_require__(71);
+
+var _functionName = /*#__PURE__*/__webpack_require__(72);
+
+var _has = /*#__PURE__*/__webpack_require__(20);
+
+var identical = /*#__PURE__*/__webpack_require__(73);
+
+var keys = /*#__PURE__*/__webpack_require__(74);
+
+var type = /*#__PURE__*/__webpack_require__(8);
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
+
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  }
+
+  // if *a* array contains any element that is not included in *b*
+  return !_containsWith(function (b, aItem) {
+    return !_containsWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (identical(a, b)) {
+    return true;
+  }
+
+  var typeA = type(a);
+
+  if (typeA !== type(b)) {
+    return false;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+  }
+
+  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
+  }
+
+  switch (typeA) {
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
+        return a === b;
+      }
+      break;
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+        return false;
+      }
+      break;
+    case 'Date':
+      if (!identical(a.valueOf(), b.valueOf())) {
+        return false;
+      }
+      break;
+    case 'Error':
+      return a.name === b.name && a.message === b.message;
+    case 'RegExp':
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
+        return false;
+      }
+      break;
+  }
+
+  var idx = stackA.length - 1;
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+    idx -= 1;
+  }
+
+  switch (typeA) {
+    case 'Map':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'ArrayBuffer':
+      break;
+    default:
+      // Values of other types are only equal if identical.
+      return false;
+  }
+
+  var keysA = keys(a);
+  if (keysA.length !== keys(b).length) {
+    return false;
+  }
+
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
+
+  idx = keysA.length - 1;
+  while (idx >= 0) {
+    var key = keysA[idx];
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+      return false;
+    }
+    idx -= 1;
+  }
+  return true;
+}
+module.exports = _equals;
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports) {
+
+function _arrayFromIterator(iter) {
+  var list = [];
+  var next;
+  while (!(next = iter.next()).done) {
+    list.push(next.value);
+  }
+  return list;
+}
+module.exports = _arrayFromIterator;
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports) {
+
+function _containsWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+}
+module.exports = _containsWith;
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+function _functionName(f) {
+  // String(x => x) evaluates to "x => x", so the pattern may not match.
+  var match = String(f).match(/^function (\w*)/);
+  return match == null ? '' : match[1];
+}
+module.exports = _functionName;
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(24);
+
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
+
+var identical = /*#__PURE__*/_curry2(function identical(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+});
+module.exports = identical;
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _has = /*#__PURE__*/__webpack_require__(20);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(23);
+
+// cover IE < 9 keys issues
+
+
+var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// Safari bug
+var hasArgsEnumBug = /*#__PURE__*/function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+};
+
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+} : function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+  var prop, nIdx;
+  var ks = [];
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+      nIdx -= 1;
+    }
+  }
+  return ks;
+};
+var keys = /*#__PURE__*/_curry1(_keys);
+module.exports = keys;
+
+/***/ }),
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = fieldsToServer;
+/* unused harmony export fieldsToServer */
 /**
  * Handle expression parsing for calculated fields.
  */
@@ -4460,7 +4958,7 @@ function fieldsToServer(fields) {
 }
 
 /***/ }),
-/* 64 */
+/* 88 */
 /***/ (function(module, exports) {
 
 /*
@@ -5047,498 +5545,6 @@ function fieldsToServer(fields) {
   }
 })();
 
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var empty = /*#__PURE__*/__webpack_require__(66);
-
-var equals = /*#__PURE__*/__webpack_require__(70);
-
-/**
- * Returns `true` if the given value is its type's empty value; `false`
- * otherwise.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Logic
- * @sig a -> Boolean
- * @param {*} x
- * @return {Boolean}
- * @see R.empty
- * @example
- *
- *      R.isEmpty([1, 2, 3]);   //=> false
- *      R.isEmpty([]);          //=> true
- *      R.isEmpty('');          //=> true
- *      R.isEmpty(null);        //=> false
- *      R.isEmpty({});          //=> true
- *      R.isEmpty({length: 0}); //=> false
- */
-
-
-var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
-  return x != null && equals(x, empty(x));
-});
-module.exports = isEmpty;
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(24);
-
-var _isArray = /*#__PURE__*/__webpack_require__(67);
-
-var _isObject = /*#__PURE__*/__webpack_require__(68);
-
-var _isString = /*#__PURE__*/__webpack_require__(69);
-
-/**
- * Returns the empty value of its argument's type. Ramda defines the empty
- * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
- * types are supported if they define `<Type>.empty`,
- * `<Type>.prototype.empty` or implement the
- * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
- *
- * Dispatches to the `empty` method of the first argument, if present.
- *
- * @func
- * @memberOf R
- * @since v0.3.0
- * @category Function
- * @sig a -> a
- * @param {*} x
- * @return {*}
- * @example
- *
- *      R.empty(Just(42));      //=> Nothing()
- *      R.empty([1, 2, 3]);     //=> []
- *      R.empty('unicorns');    //=> ''
- *      R.empty({x: 1, y: 2});  //=> {}
- */
-
-
-var empty = /*#__PURE__*/_curry1(function empty(x) {
-  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
-    return arguments;
-  }() :
-  // else
-  void 0;
-});
-module.exports = empty;
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports) {
-
-/**
- * Tests whether or not an object is an array.
- *
- * @private
- * @param {*} val The object to test.
- * @return {Boolean} `true` if `val` is an array, `false` otherwise.
- * @example
- *
- *      _isArray([]); //=> true
- *      _isArray(null); //=> false
- *      _isArray({}); //=> false
- */
-module.exports = Array.isArray || function _isArray(val) {
-  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
-};
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports) {
-
-function _isObject(x) {
-  return Object.prototype.toString.call(x) === '[object Object]';
-}
-module.exports = _isObject;
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports) {
-
-function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-}
-module.exports = _isString;
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
-
-var _equals = /*#__PURE__*/__webpack_require__(71);
-
-/**
- * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
- * cyclical data structures.
- *
- * Dispatches symmetrically to the `equals` methods of both arguments, if
- * present.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> b -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      R.equals(1, 1); //=> true
- *      R.equals(1, '1'); //=> false
- *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
- *
- *      var a = {}; a.v = a;
- *      var b = {}; b.v = b;
- *      R.equals(a, b); //=> true
- */
-
-
-var equals = /*#__PURE__*/_curry2(function equals(a, b) {
-  return _equals(a, b, [], []);
-});
-module.exports = equals;
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(72);
-
-var _containsWith = /*#__PURE__*/__webpack_require__(73);
-
-var _functionName = /*#__PURE__*/__webpack_require__(74);
-
-var _has = /*#__PURE__*/__webpack_require__(20);
-
-var identical = /*#__PURE__*/__webpack_require__(75);
-
-var keys = /*#__PURE__*/__webpack_require__(76);
-
-var type = /*#__PURE__*/__webpack_require__(8);
-
-/**
- * private _uniqContentEquals function.
- * That function is checking equality of 2 iterator contents with 2 assumptions
- * - iterators lengths are the same
- * - iterators values are unique
- *
- * false-positive result will be returned for comparision of, e.g.
- * - [1,2,3] and [1,2,3,4]
- * - [1,1,1] and [1,2,3]
- * */
-
-function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
-  var a = _arrayFromIterator(aIterator);
-  var b = _arrayFromIterator(bIterator);
-
-  function eq(_a, _b) {
-    return _equals(_a, _b, stackA.slice(), stackB.slice());
-  }
-
-  // if *a* array contains any element that is not included in *b*
-  return !_containsWith(function (b, aItem) {
-    return !_containsWith(eq, aItem, b);
-  }, b, a);
-}
-
-function _equals(a, b, stackA, stackB) {
-  if (identical(a, b)) {
-    return true;
-  }
-
-  var typeA = type(a);
-
-  if (typeA !== type(b)) {
-    return false;
-  }
-
-  if (a == null || b == null) {
-    return false;
-  }
-
-  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
-    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
-  }
-
-  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
-    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
-  }
-
-  switch (typeA) {
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
-        return a === b;
-      }
-      break;
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
-        return false;
-      }
-      break;
-    case 'Date':
-      if (!identical(a.valueOf(), b.valueOf())) {
-        return false;
-      }
-      break;
-    case 'Error':
-      return a.name === b.name && a.message === b.message;
-    case 'RegExp':
-      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
-        return false;
-      }
-      break;
-  }
-
-  var idx = stackA.length - 1;
-  while (idx >= 0) {
-    if (stackA[idx] === a) {
-      return stackB[idx] === b;
-    }
-    idx -= 1;
-  }
-
-  switch (typeA) {
-    case 'Map':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
-    case 'Set':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-    case 'Date':
-    case 'Error':
-    case 'RegExp':
-    case 'Int8Array':
-    case 'Uint8Array':
-    case 'Uint8ClampedArray':
-    case 'Int16Array':
-    case 'Uint16Array':
-    case 'Int32Array':
-    case 'Uint32Array':
-    case 'Float32Array':
-    case 'Float64Array':
-    case 'ArrayBuffer':
-      break;
-    default:
-      // Values of other types are only equal if identical.
-      return false;
-  }
-
-  var keysA = keys(a);
-  if (keysA.length !== keys(b).length) {
-    return false;
-  }
-
-  var extendedStackA = stackA.concat([a]);
-  var extendedStackB = stackB.concat([b]);
-
-  idx = keysA.length - 1;
-  while (idx >= 0) {
-    var key = keysA[idx];
-    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
-      return false;
-    }
-    idx -= 1;
-  }
-  return true;
-}
-module.exports = _equals;
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports) {
-
-function _arrayFromIterator(iter) {
-  var list = [];
-  var next;
-  while (!(next = iter.next()).done) {
-    list.push(next.value);
-  }
-  return list;
-}
-module.exports = _arrayFromIterator;
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports) {
-
-function _containsWith(pred, x, list) {
-  var idx = 0;
-  var len = list.length;
-
-  while (idx < len) {
-    if (pred(x, list[idx])) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-}
-module.exports = _containsWith;
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-function _functionName(f) {
-  // String(x => x) evaluates to "x => x", so the pattern may not match.
-  var match = String(f).match(/^function (\w*)/);
-  return match == null ? '' : match[1];
-}
-module.exports = _functionName;
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
-
-/**
- * Returns true if its arguments are identical, false otherwise. Values are
- * identical if they reference the same memory. `NaN` is identical to `NaN`;
- * `0` and `-0` are not identical.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> a -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      var o = {};
- *      R.identical(o, o); //=> true
- *      R.identical(1, 1); //=> true
- *      R.identical(1, '1'); //=> false
- *      R.identical([], []); //=> false
- *      R.identical(0, -0); //=> false
- *      R.identical(NaN, NaN); //=> true
- */
-
-
-var identical = /*#__PURE__*/_curry2(function identical(a, b) {
-  // SameValue algorithm
-  if (a === b) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return a !== 0 || 1 / a === 1 / b;
-  } else {
-    // Step 6.a: NaN == NaN
-    return a !== a && b !== b;
-  }
-});
-module.exports = identical;
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _has = /*#__PURE__*/__webpack_require__(20);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(24);
-
-// cover IE < 9 keys issues
-
-
-var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
-var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-// Safari bug
-var hasArgsEnumBug = /*#__PURE__*/function () {
-  'use strict';
-
-  return arguments.propertyIsEnumerable('length');
-}();
-
-var contains = function contains(list, item) {
-  var idx = 0;
-  while (idx < list.length) {
-    if (list[idx] === item) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-};
-
-/**
- * Returns a list containing the names of all the enumerable own properties of
- * the supplied object.
- * Note that the order of the output array is not guaranteed to be consistent
- * across different JS platforms.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {k: v} -> [k]
- * @param {Object} obj The object to extract properties from
- * @return {Array} An array of the object's own properties.
- * @see R.keysIn, R.values
- * @example
- *
- *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
- */
-var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
-  return Object(obj) !== obj ? [] : Object.keys(obj);
-} : function keys(obj) {
-  if (Object(obj) !== obj) {
-    return [];
-  }
-  var prop, nIdx;
-  var ks = [];
-  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
-  for (prop in obj) {
-    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
-      ks[ks.length] = prop;
-    }
-  }
-  if (hasEnumBug) {
-    nIdx = nonEnumerableProps.length - 1;
-    while (nIdx >= 0) {
-      prop = nonEnumerableProps[nIdx];
-      if (_has(prop, obj) && !contains(ks, prop)) {
-        ks[ks.length] = prop;
-      }
-      nIdx -= 1;
-    }
-  }
-  return ks;
-};
-var keys = /*#__PURE__*/_curry1(_keys);
-module.exports = keys;
 
 /***/ })
 /******/ ]);

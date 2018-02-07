@@ -136,8 +136,8 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
                 $and: [
                     {
                         date: {
-                            $gte: moment(filter.date.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
-                            $lte: moment(filter.date.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                            $gte: moment(filter.date.$gte, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                            $lt:  moment(filter.date.$lt, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
                         }
                     },
                     ...createFilter(filter)

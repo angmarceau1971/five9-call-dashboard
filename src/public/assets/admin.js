@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 87);
+/******/ 	return __webpack_require__(__webpack_require__.s = 85);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -366,7 +366,7 @@ var content = __webpack_require__(15);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("ad2ade60", content, false);
+var update = __webpack_require__(3)("ad2ade60", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -386,7 +386,7 @@ if(false) {
 /***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -463,7 +463,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 //
 //
 //
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -633,41 +633,6 @@ if (false) {
 /***/ }),
 
 /***/ 2:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
-
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
-}
-
-/***/ }),
-
-/***/ 3:
 /***/ (function(module, exports) {
 
 /*
@@ -750,7 +715,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -972,7 +937,7 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 var _clone = /*#__PURE__*/__webpack_require__(11);
@@ -1009,6 +974,41 @@ module.exports = clone;
 
 /***/ }),
 
+/***/ 5:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
+
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
+}
+
+/***/ }),
+
 /***/ 6:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1036,7 +1036,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(6);
 
  ////////////////////////////////////////////////////////////////
@@ -1289,15 +1289,15 @@ module.exports = type;
 
 /***/ }),
 
-/***/ 87:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(88);
+module.exports = __webpack_require__(86);
 
 
 /***/ }),
 
-/***/ 88:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

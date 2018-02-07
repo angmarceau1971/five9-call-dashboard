@@ -107,24 +107,26 @@ const layout = {
     ],
     datasources: [
         {
-          "name": "Test",
-          "fields": {
-            "sum": [
-              "calls",
-              "handleTime"
-            ]
-          },
-          "filters": {
-            "agentUsername": {
-              "$eq": "<current-user>"
-            }
-          },
-          "groupBy": [
-            "date",
-            "agentUsername",
-            "skill"
-          ],
-          "refreshRate": 10
+            "name": "Test",
+            "fields": {
+                "sum": [
+                    "calls",
+                    "handleTime",
+                    "acwTime"
+                ]
+            },
+            "filter": {
+                "agentUsername": {
+                    "$eq": "<current-user>"
+                },
+                "date": "<month-to-date>"
+            },
+            "groupBy": [
+                "dateDay",
+                "agentUsername",
+                "skill"
+            ],
+            "refreshRate": 10
         }
     ]
 };
@@ -151,21 +153,21 @@ const vm = new Vue({
     computed: {
         user: {
             get() {
-                return this.$store.state.currentUser
+                return store.state.currentUser
             },
             set(value) {
-                this.$store.commit('updateUser', value)
+                store.commit('updateUser', value)
             }
         }
     },
 
     beforeMount() {
+        store.commit('setDatasources', this.layout.datasources);
         return store.dispatch('startProcess');
     },
 
     methods: {
         postAcd: async function() {
-            return store.dispatch('makeSubscriptions');
         },
 
         clickImport: function() {
@@ -179,7 +181,6 @@ const vm = new Vue({
             const reader = new FileReader();
             reader.onload = function(e) {
                 const contents = JSON.parse(e.target.result);
-                console.log(contents);
                 this.layout = Object.assign({}, contents);
             }.bind(this);
             reader.readAsText(file);
@@ -195,7 +196,6 @@ const vm = new Vue({
                 data: [],
                 widgets: []
             };
-            console.log(newCard);
             this.layout.cards.push(newCard);
         },
         updateLayout: function(newLayout) {
@@ -242,7 +242,7 @@ const vm = new Vue({
             }
         },
         ///////////////////////
-        // Date Sources
+        // Data Sources
         updateDatasourceMessage: function(message) {
             this.datasourceMessage = message;
         },
@@ -251,7 +251,7 @@ const vm = new Vue({
             const str = (s) => JSON.stringify(s, null, 2);
             const stringin = function(ds) {
                 ds.fields = str(ds.fields);
-                ds.filters = str(ds.filters);
+                ds.filter = str(ds.filter);
                 ds.groupBy = str(ds.groupBy);
                 return ds;
             }
@@ -261,17 +261,15 @@ const vm = new Vue({
             return {
                 name: '',
                 fields: '',
-                filters: '{}',
+                filter: '{}',
                 groupBy: '',
                 refreshRate: 10
             };
         },
         datasourceUpdater: function(datasource) {
-            console.log('updating');
             try {
                 let obj = getVueObject(datasource);
                 obj = inputToParameters(obj);
-                console.log(obj);
                 let oldIndex = this.layout.datasources.findIndex((ds) =>
                                                 ds.name == obj.name);
                 if (oldIndex == -1) {
@@ -322,7 +320,7 @@ function inputToParameters(input) {
     ds.fields = {
         sum: toArray(input.fields)
     }
-    ds.filters = toObject(input.filters);
+    ds.filter = toObject(input.filter);
     ds.groupBy = toArray(input.groupBy);
     return ds;
 }

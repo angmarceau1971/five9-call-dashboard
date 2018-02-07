@@ -11,14 +11,16 @@ export function clean(original, currentUser) {
 
     // Clean up dates
     let dateFn = dateMatcher[filter.date];
-    filter.dateDay = dateFn();
-    filter.date = dateFn();;
+    filter.date = dateFn();
 
     // Insert actual username
-    if (filter.agentUsername.$in.includes('<current user>')) {
-        filter.agentUsername.$in[
-            filter.agentUsername.$in.indexOf('<current user>')
-        ] = currentUser;
+    // if (filter.agentUsername.$in.includes('<current-user>')) {
+    //     filter.agentUsername.$in[
+    //         filter.agentUsername.$in.indexOf('<current-user>')
+    //     ] = currentUser;
+    // }
+    if (filter.agentUsername.$eq == '<current-user>') {
+        filter.agentUsername.$eq = currentUser;
     }
 
     return filter;
@@ -35,23 +37,24 @@ export function prettifyDateOption(option) {
     return option;
 }
 
+const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
 const dateMatcher = {
     '<today>': function() {
         return {
-            $gte: moment().startOf('day').toDate(),
-            $lt:  moment().endOf('day').toDate()
+            $gte: moment().startOf('day').format(formatString),
+            $lt:  moment().endOf('day').format(formatString)
         }
     },
     '<yesterday>': function() {
         return {
-            $gte: moment().add(-1, 'days').startOf('day').toDate(),
-            $lt:  moment().startOf('day').toDate()
+            $gte: moment().add(-1, 'days').startOf('day').format(formatString),
+            $lt:  moment().startOf('day').format(formatString)
         }
     },
     '<month-to-date>': function() {
         return {
-            $gte: moment().startOf('month').toDate(),
-            $lt:  moment().endOf('month').toDate()
+            $gte: moment().startOf('month').format(formatString),
+            $lt:  moment().endOf('month').format(formatString)
         }
     }
 };
