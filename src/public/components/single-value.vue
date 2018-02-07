@@ -33,11 +33,7 @@ export default {
     extends: WidgetBase,
     props: ['title', 'fieldName', 'filter'],
     mounted() {
-        this.$store.commit('subscribeTo', {
-            fieldNames: [this.fieldName],
-            filter: this.filter, // filter for skills here
-            groupBy: ['dateDay', 'agentUsername']
-        });
+        this.$store.commit('subscribeTo', this.datasource);
     },
     computed: {
         field: function() {

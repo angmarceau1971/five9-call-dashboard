@@ -77,6 +77,52 @@
             v-model="user"
             placeholder="Emulate user"
         />
+
+        <div v-if="$store.state.editMode">
+            <h2>Data Sources</h2>
+            <p>{{ datasourceMessage }}</p>
+            <editor-table
+                @message="updateDatasourceMessage"
+                :updater="datasourceUpdater"
+                :loader="datasourceLoader"
+                :adder="datasourceAdder"
+                :remover="datasourceRemover"
+                :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input
+                            v-model="props.item.name"
+                            type="text"/>
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.fields"
+                            type="text"
+                        ></textarea>
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.filters"
+                            type="text"
+                        ></textarea>
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.groupBy"
+                            type="text"
+                        ></textarea>
+                    </td>
+                    <td>
+                        <input
+                            v-model="props.item.refreshRate"
+                            type="number"
+                        ></textarea>
+                    </td>
+                </template>
+
+            </editor-table>
+        </div>
     </div>
     </body>
 

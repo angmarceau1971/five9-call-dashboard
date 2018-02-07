@@ -1,10 +1,11 @@
 import Dashboard from '../components/dashboard.vue';
 import * as hub from './hub';
 import { formatValue } from './scorecard-format';
+import EditorTable from '../components/editor-table.vue';
 
 // Node libraries
 const isEmpty = require('ramda/src/isEmpty');
-
+const clone = require('ramda/src/clone');
 
 const aht = {
     title: 'Average Handle Time',
@@ -103,25 +104,31 @@ const layout = {
     cards: [
         aht,
         calls
+    ],
+    datasources: [
+        {
+          "name": "Test",
+          "fields": {
+            "sum": [
+              "calls",
+              "handleTime"
+            ]
+          },
+          "filters": {
+            "agentUsername": {
+              "$eq": "<current-user>"
+            }
+          },
+          "groupBy": [
+            "date",
+            "agentUsername",
+            "skill"
+          ],
+          "refreshRate": 10
+        }
     ]
 };
 
-
-const datasources = {
-    'DIRECTV': {
-        fields: [ 'DTV Sales', 'Rolling Total', 'Pacing', 'Delta' ],
-        refreshRate: 24*3600 // daily
-    },
-    'AHT': {
-        fields: ['handleTime', 'calls']
-    }
-};
-
-
-
-const dataValues = {
-    'AHT': []
-};
 
 
 Vue.use(Vuex);
@@ -133,12 +140,12 @@ const vm = new Vue({
 
     data: {
         layout: layout,
-        datasources: datasources,
-        dataValues: dataValues
+        datasourceMessage: ''
     },
 
     components: {
-        'dashboard': Dashboard
+        'dashboard': Dashboard,
+        'editor-table': EditorTable
     },
 
     computed: {
@@ -233,17 +240,89 @@ const vm = new Vue({
                 let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
                 Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
             }
+        },
+        ///////////////////////
+        // Date Sources
+        updateDatasourceMessage: function(message) {
+            this.datasourceMessage = message;
+        },
+        datasourceLoader: function() {
+            let sources = clone(this.layout.datasources);
+            const str = (s) => JSON.stringify(s, null, 2);
+            const stringin = function(ds) {
+                ds.fields = str(ds.fields);
+                ds.filters = str(ds.filters);
+                ds.groupBy = str(ds.groupBy);
+                return ds;
+            }
+            return sources.map(stringin);
+        },
+        datasourceAdder: function() {
+            return {
+                name: '',
+                fields: '',
+                filters: '{}',
+                groupBy: '',
+                refreshRate: 10
+            };
+        },
+        datasourceUpdater: function(datasource) {
+            console.log('updating');
+            try {
+                let obj = getVueObject(datasource);
+                obj = inputToParameters(obj);
+                console.log(obj);
+                let oldIndex = this.layout.datasources.findIndex((ds) =>
+                                                ds.name == obj.name);
+                if (oldIndex == -1) {
+                    this.layout.datasources.push(obj);
+                } else {
+                    Vue.set(this.layout.datasources, oldIndex, obj);
+                }
+                this.$store.commit('changeDatasource', obj);
+            } catch (err) {
+                console.log(err);
+                this.updateDatasourceMessage(`Error parsing data source: ${err}.`);
+            }
+        },
+        datasourceRemover: function(datasource) {
+            try {
+                let obj = getVueObject(datasource);
+                let oldIndex = this.layout.datasources.findIndex((ds) =>
+                                                ds.name == obj.name);
+                Vue.delete(this.layout.datasources, oldIndex);
+            } catch (err) {
+                this.updateDatasourceMessage(`Error removing data source: ${err}.`);
+            }
         }
     }
 });
 
 
 window.vm = vm;
+/*
+  Convert vue object
+*/
+const getVueObject = obj => {
+  return JSON.parse(JSON.stringify( obj ));
+};
 
 function download(text, name, type) {
     var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(text, null, 2)], {type: type});
+    var file = new Blob([JSON.stringify(text, null, 4)], {type: type});
     a.href = URL.createObjectURL(file);
     a.download = name;
     a.click();
+}
+
+function inputToParameters(input) {
+    let ds = clone(input);
+    const toArray = (str) => str.split(',').map((x) => x.trim());
+    const toObject = JSON.parse;
+    ds.fields = {
+        sum: toArray(input.fields)
+    }
+    ds.filters = toObject(input.filters);
+    ds.groupBy = toArray(input.groupBy);
+    return ds;
 }

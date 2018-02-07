@@ -2,7 +2,7 @@
  * Editor for widgets.
  */
 <template>
-    <div class="editor-wrapper">
+    <div class="modal-wrapper">
         <!-- Buttons to begin editing -->
         <button
             class="edit-button"
@@ -16,6 +16,15 @@
             <h1>{{ newObject.title }}</h1>
             <h3>Title</h3>
             <input v-model="newObject.title" />
+
+            <h3>Data Source</h3>
+            <select name="datasource-dropdown"
+                v-model="newObject.datasource">
+                <option
+                    v-for="source in $store.state.datasources"
+                    :value="source.name"
+                >{{ source.name }}</option>
+            </select>
 
             <h3>Field</h3>
             <select name="field-dropdown"
@@ -99,7 +108,7 @@ export default {
 
 
 <style>
-.editor-wrapper {
+.modal-wrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -111,8 +120,8 @@ export default {
 }
 
 /* Buttons to edit card and/or add widgets */
-.editor-wrapper .edit-button,
-.editor-wrapper .add-button {
+.modal-wrapper .edit-button,
+.modal-wrapper .add-button {
     display: inline;
     text-decoration: none;
     position: absolute;
@@ -126,15 +135,15 @@ export default {
     background-color: rgba(100,100,100,0.5);
     border-radius: 2em;
 }
-.editor-wrapper .edit-button:hover,
-.editor-wrapper .add-button:hover {
+.modal-wrapper .edit-button:hover,
+.modal-wrapper .add-button:hover {
     background-color: rgba(100,100,100,0.3);
 }
-.editor-wrapper .edit-button {
+.modal-wrapper .edit-button {
     top: 0;
     left: 0;
 }
-.editor-wrapper .add-button {
+.modal-wrapper .add-button {
     top: 0;
     right: 0;
 }

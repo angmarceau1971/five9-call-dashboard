@@ -9,6 +9,7 @@
  import * as filters from './filters';
  import * as parse from './parse';
  const sift = require('sift');
+ const clone = require('ramda/src/clone');
 
  const static_fields = [
      // Date
@@ -108,6 +109,7 @@ export const store = new Vuex.Store({
         timeoutId: 0,
         subscriptions: [],
         loaders: [],
+        datasources: {}
     },
     getters: {
         /**
@@ -150,7 +152,11 @@ export const store = new Vuex.Store({
         subscribeTo(state, parameters) {
             state.subscriptions.push(parameters);
         },
-
+        changeDatasource(state, datasource) {
+            console.log(datasource);
+            const ds = clone(datasource);
+            state.datasources[datasource.name] = datasource;
+        }
     },
     actions: {
         // Call when page first loads
@@ -235,25 +241,6 @@ export const store = new Vuex.Store({
             let timeout = setTimeout(function next() {
                 context.dispatch('repeatingUpdate', ms);
             }, ms);
-            context.commit({
-                type: 'setTimeoutId',
-                amount: timeout
-            });
-        },
-
-        // Call for each update from server
-        async nextUpdate(context) {
-            console.log(`Refresh at ${moment()}`);
-            // Load data from server
-            const data = await loadData();
-            console.log(data);
-            context.commit('updateData', data);
-
-            // and schedule the next update
-            const frequencySeconds = 60;
-            let timeout = setTimeout(function next() {
-                context.dispatch('nextUpdate');
-            }, frequencySeconds * 1000);
             context.commit({
                 type: 'setTimeoutId',
                 amount: timeout

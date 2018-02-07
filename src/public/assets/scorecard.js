@@ -1316,11 +1316,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(89);
+
 
 
  // Node libraries
 
 const isEmpty = __webpack_require__(64);
+
+const clone = __webpack_require__(14);
 
 const aht = {
   title: 'Average Handle Time',
@@ -1405,20 +1409,20 @@ calls.widgets = [{
   }
 }];
 const layout = {
-  cards: [aht, calls]
-};
-const datasources = {
-  'DIRECTV': {
-    fields: ['DTV Sales', 'Rolling Total', 'Pacing', 'Delta'],
-    refreshRate: 24 * 3600 // daily
-
-  },
-  'AHT': {
-    fields: ['handleTime', 'calls']
-  }
-};
-const dataValues = {
-  'AHT': []
+  cards: [aht, calls],
+  datasources: [{
+    "name": "Test",
+    "fields": {
+      "sum": ["calls", "handleTime"]
+    },
+    "filters": {
+      "agentUsername": {
+        "$eq": "<current-user>"
+      }
+    },
+    "groupBy": ["date", "agentUsername", "skill"],
+    "refreshRate": 10
+  }]
 };
 Vue.use(Vuex);
 const store = __WEBPACK_IMPORTED_MODULE_1__hub__["a" /* store */];
@@ -1427,11 +1431,11 @@ const vm = new Vue({
   store,
   data: {
     layout: layout,
-    datasources: datasources,
-    dataValues: dataValues
+    datasourceMessage: ''
   },
   components: {
-    'dashboard': __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__["a" /* default */]
+    'dashboard': __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__["a" /* default */],
+    'editor-table': __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__["a" /* default */]
   },
   computed: {
     user: {
@@ -1527,19 +1531,98 @@ const vm = new Vue({
         let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
         Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
       }
+    },
+    ///////////////////////
+    // Date Sources
+    updateDatasourceMessage: function (message) {
+      this.datasourceMessage = message;
+    },
+    datasourceLoader: function () {
+      let sources = clone(this.layout.datasources);
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (ds) {
+        ds.fields = str(ds.fields);
+        ds.filters = str(ds.filters);
+        ds.groupBy = str(ds.groupBy);
+        return ds;
+      };
+
+      return sources.map(stringin);
+    },
+    datasourceAdder: function () {
+      return {
+        name: '',
+        fields: '',
+        filters: '{}',
+        groupBy: '',
+        refreshRate: 10
+      };
+    },
+    datasourceUpdater: function (datasource) {
+      console.log('updating');
+
+      try {
+        let obj = getVueObject(datasource);
+        obj = inputToParameters(obj);
+        console.log(obj);
+        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
+
+        if (oldIndex == -1) {
+          this.layout.datasources.push(obj);
+        } else {
+          Vue.set(this.layout.datasources, oldIndex, obj);
+        }
+
+        this.$store.commit('changeDatasource', obj);
+      } catch (err) {
+        console.log(err);
+        this.updateDatasourceMessage(`Error parsing data source: ${err}.`);
+      }
+    },
+    datasourceRemover: function (datasource) {
+      try {
+        let obj = getVueObject(datasource);
+        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
+        Vue.delete(this.layout.datasources, oldIndex);
+      } catch (err) {
+        this.updateDatasourceMessage(`Error removing data source: ${err}.`);
+      }
     }
   }
 });
 window.vm = vm;
+/*
+  Convert vue object
+*/
+
+const getVueObject = obj => {
+  return JSON.parse(JSON.stringify(obj));
+};
 
 function download(text, name, type) {
   var a = document.createElement("a");
-  var file = new Blob([JSON.stringify(text, null, 2)], {
+  var file = new Blob([JSON.stringify(text, null, 4)], {
     type: type
   });
   a.href = URL.createObjectURL(file);
   a.download = name;
   a.click();
+}
+
+function inputToParameters(input) {
+  let ds = clone(input);
+
+  const toArray = str => str.split(',').map(x => x.trim());
+
+  const toObject = JSON.parse;
+  ds.fields = {
+    sum: toArray(input.fields)
+  };
+  ds.filters = toObject(input.filters);
+  ds.groupBy = toArray(input.groupBy);
+  return ds;
 }
 
 /***/ }),
@@ -2013,7 +2096,7 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 //
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['id'],
+  props: ['id', 'datasource'],
   components: {
     'editor': __WEBPACK_IMPORTED_MODULE_0__editor_vue__["a" /* default */]
   },
@@ -2029,7 +2112,8 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
       component: type,
       title: 'Hello World',
       field: '',
-      filter: {}
+      filter: {},
+      datasource: ''
     };
   }
 });
@@ -2132,7 +2216,7 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?54b01156"],"names":[],"mappings":";AAqGA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.editor-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.editor-wrapper .edit-button,\r\n.editor-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.editor-wrapper .edit-button:hover,\r\n.editor-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.editor-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.editor-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?fec2a14c"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -2143,6 +2227,15 @@ exports.push([module.i, "\n.editor-wrapper {\r\n    position: absolute;\r\n    t
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(21);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2251,7 +2344,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "editor-wrapper" }, [
+  return _c("div", { staticClass: "modal-wrapper" }, [
     _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
       _vm._v("☰")
     ]),
@@ -2281,6 +2374,45 @@ var render = function() {
               }
             }
           }),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Data Source")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.datasource,
+                  expression: "newObject.datasource"
+                }
+              ],
+              attrs: { name: "datasource-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject,
+                    "datasource",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.$store.state.datasources, function(source) {
+              return _c("option", { domProps: { value: source.name } }, [
+                _vm._v(_vm._s(source.name))
+              ])
+            })
+          ),
           _vm._v(" "),
           _c("h3", [_vm._v("Field")]),
           _vm._v(" "),
@@ -3208,12 +3340,7 @@ function sum(obj, key) {
   props: ['title', 'fieldName', 'filter'],
 
   mounted() {
-    this.$store.commit('subscribeTo', {
-      fieldNames: [this.fieldName],
-      filter: this.filter,
-      // filter for skills here
-      groupBy: ['dateDay', 'agentUsername']
-    });
+    this.$store.commit('subscribeTo', this.datasource);
   },
 
   computed: {
@@ -3730,6 +3857,8 @@ if (false) {
 
 const sift = __webpack_require__(63);
 
+const clone = __webpack_require__(14);
+
 const static_fields = [// Date
 {
   displayName: 'Date',
@@ -3812,7 +3941,8 @@ const store = new Vuex.Store({
     currentUser: '',
     timeoutId: 0,
     subscriptions: [],
-    loaders: []
+    loaders: [],
+    datasources: {}
   },
   getters: {
     /**
@@ -3857,6 +3987,12 @@ const store = new Vuex.Store({
 
     subscribeTo(state, parameters) {
       state.subscriptions.push(parameters);
+    },
+
+    changeDatasource(state, datasource) {
+      console.log(datasource);
+      const ds = clone(datasource);
+      state.datasources[datasource.name] = datasource;
     }
 
   },
@@ -3941,24 +4077,6 @@ const store = new Vuex.Store({
       let timeout = setTimeout(function next() {
         context.dispatch('repeatingUpdate', ms);
       }, ms);
-      context.commit({
-        type: 'setTimeoutId',
-        amount: timeout
-      });
-    },
-
-    // Call for each update from server
-    async nextUpdate(context) {
-      console.log(`Refresh at ${moment()}`); // Load data from server
-
-      const data = await loadData();
-      console.log(data);
-      context.commit('updateData', data); // and schedule the next update
-
-      const frequencySeconds = 60;
-      let timeout = setTimeout(function next() {
-        context.dispatch('nextUpdate');
-      }, frequencySeconds * 1000);
       context.commit({
         type: 'setTimeoutId',
         amount: timeout
@@ -5110,6 +5228,333 @@ function fieldsToServer(fields) {
 
     return list.concat(name);
   }, []);
+}
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_table_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_table_vue__ = __webpack_require__(93);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(90)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-44c58087"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\editor-table.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-44c58087", Component.options)
+  } else {
+    hotAPI.reload("data-v-44c58087", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(91);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("ad2ade60", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./editor-table.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./editor-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-list .save-button[data-v-44c58087] {\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue?3efca8c4"],"names":[],"mappings":";AAyGA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,0BAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;CAEA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"header in headers\">\r\n                        {{ header }}\r\n                    </th>\r\n                    <th>Save Changes</th>\r\n                    <th v-if=\"!!remover\">Delete</th>\r\n                </tr>\r\n            </thead>\r\n            <tr class=\"row\" v-for=\"(item, i) in items\">\r\n                <slot name=\"item\" :item=\"item\">\r\n                    <p>\r\n                        This is just a dang filler! Use\r\n                        <a target=\"_blank\"\r\n                        href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                          slot-scope</a>\r\n                        to render `td` elements in parent.\r\n                    </p>\r\n                </slot>\r\n\r\n                <td>\r\n                    <button class=\"save-button\" title=\"Save changes\"\r\n                        @click=\"update(item)\"\r\n                    >Save</button>\r\n                </td>\r\n                <td v-if=\"!!remover\">\r\n                    <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                        @click=\"remove(item)\"\r\n                    >Delete</button>\r\n                </td>\r\n            </tr>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    border-collapse: collapse;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    flex-direction: row;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(211, 8%, 72%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-list .save-button {\r\n\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+const clone = __webpack_require__(14);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['updater', 'loader', 'adder', 'remover', 'headers'],
+  data: function () {
+    return {
+      items: []
+    };
+  },
+  components: {},
+  beforeMount: function () {
+    this.load();
+  },
+  methods: {
+    update: async function (item) {
+      this.$emit('message', `Updating ${item.name}...`);
+      const message = await this.updater(item);
+      this.$emit('message', message);
+    },
+    load: async function () {
+      this.items = clone((await this.loader()));
+    },
+    addRow: function () {
+      let newItem = this.adder();
+      this.items.push(newItem);
+    },
+    remove: async function (item) {
+      this.$emit('message', `Deleting ${item.name}...`);
+      const message = await this.remover(item);
+      this.$emit('message', message); // Remove item from array
+
+      this.items = this.items.filter(el => el !== item);
+    }
+  }
+});
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "editor-wrapper" }, [
+    _c(
+      "table",
+      { staticClass: "editor-list" },
+      [
+        _c("thead", [
+          _c(
+            "tr",
+            [
+              _vm._l(_vm.headers, function(header) {
+                return _c("th", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(header) +
+                      "\n                "
+                  )
+                ])
+              }),
+              _vm._v(" "),
+              _c("th", [_vm._v("Save Changes")]),
+              _vm._v(" "),
+              !!_vm.remover ? _c("th", [_vm._v("Delete")]) : _vm._e()
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.items, function(item, i) {
+          return _c(
+            "tr",
+            { staticClass: "row" },
+            [
+              _vm._t("item", [_vm._m(0, true, false)], { item: item }),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "save-button",
+                    attrs: { title: "Save changes" },
+                    on: {
+                      click: function($event) {
+                        _vm.update(item)
+                      }
+                    }
+                  },
+                  [_vm._v("Save")]
+                )
+              ]),
+              _vm._v(" "),
+              !!_vm.remover
+                ? _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "delete-button",
+                        attrs: { title: "Permanently delete row" },
+                        on: {
+                          click: function($event) {
+                            _vm.remove(item)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ])
+                : _vm._e()
+            ],
+            2
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "add-button",
+        attrs: { title: "Add a new row" },
+        on: { click: _vm.addRow }
+      },
+      [_vm._v("+")]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _vm._v(
+        "\n                    This is just a dang filler! Use\n                    "
+      ),
+      _c(
+        "a",
+        {
+          attrs: {
+            target: "_blank",
+            href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
+          }
+        },
+        [_vm._v("\n                      slot-scope")]
+      ),
+      _vm._v(
+        "\n                    to render `td` elements in parent.\n                "
+      )
+    ])
+  }
+]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-44c58087", esExports)
+  }
 }
 
 /***/ })

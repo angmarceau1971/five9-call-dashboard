@@ -1,5 +1,5 @@
 import * as api from './api.js';
-import ApiEditorTable from '../components/api-editor-table.vue';
+import ApiEditorTable from '../components/editor-table.vue';
 const clone = require('ramda/src/clone');
 
 
@@ -7,7 +7,7 @@ const vm = new Vue({
     el: '#admin-app',
 
     components: {
-        'api-editor-table': ApiEditorTable
+        'editor-table': ApiEditorTable
     },
 
     data: {

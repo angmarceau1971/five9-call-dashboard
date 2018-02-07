@@ -1,11 +1,11 @@
 import * as api from './api.js';
-import ApiEditorTable from '../components/api-editor-table.vue';
+import ApiEditorTable from '../components/editor-table.vue';
 
 const vm = new Vue({
     el: '#skill-app',
 
     components: {
-        'api-editor-table': ApiEditorTable
+        'editor-table': ApiEditorTable
     },
 
     data: {

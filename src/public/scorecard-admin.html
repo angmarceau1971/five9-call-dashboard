@@ -23,8 +23,8 @@
 
         <div class="section fields">
             <h2>Fields</h2>
-            <api-editor-table
-                @message="this.updateMessage"
+            <editor-table
+                @message="updateMessage"
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
                 :adder="fieldAdder"
@@ -77,7 +77,7 @@
                         <p>{{ props.item.source }}</p>
                     </td>
                 </template>
-            </api-editor-table>
+            </editor-table>
         </div>
     </div>
     </body>

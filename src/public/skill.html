@@ -28,7 +28,7 @@
                 <a target="_blank" href="https://crontab.guru/">crontab.guru</a>
                 for help.
             </p>
-            <api-editor-table
+            <editor-table
                 :loader=jobLoader
                 :updater=jobUpdater
                 :adder=jobAdder
@@ -56,7 +56,7 @@
                         {{ formatDateTime(props.item.lastRunAt) }}
                     </td>
                 </template>
-            </api-editor-table>
+            </editor-table>
         </div>
     </div>
     </body>

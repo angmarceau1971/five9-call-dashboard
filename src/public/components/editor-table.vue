@@ -60,6 +60,8 @@
 
 
 <script>
+const clone = require('ramda/src/clone');
+
 export default {
     props: ['updater', 'loader', 'adder', 'remover', 'headers'],
 
@@ -82,7 +84,7 @@ export default {
             this.$emit('message', message);
         },
         load: async function() {
-            this.items = await this.loader();
+            this.items = clone(await this.loader());
         },
         addRow: function() {
             let newItem = this.adder();
@@ -111,7 +113,6 @@ export default {
     width: 100%;
     justify-content: space-between;
     flex-direction: row;
-    /* margin: 1em; */
 }
 .editor-list .row {
     height: 3em;
