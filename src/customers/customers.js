@@ -156,7 +156,6 @@ function lookerRequest(message, endpoint, auth, method='POST',
             socket.setTimeout(120000);
             socket.on('timeout', () => {
                 log.error(`----- Looker request timed out`);
-                log.log(`----- Looker request timed out`);
                 req.abort();
                 reject(new Error('Looker request timed out.'));
             });

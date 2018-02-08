@@ -192,7 +192,7 @@ function sendRequest(message, auth, requestType) {
         req.on('socket', (socket) => {
             socket.setTimeout(55000);
             socket.on('timeout', () => {
-                log.log(`----- Five9 request timed out`);
+                log.error(`----- Five9 request timed out`);
                 req.abort();
                 reject(new pt.TimeoutError('Five9 request timed out.'));
             });
