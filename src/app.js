@@ -69,7 +69,7 @@ var sessionSettings = {
     }
 };
 if (app.get('env') == 'production') {
-    app.set('trust proxy', 1);
+    // app.set('trust proxy', 1);
     sessionSettings.cookie.secure = true;
 }
 app.use(session(sessionSettings));
@@ -111,7 +111,6 @@ const server = app.listen(port, async () => {
             setTimeout(connect, 3000);
         });
 
-        if (process.env.NODE_ENV == 'production') throw new Error('add updates!');
         // Update customers database from Looker every 8 hours
         customers.scheduleUpdate(8 * 3600 * 1000);
 
