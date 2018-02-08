@@ -411,7 +411,7 @@ async function onReady(fun) {
         });
     }
     let waited = 0;
-    while (currentlyUpdatingData && waited < 60000) {
+    while (currentlyUpdatingData && waited < 50000) {
         log.message(`Report.onReady called while database is updating; waiting 1000ms`);
         waited += 1000;
         await wait(1000);
