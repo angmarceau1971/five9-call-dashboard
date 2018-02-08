@@ -64,7 +64,7 @@ router.get('/login-retry', async (req, res) => {
 });
 // Post login credentials for dashboard
 router.post('/login',
-    passport.authenticate('local', { successReturnToOrRedirect: '/dashboard',
+    passport.authenticate('local', { successRedirect: '/dashboard',
                                       failureRedirect: 'login-retry',
                                       failureFlash: false } )
 );

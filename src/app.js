@@ -56,7 +56,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
 
 // Passport config
-app.use(cookieParser());
+//app.use(cookieParser());
 
 var sessionSettings = {
     secret: secure.SESSION_SECRET,
@@ -64,12 +64,13 @@ var sessionSettings = {
     saveUninitialized: false,
     rolling: true, // refresh expiration with each request
     store: new MongoStore({ url: secure.MONGODB_URI }),
+
     cookie: {
         maxAge: 24 * 3600 * 1000 // expire after 1 day
     }
 };
 if (app.get('env') == 'production') {
-    // app.set('trust proxy', 1);
+    app.set('trust proxy', 2);
     sessionSettings.cookie.secure = true;
 }
 app.use(session(sessionSettings));
@@ -81,6 +82,11 @@ passport.use(new LocalStrategy(verify.authenticate));
 passport.serializeUser((user, done) => { done(null, user.username) });
 passport.deserializeUser((username, done) => { done(null, {username:username}) });
 
+app.use(function(req, res, next) {  
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});  
 
 // URL Routes
 app.use('/api', apiRoutes);
