@@ -47,7 +47,7 @@ $(document).ready(() => {
     });
 
     // Trigger "play" button to start updating when page is loaded.
-    if (gizmo.gizmos.length > 0) $('.play-pause').trigger('click');
+    if (Object.keys(gizmo.gizmos).length > 0) $('.play-pause').trigger('click');
 });
 
 

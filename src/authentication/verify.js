@@ -16,7 +16,6 @@ const users = require('./users');
  */
 function isLoggedIn(level='basic') {
     return async function(req, res, next) {
-	debugger;
         if (await isAllowed(level, req)) {
             return next();
         }
@@ -75,7 +74,6 @@ async function isAllowed(level, req) {
 async function authenticate(username, password, done) {
     let auth = getAuthString(username, password);
     try {
-        debugger;
         if (!(await hasPermission(auth))) {
             return done(null, false, { message: 'Invalid username or password.' });
         }

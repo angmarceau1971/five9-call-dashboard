@@ -104,7 +104,7 @@ function formatAMPM(date) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'https://nathanclonts.com/dashboard/api/';
+const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
 
 
@@ -400,7 +400,7 @@ $(document).ready(() => {
     createQueueList(thisgizmo, table);
   }); // Trigger "play" button to start updating when page is loaded.
 
-  if (gizmo.gizmos.length > 0) $('.play-pause').trigger('click');
+  if (Object.keys(gizmo.gizmos).length > 0) $('.play-pause').trigger('click');
 });
 
 async function runQueueDashboard() {
