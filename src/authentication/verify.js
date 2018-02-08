@@ -1,35 +1,13 @@
 /*
-** Helper to authenticate users before returning data to them.
+** Helpers to authenticate users before returning data to them.
 **
-**
+** Includes login strategy for Passport as well as route middleware.
 */
 
 const five9 = require('../helpers/five9-interface');
 const log = require('../helpers/log');
 const users = require('./users');
 
-/**
- * Passport authentication strategy.
- * @param  {String}   username for Five9
- * @param  {String}   password for Five9
- * @param  {Function} done     from Passport
- * @return {Function}          calls @param done to continue Passport process
- */
-async function authenticate(username, password, done) {
-    let auth = getAuthString(username, password);
-    try {
-        if (!(await hasPermission(auth))) {
-            return done(null, false, { message: 'Invalid username or password.' });
-        }
-        // User is good to go
-        else {
-            return done(null, { username: username });
-        }
-    } catch (err) {
-        return done(err);
-    }
-}
-module.exports.authenticate = authenticate;
 
 /**
  * Middleware for page view routes. Redirects to login page if not logged in.
@@ -66,7 +44,12 @@ function apiMiddleware(level='basic') {
 }
 module.exports.apiMiddleware = apiMiddleware;
 
-
+/**
+ * Check if logged-in user should have access of the given level.
+ * @param  {String}          level `basic` or `admin`
+ * @param  {Express request} req
+ * @return {Boolean}       true if user has access; otherwise false
+ */
 async function isAllowed(level, req) {
     const isAuthenticated = req.isAuthenticated();
     if (isAuthenticated) {
@@ -80,16 +63,36 @@ async function isAllowed(level, req) {
     return false;
 }
 
-// Combines username and password, then encodes in Base 64. Yum!
-function getAuthString(username, password) {
-   let auth = username + ':' + password;
-   return Buffer.from(auth).toString('base64');
+
+/**
+ * Passport authentication strategy.
+ * @param  {String}   username for Five9
+ * @param  {String}   password for Five9
+ * @param  {Function} done     from Passport
+ * @return {Function}          calls @param done to continue Passport process
+ */
+async function authenticate(username, password, done) {
+    let auth = getAuthString(username, password);
+    try {
+        if (!(await hasPermission(auth))) {
+            return done(null, false, { message: 'Invalid username or password.' });
+        }
+        // User is good to go
+        else {
+            return done(null, { username: username });
+        }
+    } catch (err) {
+        return done(err);
+    }
 }
+module.exports.authenticate = authenticate;
 
 
-// See if user is authorized before pulling reports.
-// Returns true if user has permissions; otherwise false.
-// ${auth} should be base64 encoded 'username:password' string
+/**
+ * See if user is authorized before assigning Passport auth token.
+ * @param  {String}  auth base64 encoded 'username:password' string
+ * @return {Boolean}      true if credentials fit active Five9 login; otherwise false
+ */
 async function hasPermission(auth) {
     if (!auth) return false;
 
@@ -131,12 +134,8 @@ async function hasPermission(auth) {
 module.exports.hasPermission = hasPermission;
 
 
-// See if agent is authorized through Agent API
-async function hasAgentPermission(auth) {
-    // Break out username and password for HTTP request
-    const decoded = Buffer.from(auth, 'base64').toString();
-    const [username, password] = decoded.split(':');
-
-
+// Combines username and password, then encodes in Base 64. Yum!
+function getAuthString(username, password) {
+   let auth = username + ':' + password;
+   return Buffer.from(auth).toString('base64');
 }
-module.exports.hasAgentPermission = hasAgentPermission;

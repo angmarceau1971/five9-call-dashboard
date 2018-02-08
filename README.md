@@ -1,3 +1,12 @@
+- [Five9 Call Dashboard](#five9-call-dashboard)
+        * [Queues :palm_tree:](#queues--palm-tree-)
+        * [Maps :earth_americas:](#maps--earth-americas-)
+        * [Scorecard :chart_with_upwards_trend:](#scorecard--chart-with-upwards-trend-)
+    + [Install](#install)
+    + [Testing](#testing)
+    + [Credentials required](#credentials-required)
+    + [Code structure](#code-structure)
+
 # Five9 Call Dashboard
 Real-time dashboards using Five9 APIs.
 
@@ -10,7 +19,7 @@ Real-time dashboards using Five9 APIs.
 ##### Scorecard :chart_with_upwards_trend:
 * In-progress, Vue-based dashboard to display agent and team metrics.
 
-This uses Express as an intermediate server to get Five9 data and store it in MongoDB, then pass it along to the client. VanillaJS and jQuery are used on the client side for updating the view.
+This uses Express as an intermediate server to get Five9 data and store it in MongoDB, then pass it along to the client. Vue, jQuery and a tasteful amount VanillaJS are used on the client side for updating the view.
 
 
 ### Install

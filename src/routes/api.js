@@ -101,9 +101,10 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 });
 
 
-///////////////////////////
-// Administrative API routes
-///////////////////////////
+
+//////////////////////////////////////
+// Administrative Functions         //
+//////////////////////////////////////
 // Get list of fields
 router.get('/fields', verify.apiMiddleware(), async (req, res) => {
     let fieldList = await fields.getFieldList();
@@ -144,7 +145,7 @@ router.delete('/skill', verify.apiMiddleware('admin'), async (req, res) => {
     res.status(200).send(message);
 });
 
-//////////////////////////////////////
+
 // Get list of admin users
 router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
     const admins = await users.getAdminUsers();
@@ -224,7 +225,7 @@ async function reloadReports(time) {
  * Handles all reporting data requests.
  * @param  {Express request} req
  * @param  {Express response} res
- * @param  {function} dataGetter is the function that retreives actual data from DB
+ * @param  {Function} dataGetter function that retreives actual data from DB
  *                              (either getServiceLevelData or getZipCodeData)
   */
 async function handleReportRequest(req, res, dataGetter) {
@@ -254,7 +255,7 @@ async function handleReportRequest(req, res, dataGetter) {
 
 /**
  * Send public GeoJSON file in response
- * @param  {String} fileName in /public/ folder
+ * @param  {String} fileName in src/public/ folder
  * @param  {Object} req      Express request object
  * @param  {Object} res      Express response object
  */
