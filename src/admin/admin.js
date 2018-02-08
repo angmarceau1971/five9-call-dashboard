@@ -82,7 +82,8 @@ async function schedule(jobType, user, time, data) {
     // Return new job
     return new Promise((resolve, reject) => {
         // use `create` to add a new job of the same jobType
-        const job = agenda.create(jobType, data).repeatEvery(time).save();
+        log.message(`${skillLog} Scheduling ${jobType} "${data.title}" for ${time}, requested by ${user}.`);
+        const job = agenda.create(jobType, data).repeatEvery(time).computeNextRunAt().save();
         resolve(job);
     });
 }

@@ -131,7 +131,7 @@ router.get('/skill', verify.apiMiddleware('admin'), async (req, res) => {
 
 // Modify a skilling job
 router.put('/skill', verify.apiMiddleware('admin'), async (req, res) => {
-    const newjob = await admin.updateSkillingJob(req.body.username, req.body.job, req.body.data);
+    const newjob = await admin.updateSkillingJob(req.user.username, req.body.job, req.body.data);
     res.set('Content-Type', 'application/text');
     res.status(200).send(`Job "${req.body.job.data.title}" has been saved.`);
 });
@@ -156,6 +156,7 @@ router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
 
 // Modify an admin users
 router.patch('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
+    // User object passed in PATCH body (not necessarily the same as currently logged-in user)
     await users.updateAdminStatus(req.body.user.username, req.body.user.isAdmin);
     res.set('Content-Type', 'application/text');
     res.status(200).send(`User "${req.body.user.username}" has been updated.`);
