@@ -1,7 +1,4 @@
 - [Five9 Call Dashboard](#five9-call-dashboard)
-        ⋅⋅* [Queues](#queues)
-        ⋅⋅* [Maps](#maps)
-        ⋅⋅* [Scorecard](#scorecard)
     + [Install](#install)
     + [Testing](#testing)
     + [Credentials required](#credentials-required)
