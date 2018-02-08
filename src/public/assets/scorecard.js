@@ -709,7 +709,7 @@ async function rebootServer() {
   return response.text();
 }
 async function reloadData(params) {
-  const response = request(params, 'reload-data', 'POST');
+  const response = await request(params, 'reload-data', 'POST');
   return response.text();
 }
 /**
