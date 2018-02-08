@@ -40,9 +40,10 @@ For data retrieval from Five9, create a file `src/secure_settings.js`:
 // Admin- and supervisor-level credentials to retrieve report and queue data
 module.exports.FIVE9_USERNAME = 'admin_username';
 module.exports.FIVE9_PASSWORD = 'admin_password';
-
-// Insert MongoDB URI here
+// MongoDB URI here, including credentials if needed
 module.exports.MONGODB_URI = 'mongodb://localhost/five9-report-data-collection';
+// Secret key for Passport sessions
+module.exports.SESSION_SECRET = 'astringastringmykingdomforastring';
 
 // Only include the following if using Looker for customer base information
 // Looker API constants
