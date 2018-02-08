@@ -1,7 +1,7 @@
 - [Five9 Call Dashboard](#five9-call-dashboard)
-        * [Queues :palm_tree:](#queues--palm-tree-)
-        * [Maps :earth_americas:](#maps--earth-americas-)
-        * [Scorecard :chart_with_upwards_trend:](#scorecard--chart-with-upwards-trend-)
+        * [Queues](#queues)
+        * [Maps](#maps)
+        * [Scorecard](#scorecard)
     + [Install](#install)
     + [Testing](#testing)
     + [Credentials required](#credentials-required)
@@ -10,13 +10,14 @@
 # Five9 Call Dashboard
 Real-time dashboards using Five9 APIs.
 
-##### Queues :palm_tree:
+##### Queues
 * Shows current max wait times, service levels, number of calls waiting, and agents staffed for __groups of skills__.
 
-##### Maps :earth_americas:
+##### Maps
 * Displays calls received by ZIP3 code. Option to show calls as percentage of customer base from Looker.
+:earth_americas:
 
-##### Scorecard :chart_with_upwards_trend:
+##### Scorecard
 * In-progress, Vue-based dashboard to display agent and team metrics.
 
 This uses Express as an intermediate server to get Five9 data and store it in MongoDB, then pass it along to the client. Vue, jQuery and a tasteful amount VanillaJS are used on the client side for updating the view.
