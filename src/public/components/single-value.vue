@@ -31,7 +31,7 @@ function sum(obj, key) {
 
 export default {
     extends: WidgetBase,
-    props: ['title', 'fieldName', 'filter'],
+    props: ['title', 'fieldName', 'filter', 'datasource'],
     mounted() {
         this.$store.commit('subscribeTo', this.datasource);
     },
@@ -43,7 +43,7 @@ export default {
             return formatValue(this.value, this.field);
         },
         value: function() {
-            let data = this.$store.getters.getData(this.filter, this.fieldName);
+            let data = this.$store.getters.getData(this.filter, this.datasource);
             if (this.fieldName == 'Calculated.aht') {
                 return sum(data, 'handleTime') / sum(data, 'calls');
             }

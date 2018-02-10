@@ -157,8 +157,19 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
         }
     ];
 
-    let data1 = await getStatisticsFrom(AcdFeed, aggregation);
-    return data1;
+    let data = await getStatisticsFrom(AcdFeed, aggregation);
+    return mergeIdToData(data);
+}
+/**
+ * Merge _id fields into each datum. E.g., the input:
+ *      [ { calls: 1, _id: { name: 'Frodo' } } ]
+ * will return:
+ *      [ { calls: 1, name: 'Frodo', _id: { name: 'Frodo ' } } ]
+ * @param {Array} data from MongoDB
+ * @return {Array} data with each entry including _id as regular fields
+ */
+function mergeIdToData(data) {
+    return data.map((datum) => Object.assign(datum, datum._id));
 }
 
 

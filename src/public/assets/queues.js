@@ -104,7 +104,7 @@ function formatAMPM(date) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'https://nathanclonts.com/dashboard/api/';
+const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
 
 

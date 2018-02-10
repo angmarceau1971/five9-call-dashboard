@@ -136,8 +136,8 @@ export const store = new Vuex.Store({
         toggleEditMode(state) {
             state.editMode = !state.editMode;
         },
-        updateData(state, newData, datasource) {
-            state.data[datasource] = newData;
+        updateData(state, { newData, datasource }) {
+            Vue.set(state.data, datasource, newData);
         },
         /**
          * Set the current user
@@ -176,11 +176,12 @@ export const store = new Vuex.Store({
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
             // Load data from server
-            Object.keys(context.state.datasources).forEach(async function(source) {
-                const ds = context.state.datasources[source];
-                const data = await loadData(getParams(ds));
+            context.state.datasources.forEach(async function(source) {
+                const data = await loadData(getParams(source));
                 console.log(data);
-                context.commit('updateData', data, source);
+                context.commit('updateData', {
+                    newData: data, datasource: source.name
+                });
             });
 
             // and schedule the next update

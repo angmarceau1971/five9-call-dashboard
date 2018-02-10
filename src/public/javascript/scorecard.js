@@ -20,11 +20,12 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'Calculated.aht',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<today>'
+            dateDay: '<today>'
         }
     },
     {
@@ -32,11 +33,12 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'Calculated.aht',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<month-to-date>'
+            dateDay: '<month-to-date>'
         }
     },
     {
@@ -44,11 +46,12 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'ACW Today',
         'fieldName': 'Calculated.acw',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<today>'
+            dateDay: '<today>'
         }
     },
     {
@@ -56,11 +59,12 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'ACW Month to Date',
         'fieldName': 'Calculated.acw',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<month-to-date>'
+            dateDay: '<month-to-date>'
         }
     }
 ];
@@ -79,11 +83,12 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AcdFeed.calls',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<today>'
+            dateDay: '<today>'
         }
     },
     {
@@ -91,11 +96,12 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AcdFeed.calls',
+        'datasource': 'Test',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
             },
-            date: '<month-to-date>'
+            dateDay: '<month-to-date>'
         }
     }
 ];
@@ -117,7 +123,7 @@ const layout = {
             },
             "filter": {
                 "agentUsername": {
-                    "$eq": "<current-user>"
+                    "$eq": "<current user>"
                 },
                 "date": "<month-to-date>"
             },
@@ -244,6 +250,7 @@ const vm = new Vue({
         ///////////////////////
         // Data Sources
         updateDatasourceMessage: function(message) {
+            console.log(`updateDatasourceMessage: ${message}`);
             this.datasourceMessage = message;
         },
         datasourceLoader: function() {

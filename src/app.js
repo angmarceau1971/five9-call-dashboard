@@ -3,13 +3,10 @@
 // Import libraries
 const bodyParser = require('body-parser'); // parse JSON requests
 const compression = require('compression'); // compress file to GZIP
-const cookieParser = require('cookie-parser');
 const cors = require('cors'); // CORS middleware
 const express = require('express');
-const fs = require('fs');
 const helmet = require('helmet'); // security
 const moment = require('moment'); // dates/times
-const parseString = require('xml2js').parseString; // parse XML to JSON
 const passport = require('passport'); // user authentication
 const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
@@ -55,9 +52,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // And throw in some security middleware for good measure...
 app.use(helmet());
 
-// Passport config
-//app.use(cookieParser());
-
+// Passport and session config
 var sessionSettings = {
     secret: secure.SESSION_SECRET,
     resave: false,
@@ -82,11 +77,11 @@ passport.use(new LocalStrategy(verify.authenticate));
 passport.serializeUser((user, done) => { done(null, user.username) });
 passport.deserializeUser((username, done) => { done(null, {username:username}) });
 
-app.use(function(req, res, next) {  
+app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-});  
+});
 
 // URL Routes
 app.use('/api', apiRoutes);

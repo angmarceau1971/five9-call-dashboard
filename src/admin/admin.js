@@ -14,7 +14,7 @@ const agenda = new Agenda({db: {
 }});
 /**
  * Run this whenever server restarts to rev up scheduled jobs.
- * @return {Promises} resolves when Agenda is started
+ * @return {Promise} resolves when Agenda is started
  */
 async function start() {
     return new Promise((resolve, reject) => {
