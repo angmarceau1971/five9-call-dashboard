@@ -62,11 +62,16 @@ router.get('/login-retry', async (req, res) => {
     let dir = path.join(__dirname + '/../public/login.html');
     res.sendFile(dir);
 });
+
 // Post login credentials for dashboard
+let loginSuccessRedirect = '/';
+if (process.env.NODE_ENV == 'production') {
+    loginSuccessRedirect = '/dashboard';
+}
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/dashboard',
-                                      failureRedirect: 'login-retry',
-                                      failureFlash: false } )
+    passport.authenticate('local', { successRedirect: loginSuccessRedirect,
+                                     failureRedirect: 'login-retry',
+                                     failureFlash: false } )
 );
 
 
