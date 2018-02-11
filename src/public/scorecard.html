@@ -64,8 +64,12 @@
             @change="importLayout"
             ref="fileInput" />
 
+        <div class="loading-screen"
+            v-if="!isLoaded"
+        ><h2>Dashboard Loading...</h2></div>
 
         <dashboard
+            v-if="isLoaded"
             :layout="layout"
             @update-layout="updateLayout"
             @update-card="updateCard"

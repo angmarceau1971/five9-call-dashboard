@@ -41,13 +41,11 @@ Accepts data prop with structure:
 import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
 
+import * as parse from '../javascript/parse';
+
 const props = {
     fields: {
         type: Object
-    },
-    data: {
-        type: Array,
-        default: () => []
     },
     margin: {
         type: Object,
@@ -92,6 +90,17 @@ export default {
     },
 
     computed: {
+        data() {
+            // Get data from hub
+            let raw = this.$store.getters.getData(this.filter, this.datasource);
+            // Summarize by displayed field(s)
+            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);
+            // Sort along X axis
+            grouped.sort((a, b) =>
+                a[this.fields.x] < b[this.fields.x] ? -1 : 1
+            );
+            return grouped;
+        },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;
             const height = this.height - this.margin.top - this.margin.bottom;
@@ -146,30 +155,31 @@ export default {
         },
         update() {
             this.initialize();
-            const parseTime = d3.timeParse('%Y-%m-%d');
             for (let d of this.data) {
                 d[this.fields.y] *= 1;
                 if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
             }
 
-            this.scaled.x.domain(d3.extent(this.data, (d) => parseTime(d[this.fields.x])));
+            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));
             this.scaled.y.domain([0, this.ceil]);
             this.points = [];
 
             // Draw goal line
-            let goal = this.$store.getters.field(this.fields.y).goal;
-            let goalPoints = this.scaled.x.domain().map((xVal) =>
-                ({
-                    x: this.scaled.x(xVal),
-                    y: this.scaled.y(goal)
-                })
-            );
-            this.paths.goalLine = this.createLine(goalPoints);
+            const field = this.$store.getters.field(this.fields.y);
+            if (field.goal) {
+                let goalPoints = this.scaled.x.domain().map((xVal) =>
+                    ({
+                        x: this.scaled.x(xVal),
+                        y: this.scaled.y(field.goal)
+                    })
+                );
+                this.paths.goalLine = this.createLine(goalPoints);
+            }
 
             // Create graph points
             for (let d of this.data) {
                 this.points.push({
-                    x: this.scaled.x(parseTime(d[this.fields.x])),
+                    x: this.scaled.x(d[this.fields.x]),
                     y: this.scaled.y(d[this.fields.y]),
                     max: this.height,
                 });

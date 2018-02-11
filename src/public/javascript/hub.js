@@ -7,7 +7,6 @@
 
 import * as api from './api';
 import * as filters from './filters';
-import * as parse from './parse';
 const sift = require('sift');
 const clone = require('ramda/src/clone');
 //
@@ -176,7 +175,7 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
-            context.dispatch('nextUpdate', 10 * 1000);
+            return context.dispatch('nextUpdate', 10 * 1000);
         },
 
         async forceRefresh(context) {

@@ -42,6 +42,22 @@ aht.widgets = [
         }
     },
     {
+        'id': 'widget:4',
+        'component': 'line-graph',
+        'title': 'Month to Date',
+        'fields': {
+            'x': 'dateDay',
+            'y': 'Calculated.aht'
+        },
+        'datasource': 'Test',
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            dateDay: '<month-to-date>'
+        }
+    },
+    {
         'id': 'widget:2',
         'component': 'single-value',
         'title': 'ACW Today',
@@ -149,7 +165,8 @@ const vm = new Vue({
 
     data: {
         layout: layout,
-        datasourceMessage: ''
+        datasourceMessage: '',
+        isLoaded: false
     },
 
     components: {
@@ -168,9 +185,10 @@ const vm = new Vue({
         }
     },
 
-    beforeMount() {
+    async beforeMount() {
         store.commit('setDatasources', this.layout.datasources);
-        return store.dispatch('startProcess');
+        await store.dispatch('startProcess');
+        this.isLoaded = true;
     },
 
     methods: {
