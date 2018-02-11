@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1284,7 +1284,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_widget_base_vue__ = __webpack_require__(35);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1458,12 +1458,12 @@ const dateMatcher = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(47);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(40)
+  __webpack_require__(41)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1510,6 +1510,65 @@ if (false) {(function () {
 
 /***/ }),
 /* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
+/* unused harmony export fieldsToServer */
+/**
+ * Handle expression parsing for calculated fields.
+ */
+function getValueForField(data, field) {
+  // TODO: calculate based on expressions
+  if (field == 'Calculated.aht') {
+    return sum(data, 'handleTime') / sum(data, 'calls');
+  } else if (field == 'Calculated.acw') {
+    return sum(data, 'acwTime') / sum(data, 'calls');
+  }
+
+  const [source, fieldName] = field.split('.');
+
+  if (source == 'AcdFeed') {
+    console.log([source, fieldName]);
+    return sum(data, fieldName);
+  } else {
+    throw new Error(`Parser isn't expecting the field name "${field}".`);
+  }
+}
+
+function sum(obj, key) {
+  return obj.reduce((sum, item) => sum + item[key], 0);
+}
+/**
+ *
+ * @param  {String} exp expression
+ * @return {Array of Strings} names of fields needed to calculate `exp`
+ */
+
+
+function requiredFields(exp) {
+  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
+}
+
+function expressionForField(field) {
+  return field.calculation;
+}
+
+function fieldsToServer(fields) {
+  return fields.reduce((list, field) => {
+    let [source, name] = field.fullName.split('.');
+
+    if (source == 'Calculated') {
+      const f = requiredFields(expressionForField(field));
+      return list.concat(f.map(n => n.split('.')[1]));
+    }
+
+    return list.concat(name);
+  }, []);
+}
+
+/***/ }),
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1581,7 +1640,7 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _has = /*#__PURE__*/__webpack_require__(20);
@@ -1598,7 +1657,7 @@ var _isArguments = function () {
 module.exports = _isArguments;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
@@ -1636,20 +1695,20 @@ function _curry2(fn) {
 module.exports = _curry2;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(27);
+module.exports = __webpack_require__(28);
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(13);
 
@@ -1752,6 +1811,7 @@ calls.widgets = [{
 const layout = {
   cards: [aht, calls],
   datasources: [{
+    "id": "1",
     "name": "Test",
     "fields": {
       "sum": ["calls", "handleTime", "acwTime"]
@@ -1798,7 +1858,9 @@ const vm = new Vue({
   },
 
   methods: {
-    postAcd: async function () {},
+    postAcd: async function () {
+      store.dispatch('forceRefresh');
+    },
     clickImport: function () {
       this.$refs.fileInput.click();
     },
@@ -1902,8 +1964,7 @@ const vm = new Vue({
     },
     datasourceUpdater: function (datasource) {
       try {
-        let obj = getVueObject(datasource);
-        obj = inputToParameters(obj);
+        let obj = parseDatasource(datasource);
         let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
 
         if (oldIndex == -1) {
@@ -1923,6 +1984,7 @@ const vm = new Vue({
         let obj = getVueObject(datasource);
         let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
         Vue.delete(this.layout.datasources, oldIndex);
+        this.$store.commit('deleteDatasource', obj);
       } catch (err) {
         this.updateDatasourceMessage(`Error removing data source: ${err}.`);
       }
@@ -1948,27 +2010,32 @@ function download(text, name, type) {
   a.click();
 }
 
-function inputToParameters(input) {
-  let ds = clone(input);
+function parseDatasource(input) {
+  function objectify(value) {
+    try {
+      return JSON.parse(value);
+    } catch (err) {
+      if (err instanceof SyntaxError) return value;else throw err;
+    }
+  }
 
-  const toArray = str => str.split(',').map(x => x.trim());
+  return objectMap(input, objectify);
+}
 
-  const toObject = JSON.parse;
-  ds.fields = {
-    sum: toArray(input.fields)
-  };
-  ds.filter = toObject(input.filter);
-  ds.groupBy = toArray(input.groupBy);
-  return ds;
+function objectMap(object, fun) {
+  return Object.keys(object).reduce((newObj, key) => {
+    newObj[key] = fun(object[key]);
+    return newObj;
+  }, {});
 }
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_dashboard_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_dashboard_vue__ = __webpack_require__(62);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2014,13 +2081,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(24);
 //
 //
 //
@@ -2138,16 +2205,16 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_vue__ = __webpack_require__(56);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(31)
+  __webpack_require__(32)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2193,13 +2260,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(32);
+var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2219,7 +2286,7 @@ if(false) {
 }
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -2233,16 +2300,16 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(24);
 //
 //
 //
@@ -2423,17 +2490,17 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(36);
 //
 //
 //
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['id', 'datasource'],
+  props: ['id', 'datasource', 'filter'],
   components: {
     'editor': __WEBPACK_IMPORTED_MODULE_0__editor_vue__["a" /* default */]
   },
@@ -2448,7 +2515,7 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
       id: 'widget:' + uuidv4(),
       component: type,
       title: 'Hello World',
-      field: '',
+      fieldName: '',
       filter: {},
       datasource: ''
     };
@@ -2464,16 +2531,16 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_editor_vue__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_editor_vue__ = __webpack_require__(40);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(36)
+  __webpack_require__(37)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -2519,13 +2586,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(37);
+var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2545,7 +2612,7 @@ if(false) {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -2553,13 +2620,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?fec2a14c"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.date\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue?2dc39374"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.dateDay\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2673,7 +2740,7 @@ const clone = __webpack_require__(5);
 });
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2803,8 +2870,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.newObject.filter.date,
-                  expression: "newObject.filter.date"
+                  value: _vm.newObject.filter.dateDay,
+                  expression: "newObject.filter.dateDay"
                 }
               ],
               attrs: { name: "date-dropdown" },
@@ -2820,7 +2887,7 @@ var render = function() {
                     })
                   _vm.$set(
                     _vm.newObject.filter,
-                    "date",
+                    "dateDay",
                     $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
                 }
@@ -2880,13 +2947,13 @@ if (false) {
 }
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(41);
+var content = __webpack_require__(42);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -2906,7 +2973,7 @@ if(false) {
 }
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -2920,11 +2987,11 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(18);
 //
 //
@@ -2978,12 +3045,12 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 });
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(46);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3029,7 +3096,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3067,7 +3134,7 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3111,7 +3178,7 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3167,16 +3234,16 @@ if (false) {
 }
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(52);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(48)
+  __webpack_require__(49)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3222,13 +3289,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(49);
+var content = __webpack_require__(50);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -3248,7 +3315,7 @@ if(false) {
 }
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -3262,7 +3329,7 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3488,7 +3555,7 @@ const props = {
 });
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3586,12 +3653,12 @@ if (false) {
 }
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(55);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3637,12 +3704,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
 //
 //
 //
@@ -3667,19 +3735,10 @@ if (false) {(function () {
 //
 
 
-
-function sum(obj, key) {
-  return obj.reduce((sum, item) => sum + item[key], 0);
-}
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
-  props: ['title', 'fieldName', 'filter', 'datasource'],
-
-  mounted() {
-    this.$store.commit('subscribeTo', this.datasource);
-  },
-
+  props: ['title', 'fieldName'],
   computed: {
     field: function () {
       return this.$store.getters.field(this.fieldName);
@@ -3689,16 +3748,7 @@ function sum(obj, key) {
     },
     value: function () {
       let data = this.$store.getters.getData(this.filter, this.datasource);
-
-      if (this.fieldName == 'Calculated.aht') {
-        return sum(data, 'handleTime') / sum(data, 'calls');
-      } else if (this.fieldName == 'Calculated.acw') {
-        return sum(data, 'acwTime') / sum(data, 'calls');
-      } else if (this.fieldName == 'AcdFeed.calls') {
-        return sum(data, 'calls');
-      } else {
-        throw new Error(`SingleValue component isn't expecting the field name: ${this.fieldName}`);
-      }
+      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](data, this.fieldName);
     }
   },
   methods: {
@@ -3709,7 +3759,7 @@ function sum(obj, key) {
 });
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3753,7 +3803,7 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3884,16 +3934,16 @@ if (false) {
 }
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_card_editor_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_card_editor_vue__ = __webpack_require__(61);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(57)
+  __webpack_require__(58)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3939,13 +3989,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(58);
+var content = __webpack_require__(59);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -3965,7 +4015,7 @@ if(false) {
 }
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -3979,7 +4029,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4024,7 +4074,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 });
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4109,7 +4159,7 @@ if (false) {
 }
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4174,14 +4224,14 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parse__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__parse__ = __webpack_require__(23);
 /**
  * This module controls interaction with the server.
  *
@@ -4194,81 +4244,96 @@ if (false) {
 
 const sift = __webpack_require__(64);
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(5); //
+// const static_fields = [
+//      // Date
+//      {
+//          displayName: 'Date',
+//          name: 'Date',
+//          hasGoal: false,
+//          goal: 0,
+//          goalThresholds: [],
+//          comparator: '',
+//          descriptor: '',
+//          format: {
+//              type: 'Time',
+//              string: 'M/D/YYYY'
+//          }
+//      },
+//      // Sales close rate
+//      {
+//          displayName: 'Close Rate',
+//          name: 'Close Rate',
+//          hasGoal: true,
+//          goal: 0.55,
+//          goalThresholds: [
+//              0.45,
+//              0.50,
+//              0.55
+//          ],
+//          comparator: '>=',
+//          descriptor: 'See these tips for greatest close rates!',
+//          format: {
+//              type: 'Number',
+//              string: '.2%'
+//          }
+//      },
+//      // DIRECTV sales count
+//      {
+//          displayName: 'DIRECTV Sales',
+//          name: 'DIRECTV Sales',
+//          hasGoal: true,
+//          goal: 1,
+//          goalThresholds: [],
+//          comparator: '>=',
+//          descriptor: 'See these tips for greatest DTV Sales!',
+//          format: {
+//              type: 'Number',
+//              string: 'd'
+//          }
+//      },
+//      // AHT - Average Handle Time
+//      {
+//          displayName: 'AHT',
+//          name: 'AHT',
+//          calculation: '{handleTime} / {calls}',
+//          hasGoal: true,
+//          goal: 600,
+//          goalThresholds: [
+//
+//          ],
+//          comparator: '<=',
+//          descriptor: 'See these tips for ways to lower handle time!',
+//          format: {
+//              type: 'Time',
+//              string: 'm:ss'
+//          }
+//      },
+//      // ACW - After Call Work
+//      {
+//          displayName: 'ACW',
+//          name: 'ACW',
+//          calculation: '{acwTime} / {calls}',
+//          hasGoal: true,
+//          goal: 30,
+//          goalThresholds: [
+//
+//          ],
+//          comparator: '<=',
+//          descriptor: 'See these tips for ways to lower ACW!',
+//          format: {
+//              type: 'Time',
+//              string: 'm:ss'
+//          }
+//      }
+// ];
 
-const static_fields = [// Date
-{
-  displayName: 'Date',
-  name: 'Date',
-  hasGoal: false,
-  goal: 0,
-  goalThresholds: [],
-  comparator: '',
-  descriptor: '',
-  format: {
-    type: 'Time',
-    string: 'M/D/YYYY'
-  }
-}, // Sales close rate
-{
-  displayName: 'Close Rate',
-  name: 'Close Rate',
-  hasGoal: true,
-  goal: 0.55,
-  goalThresholds: [0.45, 0.50, 0.55],
-  comparator: '>=',
-  descriptor: 'See these tips for greatest close rates!',
-  format: {
-    type: 'Number',
-    string: '.2%'
-  }
-}, // DIRECTV sales count
-{
-  displayName: 'DIRECTV Sales',
-  name: 'DIRECTV Sales',
-  hasGoal: true,
-  goal: 1,
-  goalThresholds: [],
-  comparator: '>=',
-  descriptor: 'See these tips for greatest DTV Sales!',
-  format: {
-    type: 'Number',
-    string: 'd'
-  }
-}, // AHT - Average Handle Time
-{
-  displayName: 'AHT',
-  name: 'AHT',
-  calculation: '{handleTime} / {calls}',
-  hasGoal: true,
-  goal: 600,
-  goalThresholds: [],
-  comparator: '<=',
-  descriptor: 'See these tips for ways to lower handle time!',
-  format: {
-    type: 'Time',
-    string: 'm:ss'
-  }
-}, // ACW - After Call Work
-{
-  displayName: 'ACW',
-  name: 'ACW',
-  calculation: '{acwTime} / {calls}',
-  hasGoal: true,
-  goal: 30,
-  goalThresholds: [],
-  comparator: '<=',
-  descriptor: 'See these tips for ways to lower ACW!',
-  format: {
-    type: 'Time',
-    string: 'm:ss'
-  }
-}];
 /**
  * Vuex is used to see if app is in edit mode (editMode Boolean), and store
  * field (meta) data.
  * @type {Vuex}
  */
+
 
 const store = new Vuex.Store({
   state: {
@@ -4276,8 +4341,6 @@ const store = new Vuex.Store({
     editMode: true,
     currentUser: '',
     timeoutId: 0,
-    subscriptions: [],
-    loaders: [],
     data: {},
     datasources: {}
   },
@@ -4296,8 +4359,13 @@ const store = new Vuex.Store({
         return [];
       }
 
+      if (!filter) {
+        console.log(`getData: filter not defined.`);
+        return [];
+      }
+
       const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
-      let data = sift(filt, state.data[datasource].map(d => Object.assign({}, d, d._id)));
+      let data = sift(filt, state.data[datasource]);
       return data;
     }
   },
@@ -4330,17 +4398,22 @@ const store = new Vuex.Store({
       state.fields = fields;
     },
 
-    subscribeTo(state, parameters) {
-      state.subscriptions.push(parameters);
-    },
-
     changeDatasource(state, datasource) {
       const ds = clone(datasource);
-      state.datasources[datasource.name] = datasource;
+      Vue.set(state.datasources, ds.id, ds);
     },
 
+    /**
+     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+     * datasource objects stored in database.
+     * @param {Object} state       [description]
+     * @param {Array}  datasources array of datasource objects
+     */
     setDatasources(state, datasources) {
-      state.datasources = clone(datasources);
+      state.datasources = clone(datasources).reduce((newObj, source) => {
+        newObj[source.id] = source;
+        return newObj;
+      }, {});
     }
 
   },
@@ -4353,17 +4426,25 @@ const store = new Vuex.Store({
       context.dispatch('nextUpdate', 10 * 1000);
     },
 
+    async forceRefresh(context) {
+      window.clearTimeout(context.timeoutId);
+      context.dispatch('startProcess');
+    },
+
     async nextUpdate(context, ms) {
       console.log(`Refresh at ${moment()}`); // Load data from server
 
-      context.state.datasources.forEach(async function (source) {
+      for (var id in context.state.datasources) {
+        const source = context.state.datasources[id];
         const data = await loadData(getParams(source));
         console.log(data);
         context.commit('updateData', {
           newData: data,
           datasource: source.name
         });
-      }); // and schedule the next update
+      }
+
+      ; // and schedule the next update
 
       let timeout = setTimeout(function next() {
         context.dispatch('nextUpdate', ms);
@@ -4380,48 +4461,13 @@ const store = new Vuex.Store({
 
 const getField = store.getters.field;
 /* unused harmony export getField */
- // const params = {
-//     filter: {
-//         // agentGroup: {
-//         //     $in: ['Customer Care', 'Sales'],
-//         // },
-//         agentUsername: {
-//             $eq: store.state.currentUser.trim()
-//         },
-//         date: {
-//             start: moment().startOf('month').format(),
-//             end:   moment().endOf('month').format(),
-//         },
-//     },
-//     fields: {
-//         sum: ['calls', 'handleTime', 'acwTime']
-//     },
-//     groupBy: ['agentUsername', 'skill', 'dateDay']
-// };
+
 
 function getParams(datasource) {
   const params = {
     filter: __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
     fields: datasource.fields,
     groupBy: datasource.groupBy
-  };
-  const paramsOld = {
-    filter: {
-      // agentGroup: {
-      //     $in: ['Customer Care', 'Sales'],
-      // },
-      agentUsername: {
-        $eq: store.state.currentUser.trim()
-      },
-      date: {
-        start: moment().startOf('month').format(),
-        end: moment().endOf('month').format()
-      }
-    },
-    fields: {
-      sum: ['calls', 'handleTime', 'acwTime']
-    },
-    groupBy: ['agentUsername', 'skill', 'dateDay']
   };
   return params;
 }
@@ -4436,42 +4482,6 @@ async function loadData(params) {
   });
   console.log(cleaned);
   return cleaned;
-}
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export fieldsToServer */
-/**
- * Handle expression parsing for calculated fields.
- */
-
-/**
- *
- * @param  {String} exp expression
- * @return {Array of Strings} names of fields needed to calculate `exp`
- */
-function requiredFields(exp) {
-  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
-}
-
-function expressionForField(field) {
-  return field.calculation;
-}
-
-function fieldsToServer(fields) {
-  return fields.reduce((list, field) => {
-    let [source, name] = field.fullName.split('.');
-
-    if (source == 'Calculated') {
-      const f = requiredFields(expressionForField(field));
-      return list.concat(f.map(n => n.split('.')[1]));
-    }
-
-    return list.concat(name);
-  }, []);
 }
 
 /***/ }),
@@ -5107,7 +5117,7 @@ module.exports = isEmpty;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(24);
+var _isArguments = /*#__PURE__*/__webpack_require__(25);
 
 var _isArray = /*#__PURE__*/__webpack_require__(67);
 
@@ -5191,7 +5201,7 @@ module.exports = _isString;
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
 var _equals = /*#__PURE__*/__webpack_require__(71);
 
@@ -5435,7 +5445,7 @@ module.exports = _functionName;
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -5483,7 +5493,7 @@ var _curry1 = /*#__PURE__*/__webpack_require__(1);
 
 var _has = /*#__PURE__*/__webpack_require__(20);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(24);
+var _isArguments = /*#__PURE__*/__webpack_require__(25);
 
 // cover IE < 9 keys issues
 

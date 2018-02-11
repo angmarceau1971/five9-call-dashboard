@@ -5,7 +5,7 @@
 import Editor from './editor.vue';
 
 export default {
-    props: ['id', 'datasource'],
+    props: ['id', 'datasource', 'filter'],
     components: {
         'editor': Editor
     },
@@ -20,7 +20,7 @@ export default {
             id: 'widget:' + uuidv4(),
             component: type,
             title: 'Hello World',
-            field: '',
+            fieldName: '',
             filter: { },
             datasource: ''
         };

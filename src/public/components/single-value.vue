@@ -24,17 +24,12 @@
 import WidgetBase from './widget-base.vue';
 
 import { formatValue } from '../javascript/scorecard-format';
+import * as parse from '../javascript/parse';
 
-function sum(obj, key) {
-    return obj.reduce((sum, item) => sum + item[key], 0);
-}
 
 export default {
     extends: WidgetBase,
-    props: ['title', 'fieldName', 'filter', 'datasource'],
-    mounted() {
-        this.$store.commit('subscribeTo', this.datasource);
-    },
+    props: ['title', 'fieldName'],
     computed: {
         field: function() {
             return this.$store.getters.field(this.fieldName);
@@ -44,18 +39,7 @@ export default {
         },
         value: function() {
             let data = this.$store.getters.getData(this.filter, this.datasource);
-            if (this.fieldName == 'Calculated.aht') {
-                return sum(data, 'handleTime') / sum(data, 'calls');
-            }
-            else if (this.fieldName == 'Calculated.acw') {
-                return sum(data, 'acwTime') / sum(data, 'calls');
-            }
-            else if (this.fieldName == 'AcdFeed.calls') {
-                return sum(data, 'calls');
-            }
-            else {
-                throw new Error(`SingleValue component isn't expecting the field name: ${this.fieldName}`);
-            }
+            return parse.getValueForField(data, this.fieldName);
         }
     },
     methods: {
@@ -64,4 +48,6 @@ export default {
         }
     }
 };
+
+
 </script>

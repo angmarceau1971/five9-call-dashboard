@@ -38,7 +38,7 @@
 
             <h3>Date</h3>
             <select name="date-dropdown"
-                v-model="newObject.filter.date">
+                v-model="newObject.filter.dateDay">
                 <option
                     v-for="option in dateOptions"
                     :value="option"

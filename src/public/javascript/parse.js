@@ -2,6 +2,28 @@
  * Handle expression parsing for calculated fields.
  */
 
+export function getValueForField(data, field) {
+    // TODO: calculate based on expressions
+    if (field == 'Calculated.aht') {
+        return sum(data, 'handleTime') / sum(data, 'calls');
+    }
+    else if (field == 'Calculated.acw') {
+        return sum(data, 'acwTime') / sum(data, 'calls');
+    }
+    const [source, fieldName] = field.split('.');
+    if (source == 'AcdFeed') {
+        console.log([source, fieldName]);
+        return sum(data, fieldName);
+    }
+    else {
+        throw new Error(`Parser isn't expecting the field name "${field}".`);
+    }
+}
+
+
+function sum(obj, key) {
+    return obj.reduce((sum, item) => sum + item[key], 0);
+}
 
 /**
  *

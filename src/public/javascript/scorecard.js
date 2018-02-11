@@ -113,6 +113,7 @@ const layout = {
     ],
     datasources: [
         {
+            "id": "1",
             "name": "Test",
             "fields": {
                 "sum": [
@@ -174,6 +175,7 @@ const vm = new Vue({
 
     methods: {
         postAcd: async function() {
+            store.dispatch('forceRefresh');
         },
 
         clickImport: function() {
@@ -275,8 +277,8 @@ const vm = new Vue({
         },
         datasourceUpdater: function(datasource) {
             try {
-                let obj = getVueObject(datasource);
-                obj = inputToParameters(obj);
+                let obj = parseDatasource(datasource);
+
                 let oldIndex = this.layout.datasources.findIndex((ds) =>
                                                 ds.name == obj.name);
                 if (oldIndex == -1) {
@@ -296,6 +298,7 @@ const vm = new Vue({
                 let oldIndex = this.layout.datasources.findIndex((ds) =>
                                                 ds.name == obj.name);
                 Vue.delete(this.layout.datasources, oldIndex);
+                this.$store.commit('deleteDatasource', obj);
             } catch (err) {
                 this.updateDatasourceMessage(`Error removing data source: ${err}.`);
             }
@@ -320,14 +323,21 @@ function download(text, name, type) {
     a.click();
 }
 
-function inputToParameters(input) {
-    let ds = clone(input);
-    const toArray = (str) => str.split(',').map((x) => x.trim());
-    const toObject = JSON.parse;
-    ds.fields = {
-        sum: toArray(input.fields)
+function parseDatasource(input) {
+    function objectify(value) {
+        try {
+            return JSON.parse(value);
+        } catch (err) {
+            if (err instanceof SyntaxError) return value;
+            else throw err;
+        }
     }
-    ds.filter = toObject(input.filter);
-    ds.groupBy = toArray(input.groupBy);
-    return ds;
+    return objectMap(input, objectify);
+}
+
+function objectMap(object, fun) {
+    return Object.keys(object).reduce((newObj, key) => {
+        newObj[key] = fun(object[key]);
+        return newObj;
+    }, {})
 }

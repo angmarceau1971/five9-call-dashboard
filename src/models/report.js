@@ -72,7 +72,8 @@ function getHeadersFromCsv(csvHeaderLine) {
         'HANDLE TIME':      'handleTime',
         'CONFERENCE TIME':  'conferenceTime',
         'AFTER CALL WORK TIME': 'acwTime',
-        'SPEED OF ANSWER':  'speedOfAnswer'
+        'SPEED OF ANSWER':  'speedOfAnswer',
+        'HOLD TIME': 'holdTime'
     };
     const oldHeaders = csvHeaderLine.split(',');
     // Return updated header from lookup table; if not found, just return the

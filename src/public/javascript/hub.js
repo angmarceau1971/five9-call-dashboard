@@ -5,94 +5,94 @@
  * components can access.
  */
 
- import * as api from './api';
- import * as filters from './filters';
- import * as parse from './parse';
- const sift = require('sift');
- const clone = require('ramda/src/clone');
-
- const static_fields = [
-     // Date
-     {
-         displayName: 'Date',
-         name: 'Date',
-         hasGoal: false,
-         goal: 0,
-         goalThresholds: [],
-         comparator: '',
-         descriptor: '',
-         format: {
-             type: 'Time',
-             string: 'M/D/YYYY'
-         }
-     },
-     // Sales close rate
-     {
-         displayName: 'Close Rate',
-         name: 'Close Rate',
-         hasGoal: true,
-         goal: 0.55,
-         goalThresholds: [
-             0.45,
-             0.50,
-             0.55
-         ],
-         comparator: '>=',
-         descriptor: 'See these tips for greatest close rates!',
-         format: {
-             type: 'Number',
-             string: '.2%'
-         }
-     },
-     // DIRECTV sales count
-     {
-         displayName: 'DIRECTV Sales',
-         name: 'DIRECTV Sales',
-         hasGoal: true,
-         goal: 1,
-         goalThresholds: [],
-         comparator: '>=',
-         descriptor: 'See these tips for greatest DTV Sales!',
-         format: {
-             type: 'Number',
-             string: 'd'
-         }
-     },
-     // AHT - Average Handle Time
-     {
-         displayName: 'AHT',
-         name: 'AHT',
-         calculation: '{handleTime} / {calls}',
-         hasGoal: true,
-         goal: 600,
-         goalThresholds: [
-
-         ],
-         comparator: '<=',
-         descriptor: 'See these tips for ways to lower handle time!',
-         format: {
-             type: 'Time',
-             string: 'm:ss'
-         }
-     },
-     // ACW - After Call Work
-     {
-         displayName: 'ACW',
-         name: 'ACW',
-         calculation: '{acwTime} / {calls}',
-         hasGoal: true,
-         goal: 30,
-         goalThresholds: [
-
-         ],
-         comparator: '<=',
-         descriptor: 'See these tips for ways to lower ACW!',
-         format: {
-             type: 'Time',
-             string: 'm:ss'
-         }
-     }
-];
+import * as api from './api';
+import * as filters from './filters';
+import * as parse from './parse';
+const sift = require('sift');
+const clone = require('ramda/src/clone');
+//
+// const static_fields = [
+//      // Date
+//      {
+//          displayName: 'Date',
+//          name: 'Date',
+//          hasGoal: false,
+//          goal: 0,
+//          goalThresholds: [],
+//          comparator: '',
+//          descriptor: '',
+//          format: {
+//              type: 'Time',
+//              string: 'M/D/YYYY'
+//          }
+//      },
+//      // Sales close rate
+//      {
+//          displayName: 'Close Rate',
+//          name: 'Close Rate',
+//          hasGoal: true,
+//          goal: 0.55,
+//          goalThresholds: [
+//              0.45,
+//              0.50,
+//              0.55
+//          ],
+//          comparator: '>=',
+//          descriptor: 'See these tips for greatest close rates!',
+//          format: {
+//              type: 'Number',
+//              string: '.2%'
+//          }
+//      },
+//      // DIRECTV sales count
+//      {
+//          displayName: 'DIRECTV Sales',
+//          name: 'DIRECTV Sales',
+//          hasGoal: true,
+//          goal: 1,
+//          goalThresholds: [],
+//          comparator: '>=',
+//          descriptor: 'See these tips for greatest DTV Sales!',
+//          format: {
+//              type: 'Number',
+//              string: 'd'
+//          }
+//      },
+//      // AHT - Average Handle Time
+//      {
+//          displayName: 'AHT',
+//          name: 'AHT',
+//          calculation: '{handleTime} / {calls}',
+//          hasGoal: true,
+//          goal: 600,
+//          goalThresholds: [
+//
+//          ],
+//          comparator: '<=',
+//          descriptor: 'See these tips for ways to lower handle time!',
+//          format: {
+//              type: 'Time',
+//              string: 'm:ss'
+//          }
+//      },
+//      // ACW - After Call Work
+//      {
+//          displayName: 'ACW',
+//          name: 'ACW',
+//          calculation: '{acwTime} / {calls}',
+//          hasGoal: true,
+//          goal: 30,
+//          goalThresholds: [
+//
+//          ],
+//          comparator: '<=',
+//          descriptor: 'See these tips for ways to lower ACW!',
+//          format: {
+//              type: 'Time',
+//              string: 'm:ss'
+//          }
+//      }
+// ];
 
 
 /**
@@ -106,8 +106,6 @@ export const store = new Vuex.Store({
         editMode: true,
         currentUser: '',
         timeoutId: 0,
-        subscriptions: [],
-        loaders: [],
         data: {},
         datasources: {}
     },
@@ -125,10 +123,12 @@ export const store = new Vuex.Store({
                 console.log(`getData: datasource ${datasource} doesn't exist.`);
                 return [];
             }
+            if (!filter) {
+                console.log(`getData: filter not defined.`);
+                return [];
+            }
             const filt = filters.clean(filter, state.currentUser);
-            let data = sift(filt, state.data[datasource].map((d) =>
-                Object.assign({}, d, d._id)
-            ));
+            let data = sift(filt, state.data[datasource]);
             return data;
         }
     },
@@ -153,15 +153,21 @@ export const store = new Vuex.Store({
         setFields(state, fields) {
             state.fields = fields;
         },
-        subscribeTo(state, parameters) {
-            state.subscriptions.push(parameters);
-        },
         changeDatasource(state, datasource) {
             const ds = clone(datasource);
-            state.datasources[datasource.name] = datasource;
+            Vue.set(state.datasources, ds.id, ds);
         },
+        /**
+         * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+         * datasource objects stored in database.
+         * @param {Object} state       [description]
+         * @param {Array}  datasources array of datasource objects
+         */
         setDatasources(state, datasources) {
-            state.datasources = clone(datasources);
+            state.datasources = clone(datasources).reduce((newObj, source) => {
+                newObj[source.id] = source;
+                return newObj;
+            }, {});
         }
     },
     actions: {
@@ -173,16 +179,22 @@ export const store = new Vuex.Store({
             context.dispatch('nextUpdate', 10 * 1000);
         },
 
+        async forceRefresh(context) {
+            window.clearTimeout(context.timeoutId);
+            context.dispatch('startProcess');
+        },
+
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
             // Load data from server
-            context.state.datasources.forEach(async function(source) {
+            for (var id in context.state.datasources) {
+                const source = context.state.datasources[id];
                 const data = await loadData(getParams(source));
                 console.log(data);
                 context.commit('updateData', {
                     newData: data, datasource: source.name
                 });
-            });
+            };
 
             // and schedule the next update
             let timeout = setTimeout(function next() {
@@ -199,48 +211,11 @@ export const store = new Vuex.Store({
 export const getField = store.getters.field;
 
 
-// const params = {
-//     filter: {
-//         // agentGroup: {
-//         //     $in: ['Customer Care', 'Sales'],
-//         // },
-//         agentUsername: {
-//             $eq: store.state.currentUser.trim()
-//         },
-//         date: {
-//             start: moment().startOf('month').format(),
-//             end:   moment().endOf('month').format(),
-//         },
-//     },
-//     fields: {
-//         sum: ['calls', 'handleTime', 'acwTime']
-//     },
-//     groupBy: ['agentUsername', 'skill', 'dateDay']
-// };
-
 function getParams(datasource) {
     const params = {
         filter: filters.clean(datasource.filter, store.state.currentUser),
         fields: datasource.fields,
         groupBy: datasource.groupBy
-    };
-    const paramsOld = {
-        filter: {
-            // agentGroup: {
-            //     $in: ['Customer Care', 'Sales'],
-            // },
-            agentUsername: {
-                $eq: store.state.currentUser.trim()
-            },
-            date: {
-                start: moment().startOf('month').format(),
-                end:   moment().endOf('month').format(),
-            },
-        },
-        fields: {
-            sum: ['calls', 'handleTime', 'acwTime']
-        },
-        groupBy: ['agentUsername', 'skill', 'dateDay']
     };
     return params;
 }
