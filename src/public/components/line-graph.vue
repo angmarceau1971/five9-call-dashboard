@@ -16,12 +16,19 @@ Accepts data prop with structure:
         <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
                 :width="width" :height="height">
             <text class="title" :x="55" :y="10">{{ fields.y }}</text>
-            <g class="axis" ref="yaxis" :style="{transform: `translate(20px,${margin.top}px)`}"></g>
+            <g class="axis" ref="yaxis" :style="{transform: `translate(${margin.left}px,${margin.top}px)`}"></g>
+            <g class="axis" ref="xaxis" :style="{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}"></g>
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
                 <path class="area" :d="paths.area" />
                 <path class="goal-line" :d="paths.goalLine" />
                 <path class="line" :d="paths.line" />
                 <path class="selector" :d="paths.selector" />
+                <circle v-for="point in points"
+                    class="data-circle"
+                    :r="circleRadius"
+                    :cx="point.x"
+                    :cy="point.y"
+                ></circle>
             </g>
         </svg>
     </div>
@@ -42,6 +49,7 @@ import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
 
 import * as parse from '../javascript/parse';
+import { formatValue } from '../javascript/scorecard-format';
 
 const props = {
     fields: {
@@ -50,10 +58,10 @@ const props = {
     margin: {
         type: Object,
         default: () => ({
-            left: 40,
-            right: 10,
-            top: 15,
-            bottom: 10,
+            left: 30,
+            right: 20,
+            top: 20,
+            bottom: 25,
         }),
     }
 };
@@ -80,12 +88,14 @@ export default {
                 selector: '',
                 goalLine: ''
             },
+            circleRadius: 3,
             lastHoverPoint: {},
             scaled: {
                 x: null,
                 y: null,
             },
             points: [],
+            circles: []
         };
     },
 
@@ -187,13 +197,26 @@ export default {
             // this.paths.area = this.createArea(this.points);
             this.paths.line = this.createLine(this.points);
 
+
             // draw axes
+            const yField = this.$store.getters.field(this.fields.y);
             d3.select(this.$refs.yaxis)
-                .call(d3.axisLeft(this.scaled.y))
+                .call(d3.axisLeft(this.scaled.y)
+                        .tickFormat((d) => formatValue(d, yField).value))
                 .selectAll('path, .tick line')
                 .attr('stroke', '#ccc');
             d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
+            d3.select(this.$refs.xaxis)
+                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))
+                .selectAll('path, .tick line')
+                .attr('stroke', '#ccc');
+            d3.select(this.$refs.xaxis)
+                .selectAll('text')
+                .attr('fill', '#ddd')
+                .attr('dx', '-0.8em')
+                .attr('transform', 'rotate(-45)');
         },
+
         mouseover({ offsetX }) {
             if (this.points.length > 0) {
                 const x = offsetX - this.margin.left;
@@ -231,7 +254,7 @@ export default {
         cursor: pointer;
     }
     .graph-wrap {
-        height: 150px;
+        height: 175px;
         width: 100%;
     }
     .graph-wrap text {
@@ -269,5 +292,8 @@ export default {
         stroke: hsla(207, 84%, 85%, 0.7);
         stroke-width: 1.0;
         fill: none;
+    }
+    .data-circle {
+        fill: steelblue;
     }
 </style>
