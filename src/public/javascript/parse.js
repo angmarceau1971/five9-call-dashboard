@@ -23,18 +23,14 @@ export function getValueForField(data, field) {
     }
 }
 
-export function processInputData(data, field) {
-    return clone(data).map((datum) => {
-        if (field == 'Calculated.aht') {
-            datum[field] = datum.calls == 0
-                        ? 0
-                        : datum.handleTime / datum.calls;
-            return datum;
-        }
-    });
-}
-
-export function summarize(data, summaryField, displayFields) {
+/**
+ * Group and summarize data by a given field.
+ * @param  {Object} data         original data from server
+ * @param  {String} summaryField field to summarize/group by
+ * @param  {Array} valueFields string field names to sum up
+ * @return {Object}              summarized data
+ */
+export function summarize(data, summaryField, valueFields) {
     // Date keys are coerced to strings by d3.nest, so parse them back if needed
     let keyParse = (key) => key;
     if (summaryField == 'dateDay' || summaryField == 'date') {
@@ -44,12 +40,14 @@ export function summarize(data, summaryField, displayFields) {
     let nested = d3.nest()
         .key((d) => d[summaryField])
         .rollup((values) => {
-            return {
-                'Calculated.aht': sum(values, 'handleTime') / sum(values, 'calls')
-            }
+            // Sum up each requested field
+            return valueFields.reduce((result, field) => {
+                result[field] = process(values, field);
+                return result;
+            }, {});
         })
         .entries(data);
-    // Flatten data back to original format
+    // Flatten the summarized nested data back to original format
     return nested.map((datum) => {
         return Object.assign(
             datum.value,
@@ -57,6 +55,27 @@ export function summarize(data, summaryField, displayFields) {
     });
 }
 
+/**
+ * Extract overall value from a given set of data.
+ * @param  {Object} data
+ * @param  {String} field full field name ("source.field" format)
+ * @return {Number} value
+ */
+function process(data, field) {
+    if (field == 'Calculated.aht') {
+        return sum(data, 'handleTime') / sum(data, 'calls');
+    }
+    else if (field == 'Calculated.acw') {
+        return sum(data, 'acwTime') / sum(data, 'calls');
+    }
+    const [source, fieldName] = field.split('.');
+    if (source == 'AcdFeed') {
+        return sum(data, fieldName);
+    }
+    else {
+        throw new Error(`Parser isn't expecting the field name "${field}".`);
+    }
+}
 
 function sum(obj, key) {
     return obj.reduce((sum, item) => sum + item[key], 0);

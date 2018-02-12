@@ -15,7 +15,7 @@ Accepts data prop with structure:
     <div ref="graph-wrap" class="graph-wrap">
         <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
                 :width="width" :height="height">
-            <text class="title" :x="55" :y="10">{{ fields.y }}</text>
+            <text class="title" :x="55" :y="10">{{ fieldDisplayName(fields.y) }}</text>
             <g class="axis" ref="yaxis" :style="{transform: `translate(${margin.left}px,${margin.top}px)`}"></g>
             <g class="axis" ref="xaxis" :style="{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}"></g>
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
@@ -31,6 +31,10 @@ Accepts data prop with structure:
                 ></circle>
             </g>
         </svg>
+
+        <div v-if="infoBox.message" class="info-box"
+            :style="{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}"
+        >{{ infoBox.message }}</div>
     </div>
 
     <data-table
@@ -95,7 +99,13 @@ export default {
                 y: null,
             },
             points: [],
-            circles: []
+            circles: [],
+            // Box to display printed data points when hovering
+            infoBox: {
+                message: '',
+                x: 0,
+                y: 0
+            }
         };
     },
 
@@ -122,6 +132,9 @@ export default {
     },
 
     mounted() {
+        // Remove title tooltip, as it gets in the way of the infoBox popup
+        this.$el.removeAttribute('title');
+        // Update everything when screen size changes
         window.addEventListener('resize', this.onResize);
         this.onResize();
     },
@@ -136,6 +149,10 @@ export default {
     },
 
     methods: {
+        fieldDisplayName(fieldName) {
+            return this.$store.getters.field(fieldName).displayName
+                || fieldName;
+        },
         toggleTable() {
             this.showTable = !this.showTable;
         },
@@ -217,20 +234,32 @@ export default {
                 .attr('transform', 'rotate(-45)');
         },
 
-        mouseover({ offsetX }) {
+        mouseover({ offsetX, offsetY }) {
             if (this.points.length > 0) {
                 const x = offsetX - this.margin.left;
+                const y = offsetY - this.margin.top;
                 const closestPoint = this.getClosestPoint(x);
+
                 if (this.lastHoverPoint.index !== closestPoint.index) {
                     const point = this.points[closestPoint.index];
                     this.paths.selector = this.createValueSelector([point]);
                     this.$emit('select', this.data[closestPoint.index]);
                     this.lastHoverPoint = closestPoint;
+                    // InfoBox coords are slightly to the lower-right of mouse
+                    const dataPoint = this.data[closestPoint.index];
+                    this.infoBox.message = `
+                        ${this.fieldDisplayName(this.fields.y)} on
+                        ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
+                        : ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
+                    `;
+                    this.infoBox.x = x + 30;
+                    this.infoBox.y = y + 40;
                 }
             }
         },
         mouseleave() {
             this.paths.selector = '';
+            this.infoBox.message = '';
         },
         getClosestPoint(x) {
             return this.points
@@ -295,5 +324,15 @@ export default {
     }
     .data-circle {
         fill: steelblue;
+    }
+    .info-box {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: hsla(0, 0%, 40%, 0.75);
+        color: inherit;
+        border-radius: 2px;
+        padding: 0.5em;
     }
 </style>

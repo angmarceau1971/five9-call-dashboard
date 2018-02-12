@@ -19,7 +19,7 @@
                 @unhoverDate="unhoverDate"
                 :key="i"
                 :datum="datum"
-                :isHighlighted="highlightedDate==datum.Date"
+                :isHighlighted="highlightedDate==datum.dateDay"
             ></tr>
         </tbody>
     </table>
@@ -38,7 +38,11 @@ export default {
     },
     computed: {
         headers: function() {
-            return Object.keys(this.data[0]);
+            return Object.keys(this.data[0])
+                .map((fullFieldName) =>
+                    this.$store.getters.field(fullFieldName).displayName
+                    || fullFieldName
+                );
         }
     },
     methods: {

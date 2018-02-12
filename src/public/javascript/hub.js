@@ -115,6 +115,9 @@ export const store = new Vuex.Store({
          * @return {Object}  field object
          */
         field: (state) => (fullFieldName) => {
+            if (fullFieldName == 'dateDay' || fullFieldName == 'date') {
+                return state.fields.find((f) => f.name == 'dateDay');
+            }
             return state.fields.find((f) => f.fullName == fullFieldName);
         },
         getData: (state) => (filter, datasource) => {

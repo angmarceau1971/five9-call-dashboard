@@ -11,7 +11,7 @@ const aht = {
     title: 'Average Handle Time',
     id: 'card:1',
     layoutOrder: 1,
-    columns: 1
+    columns: 2
 };
 aht.data = [];
 aht.widgets = [
@@ -41,6 +41,32 @@ aht.widgets = [
             dateDay: '<month-to-date>'
         }
     },
+    // {
+    //     'id': 'widget:2',
+    //     'component': 'single-value',
+    //     'title': 'ACW Today',
+    //     'fieldName': 'Calculated.acw',
+    //     'datasource': 'Test',
+    //     'filter': {
+    //         agentUsername: {
+    //             $in: ['<current user>']
+    //         },
+    //         dateDay: '<today>'
+    //     }
+    // },
+    // {
+    //     'id': 'widget:3',
+    //     'component': 'single-value',
+    //     'title': 'ACW Month to Date',
+    //     'fieldName': 'Calculated.acw',
+    //     'datasource': 'Test',
+    //     'filter': {
+    //         agentUsername: {
+    //             $in: ['<current user>']
+    //         },
+    //         dateDay: '<month-to-date>'
+    //     }
+    // },
     {
         'id': 'widget:4',
         'component': 'line-graph',
@@ -57,32 +83,6 @@ aht.widgets = [
             dateDay: '<month-to-date>'
         }
     },
-    {
-        'id': 'widget:2',
-        'component': 'single-value',
-        'title': 'ACW Today',
-        'fieldName': 'Calculated.acw',
-        'datasource': 'Test',
-        'filter': {
-            agentUsername: {
-                $in: ['<current user>']
-            },
-            dateDay: '<today>'
-        }
-    },
-    {
-        'id': 'widget:3',
-        'component': 'single-value',
-        'title': 'ACW Month to Date',
-        'fieldName': 'Calculated.acw',
-        'datasource': 'Test',
-        'filter': {
-            agentUsername: {
-                $in: ['<current user>']
-            },
-            dateDay: '<month-to-date>'
-        }
-    }
 ];
 
 
@@ -119,7 +119,23 @@ calls.widgets = [
             },
             dateDay: '<month-to-date>'
         }
-    }
+    },
+    {
+        'id': 'widget:2',
+        'component': 'line-graph',
+        'title': 'Calls by Day',
+        'fields': {
+            'x': 'dateDay',
+            'y': 'AcdFeed.calls'
+        },
+        'datasource': 'Test',
+        'filter': {
+            agentUsername: {
+                $in: ['<current user>']
+            },
+            dateDay: '<month-to-date>'
+        }
+    },
 ];
 
 const layout = {
@@ -192,7 +208,7 @@ const vm = new Vue({
     },
 
     methods: {
-        postAcd: async function() {
+        refresh: async function() {
             store.dispatch('forceRefresh');
         },
 

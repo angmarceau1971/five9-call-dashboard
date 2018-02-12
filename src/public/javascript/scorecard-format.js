@@ -1,3 +1,5 @@
+import * as hub from './hub';
+
 let comparators = {
     '>=': (value, goal) => value >= goal,
     '<=': (value, goal) => value <= goal
@@ -6,6 +8,7 @@ let comparators = {
 
 export function formatValue(value, field) {
     let formattedValue, style;
+    if (typeof(field) == 'string') field = hub.store.getters.field(field);
 
     if (!field) {
         return {
@@ -26,10 +29,12 @@ export function formatValue(value, field) {
 
     if (field.format.type == 'Number') {
         formattedValue = d3.format(field.format.string)(value);
-    } else if (field.format.type == 'Time') {
+    } else if (field.format.type == 'Duration') {
         formattedValue = moment('2018-01-01').startOf('day')
             .seconds(value)
             .format(field.format.string);
+    } else if (field.format.type == 'Time') {
+        formattedValue = moment(value).format(field.format.string);
     } else {
         formattedValue = value;
     }

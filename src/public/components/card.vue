@@ -43,7 +43,6 @@
     <line-graph class="widget"
         v-for="(widget, i) in widgetsOfType('line-graph')"
         v-bind="widget"
-        :data="data"
         :key="widget.id"
         :ref="widget.id"
         :style="{ order: widget.layoutOrder }"

@@ -14,16 +14,16 @@
 </template>
 
 <script>
-import {formatValue} from '../javascript/scorecard-format.js';
+import { formatValue } from '../javascript/scorecard-format.js';
 
 export default {
     props: ['datum', 'headers', 'isHighlighted'],
     methods: {
         highlightDate: function(datum) {
-            this.$emit('hoverDate', datum.Date);
+            this.$emit('hoverDate', datum.dateDay);
         },
         unhighlightDate: function(datum) {
-            this.$emit('unhoverDate', datum.Date);
+            this.$emit('unhoverDate', datum.dateDay);
         },
         formatted: function (val, fieldName) {
             let res = formatValue(val, this.$store.getters.field(fieldName));
