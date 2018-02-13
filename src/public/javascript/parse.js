@@ -5,8 +5,23 @@
 import * as hub from './hub';
 const clone = require('ramda/src/clone');
 
+/**
+ * Extract an overall value from a set of data, based on the provided field.
+ * @param  {Array} data   array of data objects
+ * @param  {String} field to extract value for
+ * @return {Number}       value
+ */
 export function getValueForField(data, field) {
-    // TODO: calculate based on expressions
+    return process(data, field);
+}
+
+/**
+ * Extract overall value from a given set of data.
+ * @param  {Array} data
+ * @param  {String} field full field name ("source.field" format)
+ * @return {Number} value
+ */
+function process(data, field) {
     if (field == 'Calculated.aht') {
         return sum(data, 'handleTime') / sum(data, 'calls');
     }
@@ -15,7 +30,6 @@ export function getValueForField(data, field) {
     }
     const [source, fieldName] = field.split('.');
     if (source == 'AcdFeed') {
-        console.log([source, fieldName]);
         return sum(data, fieldName);
     }
     else {
@@ -25,9 +39,9 @@ export function getValueForField(data, field) {
 
 /**
  * Group and summarize data by a given field.
- * @param  {Object} data         original data from server
+ * @param  {Array}  data         original data from server
  * @param  {String} summaryField field to summarize/group by
- * @param  {Array} valueFields string field names to sum up
+ * @param  {Array}  valueFields  full field names to summarize stats for
  * @return {Object}              summarized data
  */
 export function summarize(data, summaryField, valueFields) {
@@ -55,27 +69,6 @@ export function summarize(data, summaryField, valueFields) {
     });
 }
 
-/**
- * Extract overall value from a given set of data.
- * @param  {Object} data
- * @param  {String} field full field name ("source.field" format)
- * @return {Number} value
- */
-function process(data, field) {
-    if (field == 'Calculated.aht') {
-        return sum(data, 'handleTime') / sum(data, 'calls');
-    }
-    else if (field == 'Calculated.acw') {
-        return sum(data, 'acwTime') / sum(data, 'calls');
-    }
-    const [source, fieldName] = field.split('.');
-    if (source == 'AcdFeed') {
-        return sum(data, fieldName);
-    }
-    else {
-        throw new Error(`Parser isn't expecting the field name "${field}".`);
-    }
-}
 
 function sum(obj, key) {
     return obj.reduce((sum, item) => sum + item[key], 0);

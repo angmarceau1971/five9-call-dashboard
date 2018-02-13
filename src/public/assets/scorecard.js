@@ -1285,7 +1285,7 @@ if (false) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
 
 let comparators = {
   '>=': (value, goal) => value >= goal,
@@ -1377,268 +1377,12 @@ if (false) {(function () {
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports) {
-
-function _has(prop, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-module.exports = _has;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
-/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
-/* unused harmony export prettifyDateOption */
-const clone = __webpack_require__(2);
-/**
- * Returns a cleaned / formatted copy of widget filter to pass to server.
- * @param  {Object} original    filter from widget
- * @param  {String} currentUser current user's username
- * @return {Object}             cleaned up filter for server
- */
-
-
-function clean(original, currentUser) {
-  let filter = clone(original); // Clean up dates
-
-  let dateKey;
-
-  if (filter.date) {
-    dateKey = 'date';
-  } else if (filter.dateDay) {
-    dateKey = 'dateDay';
-  } else {
-    throw new Error('No date key defined in filter.');
-  }
-
-  let dateFn = dateMatcher[filter[dateKey]];
-  filter[dateKey] = dateFn(); // Insert actual username
-
-  if (filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
-    filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = currentUser;
-  }
-
-  if (filter.agentUsername.$eq == '<current user>') {
-    filter.agentUsername.$eq = currentUser;
-  }
-
-  return filter;
-}
-function dateOptions() {
-  return Object.keys(dateMatcher);
-}
-function prettifyDateOption(option) {
-  // remove brackets
-  option.replace(/[<|>]/, ''); // TODO: capitalize properly
-
-  return option;
-}
-const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
-const dateMatcher = {
-  '<today>': function () {
-    return {
-      $gte: moment().startOf('day').toDate(),
-      $lt: moment().endOf('day').toDate()
-    };
-  },
-  '<yesterday>': function () {
-    return {
-      $gte: moment().add(-1, 'days').startOf('day').toDate(),
-      $lt: moment().startOf('day').toDate()
-    };
-  },
-  '<month-to-date>': function () {
-    return {
-      $gte: moment().startOf('month').toDate(),
-      $lt: moment().endOf('month').toDate()
-    };
-  }
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(48);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(42)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\data-table.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
-  } else {
-    hotAPI.reload("data-v-48d3d2c4", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
-/* harmony export (immutable) */ __webpack_exports__["b"] = summarize;
-/* unused harmony export fieldsToServer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
-/**
- * Handle expression parsing for calculated fields.
- */
-
-
-const clone = __webpack_require__(2);
-
-function getValueForField(data, field) {
-  // TODO: calculate based on expressions
-  if (field == 'Calculated.aht') {
-    return sum(data, 'handleTime') / sum(data, 'calls');
-  } else if (field == 'Calculated.acw') {
-    return sum(data, 'acwTime') / sum(data, 'calls');
-  }
-
-  const [source, fieldName] = field.split('.');
-
-  if (source == 'AcdFeed') {
-    console.log([source, fieldName]);
-    return sum(data, fieldName);
-  } else {
-    throw new Error(`Parser isn't expecting the field name "${field}".`);
-  }
-}
-/**
- * Group and summarize data by a given field.
- * @param  {Object} data         original data from server
- * @param  {String} summaryField field to summarize/group by
- * @param  {Array} valueFields string field names to sum up
- * @return {Object}              summarized data
- */
-
-function summarize(data, summaryField, valueFields) {
-  // Date keys are coerced to strings by d3.nest, so parse them back if needed
-  let keyParse = key => key;
-
-  if (summaryField == 'dateDay' || summaryField == 'date') {
-    keyParse = key => new Date(key);
-  } // Summarize data
-
-
-  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
-    // Sum up each requested field
-    return valueFields.reduce((result, field) => {
-      result[field] = process(values, field);
-      return result;
-    }, {});
-  }).entries(data); // Flatten the summarized nested data back to original format
-
-  return nested.map(datum => {
-    return Object.assign(datum.value, {
-      [summaryField]: keyParse(datum.key)
-    });
-  });
-}
-/**
- * Extract overall value from a given set of data.
- * @param  {Object} data
- * @param  {String} field full field name ("source.field" format)
- * @return {Number} value
- */
-
-function process(data, field) {
-  if (field == 'Calculated.aht') {
-    return sum(data, 'handleTime') / sum(data, 'calls');
-  } else if (field == 'Calculated.acw') {
-    return sum(data, 'acwTime') / sum(data, 'calls');
-  }
-
-  const [source, fieldName] = field.split('.');
-
-  if (source == 'AcdFeed') {
-    return sum(data, fieldName);
-  } else {
-    throw new Error(`Parser isn't expecting the field name "${field}".`);
-  }
-}
-
-function sum(obj, key) {
-  return obj.reduce((sum, item) => sum + item[key], 0);
-}
-/**
- *
- * @param  {String} exp expression
- * @return {Array of Strings} names of fields needed to calculate `exp`
- */
-
-
-function requiredFields(exp) {
-  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
-}
-
-function expressionForField(field) {
-  return field.calculation;
-}
-
-function fieldsToServer(fields) {
-  return fields.reduce((list, field) => {
-    let [source, name] = field.fullName.split('.');
-
-    if (source == 'Calculated') {
-      const f = requiredFields(expressionForField(field));
-      return list.concat(f.map(n => n.split('.')[1]));
-    }
-
-    return list.concat(name);
-  }, []);
-}
-
-/***/ }),
-/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(22);
 /**
  * This module controls interaction with the server.
  *
@@ -1648,7 +1392,7 @@ function fieldsToServer(fields) {
 
 
 
-const sift = __webpack_require__(53);
+const sift = __webpack_require__(47);
 
 const clone = __webpack_require__(2); //
 // const static_fields = [
@@ -1895,6 +1639,256 @@ async function loadData(params) {
 }
 
 /***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+module.exports = _has;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
+/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
+/* unused harmony export prettifyDateOption */
+const clone = __webpack_require__(2);
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server.
+ * @param  {Object} original    filter from widget
+ * @param  {String} currentUser current user's username
+ * @return {Object}             cleaned up filter for server
+ */
+
+
+function clean(original, currentUser) {
+  let filter = clone(original); // Clean up dates
+
+  let dateKey;
+
+  if (filter.date) {
+    dateKey = 'date';
+  } else if (filter.dateDay) {
+    dateKey = 'dateDay';
+  } else {
+    throw new Error('No date key defined in filter.');
+  }
+
+  let dateFn = dateMatcher[filter[dateKey]];
+  filter[dateKey] = dateFn(); // Insert actual username
+
+  if (filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
+    filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = currentUser;
+  }
+
+  if (filter.agentUsername.$eq == '<current user>') {
+    filter.agentUsername.$eq = currentUser;
+  }
+
+  return filter;
+}
+function dateOptions() {
+  return Object.keys(dateMatcher);
+}
+function prettifyDateOption(option) {
+  // remove brackets
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
+}
+const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
+const dateMatcher = {
+  '<today>': function () {
+    return {
+      $gte: moment().startOf('day').toDate(),
+      $lt: moment().endOf('day').toDate()
+    };
+  },
+  '<yesterday>': function () {
+    return {
+      $gte: moment().add(-1, 'days').startOf('day').toDate(),
+      $lt: moment().startOf('day').toDate()
+    };
+  },
+  '<month-to-date>': function () {
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().endOf('month').toDate()
+    };
+  }
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__ = __webpack_require__(49);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(42)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\data-table.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-48d3d2c4", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = summarize;
+/* unused harmony export fieldsToServer */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
+/**
+ * Handle expression parsing for calculated fields.
+ */
+
+
+const clone = __webpack_require__(2);
+/**
+ * Extract an overall value from a set of data, based on the provided field.
+ * @param  {Array} data   array of data objects
+ * @param  {String} field to extract value for
+ * @return {Number}       value
+ */
+
+
+function getValueForField(data, field) {
+  return process(data, field);
+}
+/**
+ * Extract overall value from a given set of data.
+ * @param  {Array} data
+ * @param  {String} field full field name ("source.field" format)
+ * @return {Number} value
+ */
+
+function process(data, field) {
+  if (field == 'Calculated.aht') {
+    return sum(data, 'handleTime') / sum(data, 'calls');
+  } else if (field == 'Calculated.acw') {
+    return sum(data, 'acwTime') / sum(data, 'calls');
+  }
+
+  const [source, fieldName] = field.split('.');
+
+  if (source == 'AcdFeed') {
+    return sum(data, fieldName);
+  } else {
+    throw new Error(`Parser isn't expecting the field name "${field}".`);
+  }
+}
+/**
+ * Group and summarize data by a given field.
+ * @param  {Array}  data         original data from server
+ * @param  {String} summaryField field to summarize/group by
+ * @param  {Array}  valueFields  full field names to summarize stats for
+ * @return {Object}              summarized data
+ */
+
+
+function summarize(data, summaryField, valueFields) {
+  // Date keys are coerced to strings by d3.nest, so parse them back if needed
+  let keyParse = key => key;
+
+  if (summaryField == 'dateDay' || summaryField == 'date') {
+    keyParse = key => new Date(key);
+  } // Summarize data
+
+
+  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
+    // Sum up each requested field
+    return valueFields.reduce((result, field) => {
+      result[field] = process(values, field);
+      return result;
+    }, {});
+  }).entries(data); // Flatten the summarized nested data back to original format
+
+  return nested.map(datum => {
+    return Object.assign(datum.value, {
+      [summaryField]: keyParse(datum.key)
+    });
+  });
+}
+
+function sum(obj, key) {
+  return obj.reduce((sum, item) => sum + item[key], 0);
+}
+/**
+ *
+ * @param  {String} exp expression
+ * @return {Array of Strings} names of fields needed to calculate `exp`
+ */
+
+
+function requiredFields(exp) {
+  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
+}
+
+function expressionForField(field) {
+  return field.calculation;
+}
+
+function fieldsToServer(fields) {
+  return fields.reduce((list, field) => {
+    let [source, name] = field.fullName.split('.');
+
+    if (source == 'Calculated') {
+      const f = requiredFields(expressionForField(field));
+      return list.concat(f.map(n => n.split('.')[1]));
+    }
+
+    return list.concat(name);
+  }, []);
+}
+
+/***/ }),
 /* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1970,7 +1964,7 @@ function sortOrder(a, b, event, dropId, el) {
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(20);
+var _has = /*#__PURE__*/__webpack_require__(21);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -2035,7 +2029,7 @@ module.exports = __webpack_require__(29);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hub__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scorecard_format__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(13);
 
@@ -2666,8 +2660,8 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__javascript_scorecard_format__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drag_n_drop_sort_js__ = __webpack_require__(25);
@@ -2990,7 +2984,7 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(22);
 //
 //
 //
@@ -3410,7 +3404,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_data_table_row_vue__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_data_table_row_vue__ = __webpack_require__(48);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -3495,481 +3489,6 @@ if (false) {(function () {
 
 /***/ }),
 /* 47 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "tr",
-    { class: { highlight: _vm.isHighlighted } },
-    _vm._l(_vm.datum, function(val, key) {
-      return _c(
-        "td",
-        {
-          class: _vm.formatted(val, key).styleClass,
-          on: {
-            mouseover: function($event) {
-              _vm.highlightDate(_vm.datum)
-            },
-            mouseleave: _vm.unhighlightDate
-          }
-        },
-        [
-          _vm._v(
-            "\n        " + _vm._s(_vm.formatted(val, key).value) + "\n    "
-          )
-        ]
-      )
-    })
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-067c065e", esExports)
-  }
-}
-
-/***/ }),
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "data-table-wrapper",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("table", { staticClass: "data-table" }, [
-        _c("thead", [
-          _c(
-            "tr",
-            _vm._l(_vm.headers, function(header) {
-              return _c("th", [_vm._v(_vm._s(header))])
-            })
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.data, function(datum, i) {
-            return _c("data-table-row", {
-              key: i,
-              tag: "tr",
-              attrs: {
-                datum: datum,
-                isHighlighted: _vm.highlightedDate == datum.dateDay
-              },
-              on: { hoverDate: _vm.hoverDate, unhoverDate: _vm.unhoverDate }
-            })
-          })
-        )
-      ])
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-48d3d2c4", esExports)
-  }
-}
-
-/***/ }),
-/* 49 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(54);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(50)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-21d5040e"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\line-graph.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-21d5040e", Component.options)
-  } else {
-    hotAPI.reload("data-v-21d5040e", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(51);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(5)("7034c06e", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./line-graph.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./line-graph.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke: steelblue;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 84%, 85%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.data-circle[data-v-21d5040e] {\n    fill: steelblue;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    background-color: hsla(0, 0%, 40%, 0.75);\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue?2b6ccbe4"],"names":[],"mappings":";AAsRA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,kBAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,yCAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @click=\"toggleTable\" @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            highlightedDate: null,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            this.showTable = !this.showTable;\r\n        },\r\n\r\n        hoverDate(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            const field = this.$store.getters.field(this.fields.y);\r\n            if (field.goal) {\r\n                let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                    ({\r\n                        x: this.scaled.x(xVal),\r\n                        y: this.scaled.y(field.goal)\r\n                    })\r\n                );\r\n                this.paths.goalLine = this.createLine(goalPoints);\r\n            }\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                .attr('fill', '#ddd')\r\n                .attr('dx', '-0.8em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.y)} on\r\n                        ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        : ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke: steelblue;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 84%, 85%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .data-circle {\r\n        fill: steelblue;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        background-color: hsla(0, 0%, 40%, 0.75);\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(18);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-const props = {
-  fields: {
-    type: Object
-  },
-  margin: {
-    type: Object,
-    default: () => ({
-      left: 30,
-      right: 20,
-      top: 20,
-      bottom: 25
-    })
-  }
-};
-/* harmony default export */ __webpack_exports__["a"] = ({
-  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
-  name: 'line-graph',
-  props,
-  components: {
-    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
-  },
-
-  data() {
-    return {
-      showTable: false,
-      highlightedDate: null,
-      width: 0,
-      height: 0,
-      paths: {
-        area: '',
-        line: '',
-        selector: '',
-        goalLine: ''
-      },
-      circleRadius: 3,
-      lastHoverPoint: {},
-      scaled: {
-        x: null,
-        y: null
-      },
-      points: [],
-      circles: [],
-      // Box to display printed data points when hovering
-      infoBox: {
-        message: '',
-        x: 0,
-        y: 0
-      }
-    };
-  },
-
-  computed: {
-    data() {
-      // Get data from hub
-      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
-
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.x, [this.fields.y]); // Sort along X axis
-
-      grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1);
-      return grouped;
-    },
-
-    padded() {
-      const width = this.width - this.margin.left - this.margin.right;
-      const height = this.height - this.margin.top - this.margin.bottom;
-      return {
-        width,
-        height
-      };
-    },
-
-    ceil() {
-      return d3.max(this.data, d => d[this.fields.y]);
-    }
-
-  },
-
-  mounted() {
-    // Remove title tooltip, as it gets in the way of the infoBox popup
-    this.$el.removeAttribute('title'); // Update everything when screen size changes
-
-    window.addEventListener('resize', this.onResize);
-    this.onResize();
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
-  watch: {
-    width: function (newWidth) {
-      this.update();
-    },
-    data: function (newData) {
-      this.update();
-    }
-  },
-  methods: {
-    fieldDisplayName(fieldName) {
-      return this.$store.getters.field(fieldName).displayName || fieldName;
-    },
-
-    toggleTable() {
-      this.showTable = !this.showTable;
-    },
-
-    hoverDate(date) {
-      this.highlightedDate = date;
-    },
-
-    unhoverDate(date) {
-      this.highlightedDate = null;
-    },
-
-    onResize() {
-      // Set width equal to card -- grandparent element
-      this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
-      this.height = this.$refs['graph-wrap'].offsetHeight;
-    },
-
-    createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
-    createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),
-
-    createValueSelector(point) {
-      return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
-    },
-
-    initialize() {
-      this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
-      this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
-      d3.axisLeft().scale(this.scaled.x);
-      d3.axisBottom().scale(this.scaled.y);
-    },
-
-    update() {
-      this.initialize();
-
-      for (let d of this.data) {
-        d[this.fields.y] *= 1;
-        if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
-      }
-
-      this.scaled.x.domain(d3.extent(this.data, d => d[this.fields.x]));
-      this.scaled.y.domain([0, this.ceil]);
-      this.points = []; // Draw goal line
-
-      const field = this.$store.getters.field(this.fields.y);
-
-      if (field.goal) {
-        let goalPoints = this.scaled.x.domain().map(xVal => ({
-          x: this.scaled.x(xVal),
-          y: this.scaled.y(field.goal)
-        }));
-        this.paths.goalLine = this.createLine(goalPoints);
-      } // Create graph points
-
-
-      for (let d of this.data) {
-        this.points.push({
-          x: this.scaled.x(d[this.fields.x]),
-          y: this.scaled.y(d[this.fields.y]),
-          max: this.height
-        });
-      } // this.paths.area = this.createArea(this.points);
-
-
-      this.paths.line = this.createLine(this.points); // draw axes
-
-      const yField = this.$store.getters.field(this.fields.y);
-      d3.select(this.$refs.yaxis).call(d3.axisLeft(this.scaled.y).tickFormat(d => Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d, yField).value)).selectAll('path, .tick line').attr('stroke', '#ccc');
-      d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
-      d3.select(this.$refs.xaxis).call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d'))).selectAll('path, .tick line').attr('stroke', '#ccc');
-      d3.select(this.$refs.xaxis).selectAll('text').attr('fill', '#ddd').attr('dx', '-0.8em').attr('transform', 'rotate(-45)');
-    },
-
-    mouseover({
-      offsetX,
-      offsetY
-    }) {
-      if (this.points.length > 0) {
-        const x = offsetX - this.margin.left;
-        const y = offsetY - this.margin.top;
-        const closestPoint = this.getClosestPoint(x);
-
-        if (this.lastHoverPoint.index !== closestPoint.index) {
-          const point = this.points[closestPoint.index];
-          this.paths.selector = this.createValueSelector([point]);
-          this.$emit('select', this.data[closestPoint.index]);
-          this.lastHoverPoint = closestPoint; // InfoBox coords are slightly to the lower-right of mouse
-
-          const dataPoint = this.data[closestPoint.index];
-          this.infoBox.message = `
-                        ${this.fieldDisplayName(this.fields.y)} on
-                        ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.x], this.fields.x).value}
-                        : ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.y], this.fields.y).value}
-                    `;
-          this.infoBox.x = x + 30;
-          this.infoBox.y = y + 40;
-        }
-      }
-    },
-
-    mouseleave() {
-      this.paths.selector = '';
-      this.infoBox.message = '';
-    },
-
-    getClosestPoint(x) {
-      return this.points.map((point, index) => ({
-        x: point.x,
-        diff: Math.abs(point.x - x),
-        index
-      })).reduce((least, val) => least.diff < val.diff ? least : val);
-    }
-
-  }
-});
-
-/***/ }),
-/* 53 */
 /***/ (function(module, exports) {
 
 /*
@@ -4558,6 +4077,482 @@ const props = {
 
 
 /***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "tr",
+    { class: { highlight: _vm.isHighlighted } },
+    _vm._l(_vm.datum, function(val, key) {
+      return _c(
+        "td",
+        {
+          class: _vm.formatted(val, key).styleClass,
+          on: {
+            mouseover: function($event) {
+              _vm.highlightDate(_vm.datum)
+            },
+            mouseleave: _vm.unhighlightDate
+          }
+        },
+        [
+          _vm._v(
+            "\n        " + _vm._s(_vm.formatted(val, key).value) + "\n    "
+          )
+        ]
+      )
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-067c065e", esExports)
+  }
+}
+
+/***/ }),
+/* 49 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "data-table-wrapper",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      _c("table", { staticClass: "data-table" }, [
+        _c("thead", [
+          _c(
+            "tr",
+            _vm._l(_vm.headers, function(header) {
+              return _c("th", [_vm._v(_vm._s(header))])
+            })
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.data, function(datum, i) {
+            return _c("data-table-row", {
+              key: i,
+              tag: "tr",
+              attrs: {
+                datum: datum,
+                isHighlighted: _vm.highlightedDate == datum.dateDay
+              },
+              on: { hoverDate: _vm.hoverDate, unhoverDate: _vm.unhoverDate }
+            })
+          })
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-48d3d2c4", esExports)
+  }
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__ = __webpack_require__(54);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(51)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-21d5040e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_line_graph_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_line_graph_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\line-graph.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-21d5040e", Component.options)
+  } else {
+    hotAPI.reload("data-v-21d5040e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(52);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("7034c06e", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./line-graph.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./line-graph.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke: steelblue;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 84%, 85%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.data-circle[data-v-21d5040e] {\n    fill: steelblue;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    background-color: hsla(0, 0%, 40%, 0.75);\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue?4be0a793"],"names":[],"mappings":";AAuRA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,kBAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,yCAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @click=\"toggleTable\" @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            highlightedDate: null,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            this.showTable = !this.showTable;\r\n        },\r\n\r\n        hoverDate(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            const field = this.$store.getters.field(this.fields.y);\r\n            if (field.goal) {\r\n                let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                    ({\r\n                        x: this.scaled.x(xVal),\r\n                        y: this.scaled.y(field.goal)\r\n                    })\r\n                );\r\n                this.paths.goalLine = this.createLine(goalPoints);\r\n            }\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                .attr('fill', '#ddd')\r\n                .attr('dx', '-0.8em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}\r\n                        : ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        \\n${this.fieldDisplayName(this.fields.y)}\r\n                        : ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke: steelblue;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 84%, 85%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .data-circle {\r\n        fill: steelblue;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        background-color: hsla(0, 0%, 40%, 0.75);\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(18);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+const props = {
+  fields: {
+    type: Object
+  },
+  margin: {
+    type: Object,
+    default: () => ({
+      left: 30,
+      right: 20,
+      top: 20,
+      bottom: 25
+    })
+  }
+};
+/* harmony default export */ __webpack_exports__["a"] = ({
+  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
+  name: 'line-graph',
+  props,
+  components: {
+    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
+  },
+
+  data() {
+    return {
+      showTable: false,
+      highlightedDate: null,
+      width: 0,
+      height: 0,
+      paths: {
+        area: '',
+        line: '',
+        selector: '',
+        goalLine: ''
+      },
+      circleRadius: 3,
+      lastHoverPoint: {},
+      scaled: {
+        x: null,
+        y: null
+      },
+      points: [],
+      circles: [],
+      // Box to display printed data points when hovering
+      infoBox: {
+        message: '',
+        x: 0,
+        y: 0
+      }
+    };
+  },
+
+  computed: {
+    data() {
+      // Get data from hub
+      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
+
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.x, [this.fields.y]); // Sort along X axis
+
+      grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1);
+      return grouped;
+    },
+
+    padded() {
+      const width = this.width - this.margin.left - this.margin.right;
+      const height = this.height - this.margin.top - this.margin.bottom;
+      return {
+        width,
+        height
+      };
+    },
+
+    ceil() {
+      return d3.max(this.data, d => d[this.fields.y]);
+    }
+
+  },
+
+  mounted() {
+    // Remove title tooltip, as it gets in the way of the infoBox popup
+    this.$el.removeAttribute('title'); // Update everything when screen size changes
+
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  watch: {
+    width: function (newWidth) {
+      this.update();
+    },
+    data: function (newData) {
+      this.update();
+    }
+  },
+  methods: {
+    fieldDisplayName(fieldName) {
+      return this.$store.getters.field(fieldName).displayName || fieldName;
+    },
+
+    toggleTable() {
+      this.showTable = !this.showTable;
+    },
+
+    hoverDate(date) {
+      this.highlightedDate = date;
+    },
+
+    unhoverDate(date) {
+      this.highlightedDate = null;
+    },
+
+    onResize() {
+      // Set width equal to card -- grandparent element
+      this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
+      this.height = this.$refs['graph-wrap'].offsetHeight;
+    },
+
+    createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
+    createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),
+
+    createValueSelector(point) {
+      return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
+    },
+
+    initialize() {
+      this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
+      this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
+      d3.axisLeft().scale(this.scaled.x);
+      d3.axisBottom().scale(this.scaled.y);
+    },
+
+    update() {
+      this.initialize();
+
+      for (let d of this.data) {
+        d[this.fields.y] *= 1;
+        if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
+      }
+
+      this.scaled.x.domain(d3.extent(this.data, d => d[this.fields.x]));
+      this.scaled.y.domain([0, this.ceil]);
+      this.points = []; // Draw goal line
+
+      const field = this.$store.getters.field(this.fields.y);
+
+      if (field.goal) {
+        let goalPoints = this.scaled.x.domain().map(xVal => ({
+          x: this.scaled.x(xVal),
+          y: this.scaled.y(field.goal)
+        }));
+        this.paths.goalLine = this.createLine(goalPoints);
+      } // Create graph points
+
+
+      for (let d of this.data) {
+        this.points.push({
+          x: this.scaled.x(d[this.fields.x]),
+          y: this.scaled.y(d[this.fields.y]),
+          max: this.height
+        });
+      } // this.paths.area = this.createArea(this.points);
+
+
+      this.paths.line = this.createLine(this.points); // draw axes
+
+      const yField = this.$store.getters.field(this.fields.y);
+      d3.select(this.$refs.yaxis).call(d3.axisLeft(this.scaled.y).tickFormat(d => Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d, yField).value)).selectAll('path, .tick line').attr('stroke', '#ccc');
+      d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
+      d3.select(this.$refs.xaxis).call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d'))).selectAll('path, .tick line').attr('stroke', '#ccc');
+      d3.select(this.$refs.xaxis).selectAll('text').attr('fill', '#ddd').attr('dx', '-0.8em').attr('transform', 'rotate(-45)');
+    },
+
+    mouseover({
+      offsetX,
+      offsetY
+    }) {
+      if (this.points.length > 0) {
+        const x = offsetX - this.margin.left;
+        const y = offsetY - this.margin.top;
+        const closestPoint = this.getClosestPoint(x);
+
+        if (this.lastHoverPoint.index !== closestPoint.index) {
+          const point = this.points[closestPoint.index];
+          this.paths.selector = this.createValueSelector([point]);
+          this.$emit('select', this.data[closestPoint.index]);
+          this.lastHoverPoint = closestPoint; // InfoBox coords are slightly to the lower-right of mouse
+
+          const dataPoint = this.data[closestPoint.index];
+          this.infoBox.message = `
+                        ${this.fieldDisplayName(this.fields.x)}
+                        : ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.x], this.fields.x).value}
+                        \n${this.fieldDisplayName(this.fields.y)}
+                        : ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.y], this.fields.y).value}
+                    `;
+          this.infoBox.x = x + 30;
+          this.infoBox.y = y + 40;
+        }
+      }
+    },
+
+    mouseleave() {
+      this.paths.selector = '';
+      this.infoBox.message = '';
+    },
+
+    getClosestPoint(x) {
+      return this.points.map((point, index) => ({
+        x: point.x,
+        diff: Math.abs(point.x - x),
+        index
+      })).reduce((least, val) => least.diff < val.diff ? least : val);
+    }
+
+  }
+});
+
+/***/ }),
 /* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4759,7 +4754,7 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(24);
 //
 //
 //
@@ -5445,7 +5440,7 @@ var _containsWith = /*#__PURE__*/__webpack_require__(73);
 
 var _functionName = /*#__PURE__*/__webpack_require__(74);
 
-var _has = /*#__PURE__*/__webpack_require__(20);
+var _has = /*#__PURE__*/__webpack_require__(21);
 
 var identical = /*#__PURE__*/__webpack_require__(75);
 
@@ -5689,7 +5684,7 @@ module.exports = identical;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
 
-var _has = /*#__PURE__*/__webpack_require__(20);
+var _has = /*#__PURE__*/__webpack_require__(21);
 
 var _isArguments = /*#__PURE__*/__webpack_require__(26);
 

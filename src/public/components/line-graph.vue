@@ -248,8 +248,9 @@ export default {
                     // InfoBox coords are slightly to the lower-right of mouse
                     const dataPoint = this.data[closestPoint.index];
                     this.infoBox.message = `
-                        ${this.fieldDisplayName(this.fields.y)} on
-                        ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
+                        ${this.fieldDisplayName(this.fields.x)}
+                        : ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
+                        \n${this.fieldDisplayName(this.fields.y)}
                         : ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
                     `;
                     this.infoBox.x = x + 30;
@@ -334,5 +335,6 @@ export default {
         color: inherit;
         border-radius: 2px;
         padding: 0.5em;
+        z-index: 100000;
     }
 </style>
