@@ -41,32 +41,6 @@ aht.widgets = [
             dateDay: '<month-to-date>'
         }
     },
-    // {
-    //     'id': 'widget:2',
-    //     'component': 'single-value',
-    //     'title': 'ACW Today',
-    //     'fieldName': 'Calculated.acw',
-    //     'datasource': 'Test',
-    //     'filter': {
-    //         agentUsername: {
-    //             $in: ['<current user>']
-    //         },
-    //         dateDay: '<today>'
-    //     }
-    // },
-    // {
-    //     'id': 'widget:3',
-    //     'component': 'single-value',
-    //     'title': 'ACW Month to Date',
-    //     'fieldName': 'Calculated.acw',
-    //     'datasource': 'Test',
-    //     'filter': {
-    //         agentUsername: {
-    //             $in: ['<current user>']
-    //         },
-    //         dateDay: '<month-to-date>'
-    //     }
-    // },
     {
         'id': 'widget:4',
         'component': 'line-graph',
@@ -158,7 +132,10 @@ const layout = {
                 "agentUsername": {
                     "$eq": "<current user>"
                 },
-                "date": "<month-to-date>"
+                "date": "<month-to-date>",
+                "skillGroup": {
+                    $in: ["<current user group>"]
+                }
             },
             "groupBy": [
                 "dateDay",

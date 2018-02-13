@@ -1,8 +1,12 @@
+import * as hub from './hub';
 const clone = require('ramda/src/clone');
 
 /**
- * Returns a cleaned / formatted copy of widget filter to pass to server.
- * @param  {Object} original    filter from widget
+ * Returns a cleaned / formatted copy of widget filter to pass to server or
+ * apply to data.
+ *
+ * @param  {Object} original    filter from widget; can include generic properties
+ *                              like `<current user>` and `<month-to-date>`
  * @param  {String} currentUser current user's username
  * @return {Object}             cleaned up filter for server
  */
@@ -30,6 +34,13 @@ export function clean(original, currentUser) {
     }
     if (filter.agentUsername.$eq == '<current user>') {
         filter.agentUsername.$eq = currentUser;
+    }
+
+    // Update appropriate skill groups
+    if (filter.skillGroup) {
+        if (filter.skillGroup.$in[0] == '<current user group>') {
+            filter.skillGroup.$in = hub.store.getters.currentUserSkillGroup;
+        }
     }
 
     return filter;

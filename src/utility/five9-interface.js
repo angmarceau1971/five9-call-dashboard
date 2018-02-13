@@ -67,6 +67,13 @@ async function getUsersGeneralInfo() {
     return result;
 }
 
+// Access the Five9 `getAgentGroups`
+async function getAgentGroups() {
+    let params = getParameters('getAgentGroups');
+    let result = await request(params, 'configuration', true);
+    return result;
+}
+
 
 // Takes a JSON object specifying a Five9 API endpoint,
 // and returns a SOAP message to send to the Five9 API.
@@ -188,9 +195,9 @@ function sendRequest(message, auth, requestType) {
         // Send the data
         req.write(message);
 
-        // abort on timeout of 55 seconds
+        // abort on timeout of 50 seconds
         req.on('socket', (socket) => {
-            socket.setTimeout(55000);
+            socket.setTimeout(50000);
             socket.on('timeout', () => {
                 log.error(`----- Five9 request timed out`);
                 req.abort();
@@ -240,10 +247,6 @@ function getParameters(requestType, reportId=null, criteriaTimeStart=null,
             } ]
         }
     }
-    // Get user list w/ basic info
-    else if (requestType == 'getUsersGeneralInfo') {
-        params = { }
-    }
     // Report running params
     else if (requestType == 'runReport') {
         params = {
@@ -279,6 +282,22 @@ function getParameters(requestType, reportId=null, criteriaTimeStart=null,
             'settings': []
         }
     }
+    // Get user list w/ basic info
+    else if (requestType == 'getUsersGeneralInfo') {
+        params = { }
+    }
+    // Get agent groups with each user
+    else if (requestType == 'getAgentGroups') {
+        params = {
+            'settings': [
+                { 'groupNamePattern': '.*' } // include all groups
+            ]
+        }
+    }
+    else {
+        log.error(`Five9 Request type ${requestType} not recognized.`);
+        throw new Error(`Five9 Request type ${requestType} not recognized.`);
+    }
 
     params.service = requestType;
 
@@ -297,5 +316,6 @@ module.exports.sendRequest = sendRequest;
 module.exports.getParameters = getParameters;
 module.exports.getReportResults = getReportResults;
 module.exports.getUsersGeneralInfo = getUsersGeneralInfo;
+module.exports.getAgentGroups = getAgentGroups;
 module.exports.openStatisticsSession = openStatisticsSession;
 module.exports.responseToJson = responseToJson;

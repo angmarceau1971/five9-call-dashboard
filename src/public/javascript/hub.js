@@ -9,89 +9,6 @@ import * as api from './api';
 import * as filters from './filters';
 const sift = require('sift');
 const clone = require('ramda/src/clone');
-//
-// const static_fields = [
-//      // Date
-//      {
-//          displayName: 'Date',
-//          name: 'Date',
-//          hasGoal: false,
-//          goal: 0,
-//          goalThresholds: [],
-//          comparator: '',
-//          descriptor: '',
-//          format: {
-//              type: 'Time',
-//              string: 'M/D/YYYY'
-//          }
-//      },
-//      // Sales close rate
-//      {
-//          displayName: 'Close Rate',
-//          name: 'Close Rate',
-//          hasGoal: true,
-//          goal: 0.55,
-//          goalThresholds: [
-//              0.45,
-//              0.50,
-//              0.55
-//          ],
-//          comparator: '>=',
-//          descriptor: 'See these tips for greatest close rates!',
-//          format: {
-//              type: 'Number',
-//              string: '.2%'
-//          }
-//      },
-//      // DIRECTV sales count
-//      {
-//          displayName: 'DIRECTV Sales',
-//          name: 'DIRECTV Sales',
-//          hasGoal: true,
-//          goal: 1,
-//          goalThresholds: [],
-//          comparator: '>=',
-//          descriptor: 'See these tips for greatest DTV Sales!',
-//          format: {
-//              type: 'Number',
-//              string: 'd'
-//          }
-//      },
-//      // AHT - Average Handle Time
-//      {
-//          displayName: 'AHT',
-//          name: 'AHT',
-//          calculation: '{handleTime} / {calls}',
-//          hasGoal: true,
-//          goal: 600,
-//          goalThresholds: [
-//
-//          ],
-//          comparator: '<=',
-//          descriptor: 'See these tips for ways to lower handle time!',
-//          format: {
-//              type: 'Time',
-//              string: 'm:ss'
-//          }
-//      },
-//      // ACW - After Call Work
-//      {
-//          displayName: 'ACW',
-//          name: 'ACW',
-//          calculation: '{acwTime} / {calls}',
-//          hasGoal: true,
-//          goal: 30,
-//          goalThresholds: [
-//
-//          ],
-//          comparator: '<=',
-//          descriptor: 'See these tips for ways to lower ACW!',
-//          format: {
-//              type: 'Time',
-//              string: 'm:ss'
-//          }
-//      }
-// ];
 
 
 /**
@@ -104,9 +21,9 @@ export const store = new Vuex.Store({
         fields: [],
         editMode: true,
         currentUser: '',
-        timeoutId: 0,
         data: {},
-        datasources: {}
+        datasources: {},
+        timeoutIds: {}
     },
     getters: {
         /**
@@ -132,6 +49,10 @@ export const store = new Vuex.Store({
             const filt = filters.clean(filter, state.currentUser);
             let data = sift(filt, state.data[datasource]);
             return data;
+        },
+        currentUserSkillGroup: (state) => {
+            // TODO: implement
+            return ['Sales'];
         }
     },
     mutations: {
@@ -149,8 +70,8 @@ export const store = new Vuex.Store({
         updateUser(state, newUsername) {
             state.currentUser = newUsername;
         },
-        setTimeoutId(state, id) {
-            state.timeoutId = id;
+        setTimeoutId(state, { datasourceName, id }) {
+            state.timeoutIds[datasourceName] = id;
         },
         setFields(state, fields) {
             state.fields = fields;
@@ -178,34 +99,44 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
-            return context.dispatch('nextUpdate', 10 * 1000);
+            // const agentSkillGroups = await api.getAgentSkillGroups();
+            // context.commit('setAgentSkillGroups', agentSkillGroups);
+            return context.dispatch('nextUpdate', null);
         },
 
         async forceRefresh(context) {
-            window.clearTimeout(context.timeoutId);
+            for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
+                clearTimeout(id);
+                context.commit({
+                    type: 'setTimeoutId',
+                    data: {
+                        datasourceName: sourceName,
+                        id: context
+                    }
+                });
+            }
             context.dispatch('startProcess');
         },
 
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
             // Load data from server
-            for (var id in context.state.datasources) {
-                const source = context.state.datasources[id];
+            for (const [id, source] of Object.entries(context.state.datasources)) {
                 const data = await loadData(getParams(source));
                 console.log(data);
                 context.commit('updateData', {
                     newData: data, datasource: source.name
                 });
-            };
 
-            // and schedule the next update
-            let timeout = setTimeout(function next() {
-                context.dispatch('nextUpdate', ms);
-            }, ms);
-            context.commit({
-                type: 'setTimeoutId',
-                amount: timeout
-            });
+                // and schedule the next update
+                let timeout = setTimeout(function next() {
+                    context.dispatch('nextUpdate', source.refreshRate * 1000);
+                }, source.refreshRate * 1000);
+                context.commit('setTimeoutId', {
+                        datasourceName: source.name,
+                        id: timeout
+                });
+            };
         }
     }
 });

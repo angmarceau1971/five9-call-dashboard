@@ -13,7 +13,9 @@ const usersSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     username: String,
     active: Boolean,
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: Boolean, default: false },
+    // Array of Agent Groups that user belongs to
+    agentGroups: [String]
 });
 
 // Model to store users
@@ -55,22 +57,31 @@ async function scheduleUpdate(interval) {
 
 async function refreshUserDatabase(usersModel) {
     // Save original list to preserve admin status
-    let original = await Users.find({});
+    let originalUsers = await Users.find({});
 
-    let data = await five9.getUsersGeneralInfo();
+    // Get the dataz from Five9
+    let [data, agentGroupData] = await Promise.all([
+        five9.getUsersGeneralInfo(),
+        five9.getAgentGroups()
+    ]);
+
     // Clear the old list
     await usersModel.remove({}, (err, success) => {
         if (err) log.error(`Error deleting data in Users model: ${err}`);
     });
-    // Only leave the `username` and `active` fields
+
+    // Only leave the fields needed
     let cleanData = data.map((d, i) => {
+        if (d.userName[0] == 'psirios@risebroadband.com') debugger;
         let newUser = {
-            username: d.userName,
-            active: d.active == 'true' ? true : false
+            username: d.userName[0],
+            active: d.active == 'true' ? true : false,
+            isAdmin: getAdminFromData(d.userName[0], originalUsers),
+            agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
         };
-        newUser.isAdmin = getAdminFromData(newUser.username, original);
         return newUser;
     });
+
     // Insert to collection
     return usersModel.collection.insert(cleanData, (err, docs) => {
         if (err) log.error(`Error inserting data in Users model: ${err}`);
@@ -92,6 +103,22 @@ function getAdminFromData(username, data) {
         if (data[i].username == username) return data[i].isAdmin;
     }
     return false;
+}
+
+/**
+ * Returns array of all Agent Groups user is assigned to
+ * @param  {String} username
+ * @param  {Array}  data     response from five9.getAgentGroups
+ * @return {Array of Strings} agent groups that include agent
+ */
+function getAgentGroupsForAgent(username, data) {
+    return data
+        .filter(function hasAgent(group) {
+            return group.agents.includes(username);
+        })
+        .map(function getGroupName(group) {
+            return group.name[0];
+        });
 }
 
 async function getAdminUsers() {
