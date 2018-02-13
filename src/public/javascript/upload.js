@@ -7,7 +7,8 @@ const vm = new Vue({
     },
 
     data: {
-        message: ''
+        message: '',
+        selectedTableName: 'SkillGroup'
     },
 
     methods: {
@@ -22,7 +23,12 @@ const vm = new Vue({
             }
             const reader = new FileReader();
             reader.onload = async function(e) {
-                const response = await api.uploadData(e.target.results);
+                const params = {
+                    csv: e.target.result,
+                    tableName: this.selectedTableName,
+                    confirmedChanges: false
+                };
+                const response = await api.uploadData(params);
                 this.updateMessage(response);
             }.bind(this);
             reader.readAsText(file);

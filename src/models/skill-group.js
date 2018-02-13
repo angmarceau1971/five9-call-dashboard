@@ -26,10 +26,11 @@ module.exports.SkillGroup = SkillGroup;
  * @return {Promise}     resolves to new documents
  */
 async function upload(data) {
+    console.log(data)
     return new Promise((resolve, reject) => {
         SkillGroup.remove({}, (err, success) => {
             if (err) reject(`skill-group.upload removal: ${err}`);
-            SkillGroup.collection.insert(process(data), (err, docs) => {
+            SkillGroup.collection.insert(data, (err, docs) => {
                 if (err) reject(`skill-group.upload insertion: ${err}`);
                 resolve(docs);
             });

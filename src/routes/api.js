@@ -219,6 +219,7 @@ router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
 router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
+        console.log(req.body)
         if (req.body.tableName == 'SkillGroup') {
             const data = await skillGroup.process(req.body.csv);
             await skillGroup.upload(data);

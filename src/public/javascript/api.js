@@ -115,7 +115,7 @@ export async function reloadData(params) {
  *                          confirmedChanges (optional)
  * @return {Promise}       resolves to string (server response message)
  */
-async function uploadData(params) {
+export async function uploadData(params) {
     const response = await request(params, 'upload-data', 'POST');
     return await response.text();
 }
