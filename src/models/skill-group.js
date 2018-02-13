@@ -13,8 +13,13 @@ const skillGroupSchema = mongoose.Schema({
     },
     // Array of skills in this group
     skills: {
-        type: Array,
-        default: [String]
+        type: [String],
+        default: []
+    },
+    // Agent group(s) who handle this skill group
+    agentGroups: {
+        type: [String],
+        default: []
     }
 });
 
@@ -57,11 +62,19 @@ async function upload(data) {
 }
 module.exports.upload = upload;
 
+/**
+ * @param  {String} csvString uploaded data
+ * @return {Promise -> Array} array of objects to save to SkillGroup table
+ */
 async function process(csvString) {
+    function lineToArray(str) {
+        return str.split(';').map((item) => item.trim());
+    }
     return uploader.parseCsv(csvString, function parseRow(row) {
         return {
             name: row.name.trim(),
-            skills: row.skills.split(';').map((skill) => skill.trim())
+            skills: lineToArray(row.skills),
+            agentGroups: lineToArray(row.agentGroups)
         };
     });
 }
