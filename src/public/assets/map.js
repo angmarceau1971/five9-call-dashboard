@@ -241,11 +241,23 @@ async function reloadData(params) {
   return response.text();
 }
 /**
+ * [uploadData description]
+ * @param  {Object} params including fields tableName, csv, and
+ *                          confirmedChanges (optional)
+ * @return {Promise}       resolves to string (server response message)
+ */
+
+async function uploadData(params) {
+  const response = await request(params, 'upload-data', 'POST');
+  return await response.text();
+}
+/**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
  * @param  {String} endpoint   at server's API
  * @return {Object}            JSON data
  */
+
 
 async function getData(parameters, endpoint) {
   const response = await request(parameters, endpoint);

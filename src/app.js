@@ -21,13 +21,11 @@ const secure = require('./secure_settings.js'); // local/secure settings
 
 ///////////////////////////
 // Data management
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+const database = require('./utility/database'); // connection instance to DB
 const report = require('./models/report'); // data feeds for SL & calls
 const queue  = require('./models/queue-stats'); // real-time queue feeds
 const users = require('./authentication/users'); // stores usernames to check auth
 const verify = require('./authentication/verify'); // check user permissions
-
 const customers = require('./customers/customers');
 
 
@@ -97,20 +95,8 @@ const server = app.listen(port, async () => {
     log.message(`Express listening on port ${port} at ${moment()}!`);
 
     try {
-        // Connect and reconnect if disconnected.
-        let connect = async () => {
-            await mongoose.connect(secure.MONGODB_URI, {
-	           useMongoClient: true,
-	           keepAlive: 1000,
-               connectTimeoutMS: 10000,
-               reconnectTries: Number.MAX_VALUE
-    	    });
-        };
-        connect();
-        mongoose.connection.on('disconnected', () => {
-            log.error('DB Disconnected: reconnecting.');
-            setTimeout(connect, 3000);
-        });
+        // Set up initial database connection
+        database.connect();
 
         // Update customers database from Looker every 8 hours
         customers.scheduleUpdate(8 * 3600 * 1000);

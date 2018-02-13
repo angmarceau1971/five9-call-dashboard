@@ -1,7 +1,8 @@
 ///////////////////////////
 // API routes to get data
-// All routes need to include these parameters in the POST body:
-//      - auth  : Base64 'username:password' Five9 credentials
+//
+// All routes need to include credentials via the auth token received from
+// login page. Some routes require administrator privileges.
 //
 // /statistics returns all real-time stats
 //
@@ -12,9 +13,8 @@
 //                 for, comma-separated. Matches "like" Five9 skill names.
 ///////////////////////////
 
-const express = require('express');
+const router = require('express').Router();
 const moment = require('moment'); // dates/times
-const router = express.Router();
 const log = require('../utility/log'); // recording updates
 const path = require('path');
 
@@ -24,7 +24,10 @@ const report = require('../models/report'); // data feeds for SL & calls
 const queue  = require('../models/queue-stats'); // real-time queue feeds
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
-const customers = require('../customers/customers');
+const customers = require('../customers/customers'); // customer database
+
+const uploader = require('../custom-upload/custom-upload');
+const skillGroup = require('../models/skill-group');
 
 
 router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
@@ -174,7 +177,6 @@ router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {
     }
 });
 
-
 // Reboot the server
 router.post('/reboot-server', verify.apiMiddleware('admin'), async (req, res) => {
     res.set('Content-Type', 'application/text');
@@ -186,7 +188,6 @@ router.post('/reboot-server', verify.apiMiddleware('admin'), async (req, res) =>
         res.status(500).send('An error occurred on the server while attempting reboot.');
     }
 });
-
 
 // Update data in a given range
 router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
@@ -204,6 +205,41 @@ router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
     }
 });
 
+
+//////////////////////////////////////
+// Handle manual data uploads
+//////////////////////////////////////
+/**
+ * Handle upload of data via CSV.
+ * @param {String}  req.body.tableName collection to upload data to
+ * @param {String}  req.body.csv data in CSV format
+ * @param {Boolean} req.body.confirmedChanges has user already confirmed any
+ *                      changes needed (such as adding headers)
+ */
+router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
+    res.set('Content-Type', 'application/text');
+    try {
+        if (req.body.tableName == 'SkillGroup') {
+            const data = await skillGroup.process(req.body.csv);
+            await skillGroup.upload(data);
+        }
+        else {
+            const data = await uploader.parseCsv(req.body.csv);
+            await uploader.upload(req.body.tableName, data, req.body.confirmedChanges);
+        }
+
+        res.status(200).send(`Data uploaded successfully to ${req.body.tableName}.`);
+    } catch (err) {
+        res.status(500).send(`An error occurred on the server during data upload: ${err}.`);
+    }
+});
+
+
+
+
+//////////////////////////////////////
+// Helper / validation functions
+//////////////////////////////////////
 async function reloadReports(time) {
     // Verify user input format and basic value-checking
     let bad = '';

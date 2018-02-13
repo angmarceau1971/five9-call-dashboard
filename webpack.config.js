@@ -11,7 +11,8 @@ module.exports = {
         skill: ['./src/public/javascript/skill-admin.js'],
         queues: ['./src/public/javascript/queue-dashboard.js'],
         map: ['./src/public/javascript/maps-dashboard.js'],
-        admin: ['./src/public/javascript/admin.js']
+        admin: ['./src/public/javascript/admin.js'],
+        upload: ['./src/public/javascript/upload.js']
     },
 
     output: {
