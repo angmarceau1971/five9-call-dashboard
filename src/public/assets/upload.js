@@ -249,8 +249,12 @@ async function reloadData(params) {
  */
 
 async function uploadData(params) {
-  const response = await request(params, 'upload-data', 'POST');
-  return await response.text();
+  try {
+    const response = await request(params, 'upload-data', 'POST');
+    return await response.text();
+  } catch (err) {
+    return err.message;
+  }
 }
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
@@ -396,7 +400,9 @@ const vm = new Vue({
           confirmedChanges: false
         };
         const response = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* uploadData */](params);
-        this.updateMessage(response);
+        this.updateMessage(response); // clear input file
+
+        this.$refs['fileInput'].value = '';
       }.bind(this);
 
       reader.readAsText(file);

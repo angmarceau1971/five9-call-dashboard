@@ -219,7 +219,6 @@ router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
 router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        console.log(req.body)
         if (req.body.tableName == 'SkillGroup') {
             const data = await skillGroup.process(req.body.csv);
             await skillGroup.upload(data);
@@ -228,10 +227,9 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
             const data = await uploader.parseCsv(req.body.csv);
             await uploader.upload(req.body.tableName, data, req.body.confirmedChanges);
         }
-
         res.status(200).send(`Data uploaded successfully to ${req.body.tableName}.`);
     } catch (err) {
-        res.status(500).send(`An error occurred on the server during data upload: ${err}.`);
+        res.status(500).send(`${err}.\nCheck that column headers and value formats are correct.`);
     }
 });
 

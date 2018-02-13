@@ -58,16 +58,21 @@ module.exports.upload = upload;
 async function parseCsv(csvString, rowProcessor=(x)=>x){
     // Parse CSV data into `data` array
     const data = [];
-    await new Promise((resolve, reject) => { // wrap in promise to allow await
+
+    return new Promise((resolve, reject) => { // wrap in promise to allow await
         csv({ delimiter: ',' })
             .fromString(csvString)
             .on('json', (res) => {
-                let datum = rowProcessor(res);
+                let datum
+                try {
+                    datum = rowProcessor(res);
+                } catch (err) {
+                    reject(new Error(`during CSV processing: ${err}`));
+                }
                 data.push(datum);
             })
             .on('done', () => resolve(data))
             .on('error', reject);
     });
-    return data;
 }
 module.exports.parseCsv = parseCsv;

@@ -853,8 +853,12 @@ async function reloadData(params) {
  */
 
 async function uploadData(params) {
-  const response = await request(params, 'upload-data', 'POST');
-  return await response.text();
+  try {
+    const response = await request(params, 'upload-data', 'POST');
+    return await response.text();
+  } catch (err) {
+    return err.message;
+  }
 }
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.

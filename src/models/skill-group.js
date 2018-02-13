@@ -2,6 +2,7 @@ const clone = require('ramda/src/clone');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const log = require('../utility/log');
 const uploader = require('../custom-upload/custom-upload');
 
 const skillGroupSchema = mongoose.Schema({
@@ -12,7 +13,7 @@ const skillGroupSchema = mongoose.Schema({
     },
     // Array of skills in this group
     skills: {
-        type: Array ,
+        type: Array,
         default: [String]
     }
 });
@@ -20,18 +21,35 @@ const skillGroupSchema = mongoose.Schema({
 const SkillGroup = mongoose.model('SkillGroup', skillGroupSchema);
 module.exports.SkillGroup = SkillGroup;
 
+// Create a cached / in-memory copy of skill lookups for fast retrieval later.
+let skillGroupLookup = {};
+async function generateLookup() {
+    log.message('Generating skill group lookup.')
+    return new Promise((resolve, reject)  => {
+        SkillGroup.find({}, (err, docs) => {
+            if (err) reject(err);
+            skillGroupLookup = docs.reduce((lookup, skillGroup) => {
+                lookup[skillGroup.name] = skillGroup.skills;
+                return lookup;
+            }, {});
+            resolve(skillGroupLookup);
+        });
+    });
+}
+mongoose.connection.on('connected', generateLookup);
+
 /**
  * Replace existing skill groups with new mapping.
  * @param  {Array}  data array of objects with fields `name` and `skills`
  * @return {Promise}     resolves to new documents
  */
 async function upload(data) {
-    console.log(data)
     return new Promise((resolve, reject) => {
         SkillGroup.remove({}, (err, success) => {
             if (err) reject(`skill-group.upload removal: ${err}`);
             SkillGroup.collection.insert(data, (err, docs) => {
                 if (err) reject(`skill-group.upload insertion: ${err}`);
+                generateLookup();
                 resolve(docs);
             });
         });
@@ -48,3 +66,24 @@ async function process(csvString) {
     });
 }
 module.exports.process = process;
+
+/**
+ * Get skills in a given skill group
+ * @param  {String or Array} skillGroupName a skill group name or array of names
+ * @return {Array}  string skill names
+ */
+function getSkills(skillGroupName) {
+    // If this is just a single group name, return lookup at that name
+    if (typeof(skillGroupName) == 'string') {
+        let skills = skillGroupLookup[skillGroupName];
+        if (!skills) {
+            throw new Error(`Skill Group name "${skillGroupName}" doesn't exist.`);
+        }
+        return skills;
+    // For an array of names, return skills for each
+    } else {
+        // flatten into single 1D array with `...` spread operator
+        return [].concat(...skillGroupName.map((name) => getSkills(name)));
+    }
+}
+module.exports.getSkills = getSkills;

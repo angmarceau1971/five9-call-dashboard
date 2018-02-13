@@ -116,8 +116,12 @@ export async function reloadData(params) {
  * @return {Promise}       resolves to string (server response message)
  */
 export async function uploadData(params) {
-    const response = await request(params, 'upload-data', 'POST');
-    return await response.text();
+    try {
+        const response = await request(params, 'upload-data', 'POST');
+        return await response.text();
+    } catch (err) {
+        return err.message;
+    }
 }
 
 /**

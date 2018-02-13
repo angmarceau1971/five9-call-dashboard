@@ -30,6 +30,8 @@ const vm = new Vue({
                 };
                 const response = await api.uploadData(params);
                 this.updateMessage(response);
+                // clear input file
+                this.$refs['fileInput'].value = '';
             }.bind(this);
             reader.readAsText(file);
         }

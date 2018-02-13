@@ -10,6 +10,7 @@ const log = require('../utility/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 
+const skillGroup = require('./skill-group');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -186,11 +187,19 @@ async function getStatisticsFrom(model, aggregation) {
 // transform filter object into MongoDB-style $match
 function createFilter(obj) {
     // remove dates - parsed separately
-    return Object.keys(obj)
+    const filter = Object.keys(obj)
         .filter((key) => key != 'date')
-        .map((key) => ({
-            [key]: obj[key]
-        }));
+        .map((key) => {
+            if (key == 'skillGroup') {
+                return { 'skill': { $in:
+                    skillGroup.getSkills(obj.skillGroup.$in)
+                } };
+            }
+            else {
+                return { [key]: obj[key] };
+            }
+        });
+    return filter;
 }
 
 // create $group-ings off the fields in the groupBy array
