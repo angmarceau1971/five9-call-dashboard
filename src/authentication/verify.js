@@ -4,8 +4,8 @@
 ** Includes login strategy for Passport as well as route middleware.
 */
 
-const five9 = require('../helpers/five9-interface');
-const log = require('../helpers/log');
+const five9 = require('../utility/five9-interface');
+const log = require('../utility/log');
 const users = require('./users');
 
 

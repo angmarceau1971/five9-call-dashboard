@@ -15,7 +15,7 @@
 const express = require('express');
 const moment = require('moment'); // dates/times
 const router = express.Router();
-const log = require('../helpers/log'); // recording updates
+const log = require('../utility/log'); // recording updates
 const path = require('path');
 
 const admin = require('../admin/admin');

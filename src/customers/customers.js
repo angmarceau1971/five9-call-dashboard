@@ -4,7 +4,7 @@
  */
 const https = require('https');
 const secure = require('../secure_settings'); // Looker paths
-const log = require('../helpers/log'); // recording updates
+const log = require('../utility/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;

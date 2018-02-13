@@ -12,3 +12,10 @@
 .section.message {
     color: inherit;
 }
+
+/* Small screens */
+@media screen and (max-width: 600px) {
+    .content-wrapper {
+        padding: 0em;
+    }
+}

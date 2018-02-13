@@ -16,7 +16,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const admin = require('./admin/admin');
-const log = require('./helpers/log'); // recording updates
+const log = require('./utility/log'); // recording updates
 const secure = require('./secure_settings.js'); // local/secure settings
 
 ///////////////////////////

@@ -46,6 +46,12 @@ router.get('/skill', verify.isLoggedIn('admin'), async (req, res) => {
     res.sendFile(dir);
 });
 
+// Upload data
+router.get('/upload', verify.isLoggedIn('admin'), async (req, res) => {
+    let dir = path.join(__dirname + '/../public/upload.html');
+    res.sendFile(dir);
+});
+
 // admin panel
 router.get('/admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/admin.html');

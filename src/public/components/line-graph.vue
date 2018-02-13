@@ -230,7 +230,7 @@ export default {
             d3.select(this.$refs.xaxis)
                 .selectAll('text')
                 .attr('fill', '#ddd')
-                .attr('dx', '-0.8em')
+                .attr('dx', '-1em')
                 .attr('transform', 'rotate(-45)');
         },
 

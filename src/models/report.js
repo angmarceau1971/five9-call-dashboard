@@ -5,8 +5,8 @@
 */
 
 const csv = require('csvtojson'); // CSV parsing
-const five9 = require('../helpers/five9-interface'); // Five9 interface helper functions
-const log = require('../helpers/log'); // recording updates
+const five9 = require('../utility/five9-interface'); // Five9 interface helper functions
+const log = require('../utility/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 

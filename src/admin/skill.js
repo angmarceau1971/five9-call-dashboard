@@ -1,4 +1,9 @@
-const five9 = require('../helpers/five9-interface');
+/**
+ * This module is used to create skilling requests for Five9.
+ *
+ */
+
+const five9 = require('../utility/five9-interface');
 
 /**
  * Update User Profile with selected skills.

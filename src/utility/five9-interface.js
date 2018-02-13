@@ -1,6 +1,6 @@
 const clone = require('ramda/src/clone');
 const https = require('https');
-const log = require('../helpers/log');
+const log = require('../utility/log');
 const parseString = require('xml2js').parseString; // parse XML to JSON
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 const secure_settings = require('../secure_settings.js');

@@ -1,5 +1,5 @@
 const Agenda = require('agenda');
-const log = require('../helpers/log'); // recording updates
+const log = require('../utility/log'); // recording updates
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const settings = require('../secure_settings');

@@ -1,5 +1,5 @@
-const five9 = require('../helpers/five9-interface');
-const log = require('../helpers/log');
+const five9 = require('../utility/five9-interface');
+const log = require('../utility/log');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 

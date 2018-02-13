@@ -1,4 +1,4 @@
-const log = require('../helpers/log');
+const log = require('../utility/log');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
