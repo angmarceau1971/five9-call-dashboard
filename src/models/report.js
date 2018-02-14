@@ -44,43 +44,69 @@ const acdFeedSchema = mongoose.Schema({
     acwTime: Number,
     speedOfAnswer: Number
 });
+// Schema for agent login data
+const agentLoginSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    agentUsername: String,
+    agentName: String,
+    agentGroup: String,
+    date: Date, // Date and time
+    reasonCode: { type: String, default: '' },
+    // duration-based fields stored as seconds
+    loginTime: Number,
+    notReadyTime: Number,
+    readyTime: Number,
+    handleTime: Number,
+    calls: { type: Number, default: 0 },
+    transfers: { type: Number, default: 0 }
+});
 
 
 // Models to represent report data
 const CallLog = mongoose.model('CallLog', callLogSchema);
 const AcdFeed  = mongoose.model('AcdFeed',  acdFeedSchema);
+const AgentLogin = mongoose.model('AgentLogin', agentLoginSchema);
 
-//
+
 /**
  * Returns array with nice field names, from Five9 CSV report header string.
  * @param  {String} csvHeaderLine first (header) line of Five9 CSV report
  * @return {Array} field names in form that's in lookup (to match database)
  */
+const headerLookup = {
+    // ACD and Call Log fields
+    'SKILL':        'skill',
+    'DATE':         'date',
+    'Global.strSugarZipCode':   'zipCode',
+    'CALLS':        'calls',
+    'CALL ID':      'callId',
+    'SERVICE LEVEL count':  'serviceLevel',
+    'SERVICE LEVEL':    'serviceLevel',
+    'ABANDONED':    'abandons',
+    'AGENT':        'agentUsername',
+    'AGENT NAME':   'agentName',
+    'AGENT GROUP':  'agentGroup',
+    'HANDLE TIME':  'handleTime',
+    'CONFERENCE TIME':  'conferenceTime',
+    'AFTER CALL WORK TIME': 'acwTime',
+    'SPEED OF ANSWER':  'speedOfAnswer',
+    'HOLD TIME':    'holdTime',
+    'TRANSFERS count':  'transfers',
+    'CALLS count':  'calls',
+    // Agent feed fields
+    'NOT READY TIME':   'notReadyTime',
+    'REASON CODE':  'reasonCode',
+    'LOGIN TIME':   'loginTime',
+    'READY TIME':   'readyTime',
+
+};
 function getHeadersFromCsv(csvHeaderLine) {
-    const lookup = {
-        'SKILL':            'skill',
-        'DATE':             'date',
-        'Global.strSugarZipCode':   'zipCode',
-        'CALLS':                'calls',
-        'CALL ID':              'callId',
-        'SERVICE LEVEL count':  'serviceLevel',
-        'SERVICE LEVEL':    'serviceLevel',
-        'ABANDONED':        'abandons',
-        'AGENT':            'agentUsername',
-        'AGENT NAME':       'agentName',
-        'AGENT GROUP':      'agentGroup',
-        'HANDLE TIME':      'handleTime',
-        'CONFERENCE TIME':  'conferenceTime',
-        'AFTER CALL WORK TIME': 'acwTime',
-        'SPEED OF ANSWER':  'speedOfAnswer',
-        'HOLD TIME': 'holdTime'
-    };
     const oldHeaders = csvHeaderLine.split(',');
     // Return updated header from lookup table; if not found, just return the
     // original header.
     return oldHeaders.map((header) => {
-        if (lookup.hasOwnProperty(header)) {
-            return lookup[header];
+        if (headerLookup.hasOwnProperty(header)) {
+            return headerLookup[header];
         }
         return header;
     });
@@ -119,7 +145,8 @@ async function scheduleUpdate(interval) {
 async function loadData(time) {
     return await Promise.all([
         refreshDatabase(time, CallLog, 'Dashboard - Data Feed'),
-        refreshDatabase(time, AcdFeed,  'Dashboard - ACD Feed')
+        refreshDatabase(time, AcdFeed, 'Dashboard - ACD Feed'),
+        refreshDatabase(time, AgentLogin, 'Dashboard - Agent Feed')
     ]);
 }
 
@@ -375,36 +402,49 @@ async function refreshDatabase(time, reportModel, reportName) {
 function parseRow(model, row) {
     let datestring;
     const parsed = {};
+    let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
 
     if (model == CallLog) {
+        datestring = row.date + ' ' + row['HALF HOUR'];
         parsed.serviceLevel = row.serviceLevel * 1;
         parsed.abandons = row.abandons * 1;
 
         // Leave only left 5 digits of zip code
         parsed.zipCode = row.zipCode.substr(0, 5);
         // Set interval in Date format
-        datestring = row.date + ' ' + row['HALF HOUR'];
+        parsed.skill = row.skill;
     }
     else if (model == AcdFeed) {
+        datestring = row.date + ' ' + row['QUARTER HOUR'];
         parsed.agentUsername = row.agentUsername;
         parsed.agentName = row.agentName;
         parsed.agentGroup = row.agentGroup;
         parsed.callId = row.callId;
-        datestring = row.date + ' ' + row['QUARTER HOUR'];
 
-        let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
         parsed.handleTime = seconds(row.handleTime);
         parsed.holdTime = seconds(row.holdTime);
         parsed.conferenceTime = seconds(row.conferenceTime);
         parsed.acwTime = seconds(row.acwTime);
         parsed.speedOfAnswer = seconds(row.speedOfAnswer);
+        parsed.skill = row.skill;
+    }
+    else if (model == AgentLogin) {
+        datestring = row.date;
+        parsed.agentUsername = row.agentUsername;
+        parsed.agentName = row.agentName;
+        parsed.agentGroup = row.agentGroup;
+        parsed.reasonCode = row.reasonCode;
+        parsed.handleTime = seconds(row.handleTime);
+        parsed.loginTime = seconds(row.loginTime);
+        parsed.notReadyTime = seconds(row.notReadyTime);
+        parsed.readyTime = seconds(row.readyTime);
+        parsed.transfers = row.transfers * 1;
     }
     else {
         log.error('report.parseRow called without model!')
     }
 
     // Shared fields
-    parsed.skill = row.skill;
     parsed.calls = row.calls * 1;
     parsed.date = moment.tz(
         moment(datestring, 'YYYY/MM/DD HH:mm'),

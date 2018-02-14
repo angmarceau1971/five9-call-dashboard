@@ -7,11 +7,11 @@ const clone = require('ramda/src/clone');
  *
  * @param  {Object} original    filter from widget; can include generic properties
  *                              like `<current user>` and `<month-to-date>`
- * @param  {String} currentUser current user's username
  * @return {Object}             cleaned up filter for server
  */
-export function clean(original, currentUser) {
+export function clean(original) {
     let filter = clone(original);
+    const user = hub.store.state.userInformation;
 
     // Clean up dates
     let dateKey;
@@ -30,16 +30,15 @@ export function clean(original, currentUser) {
         && filter.agentUsername.$in.includes('<current user>')) {
         filter.agentUsername.$in[
             filter.agentUsername.$in.indexOf('<current user>')
-        ] = currentUser;
+        ] = user.username;
     }
     if (filter.agentUsername.$eq == '<current user>') {
-        filter.agentUsername.$eq = currentUser;
+        filter.agentUsername.$eq = user.username;
     }
 
     // Update appropriate skill groups
     if (filter.skillGroup) {
         if (filter.skillGroup.$in[0] == '<current user group>') {
-            const user = hub.store.state.userInformation;
             filter.skill = { $in: user.skills };
         }
         else {
