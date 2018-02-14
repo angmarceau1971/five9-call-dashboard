@@ -34,7 +34,7 @@ async function generateLookup() {
         SkillGroup.find({}, (err, docs) => {
             if (err) reject(err);
             skillGroupLookup = docs.reduce((lookup, skillGroup) => {
-                lookup[skillGroup.name] = skillGroup.skills;
+                lookup[skillGroup.name] = skillGroup;
                 return lookup;
             }, {});
             resolve(skillGroupLookup);
@@ -88,11 +88,11 @@ module.exports.process = process;
 function getSkills(skillGroupName) {
     // If this is just a single group name, return lookup at that name
     if (typeof(skillGroupName) == 'string') {
-        let skills = skillGroupLookup[skillGroupName];
-        if (!skills) {
+        let skillGroup = skillGroupLookup[skillGroupName];
+        if (!skillGroup) {
             throw new Error(`Skill Group name "${skillGroupName}" doesn't exist.`);
         }
-        return skills;
+        return skillGroup.skills;
     // For an array of names, return skills for each
     } else {
         // flatten into single 1D array with `...` spread operator
@@ -100,3 +100,23 @@ function getSkills(skillGroupName) {
     }
 }
 module.exports.getSkills = getSkills;
+
+
+/**
+ * For the given Agent Group, returns Skill Groups that this team handles.
+ * @param  {String} agentGroup to match
+ * @return {Array of Objects} matching skill group objects
+ */
+function getFromAgentGroup(agentGroup) {
+    return Object.keys(skillGroupLookup)
+        .filter((groupName) =>
+            skillGroupLookup[groupName].agentGroups.includes(agentGroup)
+        )
+        .map((groupName) => {
+            return {
+                name: groupName,
+                skills: skillGroupLookup[groupName].skills
+            }
+        });
+}
+module.exports.getFromAgentGroup = getFromAgentGroup;

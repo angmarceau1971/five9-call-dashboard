@@ -150,6 +150,19 @@ router.delete('/skill', verify.apiMiddleware('admin'), async (req, res) => {
 });
 
 
+// Get information stored on a user based on username
+router.get('/users/data/:username', async (req, res) => {
+    const user = await users.getUserInformation(req.params.username);
+    if (user) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(user));
+    }
+    else {
+        res.set('Content-Type', 'application/text');
+        res.status(400).send(`User "${req.params.username}" not found.`);
+    }
+});
+
 // Get list of admin users
 router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
     const admins = await users.getAdminUsers();

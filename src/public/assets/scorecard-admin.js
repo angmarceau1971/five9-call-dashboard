@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 77);
+/******/ 	return __webpack_require__(__webpack_require__.s = 78);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -176,30 +176,37 @@ module.exports = function normalizeComponent (
 /***/ }),
 
 /***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
 
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
 
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
 
-function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
 }
-module.exports = _curry1;
 
 /***/ }),
 
@@ -463,7 +470,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 //
 //
 //
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -633,37 +640,30 @@ if (false) {
 /***/ }),
 
 /***/ 2:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
 
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
 
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
 
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
 }
+module.exports = _curry1;
 
 /***/ }),
 
@@ -678,61 +678,25 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ }),
 
 /***/ 4:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(11);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-
-/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["m"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(3);
 
  ////////////////////////////////////////////////////////////////
@@ -754,11 +718,15 @@ async function queueStats() {
  * Get CSV string of report results from Five9
  * @param  {Object} params
  * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
+ * @return {Promise -> Object}        JSON data
  */
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
+}
+async function getUserInformation(username) {
+  const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
 }
 /**
  * List of available fields for widgets.
@@ -958,6 +926,43 @@ function getParameters(requestType) {
 
   return params;
 }
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(11);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 
@@ -1266,25 +1271,25 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 77:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_editor_table_vue__ = __webpack_require__(13);
 
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 
 const vm = new Vue({
   el: '#admin-app',
@@ -1299,7 +1304,7 @@ const vm = new Vue({
       let clean = clone(field);
       clean.name = field.name.trim();
       clean.displayName = field.displayName.trim();
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["k" /* updateField */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["l" /* updateField */](clean);
     },
     fieldLoader: function () {
       return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* getFieldList */]();
@@ -1328,7 +1333,7 @@ const vm = new Vue({
 /***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 /**
  * Gives a single-word string description of the (native) type of a value,

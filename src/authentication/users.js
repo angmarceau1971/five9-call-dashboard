@@ -1,9 +1,14 @@
+const clone = require('ramda/src/clone');
+const flatten = require('ramda/src/flatten');
+const uniq = require('ramda/src/uniq');
 const five9 = require('../utility/five9-interface');
 const log = require('../utility/log');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const clone = require('ramda/src/clone');
+// Lookup to determine which skills this agent should be taking
+const skillGroup = require('../models/skill-group.js');
+
 
 //////////////////////////////////////////
 // MongoDB database definitions
@@ -22,11 +27,17 @@ const usersSchema = mongoose.Schema({
 const Users = mongoose.model('Users', usersSchema);
 
 
-// Checks if "username" is an active user in this system.
-// Async, as this function will wait for User database updates to complete
-// before sending a response (if database is in the middle of an update).
-// @param username - User to check
-// @return Boolean - This is an active user
+////////////////////////////////////////////////
+// Access methods
+////////////////////////////////////////////////
+
+/**
+ * Checks if "username" is an active user in this system.
+ * Async, as this function will wait for User database updates to complete
+ * before sending a response (if database is in the middle of an update).
+ * @param  {String}  username User to check
+ * @return {Promise -> Boolean}
+ */
 async function isActive(username) {
     function wait(ms) {
         return new Promise((resolve, reject) => {
@@ -42,51 +53,7 @@ async function isActive(username) {
     let user = await Users.findOne({ username: username });
     return user != null && user.active;
 }
-
-// Update from Five9 every ${interval} seconds
-// Returns ID for setTimeout timer
-let currentlyUpdatingData = false;
-async function scheduleUpdate(interval) {
-    currentlyUpdatingData = true;
-    log.message(`Updating users database`);
-    await refreshUserDatabase(Users);
-
-    currentlyUpdatingData = false;
-    return setTimeout(() => scheduleUpdate(interval), interval);
-}
-
-async function refreshUserDatabase(usersModel) {
-    // Save original list to preserve admin status
-    let originalUsers = await Users.find({});
-
-    // Get the dataz from Five9
-    let [data, agentGroupData] = await Promise.all([
-        five9.getUsersGeneralInfo(),
-        five9.getAgentGroups()
-    ]);
-
-    // Clear the old list
-    await usersModel.remove({}, (err, success) => {
-        if (err) log.error(`Error deleting data in Users model: ${err}`);
-    });
-
-    // Only leave the fields needed
-    let cleanData = data.map((d, i) => {
-        if (d.userName[0] == 'psirios@risebroadband.com') debugger;
-        let newUser = {
-            username: d.userName[0],
-            active: d.active == 'true' ? true : false,
-            isAdmin: getAdminFromData(d.userName[0], originalUsers),
-            agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
-        };
-        return newUser;
-    });
-
-    // Insert to collection
-    return usersModel.collection.insert(cleanData, (err, docs) => {
-        if (err) log.error(`Error inserting data in Users model: ${err}`);
-    });
-}
+module.exports.isActive = isActive;
 
 /**
  * @param  {String}  username to check on
@@ -97,6 +64,7 @@ async function isAdmin(username) {
     if (!user || !user.isAdmin) return false;
     return true;
 }
+module.exports.isAdmin = isAdmin;
 
 function getAdminFromData(username, data) {
     for (let i=0; i < data.length; i++) {
@@ -104,6 +72,26 @@ function getAdminFromData(username, data) {
     }
     return false;
 }
+
+/**
+ * Get user data object with fields:
+ *      agentGroups, skillGroups, skills, isAdmin, active, username
+ *
+ * @param  {[type]} username [description]
+ * @return {[type]}          [description]
+ */
+async function getUserInformation(username) {
+    const user = await Users.findOne({ username: username }).lean().exec();
+    const skillGroups = skillGroup.getFromAgentGroup(user.agentGroups[0]);
+    const skills = uniq(flatten(skillGroups.map((group) => group.skills)));
+    const skillGroupNames = uniq(skillGroups.map((group) => group.name));
+
+    return Object.assign(user, {
+        skills: skills,
+        skillGroups: skillGroupNames
+    });
+}
+module.exports.getUserInformation = getUserInformation;
 
 /**
  * Returns array of all Agent Groups user is assigned to
@@ -141,7 +129,53 @@ async function updateAdminStatus(username, isNowAdmin) {
 module.exports.updateAdminStatus = updateAdminStatus;
 
 
-module.exports.isAdmin = isAdmin;
-module.exports.isActive = isActive;
+////////////////////////////////////////////////
+// Database updating
+////////////////////////////////////////////////
+
+// Update from Five9 every ${interval} seconds
+// Returns ID for setTimeout timer
+let currentlyUpdatingData = false;
+async function scheduleUpdate(interval) {
+    currentlyUpdatingData = true;
+    log.message(`Updating users database`);
+    await refreshUserDatabase(Users);
+
+    currentlyUpdatingData = false;
+    return setTimeout(() => scheduleUpdate(interval), interval);
+}
 module.exports.scheduleUpdate = scheduleUpdate;
+
+
+async function refreshUserDatabase(usersModel) {
+    // Save original list to preserve admin status
+    let originalUsers = await Users.find({});
+
+    // Get the dataz from Five9
+    let [data, agentGroupData] = await Promise.all([
+        five9.getUsersGeneralInfo(),
+        five9.getAgentGroups()
+    ]);
+
+    // Clear the old list
+    await usersModel.remove({}, (err, success) => {
+        if (err) log.error(`Error deleting data in Users model: ${err}`);
+    });
+
+    // Only leave the fields needed
+    let cleanData = data.map((d, i) => {
+        let newUser = {
+            username: d.userName[0],
+            active: d.active == 'true' ? true : false,
+            isAdmin: getAdminFromData(d.userName[0], originalUsers),
+            agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
+        };
+        return newUser;
+    });
+
+    // Insert to collection
+    return usersModel.collection.insert(cleanData, (err, docs) => {
+        if (err) log.error(`Error inserting data in Users model: ${err}`);
+    });
+}
 module.exports.refreshUserDatabase = refreshUserDatabase;

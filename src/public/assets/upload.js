@@ -60,12 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 89);
+/******/ 	return __webpack_require__(__webpack_require__.s = 90);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 2:
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -110,25 +110,26 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["m"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(3);
 
  ////////////////////////////////////////////////////////////////
@@ -150,11 +151,15 @@ async function queueStats() {
  * Get CSV string of report results from Five9
  * @param  {Object} params
  * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
+ * @return {Promise -> Object}        JSON data
  */
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
+}
+async function getUserInformation(username) {
+  const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
 }
 /**
  * List of available fields for widgets.
@@ -357,20 +362,20 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 89:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(90);
+module.exports = __webpack_require__(91);
 
 
 /***/ }),
 
-/***/ 90:
+/***/ 91:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(4);
 
 const vm = new Vue({
   el: '#upload-app',
@@ -399,7 +404,7 @@ const vm = new Vue({
           tableName: this.selectedTableName,
           confirmedChanges: false
         };
-        const response = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* uploadData */](params);
+        const response = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* uploadData */](params);
         this.updateMessage(response); // clear input file
 
         this.$refs['fileInput'].value = '';

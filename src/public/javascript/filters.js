@@ -39,7 +39,8 @@ export function clean(original, currentUser) {
     // Update appropriate skill groups
     if (filter.skillGroup) {
         if (filter.skillGroup.$in[0] == '<current user group>') {
-            filter.skillGroup.$in = hub.store.getters.currentUserSkillGroup;
+            const user = hub.store.state.userInformation;
+            filter.skillGroup.$in = user.skillGroups;
         }
     }
 

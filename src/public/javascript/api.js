@@ -14,23 +14,26 @@ export async function getStatistics(filter) {
     return response.json();
 }
 
-
 // Get real-time stats
 export async function queueStats() {
     return getData({}, 'queue-stats');
 }
 
-
 /**
  * Get CSV string of report results from Five9
  * @param  {Object} params
  * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
+ * @return {Promise -> Object}        JSON data
  */
 export function getReportResults(params, type) {
     return getData(params, `reports/${type}`);
 }
 
+
+export async function getUserInformation(username) {
+    const response = await request({}, `users/data/${username}`, 'GET');
+    return response.json();
+}
 
 /**
  * List of available fields for widgets.
@@ -98,7 +101,6 @@ export async function updateAdminUser(user) {
     let response = await request({user: user}, 'users/admin', 'PATCH');
     return response.text();
 }
-
 
 export async function rebootServer() {
     const response = await request({}, 'reboot-server', 'POST');

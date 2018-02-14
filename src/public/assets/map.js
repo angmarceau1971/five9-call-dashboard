@@ -60,12 +60,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 84);
+/******/ 	return __webpack_require__(__webpack_require__.s = 85);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 2:
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -110,25 +110,26 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["m"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(3);
 
  ////////////////////////////////////////////////////////////////
@@ -150,11 +151,15 @@ async function queueStats() {
  * Get CSV string of report results from Five9
  * @param  {Object} params
  * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
+ * @return {Promise -> Object}        JSON data
  */
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
+}
+async function getUserInformation(username) {
+  const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
 }
 /**
  * List of available fields for widgets.
@@ -357,22 +362,22 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 84:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(85);
+module.exports = __webpack_require__(86);
 
 
 /***/ }),
 
-/***/ 85:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(87);
 
 
  // General functions to initiate the call map dashboard.
@@ -596,7 +601,7 @@ function reportTimeRange() {
 
 /***/ }),
 
-/***/ 86:
+/***/ 87:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

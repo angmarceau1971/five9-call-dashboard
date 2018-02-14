@@ -6,6 +6,7 @@ import EditorTable from '../components/editor-table.vue';
 // Node libraries
 const isEmpty = require('ramda/src/isEmpty');
 const clone = require('ramda/src/clone');
+const debounce = require('debounce');
 
 const aht = {
     title: 'Average Handle Time',
@@ -173,7 +174,7 @@ const vm = new Vue({
                 return store.state.currentUser
             },
             set(value) {
-                store.commit('updateUser', value)
+                this.updateUserDebounced(value);
             }
         }
     },
@@ -185,6 +186,11 @@ const vm = new Vue({
     },
 
     methods: {
+        updateUserDebounced: debounce(async function(username) {
+            store.dispatch('updateUser', username);
+            this.refresh();
+        }, 500),
+
         refresh: async function() {
             store.dispatch('forceRefresh');
         },

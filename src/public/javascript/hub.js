@@ -21,9 +21,10 @@ export const store = new Vuex.Store({
         fields: [],
         editMode: true,
         currentUser: '',
+        userInformation: {},
         data: {},
         datasources: {},
-        timeoutIds: {}
+        timeoutIds: {},
     },
     getters: {
         /**
@@ -49,10 +50,6 @@ export const store = new Vuex.Store({
             const filt = filters.clean(filter, state.currentUser);
             let data = sift(filt, state.data[datasource]);
             return data;
-        },
-        currentUserSkillGroup: (state) => {
-            // TODO: implement
-            return ['Sales'];
         }
     },
     mutations: {
@@ -63,12 +60,13 @@ export const store = new Vuex.Store({
             Vue.set(state.data, datasource, newData);
         },
         /**
-         * Set the current user
+         * Set the current username and user information
          * @param  {Object} state
-         * @param  {String} newUsername
+         * @param  {String} user new user object
          */
-        updateUser(state, newUsername) {
-            state.currentUser = newUsername;
+        setUser(state, user) {
+            state.currentUser = user.username;
+            state.userInformation = clone(user);
         },
         setTimeoutId(state, { datasourceName, id }) {
             state.timeoutIds[datasourceName] = id;
@@ -99,8 +97,6 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
-            // const agentSkillGroups = await api.getAgentSkillGroups();
-            // context.commit('setAgentSkillGroups', agentSkillGroups);
             return context.dispatch('nextUpdate', null);
         },
 
@@ -118,8 +114,17 @@ export const store = new Vuex.Store({
             context.dispatch('startProcess');
         },
 
+        async updateUser(context, username) {
+            context.commit('setUser', await api.getUserInformation(username));
+        },
+
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
+            if (!context.state.currentUser) {
+                console.log('No current user assigned. Skipping update.');
+                return;
+            }
+
             // Load data from server
             for (const [id, source] of Object.entries(context.state.datasources)) {
                 const data = await loadData(getParams(source));

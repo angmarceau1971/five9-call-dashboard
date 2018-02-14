@@ -174,33 +174,6 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
-
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
-}
-module.exports = _curry1;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -234,6 +207,33 @@ function formatAMPM(date) {
 }
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+module.exports = _curry1;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -244,60 +244,25 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(11);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["g"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["h"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["i"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["m"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(3);
 
  ////////////////////////////////////////////////////////////////
@@ -319,11 +284,15 @@ async function queueStats() {
  * Get CSV string of report results from Five9
  * @param  {Object} params
  * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Object}        JSON data
+ * @return {Promise -> Object}        JSON data
  */
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
+}
+async function getUserInformation(username) {
+  const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
 }
 /**
  * List of available fields for widgets.
@@ -523,6 +492,42 @@ function getParameters(requestType) {
 
   return params;
 }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(11);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 /* 6 */
@@ -831,7 +836,7 @@ function applyToTag (styleElement, obj) {
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 /**
  * Gives a single-word string description of the (native) type of a value,
@@ -1129,7 +1134,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 //
 //
 //
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -1397,7 +1402,7 @@ if (false) {(function () {
 
 "use strict";
 /* unused harmony export loadData */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filters__ = __webpack_require__(22);
 /**
  * This module controls interaction with the server.
@@ -1410,7 +1415,7 @@ if (false) {(function () {
 
 const sift = __webpack_require__(41);
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 /**
  * Vuex is used to see if app is in edit mode (editMode Boolean), and store
  * field (meta) data.
@@ -1423,6 +1428,7 @@ const store = new Vuex.Store({
     fields: [],
     editMode: true,
     currentUser: '',
+    userInformation: {},
     data: {},
     datasources: {},
     timeoutIds: {}
@@ -1454,10 +1460,6 @@ const store = new Vuex.Store({
       const filt = __WEBPACK_IMPORTED_MODULE_1__filters__["a" /* clean */](filter, state.currentUser);
       let data = sift(filt, state.data[datasource]);
       return data;
-    },
-    currentUserSkillGroup: state => {
-      // TODO: implement
-      return ['Sales'];
     }
   },
   mutations: {
@@ -1473,12 +1475,13 @@ const store = new Vuex.Store({
     },
 
     /**
-     * Set the current user
+     * Set the current username and user information
      * @param  {Object} state
-     * @param  {String} newUsername
+     * @param  {String} user new user object
      */
-    updateUser(state, newUsername) {
-      state.currentUser = newUsername;
+    setUser(state, user) {
+      state.currentUser = user.username;
+      state.userInformation = clone(user);
     },
 
     setTimeoutId(state, {
@@ -1516,9 +1519,7 @@ const store = new Vuex.Store({
     async startProcess(context) {
       // load fields from server
       const fields = await __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getFieldList */]();
-      context.commit('setFields', fields); // const agentSkillGroups = await api.getAgentSkillGroups();
-      // context.commit('setAgentSkillGroups', agentSkillGroups);
-
+      context.commit('setFields', fields);
       return context.dispatch('nextUpdate', null);
     },
 
@@ -1537,8 +1538,18 @@ const store = new Vuex.Store({
       context.dispatch('startProcess');
     },
 
+    async updateUser(context, username) {
+      context.commit('setUser', (await __WEBPACK_IMPORTED_MODULE_0__api__["g" /* getUserInformation */](username)));
+    },
+
     async nextUpdate(context, ms) {
-      console.log(`Refresh at ${moment()}`); // Load data from server
+      console.log(`Refresh at ${moment()}`);
+
+      if (!context.state.currentUser) {
+        console.log('No current user assigned. Skipping update.');
+        return;
+      } // Load data from server
+
 
       for (const [id, source] of Object.entries(context.state.datasources)) {
         const data = await loadData(getParams(source));
@@ -1609,7 +1620,7 @@ module.exports = _has;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server or
  * apply to data.
@@ -1648,7 +1659,8 @@ function clean(original, currentUser) {
 
   if (filter.skillGroup) {
     if (filter.skillGroup.$in[0] == '<current user group>') {
-      filter.skillGroup.$in = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.currentUserSkillGroup;
+      const user = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].state.userInformation;
+      filter.skillGroup.$in = user.skillGroups;
     }
   }
 
@@ -1754,7 +1766,7 @@ if (false) {(function () {
  */
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 /**
  * Extract an overall value from a set of data, based on the provided field.
  * @param  {Array} data   array of data objects
@@ -1945,7 +1957,7 @@ module.exports = _isArguments;
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
 
@@ -2003,7 +2015,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const isEmpty = __webpack_require__(65);
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
+
+const debounce = __webpack_require__(77);
 
 const aht = {
   title: 'Average Handle Time',
@@ -2141,7 +2155,7 @@ const vm = new Vue({
       },
 
       set(value) {
-        store.commit('updateUser', value);
+        this.updateUserDebounced(value);
       }
 
     }
@@ -2154,6 +2168,10 @@ const vm = new Vue({
   },
 
   methods: {
+    updateUserDebounced: debounce(async function (username) {
+      store.dispatch('updateUser', username);
+      this.refresh();
+    }, 500),
     refresh: async function () {
       store.dispatch('forceRefresh');
     },
@@ -2994,7 +3012,7 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(5);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -5211,7 +5229,7 @@ if (false) {
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 var empty = /*#__PURE__*/__webpack_require__(66);
 
@@ -5249,7 +5267,7 @@ module.exports = isEmpty;
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 var _isArguments = /*#__PURE__*/__webpack_require__(26);
 
@@ -5623,7 +5641,7 @@ module.exports = identical;
 /* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
 var _has = /*#__PURE__*/__webpack_require__(21);
 
@@ -5698,6 +5716,78 @@ var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys
 };
 var keys = /*#__PURE__*/_curry1(_keys);
 module.exports = keys;
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
 
 /***/ })
 /******/ ]);
