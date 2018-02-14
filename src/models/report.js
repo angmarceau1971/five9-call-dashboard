@@ -10,7 +10,6 @@ const log = require('../utility/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 
-const skillGroup = require('./skill-group');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -190,15 +189,8 @@ function createFilter(obj) {
     const filter = Object.keys(obj)
         .filter((key) => key != 'date')
         .map((key) => {
-            if (key == 'skillGroup') {
-                return { 'skill': { $in:
-                    skillGroup.getSkills(obj.skillGroup.$in)
-                } };
-            }
-            else {
                 return { [key]: obj[key] };
-            }
-        });
+            });
     return filter;
 }
 

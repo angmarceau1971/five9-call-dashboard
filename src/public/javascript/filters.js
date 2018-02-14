@@ -40,8 +40,12 @@ export function clean(original, currentUser) {
     if (filter.skillGroup) {
         if (filter.skillGroup.$in[0] == '<current user group>') {
             const user = hub.store.state.userInformation;
-            filter.skillGroup.$in = user.skillGroups;
+            filter.skill = { $in: user.skills };
         }
+        else {
+            throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`)
+        }
+        delete filter.skillGroup;
     }
 
     return filter;

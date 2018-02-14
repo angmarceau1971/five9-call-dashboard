@@ -189,7 +189,7 @@ const vm = new Vue({
         updateUserDebounced: debounce(async function(username) {
             store.dispatch('updateUser', username);
             this.refresh();
-        }, 500),
+        }, 250),
 
         refresh: async function() {
             store.dispatch('forceRefresh');

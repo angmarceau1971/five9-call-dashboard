@@ -1660,8 +1660,14 @@ function clean(original, currentUser) {
   if (filter.skillGroup) {
     if (filter.skillGroup.$in[0] == '<current user group>') {
       const user = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].state.userInformation;
-      filter.skillGroup.$in = user.skillGroups;
+      filter.skill = {
+        $in: user.skills
+      };
+    } else {
+      throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
     }
+
+    delete filter.skillGroup;
   }
 
   return filter;
@@ -2171,7 +2177,7 @@ const vm = new Vue({
     updateUserDebounced: debounce(async function (username) {
       store.dispatch('updateUser', username);
       this.refresh();
-    }, 500),
+    }, 250),
     refresh: async function () {
       store.dispatch('forceRefresh');
     },
