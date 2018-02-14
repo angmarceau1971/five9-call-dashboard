@@ -42,7 +42,9 @@ const acdFeedSchema = mongoose.Schema({
     holdTime: Number,
     conferenceTime: Number,
     acwTime: Number,
-    speedOfAnswer: Number
+    speedOfAnswer: Number,
+    abandons: Number,
+    serviceLevel: { type: Number, default: 0 }
 });
 // Schema for agent login data
 const agentLoginSchema = mongoose.Schema({
@@ -83,6 +85,7 @@ const headerLookup = {
     'SERVICE LEVEL count':  'serviceLevel',
     'SERVICE LEVEL':    'serviceLevel',
     'ABANDONED':    'abandons',
+    'ABANDONED count': 'abandons',
     'AGENT':        'agentUsername',
     'AGENT NAME':   'agentName',
     'AGENT GROUP':  'agentGroup',
@@ -330,6 +333,7 @@ async function getData(timeFilter, reportModel) {
  */
 async function refreshDatabase(time, reportModel, reportName) {
     log.message(`Updating Report database with ${reportName}`);
+    if (reportModel == AgentLogin) debugger;
     let csvData;
 
     // Get CSV data
@@ -427,6 +431,9 @@ function parseRow(model, row) {
         parsed.acwTime = seconds(row.acwTime);
         parsed.speedOfAnswer = seconds(row.speedOfAnswer);
         parsed.skill = row.skill;
+
+        parsed.abandons = row.abandons * 1;
+        parsed.serviceLevel = row.serviceLevel * 1;
     }
     else if (model == AgentLogin) {
         datestring = row.date;

@@ -26,13 +26,13 @@ export function clean(original) {
     filter[dateKey] = dateFn();
 
     // Insert actual username
-    if (filter.agentUsername.$in
+    if (filter.agentUsername && filter.agentUsername.$in
         && filter.agentUsername.$in.includes('<current user>')) {
         filter.agentUsername.$in[
             filter.agentUsername.$in.indexOf('<current user>')
         ] = user.username;
     }
-    if (filter.agentUsername.$eq == '<current user>') {
+    if (filter.agentUsername && filter.agentUsername.$eq == '<current user>') {
         filter.agentUsername.$eq = user.username;
     }
 

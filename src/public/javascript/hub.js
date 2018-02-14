@@ -103,13 +103,7 @@ export const store = new Vuex.Store({
         async forceRefresh(context) {
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
-                context.commit({
-                    type: 'setTimeoutId',
-                    data: {
-                        datasourceName: sourceName,
-                        id: context
-                    }
-                });
+                console.log(`cleared ${id} for ${sourceName}`);
             }
             context.dispatch('startProcess');
         },
@@ -134,6 +128,7 @@ export const store = new Vuex.Store({
                 });
 
                 // and schedule the next update
+                clearTimeout(context.state.timeoutIds[source.name]);
                 let timeout = setTimeout(function next() {
                     context.dispatch('nextUpdate', source.refreshRate * 1000);
                 }, source.refreshRate * 1000);
@@ -166,6 +161,5 @@ export async function loadData(params) {
         d._id.dateDay = moment(d._id.dateDay).toDate();
         return d;
     });
-    console.log(cleaned);
     return cleaned;
 }

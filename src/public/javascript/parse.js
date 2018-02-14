@@ -28,6 +28,9 @@ function process(data, field) {
     else if (field == 'Calculated.acw') {
         return sum(data, 'acwTime') / sum(data, 'calls');
     }
+    else if (field == 'Calculated.serviceLevel') {
+        return sum(data, 'serviceLevel') / sum(data, 'calls');
+    }
     const [source, fieldName] = field.split('.');
     if (source == 'AcdFeed') {
         return sum(data, fieldName);

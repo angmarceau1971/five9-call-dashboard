@@ -1329,7 +1329,7 @@ function formatValue(value, field) {
     style = '';
   }
 
-  if (field.format.type == 'Number') {
+  if (field.format.type == 'Number' || field.format.type == 'Percentage') {
     formattedValue = d3.format(field.format.string)(value);
   } else if (field.format.type == 'Duration') {
     formattedValue = moment('2018-01-01').startOf('day').seconds(value).format(field.format.string);
@@ -1526,13 +1526,7 @@ const store = new Vuex.Store({
     async forceRefresh(context) {
       for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
         clearTimeout(id);
-        context.commit({
-          type: 'setTimeoutId',
-          data: {
-            datasourceName: sourceName,
-            id: context
-          }
-        });
+        console.log(`cleared ${id} for ${sourceName}`);
       }
 
       context.dispatch('startProcess');
@@ -1559,6 +1553,7 @@ const store = new Vuex.Store({
           datasource: source.name
         }); // and schedule the next update
 
+        clearTimeout(context.state.timeoutIds[source.name]);
         let timeout = setTimeout(function next() {
           context.dispatch('nextUpdate', source.refreshRate * 1000);
         }, source.refreshRate * 1000);
@@ -1596,7 +1591,6 @@ async function loadData(params) {
     d._id.dateDay = moment(d._id.dateDay).toDate();
     return d;
   });
-  console.log(cleaned);
   return cleaned;
 }
 
@@ -1648,11 +1642,11 @@ function clean(original) {
   let dateFn = dateMatcher[filter[dateKey]];
   filter[dateKey] = dateFn(); // Insert actual username
 
-  if (filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
+  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
     filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = user.username;
   }
 
-  if (filter.agentUsername.$eq == '<current user>') {
+  if (filter.agentUsername && filter.agentUsername.$eq == '<current user>') {
     filter.agentUsername.$eq = user.username;
   } // Update appropriate skill groups
 
@@ -1795,6 +1789,8 @@ function process(data, field) {
     return sum(data, 'handleTime') / sum(data, 'calls');
   } else if (field == 'Calculated.acw') {
     return sum(data, 'acwTime') / sum(data, 'calls');
+  } else if (field == 'Calculated.serviceLevel') {
+    return sum(data, 'serviceLevel') / sum(data, 'calls');
   }
 
   const [source, fieldName] = field.split('.');
@@ -2036,7 +2032,7 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Today',
   'fieldName': 'Calculated.aht',
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2048,7 +2044,7 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Month to Date',
   'fieldName': 'Calculated.aht',
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2063,7 +2059,7 @@ aht.widgets = [{
     'x': 'dateDay',
     'y': 'Calculated.aht'
   },
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2083,7 +2079,7 @@ calls.widgets = [{
   'component': 'single-value',
   'title': 'Today',
   'fieldName': 'AcdFeed.calls',
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2095,7 +2091,7 @@ calls.widgets = [{
   'component': 'single-value',
   'title': 'Month to Date',
   'fieldName': 'AcdFeed.calls',
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2110,7 +2106,7 @@ calls.widgets = [{
     'x': 'dateDay',
     'y': 'AcdFeed.calls'
   },
-  'datasource': 'Test',
+  'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
       $in: ['<current user>']
@@ -2118,11 +2114,49 @@ calls.widgets = [{
     dateDay: '<month-to-date>'
   }
 }];
+const sla = {
+  title: 'Service Level',
+  id: 'card:3',
+  layoutOrder: 3,
+  columns: 1
+};
+sla.data = [];
+sla.widgets = [{
+  'id': 'widget:0',
+  'component': 'single-value',
+  'title': 'Today',
+  'fieldName': 'Calculated.serviceLevel',
+  'datasource': 'Department Stats',
+  'filter': {
+    dateDay: '<today>'
+  }
+}, {
+  'id': 'widget:1',
+  'component': 'single-value',
+  'title': 'Month to Date',
+  'fieldName': 'Calculated.serviceLevel',
+  'datasource': 'Department Stats',
+  'filter': {
+    dateDay: '<month-to-date>'
+  }
+}, {
+  'id': 'widget:2',
+  'component': 'line-graph',
+  'title': 'Calls by Day',
+  'fields': {
+    'x': 'dateDay',
+    'y': 'Calculated.serviceLevel'
+  },
+  'datasource': 'Department Stats',
+  'filter': {
+    dateDay: '<month-to-date>'
+  }
+}];
 const layout = {
-  cards: [aht, calls],
+  cards: [aht, calls, sla],
   datasources: [{
     "id": "1",
-    "name": "Test",
+    "name": "Agent Stats",
     "fields": {
       "sum": ["calls", "handleTime", "acwTime"]
     },
@@ -2136,7 +2170,21 @@ const layout = {
       }
     },
     "groupBy": ["dateDay", "agentUsername", "skill"],
-    "refreshRate": 10
+    "refreshRate": 20
+  }, {
+    "id": "2",
+    "name": "Department Stats",
+    "fields": {
+      "sum": ["calls", "serviceLevel"]
+    },
+    "filter": {
+      "date": "<month-to-date>",
+      "skillGroup": {
+        $in: ["<current user group>"]
+      }
+    },
+    "groupBy": ["dateDay"],
+    "refreshRate": 60
   }]
 };
 Vue.use(Vuex);

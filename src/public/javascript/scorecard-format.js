@@ -27,7 +27,7 @@ export function formatValue(value, field) {
         style = '';
     }
 
-    if (field.format.type == 'Number') {
+    if (field.format.type == 'Number' || field.format.type == 'Percentage') {
         formattedValue = d3.format(field.format.string)(value);
     } else if (field.format.type == 'Duration') {
         formattedValue = moment('2018-01-01').startOf('day')

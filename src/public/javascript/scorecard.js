@@ -21,7 +21,7 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'Calculated.aht',
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -34,7 +34,7 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'Calculated.aht',
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -50,7 +50,7 @@ aht.widgets = [
             'x': 'dateDay',
             'y': 'Calculated.aht'
         },
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -74,7 +74,7 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AcdFeed.calls',
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -87,7 +87,7 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AcdFeed.calls',
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -103,7 +103,7 @@ calls.widgets = [
             'x': 'dateDay',
             'y': 'AcdFeed.calls'
         },
-        'datasource': 'Test',
+        'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -113,15 +113,60 @@ calls.widgets = [
     },
 ];
 
+
+const sla = {
+    title: 'Service Level',
+    id: 'card:3',
+    layoutOrder: 3,
+    columns: 1
+};
+sla.data = [];
+sla.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Today',
+        'fieldName': 'Calculated.serviceLevel',
+        'datasource': 'Department Stats',
+        'filter': {
+            dateDay: '<today>'
+        }
+    },
+    {
+        'id': 'widget:1',
+        'component': 'single-value',
+        'title': 'Month to Date',
+        'fieldName': 'Calculated.serviceLevel',
+        'datasource': 'Department Stats',
+        'filter': {
+            dateDay: '<month-to-date>'
+        }
+    },
+    {
+        'id': 'widget:2',
+        'component': 'line-graph',
+        'title': 'Calls by Day',
+        'fields': {
+            'x': 'dateDay',
+            'y': 'Calculated.serviceLevel'
+        },
+        'datasource': 'Department Stats',
+        'filter': {
+            dateDay: '<month-to-date>'
+        }
+    },
+];
+
 const layout = {
     cards: [
         aht,
-        calls
+        calls,
+        sla
     ],
     datasources: [
         {
             "id": "1",
-            "name": "Test",
+            "name": "Agent Stats",
             "fields": {
                 "sum": [
                     "calls",
@@ -143,7 +188,27 @@ const layout = {
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 10
+            "refreshRate": 20
+        },
+        {
+            "id": "2",
+            "name": "Department Stats",
+            "fields": {
+                "sum": [
+                    "calls",
+                    "serviceLevel"
+                ]
+            },
+            "filter": {
+                "date": "<month-to-date>",
+                "skillGroup": {
+                    $in: ["<current user group>"]
+                }
+            },
+            "groupBy": [
+                "dateDay"
+            ],
+            "refreshRate": 60
         }
     ]
 };
