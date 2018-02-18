@@ -91,7 +91,7 @@
                 :loader="datasourceLoader"
                 :adder="datasourceAdder"
                 :remover="datasourceRemover"
-                :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)']"
+                :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)', 'Source']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -122,6 +122,11 @@
                             v-model="props.item.refreshRate"
                             type="number"
                         ></textarea>
+                    </td>
+                    <td>
+                        <input
+                            v-model="props.item.source"
+                            type="text"/>
                     </td>
                 </template>
 

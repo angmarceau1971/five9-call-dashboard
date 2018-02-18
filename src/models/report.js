@@ -162,7 +162,7 @@ async function loadData(time) {
  * @param  {Array}  groupBy break down / summarize by these fields
  * @return {Promise} resolves to JSON data matching query
  */
-async function getScorecardStatistics({ filter, fields, groupBy }) {
+async function getScorecardStatistics({ filter, fields, groupBy, source }) {
     // Construct MongoDB aggregation object
     const aggregation = [
         {
@@ -188,7 +188,8 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
         }
     ];
 
-    let data = await getStatisticsFrom(AcdFeed, aggregation);
+    let model = getModelFromSourceName(source);
+    let data = await getStatisticsFrom(model, aggregation);
     return mergeIdToData(data);
 }
 /**
@@ -201,6 +202,27 @@ async function getScorecardStatistics({ filter, fields, groupBy }) {
  */
 function mergeIdToData(data) {
     return data.map((datum) => Object.assign(datum, datum._id));
+}
+
+/**
+ *
+ * @param  {String} sourceName
+ * @return {Mongoose Model} model associated with name
+ */
+function getModelFromSourceName(sourceName) {
+    switch (sourceName) {
+        case 'AcdFeed':
+            return AcdFeed;
+            break;
+        case 'AgentLogin':
+            return AgentLogin;
+            break;
+        case 'CallLog':
+            return CallLog;
+            break;
+        default:
+            throw new Error(`Source name "${sourceName}" isn't a valid model.`);
+    }
 }
 
 
@@ -333,7 +355,6 @@ async function getData(timeFilter, reportModel) {
  */
 async function refreshDatabase(time, reportModel, reportName) {
     log.message(`Updating Report database with ${reportName}`);
-    if (reportModel == AgentLogin) debugger;
     let csvData;
 
     // Get CSV data

@@ -38,7 +38,7 @@ router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(data));
         } catch (err) {
-            log.error(`Error during scorecard retreival: ` + JSON.stringify(err));
+            log.error(`Error during scorecard retrieval: ` + JSON.stringify(err));
             res.set('Content-Type', 'application/text');
             res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
         }
@@ -151,13 +151,17 @@ router.delete('/skill', verify.apiMiddleware('admin'), async (req, res) => {
 
 
 // Get information stored on a user based on username
-router.get('/users/data/:username', async (req, res) => {
-    const user = await users.getUserInformation(req.params.username);
-    if (user) {
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(user));
-    }
-    else {
+router.get('/users/data/:username', verify.apiMiddleware(), async (req, res) => {
+    try {
+        const user = await users.getUserInformation(req.params.username);
+        if (user) {
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(user));
+        }
+        else {
+            throw new Error();
+        }
+    } catch (err) {
         res.set('Content-Type', 'application/text');
         res.status(400).send(`User "${req.params.username}" not found.`);
     }

@@ -49,6 +49,15 @@
         @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
+    <pie-chart class="widget"
+        v-for="(widget, i) in widgetsOfType('pie-chart')"
+        v-bind="widget"
+        :key="widget.id"
+        :ref="widget.id"
+        :style="{ order: widget.layoutOrder }"
+        @dragstart-widget="dragstartWidgetHandler"
+    ></pie-chart>
+
     <data-table class="widget"
         v-for="(widget, i) in widgetsOfType('data-table')"
         v-bind="widget"
@@ -70,6 +79,8 @@ import WidgetBase from './widget-base.vue';
 import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
 import SingleValue from './single-value.vue';
+import PieChart from './pie-chart.vue';
+
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
 
@@ -78,7 +89,8 @@ export default {
     components: {
         'single-value': SingleValue,
         'data-table': DataTable,
-        'line-graph': LineGraph
+        'line-graph': LineGraph,
+        'pie-chart': PieChart
     },
     data: function() {
         return {

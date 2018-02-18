@@ -9,22 +9,22 @@
 <template>
 <div class="dashboard scorecard-wrapper"
     @dragover="dragoverHandler" @drop="dropHandler">
-    <card
-        v-for="(card, i) in layout.cards"
-        v-bind="card"
-        :key="i"
-        :ref="card.id"
-        @edit-card="editCard"
-        @modify-widget="modifyWidget"
-        @update-widgets="updateWidgets"
-    ></card>
+        <card
+            v-for="(card, i) in layout.cards"
+            v-bind="card"
+            :key="i"
+            :ref="card.id"
+            @edit-card="editCard"
+            @modify-widget="modifyWidget"
+            @update-widgets="updateWidgets"
+        ></card>
 
-    <card-editor
-        v-if="editingCard"
-        v-bind="editedCard"
-        @exit-edit="exitEdit"
-        @delete-card="deleteCard"
-    ></card-editor>
+        <card-editor
+            v-if="editingCard"
+            v-bind="editedCard"
+            @exit-edit="exitEdit"
+            @delete-card="deleteCard"
+        ></card-editor>
 </div>
 </template>
 

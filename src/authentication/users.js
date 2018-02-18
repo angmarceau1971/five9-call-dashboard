@@ -77,8 +77,8 @@ function getAdminFromData(username, data) {
  * Get user data object with fields:
  *      agentGroups, skillGroups, skills, isAdmin, active, username
  *
- * @param  {[type]} username [description]
- * @return {[type]}          [description]
+ * @param  {String} username
+ * @return {Object}
  */
 async function getUserInformation(username) {
     const user = await Users.findOne({ username: username }).lean().exec();

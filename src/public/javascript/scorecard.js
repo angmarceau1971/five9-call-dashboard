@@ -157,11 +157,31 @@ sla.widgets = [
     },
 ];
 
+const state = {
+    title: 'Time Summary',
+    id: 'card:4',
+    layoutOrder: 4,
+    columns: 1
+};
+state.data = [];
+state.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'pie-chart',
+        'title': 'Today',
+        'datasource': 'Agent State Data',
+        'filter': {
+            dateDay: '<today>'
+        }
+    }
+];
+
 const layout = {
     cards: [
         aht,
         calls,
-        sla
+        sla,
+        state
     ],
     datasources: [
         {
@@ -188,7 +208,8 @@ const layout = {
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 20
+            "refreshRate": 20,
+            "source": "AcdFeed"
         },
         {
             "id": "2",
@@ -208,7 +229,31 @@ const layout = {
             "groupBy": [
                 "dateDay"
             ],
-            "refreshRate": 60
+            "refreshRate": 60,
+            "source": "AcdFeed"
+        },
+        {
+            "id": "3",
+            "name": "Agent State Data",
+            "fields": {
+                "sum": [
+                    "notReadyTime",
+                    "handleTime",
+                    "loginTime"
+                ]
+            },
+            "filter": {
+                "date": "<month-to-date>",
+                "agentUsername": {
+                    $in: ["<current user>"]
+                }
+            },
+            "groupBy": [
+                "dateDay",
+                "reasonCode"
+            ],
+            "refreshRate": 60,
+            "source": "AgentLogin"
         }
     ]
 };

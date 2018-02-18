@@ -128,7 +128,7 @@ export const store = new Vuex.Store({
                 });
 
                 // and schedule the next update
-                clearTimeout(context.state.timeoutIds[source.name]);
+                clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
                 let timeout = setTimeout(function next() {
                     context.dispatch('nextUpdate', source.refreshRate * 1000);
                 }, source.refreshRate * 1000);
@@ -148,7 +148,8 @@ function getParams(datasource) {
     const params = {
         filter: filters.clean(datasource.filter, store.state.currentUser),
         fields: datasource.fields,
-        groupBy: datasource.groupBy
+        groupBy: datasource.groupBy,
+        source: datasource.source
     };
     return params;
 }

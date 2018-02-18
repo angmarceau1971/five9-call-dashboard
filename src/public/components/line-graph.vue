@@ -12,8 +12,8 @@ Accepts data prop with structure:
 <div class="line-graph"
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler">
-    <div ref="graph-wrap" class="graph-wrap">
-        <svg @click="toggleTable" @mousemove="mouseover" @mouseleave="mouseleave"
+    <div @click="toggleTable" ref="graph-wrap" class="graph-wrap">
+        <svg @mousemove="mouseover" @mouseleave="mouseleave"
                 :width="width" :height="height">
             <text class="title" :x="55" :y="10">{{ fieldDisplayName(fields.y) }}</text>
             <g class="axis" ref="yaxis" :style="{transform: `translate(${margin.left}px,${margin.top}px)`}"></g>
@@ -31,6 +31,16 @@ Accepts data prop with structure:
                 ></circle>
             </g>
         </svg>
+        <!-- "Play" symbol &#9658; -->
+        <div class="data-dropdown-title"
+            title="Click to show or hide data table">
+            <span class="rotating-play-icon"
+                :class="{ 'rotate-90deg': showTable }"
+            >
+                &#9658;
+            </span>
+            Data
+        </div>
 
         <div v-if="infoBox.message" class="info-box"
             :style="{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}"
@@ -154,7 +164,11 @@ export default {
                 || fieldName;
         },
         toggleTable() {
-            this.showTable = !this.showTable;
+            if (this.data.length > 0 && this.showTable == false) {
+                this.showTable = true;
+            } else {
+                this.showTable = false;
+            }
         },
 
         hoverDate(date) {
@@ -214,7 +228,6 @@ export default {
             // this.paths.area = this.createArea(this.points);
             this.paths.line = this.createLine(this.points);
 
-
             // draw axes
             const yField = this.$store.getters.field(this.fields.y);
             d3.select(this.$refs.yaxis)
@@ -248,10 +261,10 @@ export default {
                     // InfoBox coords are slightly to the lower-right of mouse
                     const dataPoint = this.data[closestPoint.index];
                     this.infoBox.message = `
-                        ${this.fieldDisplayName(this.fields.x)}
-                        : ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
-                        \n${this.fieldDisplayName(this.fields.y)}
-                        : ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
+                        ${this.fieldDisplayName(this.fields.x)}:
+                        ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
+                        \n${this.fieldDisplayName(this.fields.y)}:
+                        ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
                     `;
                     this.infoBox.x = x + 30;
                     this.infoBox.y = y + 40;
@@ -279,6 +292,7 @@ export default {
 <style scoped>
     .line-graph {
         max-width: 100%;
+        min-height: 200px;
     }
     .graph-wrap:hover {
         cursor: pointer;
@@ -287,10 +301,24 @@ export default {
         height: 175px;
         width: 100%;
     }
-    .graph-wrap text {
+    .graph-wrap text, .data-dropdown-title {
         text-anchor: middle;
         font-size: 0.8em;
         fill: #ddd;
+    }
+    .data-dropdown-title {
+        font-size: 0.6em;
+        color: #ddd;
+        text-align: left;
+        margin-left: 30px;
+    }
+    .rotating-play-icon {
+        font-size: 0.75em;
+        display: inline-block;
+        transition: 0.2s all ease-in;
+    }
+    .rotating-play-icon.rotate-90deg {
+        transform: rotate(90deg);
     }
 
 
