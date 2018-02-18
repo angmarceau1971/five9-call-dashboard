@@ -27,10 +27,7 @@ Accepts data prop with structure:
 
     <data-table
         v-if="showTable"
-        @hoverDate="hoverDate"
-        @unhoverDate="unhoverDate"
         :data="data"
-        :highlightedDate="highlightedDate"
     ></data-table>
 </div>
 </template>
@@ -44,6 +41,9 @@ import * as parse from '../javascript/parse';
 import { formatValue } from '../javascript/scorecard-format';
 
 const props = {
+    fields: {
+        type: Object
+    },
     margin: {
         type: Object,
         default: () => ({
@@ -67,7 +67,7 @@ export default {
 
     data () {
         return {
-            showTable: false,
+            showTable: true,
             width: 0,
             height: 0,
             paths: {
@@ -97,7 +97,7 @@ export default {
         },
         dataSummary() {
             let data = this.data;
-            return data;
+            return JSON.stringify(data,null,2).slice(0,30);
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;

@@ -49,7 +49,10 @@ export const store = new Vuex.Store({
             }
             const filt = filters.clean(filter, state.currentUser);
             let data = sift(filt, state.data[datasource]);
-            return data;
+            return data.map((datum) => {
+                delete datum._id;
+                return datum;
+            });
         }
     },
     mutations: {

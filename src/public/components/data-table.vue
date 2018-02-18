@@ -38,10 +38,13 @@ export default {
     },
     computed: {
         headers: function() {
+            if (this.data.length == 0) return [];
             return Object.keys(this.data[0])
-                .map((fullFieldName) =>
-                    this.$store.getters.field(fullFieldName).displayName
-                    || fullFieldName
+                .map((fullFieldName) => {
+                        let f = this.$store.getters.field(fullFieldName);
+                        if (f && f.displayName) return f.displayName;
+                        else return fullFieldName;
+                    }
                 );
         }
     },

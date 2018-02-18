@@ -170,6 +170,11 @@ state.widgets = [
         'component': 'pie-chart',
         'title': 'Today',
         'datasource': 'Agent State Data',
+        'fields': {
+            'groupBy': 'reasonCode',
+            'sum': ['notReadyTime', 'handleTime'],
+            'total': 'loginTime'
+        },
         'filter': {
             dateDay: '<today>'
         }
