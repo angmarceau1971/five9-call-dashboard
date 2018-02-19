@@ -31,13 +31,11 @@ function process(data, field) {
     else if (field == 'Calculated.serviceLevel') {
         return sum(data, 'serviceLevel') / sum(data, 'calls');
     }
-    const [source, fieldName] = field.split('.');
-    if (source == 'AcdFeed') {
-        return sum(data, fieldName);
-    }
-    else {
-        throw new Error(`Parser isn't expecting the field name "${field}".`);
-    }
+    console.log(`Return default sum for ${field}`);
+    return sum(data, field);
+    // else {
+    //     throw new Error(`Parser isn't expecting the field name "${field}".`);
+    // }
 }
 
 /**

@@ -12,14 +12,13 @@ Accepts data prop with structure:
 <div class="pie-chart"
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler">
-    <div @click="toggleTable" ref="graph-wrap" class="graph-wrap">
-        <svg @mousemove="mouseover" @mouseleave="mouseleave"
-                :width="width" :height="height">
+    <h3>{{ title }}</h3>
 
+    <div @click="toggleTable" ref="graph-wrap" class="graph-wrap">
+        <svg
+            :width="width" :height="height">
         </svg>
-        <div>
-            {{ dataSummary }}
-        </div>
+
         <div v-if="infoBox.message" class="info-box"
             :style="{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}"
         >{{ infoBox.message }}</div>
@@ -52,6 +51,9 @@ const props = {
             top: 20,
             bottom: 25,
         }),
+    },
+    title: {
+        type: String
     }
 };
 
@@ -67,9 +69,10 @@ export default {
 
     data () {
         return {
-            showTable: true,
-            width: 0,
-            height: 0,
+            showTable: false,
+            width: 200,
+            height: 200,
+            radius: 90,
             paths: {
                 area: '',
                 line: '',
@@ -86,18 +89,23 @@ export default {
                 x: 0,
                 y: 0
             },
+            // D3 objects
+            color: null,
+            pie: null,
+            path: null,
+            label: null,
+            svg: null,
+            g: null
         };
     },
 
     computed: {
         data() {
             // Get data from hub
-            return this.$store.getters.getData(this.filter, this.datasource);
-
-        },
-        dataSummary() {
-            let data = this.data;
-            return JSON.stringify(data,null,2).slice(0,30);
+            let raw = this.$store.getters.getData(this.filter, this.datasource);
+            // Summarize by displayed field(s)
+            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);
+            return grouped;
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;
@@ -110,9 +118,25 @@ export default {
     },
 
     mounted() {
-        // Update everything when screen size changes
-        // window.addEventListener('resize', this.onResize);
-        // this.onResize();
+        // Remove title tooltip, as it gets in the way of the infoBox popup
+        this.$el.removeAttribute('title');
+
+        // Set up D3
+        this.svg = d3.select(this.$el).select('svg');
+        this.g = this.svg.append('g').attr('transform',
+                                `translate(${this.width/2}, ${this.height/2})`);
+        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);
+        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);
+        this.pie = d3.pie()
+            .padAngle(.05)
+            .sort(null)
+            .value((d) => d.notReadyTime);
+        this.path = d3.arc()
+            .outerRadius(this.radius - 10)
+            .innerRadius((this.radius - 10) * 0.6);
+        this.label = d3.arc()
+            .outerRadius(this.radius - 40)
+            .innerRadius(this.radius - 40);
     },
 
     beforeDestroy() {
@@ -120,7 +144,7 @@ export default {
     },
 
     watch: {
-        width: function(newWidth) { this.update(); },
+        width: function(newWidth) { this.updateChart(this.data); },
         data: function(newData) { this.updateChart(newData); }
     },
 
@@ -129,12 +153,25 @@ export default {
 
         },
         updateChart: function(data) {
+            this.g.selectAll('.arc, .path').remove().exit();
 
+            let arc = this.g.selectAll('arc')
+                .data(this.pie(data))
+                .enter().append('g')
+                  .attr('class', 'arc')
+                  .on('mouseover', this.hoverOverPieSlice)
+                  .on('mouseout', this.stopHoveringOverPieSlice);
+            arc.append('path')
+                .attr('d', this.path)
+                .attr('fill', (d) => this.colorScale(d.data.reasonCode));
         },
-        mouseover: function(event) {
+        hoverOverPieSlice: function(d, i) {
+            this.infoBox.message = `
+                ${d.data.reasonCode}
+            `;
         },
-        mouseleave: function(event) {
-
+        stopHoveringOverPieSlice: function(d, i) {
+            this.infoBox.message = '';
         }
     }
 };
@@ -142,7 +179,7 @@ export default {
 
 
 <style scoped>
-    .line-graph {
+    .pie-chart {
         max-width: 100%;
         min-height: 200px;
     }
@@ -158,20 +195,6 @@ export default {
         font-size: 0.8em;
         fill: #ddd;
     }
-    .data-dropdown-title {
-        font-size: 0.6em;
-        color: #ddd;
-        text-align: left;
-        margin-left: 30px;
-    }
-    .rotating-play-icon {
-        font-size: 0.75em;
-        display: inline-block;
-        transition: 0.2s all ease-in;
-    }
-    .rotating-play-icon.rotate-90deg {
-        transform: rotate(90deg);
-    }
 
 
     h1, .content {
@@ -182,30 +205,6 @@ export default {
       width: 150px;
     }
 
-    .line {
-        fill: none;
-        stroke: steelblue;
-        stroke-linejoin: round;
-        stroke-linecap: round;
-        stroke-width: 1.5;
-    }
-    .goal-line {
-        fill: none;
-        stroke: lightgrey;
-        stroke-opacity: 0.7;
-        stroke-width: 1.0;
-    }
-    .axis {
-        font-size: 0.5em;
-    }
-    .selector {
-        stroke: hsla(207, 84%, 85%, 0.7);
-        stroke-width: 1.0;
-        fill: none;
-    }
-    .data-circle {
-        fill: steelblue;
-    }
     .info-box {
         display: inline-block;
         position: absolute;

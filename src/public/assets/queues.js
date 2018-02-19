@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 82);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -110,7 +110,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 4:
+/***/ 6:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -362,22 +362,22 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 82:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(83);
+module.exports = __webpack_require__(88);
 
 
 /***/ }),
 
-/***/ 83:
+/***/ 88:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gizmo__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gizmo__ = __webpack_require__(89);
 
 
  // timeout to pause event loop when needed
@@ -631,7 +631,7 @@ function jsonToViewData(json, includeFields = ['Skill Name', 'Calls In Queue', '
 
 /***/ }),
 
-/***/ 84:
+/***/ 89:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

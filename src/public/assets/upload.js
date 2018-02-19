@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 90);
+/******/ 	return __webpack_require__(__webpack_require__.s = 95);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -110,7 +110,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 4:
+/***/ 6:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -362,20 +362,20 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 90:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(91);
+module.exports = __webpack_require__(96);
 
 
 /***/ }),
 
-/***/ 91:
+/***/ 96:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(6);
 
 const vm = new Vue({
   el: '#upload-app',

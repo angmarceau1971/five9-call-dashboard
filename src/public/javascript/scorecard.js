@@ -178,6 +178,20 @@ state.widgets = [
         'filter': {
             dateDay: '<today>'
         }
+    },
+    {
+        'id': 'widget:1',
+        'component': 'pie-chart',
+        'title': 'Month to Date',
+        'datasource': 'Agent State Data',
+        'fields': {
+            'groupBy': 'reasonCode',
+            'sum': ['notReadyTime', 'handleTime'],
+            'total': 'loginTime'
+        },
+        'filter': {
+            dateDay: '<month-to-date>'
+        }
     }
 ];
 
