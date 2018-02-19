@@ -31,8 +31,9 @@ function process(data, field) {
     else if (field == 'Calculated.serviceLevel') {
         return sum(data, 'serviceLevel') / sum(data, 'calls');
     }
-    console.log(`Return default sum for ${field}`);
-    return sum(data, field);
+    let [source, fieldName] = field.split('.');
+    if (fieldName) return sum(data, fieldName);
+    else return sum(data, field);
     // else {
     //     throw new Error(`Parser isn't expecting the field name "${field}".`);
     // }
