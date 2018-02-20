@@ -1,0 +1,33 @@
+body {
+    background: linear-gradient(to right, hsl(32, 35%, 92%), hsl(144, 0%, 94%));
+}
+body, body button  {
+    color: #444;
+}
+
+.stats-box, .modal, .info-box {
+    box-shadow: 0 1px 0 rgba(12,13,14,0.1),
+                0 1px 3px rgba(12,13,14,0.1),
+                0 4px 20px rgba(12,13,14,0.035),
+                0 1px 1px rgba(12,13,14,0.025);
+}
+
+.stats-box, .dropdown-button, .insidedrop {
+    background-color: #fffffe;
+}
+.dropdown {
+    box-shadow: 0 1px 0 rgba(12,13,14,0.2),
+                0 1px 3px rgba(12,13,14,0.2),
+                0 4px 20px rgba(12,13,14,0.07),
+                0 1px 1px rgba(12,13,14,0.05);
+}
+.dropdown-content button {
+    border-top: 1px solid #ddd;
+}
+
+svg text {
+    fill: #222;
+}
+.modal, .info-box {
+    background-color: hsla(0, 0%, 95%, 0.9);
+}

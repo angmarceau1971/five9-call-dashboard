@@ -291,7 +291,8 @@ const vm = new Vue({
     data: {
         layout: layout,
         datasourceMessage: '',
-        isLoaded: false
+        isLoaded: false,
+        theme: 'dark'
     },
 
     components: {
@@ -307,6 +308,10 @@ const vm = new Vue({
             set(value) {
                 this.updateUserDebounced(value);
             }
+        },
+        // Get name of theme that isn't currently selected
+        otherTheme: function() {
+            return this.theme == 'dark' ? 'light' : 'dark';
         }
     },
 
@@ -317,6 +322,8 @@ const vm = new Vue({
     },
 
     methods: {
+        ///////////////////////////
+        // UI / interactions
         updateUserDebounced: debounce(async function(username) {
             store.dispatch('updateUser', username);
             this.refresh();
@@ -326,6 +333,14 @@ const vm = new Vue({
             store.dispatch('forceRefresh');
         },
 
+        changeTheme: function(newTheme) {
+            document.getElementById('theme_css').href =
+                                    `styles/scorecard-theme-${newTheme}.css`;
+            this.theme = newTheme;
+        },
+
+        ///////////////////////////
+        // Handle import & export of layouts
         clickImport: function() {
             this.$refs.fileInput.click();
         },
@@ -344,6 +359,9 @@ const vm = new Vue({
         exportLayout: function() {
             download(layout, 'test.json', 'text/plain');
         },
+
+        ///////////////////////////
+        // Dashboard modifications
         addCard: function() {
             const newCard = {
                 title: 'card:' + this.layout.cards.length,

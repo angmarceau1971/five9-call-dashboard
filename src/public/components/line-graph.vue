@@ -230,7 +230,7 @@ export default {
                 .attr('stroke', '#ccc');
             d3.select(this.$refs.xaxis)
                 .selectAll('text')
-                .attr('fill', '#ddd')
+                // .attr('fill', '#ddd')
                 .attr('dx', '-1em')
                 .attr('transform', 'rotate(-45)');
         },
@@ -292,11 +292,9 @@ export default {
     .graph-wrap text, .data-dropdown-title {
         text-anchor: middle;
         font-size: 0.8em;
-        fill: #ddd;
     }
     .data-dropdown-title {
         font-size: 0.6em;
-        color: #ddd;
         text-align: left;
         margin-left: 30px;
     }
@@ -335,7 +333,7 @@ export default {
         font-size: 0.5em;
     }
     .selector {
-        stroke: hsla(207, 84%, 85%, 0.7);
+        stroke: hsla(207, 99%, 80%, 0.7);
         stroke-width: 1.0;
         fill: none;
     }
@@ -347,7 +345,6 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        background-color: hsla(0, 0%, 40%, 0.75);
         color: inherit;
         border-radius: 2px;
         padding: 0.5em;

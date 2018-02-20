@@ -8,6 +8,8 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link href="styles/scorebase.css" rel="stylesheet" type="text/css">
         <link href="styles/scoredetail.css" rel="stylesheet" type="text/css">
+        <!-- Default to dark theme -->
+        <link href="styles/scorecard-theme-dark.css" rel="stylesheet" type="text/css" id="theme_css">
     </head>
 
     <body>
@@ -20,19 +22,18 @@
         >Refresh Data</button>
 
         <div class="dropdown">
-            <button class="dropm">&#9776;</button>
+            <button class="dropdown-button">&#9776;</button>
             <div class="dropdown-content">
+                <button class="insidedrop"
+                    @click="changeTheme(otherTheme)">
+                    Switch to {{ otherTheme }} theme
+                </button>
+
                 <button
                     class="insidedrop"
                     @click="$store.commit('toggleEditMode')"
                     id="toggle-edit-mode">
                     Edit Mode
-                </button>
-
-                <button class="insidedrop"
-                    v-if="$store.state.editMode"
-                    id="export-layout">
-                    Format
                 </button>
 
                 <button class="insidedrop"

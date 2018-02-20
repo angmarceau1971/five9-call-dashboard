@@ -373,7 +373,7 @@ var content = __webpack_require__(15);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("ad2ade60", content, false);
+var update = __webpack_require__(6)("ad2ade60", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -393,7 +393,7 @@ if(false) {
 /***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)(true);
+exports = module.exports = __webpack_require__(5)(true);
 // imports
 
 
@@ -470,7 +470,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 //
 //
 //
-const clone = __webpack_require__(7);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -678,6 +678,43 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ }),
 
 /***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(11);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(2);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
+
+/***/ }),
+
+/***/ 5:
 /***/ (function(module, exports) {
 
 /*
@@ -760,7 +797,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -982,7 +1019,7 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1234,43 +1271,6 @@ function getParameters(requestType) {
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(11);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(2);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-
 /***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1333,7 +1333,7 @@ module.exports = __webpack_require__(94);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_editor_table_vue__ = __webpack_require__(13);
 // TODO: move jQuery to Vue
 

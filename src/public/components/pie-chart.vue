@@ -222,7 +222,6 @@ export default {
                   .on('mouseout', this.stopHoveringOverPieSlice);
             arc.append('path')
                 .attr('d', this.path)
-                // .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));
                 .attr('fill', this.getColor);
         },
         hoverOverPieSlice: function(d, i) {
@@ -273,7 +272,6 @@ export default {
     .graph-wrap text, .data-dropdown-title {
         text-anchor: middle;
         font-size: 0.8em;
-        fill: #ddd;
     }
 
 
@@ -290,7 +288,6 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        background-color: hsla(0, 0%, 40%, 0.75);
         color: inherit;
         border-radius: 2px;
         padding: 0.5em;
