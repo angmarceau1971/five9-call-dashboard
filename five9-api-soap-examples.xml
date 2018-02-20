@@ -1,9 +1,7 @@
-
-
-##############################
-# setSessionParameters example
-# Required to initialize statistics API session
-##############################
+<!--
+setSessionParameters example
+Required to initialize statistics API session
+-->
 <x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.supervisor.ws.five9.com/">
     <x:Header/>
     <x:Body>
@@ -21,10 +19,9 @@
     </x:Body>
 </x:Envelope>
 
-
-##############################
-# Statistics API service requests
-##############################
+<!--
+Statistics API service requests
+-->
 <x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.supervisor.ws.five9.com/">
     <x:Header/>
     <x:Body>
@@ -34,9 +31,9 @@
     </x:Body>
 </x:Envelope>
 
-##############################
-# Get statistics example
-##############################
+<!--
+Get statistics example
+-->
 <x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.supervisor.ws.five9.com/">
 <x:Header/>
     <x:Body>
