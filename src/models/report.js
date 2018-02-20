@@ -512,3 +512,4 @@ module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;
 module.exports.acdFeedSchema = acdFeedSchema;
 module.exports.callLogSchema = callLogSchema;
+module.exports.agentLoginSchema = agentLoginSchema;

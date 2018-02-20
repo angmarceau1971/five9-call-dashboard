@@ -34,9 +34,6 @@ function process(data, field) {
     let [source, fieldName] = field.split('.');
     if (fieldName) return sum(data, fieldName);
     else return sum(data, field);
-    // else {
-    //     throw new Error(`Parser isn't expecting the field name "${field}".`);
-    // }
 }
 
 /**

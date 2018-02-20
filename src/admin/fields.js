@@ -62,10 +62,18 @@ module.exports.getFieldList = getFieldList;
  */
 async function initializeList(paths, source) {
     return new Promise((resolve, reject) => {
-        FieldList.count({}, (err, count) => {
-            console.log(`count = ${count}`);
+        FieldList.find({}, (err, originalFields) => {
             if (err) reject(err);
             let fields = Object.keys(paths)
+                // Exclude fields that are already in database
+                .filter((path) => {
+                    if (!originalFields.find(
+                            (f) => f.name == path && f.source == source)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
                 // Filter for numbers and remove private properties
                 .filter((path) => paths[path].instance == 'Number')
                 .filter((path) => path[0] != '_')
@@ -82,6 +90,7 @@ async function initializeList(paths, source) {
                 });
 
             // Add to collection
+            if (!fields || !fields.length) resolve(null);
             FieldList.collection.insert(fields, (err, docs) => {
                 if (err) reject(err);
                 resolve(docs);

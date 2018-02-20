@@ -28,7 +28,7 @@ export const store = new Vuex.Store({
     },
     getters: {
         /**
-         * Return field object from
+         * Return field object matching the full field name.
          * @param  {String} fullFieldName name in `source.name` format
          * @return {Object}  field object
          */
@@ -37,6 +37,19 @@ export const store = new Vuex.Store({
                 return state.fields.find((f) => f.name == 'dateDay');
             }
             return state.fields.find((f) => f.fullName == fullFieldName);
+        },
+        /**
+         * Return field object matching the raw field name (without source).
+         * @param  {String} fullFieldName name in `source.name` format
+         * @return {Object}  field object
+         */
+        fieldFromRawName: (state) => (rawFieldName) => {
+            return state.fields.find((f) => f.name == rawFieldName);
+        },
+        rawFieldName: (state) => (fullFieldName) => {
+            let [source, field] = fullFieldName.split('.');
+            if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
+            return field;
         },
         getData: (state) => (filter, datasource) => {
             if (!state.data[datasource]) {
@@ -84,7 +97,7 @@ export const store = new Vuex.Store({
         /**
          * Store datasources. Saved in { id: {Object} } form, in contrast to array of
          * datasource objects stored in database.
-         * @param {Object} state       [description]
+         * @param {Object} state
          * @param {Array}  datasources array of datasource objects
          */
         setDatasources(state, datasources) {

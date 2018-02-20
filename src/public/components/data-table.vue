@@ -15,11 +15,8 @@
         <tbody>
             <tr is="data-table-row"
                 v-for="(datum, i) in data"
-                @hoverDate="hoverDate"
-                @unhoverDate="unhoverDate"
                 :key="i"
                 :datum="datum"
-                :isHighlighted="highlightedDate==datum.dateDay"
             ></tr>
         </tbody>
     </table>
@@ -32,7 +29,7 @@ import WidgetBase from './widget-base.vue';
 
 export default {
     extends: WidgetBase,
-    props: ['data', 'highlightedDate'],
+    props: ['data'],
     components: {
         'data-table-row': DataTableRow
     },
@@ -46,14 +43,6 @@ export default {
                         else return fullFieldName;
                     }
                 );
-        }
-    },
-    methods: {
-        hoverDate: function(date) {
-            this.$emit('hoverDate', date);
-        },
-        unhoverDate: function(date) {
-            this.$emit('unhoverDate', date);
         }
     }
 }

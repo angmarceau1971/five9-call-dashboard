@@ -104,16 +104,13 @@ export default {
             // Get data from hub
             let raw = this.$store.getters.getData(this.filter, this.datasource);
             // Summarize by displayed field(s)
-            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);
+            let grouped = parse.summarize(raw, this.fields.groupBy, [this.fields.sum]);
             return grouped;
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;
             const height = this.height - this.margin.top - this.margin.bottom;
             return { width, height };
-        },
-        ceil() {
-            return d3.max(this.data, (d) => d[this.fields.y]);
         }
     },
 
@@ -130,7 +127,7 @@ export default {
         this.pie = d3.pie()
             .padAngle(.05)
             .sort(null)
-            .value((d) => d.notReadyTime);
+            .value((d) => d[this.fields.sum]);
         this.path = d3.arc()
             .outerRadius(this.radius - 10)
             .innerRadius((this.radius - 10) * 0.6);
@@ -150,7 +147,11 @@ export default {
 
     methods: {
         toggleTable: function() {
-
+            if (this.data && !this.showTable) {
+                this.showTable = true;
+            } else {
+                this.showTable = false;
+            }
         },
         updateChart: function(data) {
             this.g.selectAll('.arc, .path').remove().exit();
@@ -163,11 +164,12 @@ export default {
                   .on('mouseout', this.stopHoveringOverPieSlice);
             arc.append('path')
                 .attr('d', this.path)
-                .attr('fill', (d) => this.colorScale(d.data.reasonCode));
+                .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));
         },
         hoverOverPieSlice: function(d, i) {
             this.infoBox.message = `
-                ${d.data.reasonCode}
+                ${d.data.reasonCode}:
+                ${formatValue(d.data[this.fields.sum], this.fields.sum).value}
             `;
         },
         stopHoveringOverPieSlice: function(d, i) {

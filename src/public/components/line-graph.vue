@@ -49,10 +49,7 @@ Accepts data prop with structure:
 
     <data-table
         v-if="showTable"
-        @hoverDate="hoverDate"
-        @unhoverDate="unhoverDate"
         :data="data"
-        :highlightedDate="highlightedDate"
     ></data-table>
 </div>
 </template>
@@ -93,7 +90,6 @@ export default {
     data () {
         return {
             showTable: false,
-            highlightedDate: null,
             width: 0,
             height: 0,
             paths: {
@@ -170,14 +166,6 @@ export default {
                 this.showTable = false;
             }
         },
-
-        hoverDate(date) {
-            this.highlightedDate = date;
-        },
-        unhoverDate(date) {
-            this.highlightedDate = null;
-        },
-
         onResize() {
             // Set width equal to card -- grandparent element
             this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
