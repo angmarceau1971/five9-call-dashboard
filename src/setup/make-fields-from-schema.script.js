@@ -3,6 +3,7 @@
 
 const report = require('../models/report');
 const fields = require('../admin/fields');
+const log = require('../utility/log');
 
 const mongoose = require('mongoose');
 const secure = require('../secure_settings');
@@ -13,13 +14,24 @@ async function updateFields() {
        useMongoClient: true,
     });
 
+    log.message(`Adding AcdFeed fields...`);
     let acdpaths = report.acdFeedSchema.paths;
     let res = await fields.initializeList(acdpaths, 'AcdFeed');
-    console.log(res);
+    log.message(JSON.stringify(res));
 
+    log.message(`Adding CallLog fields...`);
     let callLogPaths = report.callLogSchema.paths;
     res = await fields.initializeList(callLogPaths, 'CallLog');
-    console.log(res);
+    log.message(JSON.stringify(res));
+
+    log.message(`Adding AgentLogin fields...`);
+    let agentLoginPaths = report.agentLoginSchema.paths;
+    res = await fields.initializeList(agentLoginPaths, 'CallLog');
+    log.message(JSON.stringify(res));
 }
 
-updateFields().then(() => process.exit(0));
+if (require.main == module) {
+    updateFields()
+        .then(() => process.exit(0))
+        .catch((err) => log.error(`Error during make-fields: ${err}.`));
+}
