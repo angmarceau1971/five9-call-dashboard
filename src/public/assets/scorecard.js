@@ -1316,7 +1316,7 @@ function formatValue(value, field) {
   let formattedValue, style;
 
   if (typeof field == 'string') {
-    field = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.field(field) || __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.fieldFromRawName(field);
+    field = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.field(field);
   }
 
   if (!field) {
@@ -1438,25 +1438,12 @@ const store = new Vuex.Store({
   },
   getters: {
     /**
-     * Return field object matching the full field name.
-     * @param  {String} fullFieldName name in `source.name` format
+     * Return field object matching the field name.
+     * @param  {String} fieldName name in `source.name` or just `name` format
      * @return {Object}  field object
      */
-    field: state => fullFieldName => {
-      if (fullFieldName == 'dateDay' || fullFieldName == 'date') {
-        return state.fields.find(f => f.name == 'dateDay');
-      }
-
-      return state.fields.find(f => f.fullName == fullFieldName);
-    },
-
-    /**
-     * Return field object matching the raw field name (without source).
-     * @param  {String} fullFieldName name in `source.name` format
-     * @return {Object}  field object
-     */
-    fieldFromRawName: state => rawFieldName => {
-      return state.fields.find(f => f.name == rawFieldName);
+    field: state => fieldName => {
+      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
     },
     rawFieldName: state => fullFieldName => {
       let [source, field] = fullFieldName.split('.');
@@ -2183,7 +2170,8 @@ state.widgets = [{
   'datasource': 'Agent State Data',
   'fields': {
     'groupBy': 'reasonCode',
-    'sum': 'notReadyTime',
+    'sum': ['notReadyTime'],
+    'display': 'notReadyTime',
     'total': 'loginTime'
   },
   'filter': {
@@ -2196,7 +2184,8 @@ state.widgets = [{
   'datasource': 'Agent State Data',
   'fields': {
     'groupBy': 'reasonCode',
-    'sum': 'notReadyTime',
+    'sum': ['notReadyTime', 'handleTime', 'loginTime'],
+    'display': 'notReadyTime',
     'total': 'loginTime'
   },
   'filter': {
@@ -4016,7 +4005,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
 
 // exports
 
@@ -4055,18 +4044,26 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 
 
+/**
+ *
+ * @prop {Array} data to display
+ * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
+ */
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
-  props: ['data'],
+  props: ['data', 'headers'],
   components: {
     'data-table-row': __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__["a" /* default */]
   },
   computed: {
-    headers: function () {
+    displayHeaders: function () {
       if (this.data.length == 0) return [];
-      return Object.keys(this.data[0]).map(fullFieldName => {
-        let f = this.$store.getters.field(fullFieldName);
-        if (f && f.displayName) return f.displayName;else return fullFieldName;
+      if (this.headers) return this.headers; // Determine headers based on object keys
+
+      return Object.keys(this.data[0]).map(fieldName => {
+        let f = this.$store.getters.field(fieldName);
+        if (f && f.displayName) return f.displayName;else return fieldName;
       });
     }
   }
@@ -4162,7 +4159,7 @@ if (false) {(function () {
       this.isHighlighted = false;
     },
     formatted: function (val, fieldName) {
-      let res = Object(__WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__["a" /* formatValue */])(val, this.$store.getters.field(fieldName));
+      let res = Object(__WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__["a" /* formatValue */])(val, fieldName);
       return res;
     }
   }
@@ -4228,7 +4225,7 @@ var render = function() {
         _c("thead", [
           _c(
             "tr",
-            _vm._l(_vm.headers, function(header) {
+            _vm._l(_vm.displayHeaders, function(header) {
               return _c("th", [_vm._v(_vm._s(header))])
             })
           )
@@ -5039,7 +5036,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-57308e94]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-57308e94] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-57308e94], .data-dropdown-title[data-v-57308e94] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-57308e94], .content[data-v-57308e94] {\n  margin-left: 20px;\n}\nlabel[data-v-57308e94] {\n  display: inline-block;\n  width: 150px;\n}\n.info-box[data-v-57308e94] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    background-color: hsla(0, 0%, 40%, 0.75);\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/pie-chart.vue?f826fc68"],"names":[],"mappings":";AAuLA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,yCAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"pie-chart.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"pie-chart\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <h3>{{ title }}</h3>\r\n\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg\r\n            :width=\"width\" :height=\"height\">\r\n        </svg>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"data\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    title: {\r\n        type: String\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'pie-chart',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 200,\r\n            height: 200,\r\n            radius: 90,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            },\r\n            // D3 objects\r\n            color: null,\r\n            pie: null,\r\n            path: null,\r\n            label: null,\r\n            svg: null,\r\n            g: null\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.groupBy, [this.fields.sum]);\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n\r\n        // Set up D3\r\n        this.svg = d3.select(this.$el).select('svg');\r\n        this.g = this.svg.append('g').attr('transform',\r\n                                `translate(${this.width/2}, ${this.height/2})`);\r\n        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);\r\n        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);\r\n        this.pie = d3.pie()\r\n            .padAngle(.05)\r\n            .sort(null)\r\n            .value((d) => d[this.fields.sum]);\r\n        this.path = d3.arc()\r\n            .outerRadius(this.radius - 10)\r\n            .innerRadius((this.radius - 10) * 0.6);\r\n        this.label = d3.arc()\r\n            .outerRadius(this.radius - 40)\r\n            .innerRadius(this.radius - 40);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.updateChart(this.data); },\r\n        data: function(newData) { this.updateChart(newData); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable: function() {\r\n            if (this.data && !this.showTable) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        updateChart: function(data) {\r\n            this.g.selectAll('.arc, .path').remove().exit();\r\n\r\n            let arc = this.g.selectAll('arc')\r\n                .data(this.pie(data))\r\n                .enter().append('g')\r\n                  .attr('class', 'arc')\r\n                  .on('mouseover', this.hoverOverPieSlice)\r\n                  .on('mouseout', this.stopHoveringOverPieSlice);\r\n            arc.append('path')\r\n                .attr('d', this.path)\r\n                .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));\r\n        },\r\n        hoverOverPieSlice: function(d, i) {\r\n            this.infoBox.message = `\r\n                ${d.data.reasonCode}:\r\n                ${formatValue(d.data[this.fields.sum], this.fields.sum).value}\r\n            `;\r\n        },\r\n        stopHoveringOverPieSlice: function(d, i) {\r\n            this.infoBox.message = '';\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .pie-chart {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        background-color: hsla(0, 0%, 40%, 0.75);\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-57308e94]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-57308e94] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-57308e94], .data-dropdown-title[data-v-57308e94] {\n    text-anchor: middle;\n    font-size: 0.8em;\n    fill: #ddd;\n}\nh1[data-v-57308e94], .content[data-v-57308e94] {\n  margin-left: 20px;\n}\nlabel[data-v-57308e94] {\n  display: inline-block;\n  width: 150px;\n}\n.info-box[data-v-57308e94] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    background-color: hsla(0, 0%, 40%, 0.75);\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/pie-chart.vue?9f89f74e"],"names":[],"mappings":";AAqQA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;IACA,WAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,yCAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"pie-chart.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"pie-chart\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <h3>{{ title }}</h3>\r\n\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg\r\n            :width=\"width\" :height=\"height\">\r\n        </svg>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"tableData\"\r\n        :headers=\"tableHeaders\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nconst reasonCodeColors = {\r\n    'Lunch': 'hsl(204, 54%, 52%)',\r\n    'One on One': 'hsl(206, 54%, 63%)',\r\n    'Break': 'hsl(209, 56%, 73%)',\r\n    'Training': 'hsl(205, 56%, 82%)',\r\n    'After Call Work': 'hsl(342, 85%, 51%)',\r\n    'Not Ready': 'hsl(342, 90%, 62%)',\r\n    'Outbound': 'hsl(342, 90%, 82%)',\r\n};\r\nconst reasonCodeSortOrder = [\r\n    'Lunch', 'One on One', 'Break', 'Training',\r\n    'After Call Work', 'Not Ready', 'Outbound',\r\n];\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    title: {\r\n        type: String\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'pie-chart',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 200,\r\n            height: 200,\r\n            radius: 90,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            },\r\n            // D3 objects\r\n            color: null,\r\n            pie: null,\r\n            path: null,\r\n            label: null,\r\n            svg: null,\r\n            g: null\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);\r\n            return grouped;\r\n        },\r\n        // Data with only fields needed to display chart\r\n        chartData() {\r\n            return this.data\r\n                .map((d) => {\r\n                    return {\r\n                        [this.fields.groupBy]: d[this.fields.groupBy],\r\n                        [this.fields.display]: d[this.fields.display]\r\n                    }\r\n                })\r\n                .filter((d) => d[this.fields.groupBy].trim() != '');\r\n        },\r\n        // Clean up data for data table\r\n        tableData() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            let additionalRows = [];\r\n            return this.data\r\n                .map((d) => {\r\n                    // if (d.reasonCode.trim() == '') {\r\n                    //     additionalRows.push(\r\n                    //         { 'reasonCode': 'Logged In',\r\n                    //           'notReadyTime': d.loginTime }\r\n                    //     );\r\n                    //     additionalRows.push(\r\n                    //         { 'reasonCode': 'On Calls',\r\n                    //           'notReadyTime': d.handleTime }\r\n                    //     );\r\n                    // }\r\n                    return {\r\n                        'reasonCode': d.reasonCode,\r\n                        'notReadyTime': d.notReadyTime\r\n                    }\r\n                })\r\n                // Remove blank reason code\r\n                .filter((d) => d.reasonCode.trim() != '')\r\n                // Add in Login and Handle Time rows\r\n                .concat(additionalRows);\r\n        },\r\n        tableHeaders() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            return ['Reason Code', 'Time'];\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n\r\n        // Set up D3\r\n        this.svg = d3.select(this.$el).select('svg');\r\n        this.g = this.svg.append('g').attr('transform',\r\n                                `translate(${this.width/2}, ${this.height/2})`);\r\n        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);\r\n        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);\r\n        this.pie = d3.pie()\r\n            .padAngle(.05)\r\n            .sort(this.sortValues)\r\n            .value((d) => d[this.fields.display]);\r\n        this.path = d3.arc()\r\n            .outerRadius(this.radius - 10)\r\n            .innerRadius((this.radius - 10) * 0.6);\r\n        this.label = d3.arc()\r\n            .outerRadius(this.radius - 40)\r\n            .innerRadius(this.radius - 40);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.updateChart(this.data); },\r\n        chartData: function(newData) { this.updateChart(newData); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable: function() {\r\n            if (this.data && !this.showTable) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        updateChart: function(data) {\r\n            this.g.selectAll('.arc, .path').remove().exit();\r\n\r\n            let arc = this.g.selectAll('arc')\r\n                .data(this.pie(data))\r\n                .enter().append('g')\r\n                  .attr('class', 'arc')\r\n                  .on('mouseover', this.hoverOverPieSlice)\r\n                  .on('mouseout', this.stopHoveringOverPieSlice);\r\n            arc.append('path')\r\n                .attr('d', this.path)\r\n                // .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));\r\n                .attr('fill', this.getColor);\r\n        },\r\n        hoverOverPieSlice: function(d, i) {\r\n            this.infoBox.message = `\r\n                ${d.data.reasonCode}:\r\n                ${formatValue(d.data[this.fields.display], this.fields.display).value}\r\n            `;\r\n        },\r\n        stopHoveringOverPieSlice: function(d, i) {\r\n            this.infoBox.message = '';\r\n        },\r\n        getColor: function(d) {\r\n            // If this is a reason code pie chart, try to use custom colors\r\n            if (this.fields.groupBy == 'reasonCode'\r\n                && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {\r\n                return reasonCodeColors[d.data.reasonCode]\r\n            // Default to blues scale\r\n            } else {\r\n                return this.colorScale(d.data[this.fields.groupBy]);\r\n            }\r\n        },\r\n        sortValues: function (a, b) {\r\n            if (this.fields.groupBy == 'reasonCode') {\r\n                return reasonCodeSortOrder.indexOf(a.reasonCode)\r\n                    <  reasonCodeSortOrder.indexOf(b.reasonCode)\r\n                    ?  -1 : 1\r\n            } else {\r\n                return 0;\r\n            }\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .pie-chart {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n        fill: #ddd;\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        background-color: hsla(0, 0%, 40%, 0.75);\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -5086,10 +5083,24 @@ exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n
 //
 //
 //
+//
 
 
 
 
+
+const clone = __webpack_require__(7);
+
+const reasonCodeColors = {
+  'Lunch': 'hsl(204, 54%, 52%)',
+  'One on One': 'hsl(206, 54%, 63%)',
+  'Break': 'hsl(209, 56%, 73%)',
+  'Training': 'hsl(205, 56%, 82%)',
+  'After Call Work': 'hsl(342, 85%, 51%)',
+  'Not Ready': 'hsl(342, 90%, 62%)',
+  'Outbound': 'hsl(342, 90%, 82%)'
+};
+const reasonCodeSortOrder = ['Lunch', 'One on One', 'Break', 'Training', 'After Call Work', 'Not Ready', 'Outbound'];
 const props = {
   fields: {
     type: Object
@@ -5152,8 +5163,47 @@ const props = {
       // Get data from hub
       let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
 
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.groupBy, [this.fields.sum]);
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.groupBy, this.fields.sum);
       return grouped;
+    },
+
+    // Data with only fields needed to display chart
+    chartData() {
+      return this.data.map(d => {
+        return {
+          [this.fields.groupBy]: d[this.fields.groupBy],
+          [this.fields.display]: d[this.fields.display]
+        };
+      }).filter(d => d[this.fields.groupBy].trim() != '');
+    },
+
+    // Clean up data for data table
+    tableData() {
+      if (this.fields.groupBy != 'reasonCode') return this.data;
+      let additionalRows = [];
+      return this.data.map(d => {
+        // if (d.reasonCode.trim() == '') {
+        //     additionalRows.push(
+        //         { 'reasonCode': 'Logged In',
+        //           'notReadyTime': d.loginTime }
+        //     );
+        //     additionalRows.push(
+        //         { 'reasonCode': 'On Calls',
+        //           'notReadyTime': d.handleTime }
+        //     );
+        // }
+        return {
+          'reasonCode': d.reasonCode,
+          'notReadyTime': d.notReadyTime
+        };
+      }) // Remove blank reason code
+      .filter(d => d.reasonCode.trim() != '') // Add in Login and Handle Time rows
+      .concat(additionalRows);
+    },
+
+    tableHeaders() {
+      if (this.fields.groupBy != 'reasonCode') return this.data;
+      return ['Reason Code', 'Time'];
     },
 
     padded() {
@@ -5175,7 +5225,7 @@ const props = {
     this.g = this.svg.append('g').attr('transform', `translate(${this.width / 2}, ${this.height / 2})`); // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
     this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);
-    this.pie = d3.pie().padAngle(.05).sort(null).value(d => d[this.fields.sum]);
+    this.pie = d3.pie().padAngle(.05).sort(this.sortValues).value(d => d[this.fields.display]);
     this.path = d3.arc().outerRadius(this.radius - 10).innerRadius((this.radius - 10) * 0.6);
     this.label = d3.arc().outerRadius(this.radius - 40).innerRadius(this.radius - 40);
   },
@@ -5188,7 +5238,7 @@ const props = {
     width: function (newWidth) {
       this.updateChart(this.data);
     },
-    data: function (newData) {
+    chartData: function (newData) {
       this.updateChart(newData);
     }
   },
@@ -5203,16 +5253,32 @@ const props = {
     updateChart: function (data) {
       this.g.selectAll('.arc, .path').remove().exit();
       let arc = this.g.selectAll('arc').data(this.pie(data)).enter().append('g').attr('class', 'arc').on('mouseover', this.hoverOverPieSlice).on('mouseout', this.stopHoveringOverPieSlice);
-      arc.append('path').attr('d', this.path).attr('fill', d => this.colorScale(d.data[this.fields.groupBy]));
+      arc.append('path').attr('d', this.path) // .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));
+      .attr('fill', this.getColor);
     },
     hoverOverPieSlice: function (d, i) {
       this.infoBox.message = `
                 ${d.data.reasonCode}:
-                ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d.data[this.fields.sum], this.fields.sum).value}
+                ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d.data[this.fields.display], this.fields.display).value}
             `;
     },
     stopHoveringOverPieSlice: function (d, i) {
       this.infoBox.message = '';
+    },
+    getColor: function (d) {
+      // If this is a reason code pie chart, try to use custom colors
+      if (this.fields.groupBy == 'reasonCode' && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {
+        return reasonCodeColors[d.data.reasonCode]; // Default to blues scale
+      } else {
+        return this.colorScale(d.data[this.fields.groupBy]);
+      }
+    },
+    sortValues: function (a, b) {
+      if (this.fields.groupBy == 'reasonCode') {
+        return reasonCodeSortOrder.indexOf(a.reasonCode) < reasonCodeSortOrder.indexOf(b.reasonCode) ? -1 : 1;
+      } else {
+        return 0;
+      }
     }
   }
 });
@@ -5266,7 +5332,11 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm.showTable ? _c("data-table", { attrs: { data: _vm.data } }) : _vm._e()
+      _vm.showTable
+        ? _c("data-table", {
+            attrs: { data: _vm.tableData, headers: _vm.tableHeaders }
+          })
+        : _vm._e()
     ],
     1
   )

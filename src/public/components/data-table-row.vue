@@ -31,7 +31,7 @@ export default {
             this.isHighlighted = false;
         },
         formatted: function (val, fieldName) {
-            let res = formatValue(val, this.$store.getters.field(fieldName));
+            let res = formatValue(val, fieldName);
             return res;
         }
     }

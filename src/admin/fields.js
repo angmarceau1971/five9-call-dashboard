@@ -16,6 +16,7 @@ const fieldListSchema = mongoose.Schema({
     calculatedField: { type: Boolean, default: false },
     calculation: { type: String, default: '' }
 });
+
 // Name with source. Update when changing or adding new field.
 function fullName(field) {
     let fullName;
@@ -64,6 +65,7 @@ async function initializeList(paths, source) {
     return new Promise((resolve, reject) => {
         FieldList.find({}, (err, originalFields) => {
             if (err) reject(err);
+
             let fields = Object.keys(paths)
                 // Exclude fields that are already in database
                 .filter((path) => {
@@ -75,7 +77,6 @@ async function initializeList(paths, source) {
                     }
                 })
                 // Filter for numbers and remove private properties
-                .filter((path) => paths[path].instance == 'Number')
                 .filter((path) => path[0] != '_')
                 .map((path) => {
                     return {

@@ -9,7 +9,7 @@ let comparators = {
 export function formatValue(value, field) {
     let formattedValue, style;
     if (typeof(field) == 'string') {
-        field = hub.store.getters.field(field) || hub.store.getters.fieldFromRawName(field);
+        field = hub.store.getters.field(field);
     }
     if (!field) {
         return {

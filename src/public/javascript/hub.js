@@ -28,23 +28,13 @@ export const store = new Vuex.Store({
     },
     getters: {
         /**
-         * Return field object matching the full field name.
-         * @param  {String} fullFieldName name in `source.name` format
+         * Return field object matching the field name.
+         * @param  {String} fieldName name in `source.name` or just `name` format
          * @return {Object}  field object
          */
-        field: (state) => (fullFieldName) => {
-            if (fullFieldName == 'dateDay' || fullFieldName == 'date') {
-                return state.fields.find((f) => f.name == 'dateDay');
-            }
-            return state.fields.find((f) => f.fullName == fullFieldName);
-        },
-        /**
-         * Return field object matching the raw field name (without source).
-         * @param  {String} fullFieldName name in `source.name` format
-         * @return {Object}  field object
-         */
-        fieldFromRawName: (state) => (rawFieldName) => {
-            return state.fields.find((f) => f.name == rawFieldName);
+        field: (state) => (fieldName) => {
+            return state.fields.find((f) => f.fullName == fieldName)
+                || state.fields.find((f) => f.name == fieldName);
         },
         rawFieldName: (state) => (fullFieldName) => {
             let [source, field] = fullFieldName.split('.');

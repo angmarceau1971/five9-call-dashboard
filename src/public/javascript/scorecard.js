@@ -172,7 +172,8 @@ state.widgets = [
         'datasource': 'Agent State Data',
         'fields': {
             'groupBy': 'reasonCode',
-            'sum': 'notReadyTime',
+            'sum': ['notReadyTime'],
+            'display': 'notReadyTime',
             'total': 'loginTime'
         },
         'filter': {
@@ -186,7 +187,8 @@ state.widgets = [
         'datasource': 'Agent State Data',
         'fields': {
             'groupBy': 'reasonCode',
-            'sum': 'notReadyTime',
+            'sum': ['notReadyTime', 'handleTime', 'loginTime'],
+            'display': 'notReadyTime',
             'total': 'loginTime'
         },
         'filter': {

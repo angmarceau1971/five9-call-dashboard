@@ -26,7 +26,8 @@ Accepts data prop with structure:
 
     <data-table
         v-if="showTable"
-        :data="data"
+        :data="tableData"
+        :headers="tableHeaders"
     ></data-table>
 </div>
 </template>
@@ -38,6 +39,22 @@ import WidgetBase from './widget-base.vue';
 
 import * as parse from '../javascript/parse';
 import { formatValue } from '../javascript/scorecard-format';
+
+const clone = require('ramda/src/clone');
+
+const reasonCodeColors = {
+    'Lunch': 'hsl(204, 54%, 52%)',
+    'One on One': 'hsl(206, 54%, 63%)',
+    'Break': 'hsl(209, 56%, 73%)',
+    'Training': 'hsl(205, 56%, 82%)',
+    'After Call Work': 'hsl(342, 85%, 51%)',
+    'Not Ready': 'hsl(342, 90%, 62%)',
+    'Outbound': 'hsl(342, 90%, 82%)',
+};
+const reasonCodeSortOrder = [
+    'Lunch', 'One on One', 'Break', 'Training',
+    'After Call Work', 'Not Ready', 'Outbound',
+];
 
 const props = {
     fields: {
@@ -104,14 +121,55 @@ export default {
             // Get data from hub
             let raw = this.$store.getters.getData(this.filter, this.datasource);
             // Summarize by displayed field(s)
-            let grouped = parse.summarize(raw, this.fields.groupBy, [this.fields.sum]);
+            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);
             return grouped;
+        },
+        // Data with only fields needed to display chart
+        chartData() {
+            return this.data
+                .map((d) => {
+                    return {
+                        [this.fields.groupBy]: d[this.fields.groupBy],
+                        [this.fields.display]: d[this.fields.display]
+                    }
+                })
+                .filter((d) => d[this.fields.groupBy].trim() != '');
+        },
+        // Clean up data for data table
+        tableData() {
+            if (this.fields.groupBy != 'reasonCode') return this.data;
+            let additionalRows = [];
+            return this.data
+                .map((d) => {
+                    // if (d.reasonCode.trim() == '') {
+                    //     additionalRows.push(
+                    //         { 'reasonCode': 'Logged In',
+                    //           'notReadyTime': d.loginTime }
+                    //     );
+                    //     additionalRows.push(
+                    //         { 'reasonCode': 'On Calls',
+                    //           'notReadyTime': d.handleTime }
+                    //     );
+                    // }
+                    return {
+                        'reasonCode': d.reasonCode,
+                        'notReadyTime': d.notReadyTime
+                    }
+                })
+                // Remove blank reason code
+                .filter((d) => d.reasonCode.trim() != '')
+                // Add in Login and Handle Time rows
+                .concat(additionalRows);
+        },
+        tableHeaders() {
+            if (this.fields.groupBy != 'reasonCode') return this.data;
+            return ['Reason Code', 'Time'];
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;
             const height = this.height - this.margin.top - this.margin.bottom;
             return { width, height };
-        }
+        },
     },
 
     mounted() {
@@ -126,8 +184,8 @@ export default {
         this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);
         this.pie = d3.pie()
             .padAngle(.05)
-            .sort(null)
-            .value((d) => d[this.fields.sum]);
+            .sort(this.sortValues)
+            .value((d) => d[this.fields.display]);
         this.path = d3.arc()
             .outerRadius(this.radius - 10)
             .innerRadius((this.radius - 10) * 0.6);
@@ -142,7 +200,7 @@ export default {
 
     watch: {
         width: function(newWidth) { this.updateChart(this.data); },
-        data: function(newData) { this.updateChart(newData); }
+        chartData: function(newData) { this.updateChart(newData); }
     },
 
     methods: {
@@ -164,16 +222,36 @@ export default {
                   .on('mouseout', this.stopHoveringOverPieSlice);
             arc.append('path')
                 .attr('d', this.path)
-                .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));
+                // .attr('fill', (d) => this.colorScale(d.data[this.fields.groupBy]));
+                .attr('fill', this.getColor);
         },
         hoverOverPieSlice: function(d, i) {
             this.infoBox.message = `
                 ${d.data.reasonCode}:
-                ${formatValue(d.data[this.fields.sum], this.fields.sum).value}
+                ${formatValue(d.data[this.fields.display], this.fields.display).value}
             `;
         },
         stopHoveringOverPieSlice: function(d, i) {
             this.infoBox.message = '';
+        },
+        getColor: function(d) {
+            // If this is a reason code pie chart, try to use custom colors
+            if (this.fields.groupBy == 'reasonCode'
+                && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {
+                return reasonCodeColors[d.data.reasonCode]
+            // Default to blues scale
+            } else {
+                return this.colorScale(d.data[this.fields.groupBy]);
+            }
+        },
+        sortValues: function (a, b) {
+            if (this.fields.groupBy == 'reasonCode') {
+                return reasonCodeSortOrder.indexOf(a.reasonCode)
+                    <  reasonCodeSortOrder.indexOf(b.reasonCode)
+                    ?  -1 : 1
+            } else {
+                return 0;
+            }
         }
     }
 };
