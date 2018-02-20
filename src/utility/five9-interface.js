@@ -153,8 +153,34 @@ function getFaultStringFromData(data) {
 }
 
 
+/**
+ * Determine if agent user credentials are valid in Five9.
+ * @param  {String} username
+ * @param  {String} password
+ * @return {Promise -> Boolean} true if credentials are good (200 response code);
+ *                              false otherwise
+ */
+async function agentAuthLogin(username, password) {
+    let response = await sendAgentRestApiRequest({
+        'passwordCredentials': {
+            'username': username,
+            'password': password
+        },
+        // If user is currently logged in, attach to existing session instead of
+        // forcing them out
+        'policy': 'AttachExisting'
+    });
+    if (response.statusCode == 200) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
-// Create a request to the Five9 Statistics API.
+
+
+// Create a request to the Five9 Statistics or Configuration APIs.
 // Returns promise.
 function sendRequest(message, auth, requestType) {
     let path;
@@ -178,6 +204,37 @@ function sendRequest(message, auth, requestType) {
         }
     };
 
+    return httpsRequest(options, message);
+}
+
+// Create a request to the Five9 Agent Rest API.
+// Returns promise.
+function sendAgentRestApiRequest(body) {
+    let path = '/appsvcs/rs/svc/auth/login';
+    let bodyString = JSON.stringify(body);
+
+    // Options for HTTP requests
+    const options = {
+        hostname: 'app-scl.five9.com',
+        port: 443,
+        path: path,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(bodyString)
+        }
+    };
+
+    return httpsRequest(options, bodyString);
+}
+
+/**
+ * Wrapper for HTTPS request.
+ * @param  {Object} options HTTP options
+ * @param  {String} body    body to POST
+ * @return {Promise -> Response} response with fields body and statusCode
+ */
+async function httpsRequest(options, body) {
     // Wrap in promise
     return new Promise((resolve, reject) => {
         // Create the HTTP request
@@ -193,7 +250,7 @@ function sendRequest(message, auth, requestType) {
         });
 
         // Send the data
-        req.write(message);
+        req.write(body);
 
         // abort on timeout of 50 seconds
         req.on('socket', (socket) => {
@@ -212,7 +269,6 @@ function sendRequest(message, auth, requestType) {
         });
     });
 }
-
 
 
 // Given a requestType, returns JSON to submit to server in POST request.
@@ -319,3 +375,4 @@ module.exports.getUsersGeneralInfo = getUsersGeneralInfo;
 module.exports.getAgentGroups = getAgentGroups;
 module.exports.openStatisticsSession = openStatisticsSession;
 module.exports.responseToJson = responseToJson;
+module.exports.agentAuthLogin = agentAuthLogin;
