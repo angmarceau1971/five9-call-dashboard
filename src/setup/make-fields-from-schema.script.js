@@ -14,20 +14,26 @@ async function updateFields() {
        useMongoClient: true,
     });
 
-    log.message(`Adding AcdFeed fields...`);
-    let acdpaths = report.acdFeedSchema.paths;
-    let res = await fields.initializeList(acdpaths, 'AcdFeed');
-    log.message(JSON.stringify(res));
-
-    log.message(`Adding CallLog fields...`);
-    let callLogPaths = report.callLogSchema.paths;
-    res = await fields.initializeList(callLogPaths, 'CallLog');
-    log.message(JSON.stringify(res));
-
-    log.message(`Adding AgentLogin fields...`);
-    let agentLoginPaths = report.agentLoginSchema.paths;
-    res = await fields.initializeList(agentLoginPaths, 'CallLog');
-    log.message(JSON.stringify(res));
+    let tables = [
+        {
+            schema: 'acdFeedSchema',
+            source: 'AcdFeed'
+        },
+        {
+            schema: 'callLogSchema',
+            source: 'CallLog'
+        },
+        {
+            schema: 'agentLoginSchema',
+            source: 'AgentLogin'
+        }
+    ];
+    for (let item of tables) {
+        log.message(`Adding ${item.source} fields...`);
+        let paths = report[item.schema].paths;
+        let res = await fields.initializeList(paths, item.source);
+        log.message(JSON.stringify(res));
+    };
 }
 
 if (require.main == module) {
