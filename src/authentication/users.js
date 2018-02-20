@@ -146,7 +146,15 @@ async function scheduleUpdate(interval) {
 }
 module.exports.scheduleUpdate = scheduleUpdate;
 
-
+/**
+ * Update Users table based on Five9 API data.
+ *
+ * Will only update fields username, active, and agentGroups in table. Users
+ * who are missing entirely from Five9 data will be deleted.
+ *
+ * @param  {Model} usersModel Mongoose model
+ * @return
+ */
 async function refreshUserDatabase(usersModel) {
     // Save original list to preserve admin status
     let originalUsers = await Users.find({});
@@ -157,25 +165,46 @@ async function refreshUserDatabase(usersModel) {
         five9.getAgentGroups()
     ]);
 
-    // Clear the old list
-    await usersModel.remove({}, (err, success) => {
-        if (err) log.error(`Error deleting data in Users model: ${err}`);
-    });
+    if (!data || !data.length) {
+        log.error(`No users data returned by Five9! Aborting Users update.`);
+        return;
+    }
 
-    // Only leave the fields needed
+    // Iterate over data
     let cleanData = data.map((d, i) => {
+        // Only leave the fields needed
         let newUser = {
             username: d.userName[0],
             active: d.active == 'true' ? true : false,
-            isAdmin: getAdminFromData(d.userName[0], originalUsers),
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
         };
+
+        // Update or add each Five9 user to database
+        // http://mongodb.github.io/node-mongodb-native/3.0/api/Collection.html#findAndModify
+        usersModel.collection.findAndModify(
+            { username: newUser.username }, // query
+            [], // sort
+            { $set: newUser }, // update
+            { upsert: true }, // options - add to collection if not found
+            function(err, doc) {
+                if (err) log.error(`Error while updating user: ${err}.`);
+            }
+        );
         return newUser;
     });
 
-    // Insert to collection
-    return usersModel.collection.insert(cleanData, (err, docs) => {
-        if (err) log.error(`Error inserting data in Users model: ${err}`);
+    // Remove users who aren't in the new data
+    originalUsers.forEach((user) => {
+        if (!cleanData.find((newUser) => newUser.username == user.username)) {
+            usersModel.remove(
+                { username: user.username },
+                function(err, doc) {
+                    if (err) log.error(`Error when removing user: ${err}`);
+                    log.message(`Removing user ${user.username} from Users table.`);
+                }
+            );
+        }
     });
+
 }
 module.exports.refreshUserDatabase = refreshUserDatabase;
