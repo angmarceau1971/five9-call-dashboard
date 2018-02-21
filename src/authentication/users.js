@@ -20,7 +20,9 @@ const usersSchema = mongoose.Schema({
     active: Boolean,
     isAdmin: { type: Boolean, default: false },
     // Array of Agent Groups that user belongs to
-    agentGroups: [String]
+    agentGroups: [String],
+    firstName: String,
+    lastName: String
 });
 
 // Model to store users
@@ -177,6 +179,8 @@ async function refreshUserDatabase(usersModel) {
             username: d.userName[0],
             active: d.active == 'true' ? true : false,
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
+            firstName: d.firstName[0],
+            lastName: d.lastName[0]
         };
 
         // Update or add each Five9 user to database

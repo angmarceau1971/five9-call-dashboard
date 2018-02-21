@@ -9,6 +9,11 @@ const log = require('../utility/log');
 const users = require('./users');
 
 
+let basePage = '/';
+if (process.env.NODE_ENV == 'production') {
+    basePage = '/dashboard';
+}
+
 /**
  * Middleware for page view routes. Redirects to login page if not logged in.
  * @param  {String}  [level='basic'] does this route require `basic` or `admin` rights?
@@ -21,7 +26,7 @@ function isLoggedIn(level='basic') {
         }
         // If not logged in, send user to login page, then redirect back to the
         // original page.
-        req.session.returnTo = req.url;
+        req.session.returnTo = req.originalUrl;
         res.redirect('login');
     };
 }

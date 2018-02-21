@@ -13,17 +13,19 @@
     </head>
 
     <body>
+    <div id="app" class="body-wrapper">
 
-    <div id="app" class="content-wrapper">
-        <button
-            v-if="$store.state.editMode"
-            style="width:100%; color:black;"
-            @click="refresh"
-        >Refresh Data</button>
+    <header class="top-bar">
+            <button class="dropdown-button" @mouseover="showMenu=true"
+            >&#9776;
+            </button>
+            <div v-if="showMenu" class="dropdown-content" @mouseleave="showMenu=false">
+                <button class="insidedrop"
+                    v-if="$store.state.editMode"
+                    @click="refresh">
+                    Refresh
+                </button>
 
-        <div class="dropdown">
-            <button class="dropdown-button">&#9776;</button>
-            <div class="dropdown-content">
                 <button class="insidedrop"
                     @click="changeTheme(otherTheme)">
                     Switch to {{ otherTheme }} theme
@@ -57,83 +59,97 @@
                     Add Card
                 </button>
             </div>
-        </div>
 
-        <input type="file" id="file-input"
-            v-if="$store.state.editMode"
-            v-show="false"
-            @change="importLayout"
-            ref="fileInput" />
+            <div class="nav">
+                <div class="user-greeting">
+                    <p>
+                        {{ userGreeting }}
+                    </p>
+                </div>
+                <div class="logout">
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </header>
 
-        <div class="loading-screen"
-            v-if="!isLoaded"
-        ><h2>Dashboard Loading...</h2></div>
+        <div class="content-wrapper">
+            <input type="file" id="file-input"
+                v-if="$store.state.editMode"
+                v-show="false"
+                @change="importLayout"
+                ref="fileInput" />
 
-        <dashboard
-            v-if="isLoaded"
-            :layout="layout"
-            @update-layout="updateLayout"
-            @update-card="updateCard"
-            @modify-widget="modifyWidget"
-            @delete-card="deleteCard"
-        ></dashboard>
+            <div class="loading-screen"
+                v-if="!isLoaded"
+            ><h2>Dashboard Loading...</h2></div>
 
-        <input v-if="$store.state.editMode"
-            v-model="user"
-            placeholder="Emulate user"
-        />
+            <dashboard
+                v-if="isLoaded"
+                :layout="layout"
+                @update-layout="updateLayout"
+                @update-card="updateCard"
+                @modify-widget="modifyWidget"
+                @delete-card="deleteCard"
+            ></dashboard>
 
-        <div v-if="$store.state.editMode">
-            <h2>Data Sources</h2>
-            <p>{{ datasourceMessage }}</p>
-            <editor-table
-                @message="updateDatasourceMessage"
-                :updater="datasourceUpdater"
-                :loader="datasourceLoader"
-                :adder="datasourceAdder"
-                :remover="datasourceRemover"
-                :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)', 'Source']"
-            >
-                <template slot="item" slot-scope="props">
-                    <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"/>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.fields"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.filter"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.groupBy"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.refreshRate"
-                            type="number"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.source"
-                            type="text"/>
-                    </td>
-                </template>
+            <input v-if="$store.state.editMode"
+                v-model="user"
+                placeholder="Emulate user"
+            />
 
-            </editor-table>
+            <div v-if="$store.state.editMode">
+                <h2>Data Sources</h2>
+                <p>{{ datasourceMessage }}</p>
+                <editor-table
+                    @message="updateDatasourceMessage"
+                    :updater="datasourceUpdater"
+                    :loader="datasourceLoader"
+                    :adder="datasourceAdder"
+                    :remover="datasourceRemover"
+                    :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)', 'Source']"
+                >
+                    <template slot="item" slot-scope="props">
+                        <td>
+                            <input
+                                v-model="props.item.name"
+                                type="text"/>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.fields"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.filter"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.groupBy"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <input
+                                v-model="props.item.refreshRate"
+                                type="number"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <input
+                                v-model="props.item.source"
+                                type="text"/>
+                        </td>
+                    </template>
+
+                </editor-table>
+            </div>
         </div>
     </div>
+
     </body>
 
 

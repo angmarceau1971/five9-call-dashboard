@@ -229,7 +229,7 @@ const layout = {
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 20,
+            "refreshRate": 60,
             "source": "AcdFeed"
         },
         {
@@ -292,7 +292,8 @@ const vm = new Vue({
         layout: layout,
         datasourceMessage: '',
         isLoaded: false,
-        theme: 'dark'
+        theme: 'dark',
+        showMenu: false
     },
 
     components: {
@@ -312,6 +313,13 @@ const vm = new Vue({
         // Get name of theme that isn't currently selected
         otherTheme: function() {
             return this.theme == 'dark' ? 'light' : 'dark';
+        },
+        userGreeting: function() {
+            if (store.state.userInformation.firstName) {
+                return `Hi, ${store.state.userInformation.firstName}!`
+            } else {
+                return '';
+            }
         }
     },
 

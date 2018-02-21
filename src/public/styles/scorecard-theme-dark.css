@@ -12,17 +12,20 @@ body, body button  {
                 0 1px 4px rgba(0,0,0,0.8);
 }
 
-.stats-box, .dropdown-button, .insidedrop {
+.stats-box, .dropdown-button, .insidedrop, .top-bar {
     background-color: #2b2b2d;
 }
-.dropdown {
-    box-shadow: 0 1px 5px rgba(0,0,0, 0.9),
-                0 1px 30px rgba(0,0,0, 0.9),
-                0 4px 20px rgba(0,0,0, 0.9),
-                0 1px 4px rgba(0,0,0, 0.9);
+.dropdown-button {
+    border-right: 1px solid #333;
+}
+.dropdown-content {
+    box-shadow: 1px 3px 3px rgba(0,0,0, 0.6);
 }
 .dropdown-content button {
     border-top: 1px solid #333;
+}
+.dropdown-content button:hover {
+    background-color: hsl(342, 100%, 42%);
 }
 
 svg text {

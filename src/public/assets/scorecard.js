@@ -2210,7 +2210,7 @@ const layout = {
       }
     },
     "groupBy": ["dateDay", "agentUsername", "skill"],
-    "refreshRate": 20,
+    "refreshRate": 60,
     "source": "AcdFeed"
   }, {
     "id": "2",
@@ -2253,7 +2253,8 @@ const vm = new Vue({
     layout: layout,
     datasourceMessage: '',
     isLoaded: false,
-    theme: 'dark'
+    theme: 'dark',
+    showMenu: false
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_0__components_dashboard_vue__["a" /* default */],
@@ -2273,6 +2274,13 @@ const vm = new Vue({
     // Get name of theme that isn't currently selected
     otherTheme: function () {
       return this.theme == 'dark' ? 'light' : 'dark';
+    },
+    userGreeting: function () {
+      if (store.state.userInformation.firstName) {
+        return `Hi, ${store.state.userInformation.firstName}!`;
+      } else {
+        return '';
+      }
     }
   },
 

@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport'); // user authentication
 const path = require('path');
+const log = require('../utility/log');
 const verify = require('../authentication/verify'); // check user permissions
 
 
@@ -70,15 +71,20 @@ router.get('/login-retry', async (req, res) => {
 });
 
 // Post login credentials for dashboard
-let loginSuccessRedirect = '/';
+let basePage = '/';
 if (process.env.NODE_ENV == 'production') {
-    loginSuccessRedirect = '/dashboard';
+    basePage = '/dashboard';
 }
 router.post('/login',
-    passport.authenticate('local', { successRedirect: loginSuccessRedirect,
+    passport.authenticate('local', { successReturnToOrRedirect: basePage,
                                      failureRedirect: 'login-retry',
                                      failureFlash: false } )
 );
+router.get('/logout', (req, res) => {
+    log.message(`User ${req.user.username} logging out.`);
+    req.logout();
+    res.redirect(basePage);
+});
 
 
 module.exports = router;

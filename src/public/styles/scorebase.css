@@ -70,8 +70,8 @@ button {
 }
 
 a {
-    color: hsl(211, 72%, 60%);
+    color: hsl(211, 60%, 66%);
 }
 a:visited {
-    color: hsl(211, 20%, 75%);
+    color: hsl(211, 20%, 55%);
 }
