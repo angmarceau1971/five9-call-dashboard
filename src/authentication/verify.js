@@ -26,7 +26,7 @@ function isLoggedIn(level='basic') {
         }
         // If not logged in, send user to login page, then redirect back to the
         // original page.
-        req.session.returnTo = req.originalUrl;
+        req.session.returnTo = `${basePage}${req.originalUrl}`;
         res.redirect('login');
     };
 }
