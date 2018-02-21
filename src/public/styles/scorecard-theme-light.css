@@ -5,7 +5,11 @@ body, body button  {
     color: #444;
 }
 
-.stats-box, .modal, .info-box {
+.top-bar {
+    border-top: 3px solid hsl(345, 100%, 80%);
+}
+
+.stats-box, .modal, .info-box, .top-bar {
     box-shadow: 0 1px 0 rgba(12,13,14,0.1),
                 0 1px 3px rgba(12,13,14,0.1),
                 0 4px 20px rgba(12,13,14,0.035),
@@ -15,11 +19,8 @@ body, body button  {
 .stats-box {
     background-color: hsl(36, 100%, 98%);
 }
-.dropdown-button {
-    font-size: 18px;
-}
 .dropdown-button, .insidedrop, .top-bar {
-    background-color: hsl(36, 80%, 96%);
+    background-color: hsla(36, 84%, 97%, 1);
 }
 .dropdown-button {
     border-right: 1px solid #ddd;
@@ -31,7 +32,7 @@ body, body button  {
     border-top: 1px solid #ddd;
 }
 .dropdown-content button:hover {
-    background-color: hsl(342, 100%, 80%);
+    background-color: hsl(345, 100%, 80%);
 }
 
 svg text {

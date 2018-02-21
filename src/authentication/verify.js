@@ -13,6 +13,9 @@ let basePage = '/';
 if (process.env.NODE_ENV == 'production') {
     basePage = '/dashboard';
 }
+else {
+    basePage = 'localhost:3000';
+}
 
 /**
  * Middleware for page view routes. Redirects to login page if not logged in.

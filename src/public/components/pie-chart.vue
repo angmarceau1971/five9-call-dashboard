@@ -19,6 +19,17 @@ Accepts data prop with structure:
             :width="width" :height="height">
         </svg>
 
+        <!-- "Play" symbol &#9658; -->
+        <div class="data-dropdown-title"
+            title="Click to show or hide data table">
+            <span class="rotating-play-icon"
+                :class="{ 'rotate-90deg': showTable }"
+            >
+                &#9658;
+            </span>
+            Data
+        </div>
+
         <div v-if="infoBox.message" class="info-box"
             :style="{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}"
         >{{ infoBox.message }}</div>
@@ -47,9 +58,9 @@ const reasonCodeColors = {
     'One on One': 'hsl(206, 54%, 63%)',
     'Break': 'hsl(209, 56%, 73%)',
     'Training': 'hsl(205, 56%, 82%)',
-    'After Call Work': 'hsl(342, 85%, 51%)',
-    'Not Ready': 'hsl(342, 90%, 62%)',
-    'Outbound': 'hsl(342, 90%, 82%)',
+    'After Call Work': 'hsl(345, 85%, 51%)',
+    'Not Ready': 'hsl(345, 90%, 62%)',
+    'Outbound': 'hsl(345, 90%, 82%)',
 };
 const reasonCodeSortOrder = [
     'Lunch', 'One on One', 'Break', 'Training',
@@ -65,8 +76,8 @@ const props = {
         default: () => ({
             left: 30,
             right: 20,
-            top: 20,
-            bottom: 25,
+            top: 0,
+            bottom: 0,
         }),
     },
     title: {
@@ -87,8 +98,8 @@ export default {
     data () {
         return {
             showTable: false,
-            width: 200,
-            height: 200,
+            width: 180,
+            height: 180,
             radius: 90,
             paths: {
                 area: '',
@@ -141,16 +152,6 @@ export default {
             let additionalRows = [];
             return this.data
                 .map((d) => {
-                    // if (d.reasonCode.trim() == '') {
-                    //     additionalRows.push(
-                    //         { 'reasonCode': 'Logged In',
-                    //           'notReadyTime': d.loginTime }
-                    //     );
-                    //     additionalRows.push(
-                    //         { 'reasonCode': 'On Calls',
-                    //           'notReadyTime': d.handleTime }
-                    //     );
-                    // }
                     return {
                         'reasonCode': d.reasonCode,
                         'notReadyTime': d.notReadyTime
@@ -260,18 +261,35 @@ export default {
 <style scoped>
     .pie-chart {
         max-width: 100%;
-        min-height: 200px;
+        min-height: 180px;
     }
     .graph-wrap:hover {
         cursor: pointer;
     }
     .graph-wrap {
-        height: 175px;
+        height: 180px;
         width: 100%;
+        position: relative;
     }
     .graph-wrap text, .data-dropdown-title {
         text-anchor: middle;
         font-size: 0.8em;
+    }
+
+    .data-dropdown-title {
+        position: absolute;
+        bottom: 10px;
+        font-size: 0.6em;
+        text-align: left;
+        margin-left: 1em;
+    }
+    .rotating-play-icon {
+        font-size: 0.75em;
+        display: inline-block;
+        transition: 0.2s all ease-in;
+    }
+    .rotating-play-icon.rotate-90deg {
+        transform: rotate(90deg);
     }
 
 
@@ -293,4 +311,7 @@ export default {
         padding: 0.5em;
         z-index: 100000;
     }
+
+
+
 </style>

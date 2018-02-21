@@ -56,18 +56,17 @@ h2, h3 {
     width: 100%;
     height: 50px;
     display: flex;
+    box-sizing: border-box;
 }
 .dropdown-button {
-    padding-left: 16px;
-    padding-right: 16px;
     text-align: center;
     display: table-cell;
     vertical-align: middle;
-    font-size: 19px;
+    font-size: 25px;
     border: none;
-    height: 50px;
     width: 50px;
     z-index: 100;
+    box-sizing: border-box;
 }
 .insidedrop {
     padding: 0;
@@ -101,6 +100,7 @@ h2, h3 {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    /* box-sizing: border-box; */
 }
 .top-bar .nav > * {
     padding: 0 2em;
@@ -157,7 +157,7 @@ h2, h3 {
 .data-table-wrapper {
     max-height: 20em;
     width: 100%;
-    margin: 2em 0;
+    margin: 1em 0;
 }
 .data-table {
     table-layout: fixed;

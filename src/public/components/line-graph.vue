@@ -21,13 +21,14 @@ Accepts data prop with structure:
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
                 <path class="area" :d="paths.area" />
                 <path class="goal-line" :d="paths.goalLine" />
-                <path class="line" :d="paths.line" />
+                <path class="line" :d="paths.line" :style="{ stroke: lineColor }" />
                 <path class="selector" :d="paths.selector" />
                 <circle v-for="point in points"
                     class="data-circle"
                     :r="circleRadius"
                     :cx="point.x"
                     :cy="point.y"
+                    :style="{ fill: lineColor }"
                 ></circle>
             </g>
         </svg>
@@ -74,6 +75,10 @@ const props = {
             top: 20,
             bottom: 25,
         }),
+    },
+    statsType: { // individual or team
+        type: String,
+        default: 'individual'
     }
 };
 
@@ -134,6 +139,13 @@ export default {
         },
         ceil() {
             return d3.max(this.data, (d) => d[this.fields.y]);
+        },
+        lineColor() {
+            if (this.statsType == 'team') {
+                return 'hsl(345, 91%, 48%)';
+            } else {
+                return 'steelblue';
+            }
         }
     },
 
@@ -318,7 +330,6 @@ export default {
 
     .line {
         fill: none;
-        stroke: steelblue;
         stroke-linejoin: round;
         stroke-linecap: round;
         stroke-width: 1.5;
@@ -336,9 +347,6 @@ export default {
         stroke: hsla(207, 99%, 80%, 0.7);
         stroke-width: 1.0;
         fill: none;
-    }
-    .data-circle {
-        fill: steelblue;
     }
     .info-box {
         display: inline-block;

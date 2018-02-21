@@ -153,7 +153,8 @@ sla.widgets = [
         'datasource': 'Department Stats',
         'filter': {
             dateDay: '<month-to-date>'
-        }
+        },
+        'statsType': 'team'
     },
 ];
 
