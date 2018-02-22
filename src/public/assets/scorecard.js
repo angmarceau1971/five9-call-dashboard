@@ -1692,16 +1692,32 @@ function getValueForField(data, field) {
  */
 
 function process(data, field) {
-  if (field == 'Calculated.aht') {
+  let [source, fieldName] = field.split('.');
+  if (source == 'Calculated') return processCalculated(data, fieldName);
+  if (fieldName) return sum(data, fieldName);else return sum(data, field);
+}
+/**
+ * Extract overall value from a calculated field.
+ * @param  {Array} data
+ * @param  {String} field field name without source
+ * @return {Number} value
+ */
+
+
+function processCalculated(data, field) {
+  if (field == 'aht') {
     return sum(data, 'handleTime') / sum(data, 'calls');
-  } else if (field == 'Calculated.acw') {
+  } else if (field == 'talk') {
+    return sum(data, 'talkTime') / sum(data, 'calls');
+  } else if (field == 'acw') {
     return sum(data, 'acwTime') / sum(data, 'calls');
-  } else if (field == 'Calculated.serviceLevel') {
+  } else if (field == 'hold') {
+    return sum(data, 'holdTime') / sum(data, 'calls');
+  } else if (field == 'serviceLevel') {
     return sum(data, 'serviceLevel') / sum(data, 'calls');
   }
 
-  let [source, fieldName] = field.split('.');
-  if (fieldName) return sum(data, fieldName);else return sum(data, field);
+  throw new Error(`Parser does not recognize field "${field}".`);
 }
 /**
  * Group and summarize data by a given field.
@@ -2036,6 +2052,7 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Today',
   'fieldName': 'Calculated.aht',
+  'subFields': ['Calculated.talk', 'Calculated.acw', 'Calculated.hold'],
   'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
@@ -2048,6 +2065,7 @@ aht.widgets = [{
   'component': 'single-value',
   'title': 'Month to Date',
   'fieldName': 'Calculated.aht',
+  'subFields': ['Calculated.talk', 'Calculated.acw', 'Calculated.hold'],
   'datasource': 'Agent Stats',
   'filter': {
     agentUsername: {
@@ -2199,7 +2217,7 @@ const layout = {
     "id": "1",
     "name": "Agent Stats",
     "fields": {
-      "sum": ["calls", "handleTime", "acwTime"]
+      "sum": ["calls", "handleTime", "talkTime", "acwTime"]
     },
     "filter": {
       "agentUsername": {
@@ -4843,8 +4861,12 @@ if (false) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__ = __webpack_require__(99);
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(97)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -4853,14 +4875,14 @@ var normalizeComponent = __webpack_require__(0)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-4ae719c5"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_single_value_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_single_value_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -4918,12 +4940,25 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
-  props: ['title', 'fieldName'],
+  props: ['title', 'fieldName', 'subFields'],
   computed: {
     field: function () {
       return this.$store.getters.field(this.fieldName);
@@ -4931,9 +4966,22 @@ if (false) {(function () {
     formatted: function () {
       return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
     },
+    data: function () {
+      return this.$store.getters.getData(this.filter, this.datasource);
+    },
     value: function () {
-      let data = this.$store.getters.getData(this.filter, this.datasource);
-      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](data, this.fieldName);
+      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](this.data, this.fieldName);
+    },
+    subValues: function () {
+      if (!this.subFields) return [];
+      return this.subFields.map(field => {
+        let formatted = Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(__WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](this.data, field), field);
+        return {
+          value: formatted.value,
+          styleClass: formatted.styleClass,
+          fieldName: this.$store.getters.field(field).displayName
+        };
+      });
     }
   },
   methods: {
@@ -4944,50 +4992,7 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 57 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "single-value",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("h3", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c("p", { staticClass: "metric", class: _vm.formatted.styleClass }, [
-        _vm._v("\r\n        " + _vm._s(_vm.formatted.value) + "\r\n    ")
-      ]),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c("editor", {
-            attrs: { initialObject: _vm.$props },
-            on: { "modify-widget": _vm.modify }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ae719c5", esExports)
-  }
-}
-
-/***/ }),
+/* 57 */,
 /* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6414,6 +6419,128 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
+
+/***/ }),
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(98);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("07ee4262", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./single-value.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./single-value.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 110px;\n}\n.subvalue-wrapper[data-v-4ae719c5] {\r\n    display: flex;\r\n    justify-content: center;\n}\n.subvalue[data-v-4ae719c5] {\r\n    margin: 1em 1.5em 0.5em 1.5em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/single-value.vue?e9742b8e"],"names":[],"mappings":";AAoFA;IACA,kBAAA;CACA;AACA;IACA,cAAA;IACA,wBAAA;CACA;AACA;IACA,8BAAA;CACA","file":"single-value.vue","sourcesContent":["/**\r\n * Widget that displays a single value with a title, and optionally sub-values.\r\n * @prop {String} fieldName\r\n * @prop {Array} subFields - optional\r\n * ... and other base widget props (filter, datasource,...)\r\n */\r\n<template>\r\n<div class=\"single-value\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\"\r\n    >\r\n    <h3>{{ title }}</h3>\r\n    <p class=\"metric\"\r\n      :class=\"formatted.styleClass\"\r\n      :title=\"field.displayName\"\r\n    >{{ formatted.value }}\r\n    </p>\r\n\r\n    <div class=\"subvalue-wrapper\">\r\n        <p class=\"subvalue\"\r\n            v-if=\"subFields\"\r\n            v-for=\"v in subValues\"\r\n            :title=\"v.fieldName\"\r\n            :class=\"v.styleClass\"\r\n        >{{ v.value }}</p>\r\n    </div>\r\n\r\n    <editor\r\n        v-if=\"$store.state.editMode\"\r\n        :initialObject=\"$props\"\r\n        @modify-widget=\"modify\"\r\n    ></editor>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport * as parse from '../javascript/parse';\r\n\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    props: ['title', 'fieldName', 'subFields'],\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        },\r\n        data: function() {\r\n            return this.$store.getters.getData(this.filter, this.datasource);\r\n        },\r\n        value: function() {\r\n            return parse.getValueForField(this.data, this.fieldName);\r\n        },\r\n        subValues: function() {\r\n            if (!this.subFields) return [];\r\n            return this.subFields.map((field) => {\r\n                let formatted = formatValue(\r\n                    parse.getValueForField(this.data, field),\r\n                    field\r\n                );\r\n                return {\r\n                    value: formatted.value,\r\n                    styleClass: formatted.styleClass,\r\n                    fieldName: this.$store.getters.field(field).displayName\r\n                }\r\n            });\r\n        }\r\n    },\r\n    methods: {\r\n        modify: function(newWidget) {\r\n            this.$emit('modify-widget', newWidget, this.id);\r\n        }\r\n    }\r\n};\r\n\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.single-value {\r\n    min-height: 110px;\r\n}\r\n.subvalue-wrapper {\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n.subvalue {\r\n    margin: 1em 1.5em 0.5em 1.5em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "single-value",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      _c("h3", [_vm._v(_vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c(
+        "p",
+        {
+          staticClass: "metric",
+          class: _vm.formatted.styleClass,
+          attrs: { title: _vm.field.displayName }
+        },
+        [_vm._v(_vm._s(_vm.formatted.value) + "\r\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "subvalue-wrapper" },
+        _vm._l(_vm.subValues, function(v) {
+          return _vm.subFields
+            ? _c(
+                "p",
+                {
+                  staticClass: "subvalue",
+                  class: v.styleClass,
+                  attrs: { title: v.fieldName }
+                },
+                [_vm._v(_vm._s(v.value))]
+              )
+            : _vm._e()
+        })
+      ),
+      _vm._v(" "),
+      _vm.$store.state.editMode
+        ? _c("editor", {
+            attrs: { initialObject: _vm.$props },
+            on: { "modify-widget": _vm.modify }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4ae719c5", esExports)
+  }
+}
 
 /***/ })
 /******/ ]);

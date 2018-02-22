@@ -1,5 +1,8 @@
 /**
- * Widget that displays a single value with a (optional) title.
+ * Widget that displays a single value with a title, and optionally sub-values.
+ * @prop {String} fieldName
+ * @prop {Array} subFields - optional
+ * ... and other base widget props (filter, datasource,...)
  */
 <template>
 <div class="single-value"
@@ -8,9 +11,19 @@
     >
     <h3>{{ title }}</h3>
     <p class="metric"
-      :class="formatted.styleClass">
-        {{ formatted.value }}
+      :class="formatted.styleClass"
+      :title="field.displayName"
+    >{{ formatted.value }}
     </p>
+
+    <div class="subvalue-wrapper">
+        <p class="subvalue"
+            v-if="subFields"
+            v-for="v in subValues"
+            :title="v.fieldName"
+            :class="v.styleClass"
+        >{{ v.value }}</p>
+    </div>
 
     <editor
         v-if="$store.state.editMode"
@@ -29,7 +42,7 @@ import * as parse from '../javascript/parse';
 
 export default {
     extends: WidgetBase,
-    props: ['title', 'fieldName'],
+    props: ['title', 'fieldName', 'subFields'],
     computed: {
         field: function() {
             return this.$store.getters.field(this.fieldName);
@@ -37,9 +50,25 @@ export default {
         formatted: function() {
             return formatValue(this.value, this.field);
         },
+        data: function() {
+            return this.$store.getters.getData(this.filter, this.datasource);
+        },
         value: function() {
-            let data = this.$store.getters.getData(this.filter, this.datasource);
-            return parse.getValueForField(data, this.fieldName);
+            return parse.getValueForField(this.data, this.fieldName);
+        },
+        subValues: function() {
+            if (!this.subFields) return [];
+            return this.subFields.map((field) => {
+                let formatted = formatValue(
+                    parse.getValueForField(this.data, field),
+                    field
+                );
+                return {
+                    value: formatted.value,
+                    styleClass: formatted.styleClass,
+                    fieldName: this.$store.getters.field(field).displayName
+                }
+            });
         }
     },
     methods: {
@@ -49,5 +78,18 @@ export default {
     }
 };
 
-
 </script>
+
+
+<style scoped>
+.single-value {
+    min-height: 110px;
+}
+.subvalue-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.subvalue {
+    margin: 1em 1.5em 0.5em 1.5em;
+}
+</style>

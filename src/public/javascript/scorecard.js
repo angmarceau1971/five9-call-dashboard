@@ -21,6 +21,11 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'Calculated.aht',
+        'subFields': [
+            'Calculated.talk',
+            'Calculated.acw',
+            'Calculated.hold'
+        ],
         'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
@@ -34,6 +39,11 @@ aht.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'Calculated.aht',
+        'subFields': [
+            'Calculated.talk',
+            'Calculated.acw',
+            'Calculated.hold'
+        ],
         'datasource': 'Agent Stats',
         'filter': {
             agentUsername: {
@@ -213,6 +223,7 @@ const layout = {
                 "sum": [
                     "calls",
                     "handleTime",
+                    "talkTime",
                     "acwTime"
                 ]
             },

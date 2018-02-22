@@ -22,18 +22,35 @@ export function getValueForField(data, field) {
  * @return {Number} value
  */
 function process(data, field) {
-    if (field == 'Calculated.aht') {
-        return sum(data, 'handleTime') / sum(data, 'calls');
-    }
-    else if (field == 'Calculated.acw') {
-        return sum(data, 'acwTime') / sum(data, 'calls');
-    }
-    else if (field == 'Calculated.serviceLevel') {
-        return sum(data, 'serviceLevel') / sum(data, 'calls');
-    }
     let [source, fieldName] = field.split('.');
+    if (source == 'Calculated') return processCalculated(data, fieldName);
     if (fieldName) return sum(data, fieldName);
     else return sum(data, field);
+}
+
+/**
+ * Extract overall value from a calculated field.
+ * @param  {Array} data
+ * @param  {String} field field name without source
+ * @return {Number} value
+ */
+function processCalculated(data, field) {
+    if (field == 'aht') {
+        return sum(data, 'handleTime') / sum(data, 'calls');
+    }
+    else if (field == 'talk') {
+        return sum(data, 'talkTime') / sum(data, 'calls');
+    }
+    else if (field == 'acw') {
+        return sum(data, 'acwTime') / sum(data, 'calls');
+    }
+    else if (field == 'hold') {
+        return sum(data, 'holdTime') / sum(data, 'calls');
+    }
+    else if (field == 'serviceLevel') {
+        return sum(data, 'serviceLevel') / sum(data, 'calls');
+    }
+    throw new Error(`Parser does not recognize field "${field}".`);
 }
 
 /**

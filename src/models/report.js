@@ -41,6 +41,7 @@ const acdFeedSchema = mongoose.Schema({
     handleTime: Number,
     holdTime: Number,
     conferenceTime: Number,
+    talkTime: Number,
     acwTime: Number,
     speedOfAnswer: Number,
     abandons: Number,
@@ -90,10 +91,11 @@ const headerLookup = {
     'AGENT NAME':   'agentName',
     'AGENT GROUP':  'agentGroup',
     'HANDLE TIME':  'handleTime',
+    'TALK TIME':    'talkTime',
     'CONFERENCE TIME':  'conferenceTime',
     'AFTER CALL WORK TIME': 'acwTime',
-    'SPEED OF ANSWER':  'speedOfAnswer',
     'HOLD TIME':    'holdTime',
+    'SPEED OF ANSWER':  'speedOfAnswer',
     'TRANSFERS count':  'transfers',
     'CALLS count':  'calls',
     // Agent feed fields
@@ -447,6 +449,7 @@ function parseRow(model, row) {
         parsed.callId = row.callId;
 
         parsed.handleTime = seconds(row.handleTime);
+        parsed.talkTime = seconds(row.talkTime);
         parsed.holdTime = seconds(row.holdTime);
         parsed.conferenceTime = seconds(row.conferenceTime);
         parsed.acwTime = seconds(row.acwTime);
