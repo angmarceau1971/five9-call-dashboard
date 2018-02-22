@@ -9,6 +9,7 @@
         <link href="./styles/scorebase.css" rel="stylesheet" type="text/css">
         <link href="./styles/scoredetail.css" rel="stylesheet" type="text/css">
         <link href="./styles/scorecard-admin.css" rel="stylesheet" type="text/css">
+        <link href="./styles/theme-dark.css" rel="stylesheet" type="text/css" id="theme_css">
     </head>
 
     <body>
@@ -38,14 +39,12 @@
                         />
                         <p v-else>{{ props.item.name }}</p>
                     </td>
-
                     <td>
                         <input
                             v-model="props.item.displayName"
                             type="text"
                         />
                     </td>
-
                     <td>
                         <p>{{ props.item.calculatedField }}</p>
                     </td>
@@ -64,7 +63,6 @@
                             type="text"
                         />
                     </td>
-
                     <td>
                         <textarea v-if="props.item.calculatedField"
                             v-model="props.item.calculation"
@@ -72,7 +70,6 @@
                         ></textarea>
                         <p v-else>N/A</p>
                     </td>
-
                     <td>
                         <p>{{ props.item.source }}</p>
                     </td>

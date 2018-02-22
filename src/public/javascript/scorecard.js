@@ -355,7 +355,7 @@ const vm = new Vue({
 
         changeTheme: function(newTheme) {
             document.getElementById('theme_css').href =
-                                    `styles/scorecard-theme-${newTheme}.css`;
+                                    `styles/theme-${newTheme}.css`;
             this.theme = newTheme;
         },
 
