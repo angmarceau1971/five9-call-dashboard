@@ -53,6 +53,43 @@ export async function updateField(field) {
     return response.text();
 }
 
+
+/**
+ * List of all goals.
+ * @return {Promise} resolves to array of goal objects
+ */
+export async function getGoalList() {
+    let response = await request({}, 'goals', 'GET');
+    return response.json();
+}
+/**
+ * List of goals that apply to the given agent group(s).
+ * @param  {Array of Strings}   agentGroups
+ * @return {Promise} resolves to array of goal objects
+ */
+export async function getGoalsForAgentGroups(agentGroups) {
+    let response = await request({agentGroups: agentGroups}, 'goals', 'GET');
+    return response.json();
+}
+/**
+ * Updates a goal on server.
+ * @param  {Object}  goal new object
+ * @return {Promise} resolves to response message
+ */
+export async function updateGoal(goal) {
+    let response = await request({goal: goal}, 'goals', 'PUT');
+    return response.text();
+}
+/**
+ * Delete a goal from server.
+ * @param  {Object}  goal object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteGoal(goal) {
+    let response = await request({goal: goal}, 'goals', 'DELETE');
+    return response.text();
+}
+
 /**
  * List of available scheduled skilling jobs.
  * @return {Promise} resolves to array of field objects

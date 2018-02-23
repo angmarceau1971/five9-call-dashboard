@@ -18,8 +18,6 @@ const moment = require('moment'); // dates/times
 const log = require('../utility/log'); // recording updates
 const path = require('path');
 
-const admin = require('../admin/admin');
-const fields = require('../admin/fields');
 const report = require('../models/report'); // data feeds for SL & calls
 const queue  = require('../models/queue-stats'); // real-time queue feeds
 const users = require('../authentication/users'); // stores usernames to check auth
@@ -29,6 +27,8 @@ const customers = require('../customers/customers'); // customer database
 const uploader = require('../custom-upload/custom-upload');
 const skillGroup = require('../models/skill-group');
 
+
+const addAdminRoutes = require('./administrative.js').addTo(router);
 
 router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
     report.onReady(async () => {
@@ -109,47 +109,6 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 //////////////////////////////////////
 // Administrative Functions         //
 //////////////////////////////////////
-// Get list of fields
-router.get('/fields', verify.apiMiddleware(), async (req, res) => {
-    let fieldList = await fields.getFieldList();
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(fieldList));
-});
-
-// Modify available fields list
-router.put('/fields', verify.apiMiddleware('admin'), async (req, res) => {
-    let field = req.body.field;
-    let response = await fields.update(field);
-    res.set('Content-Type', 'application/text');
-    res.status(200).send(`Field "${field.name}" has been updated.`);
-});
-
-
-// Get list of scheduled skilling jobs
-router.get('/skill', verify.apiMiddleware('admin'), async (req, res) => {
-    let jobs = await admin.getScheduledJobs();
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(jobs));
-});
-
-// Modify a skilling job
-router.put('/skill', verify.apiMiddleware('admin'), async (req, res) => {
-    const newjob = await admin.updateSkillingJob(req.user.username, req.body.job, req.body.data);
-    res.set('Content-Type', 'application/text');
-    res.status(200).send(`Job "${req.body.job.data.title}" has been saved.`);
-});
-
-// Delete a scheduled skilling job
-router.delete('/skill', verify.apiMiddleware('admin'), async (req, res) => {
-    const numRemoved = await admin.cancelJob(req.body.job._id);
-    const message = numRemoved > 0
-                    ? `Job "${req.body.job.data.title}" has been deleted.`
-                    : `No job found matching "${req.body.job.data.title}".`;
-    res.set('Content-Type', 'application/text');
-    res.status(200).send(message);
-});
-
-
 // Get information stored on a user based on username
 router.get('/users/data/:username', verify.apiMiddleware(), async (req, res) => {
     try {

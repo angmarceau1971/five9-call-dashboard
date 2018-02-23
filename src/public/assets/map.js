@@ -114,20 +114,24 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["j"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["n"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
+/* unused harmony export getGoalsForAgentGroups */
+/* harmony export (immutable) */ __webpack_exports__["o"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["p"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["k"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["l"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["q"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -180,6 +184,51 @@ async function updateField(field) {
   let response = await request({
     field: field
   }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * List of all goals.
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalList() {
+  let response = await request({}, 'goals', 'GET');
+  return response.json();
+}
+/**
+ * List of goals that apply to the given agent group(s).
+ * @param  {Array of Strings}   agentGroups
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalsForAgentGroups(agentGroups) {
+  let response = await request({
+    agentGroups: agentGroups
+  }, 'goals', 'GET');
+  return response.json();
+}
+/**
+ * Updates a goal on server.
+ * @param  {Object}  goal new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a goal from server.
+ * @param  {Object}  goal object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'DELETE');
   return response.text();
 }
 /**
@@ -469,7 +518,7 @@ async function updateMap(callMap) {
   params.skills = $('.skills.filter').val(); // get all the datas
 
   let customerData = await getCustomerData();
-  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
+  const callData = await __WEBPACK_IMPORTED_MODULE_1__api__["f" /* getReportResults */](params, 'maps'); // build data object off of customerData zip codes
 
   let data = Object.keys(customerData).map(zip => ({
     zipCode: zip,
@@ -540,7 +589,7 @@ const customerCount = {
 async function getCustomerData() {
   // reload data from server if it's been 6+ hours since the last update
   if (customerCount.lastUpdated.isBefore(moment().subtract(6, 'hours'))) {
-    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
+    let rawData = await __WEBPACK_IMPORTED_MODULE_1__api__["f" /* getReportResults */]({}, 'customers'); // Convert array of objects to a single object, with zipcode as key
     // and customer count as volue
 
     customerCount.data = rawData.reduce((object, item) => {

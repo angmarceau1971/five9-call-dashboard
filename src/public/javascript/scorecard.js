@@ -224,7 +224,8 @@ const layout = {
                     "calls",
                     "handleTime",
                     "talkTime",
-                    "acwTime"
+                    "acwTime",
+                    "holdTime"
                 ]
             },
             "filter": {

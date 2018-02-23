@@ -91,7 +91,7 @@ const headerLookup = {
     'AGENT NAME':   'agentName',
     'AGENT GROUP':  'agentGroup',
     'HANDLE TIME':  'handleTime',
-    'TALK TIME':    'talkTime',
+    'TALK TIME': 'talkTime',
     'CONFERENCE TIME':  'conferenceTime',
     'AFTER CALL WORK TIME': 'acwTime',
     'HOLD TIME':    'holdTime',
@@ -428,61 +428,61 @@ async function refreshDatabase(time, reportModel, reportName) {
  */
 function parseRow(model, row) {
     let datestring;
-    const parsed = {};
+    const p = {};
     let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
 
     if (model == CallLog) {
         datestring = row.date + ' ' + row['HALF HOUR'];
-        parsed.serviceLevel = row.serviceLevel * 1;
-        parsed.abandons = row.abandons * 1;
+        p.serviceLevel = row.serviceLevel * 1;
+        p.abandons = row.abandons * 1;
 
         // Leave only left 5 digits of zip code
-        parsed.zipCode = row.zipCode.substr(0, 5);
+        p.zipCode = row.zipCode.substr(0, 5);
         // Set interval in Date format
-        parsed.skill = row.skill;
+        p.skill = row.skill;
     }
     else if (model == AcdFeed) {
         datestring = row.date + ' ' + row['QUARTER HOUR'];
-        parsed.agentUsername = row.agentUsername;
-        parsed.agentName = row.agentName;
-        parsed.agentGroup = row.agentGroup;
-        parsed.callId = row.callId;
+        p.agentUsername = row.agentUsername;
+        p.agentName = row.agentName;
+        p.agentGroup = row.agentGroup;
+        p.callId = row.callId;
 
-        parsed.handleTime = seconds(row.handleTime);
-        parsed.talkTime = seconds(row.talkTime);
-        parsed.holdTime = seconds(row.holdTime);
-        parsed.conferenceTime = seconds(row.conferenceTime);
-        parsed.acwTime = seconds(row.acwTime);
-        parsed.speedOfAnswer = seconds(row.speedOfAnswer);
-        parsed.skill = row.skill;
+        p.handleTime = seconds(row.handleTime);
+        p.holdTime = seconds(row.holdTime);
+        p.talkTime = seconds(row.talkTime) - p.holdTime;
+        p.conferenceTime = seconds(row.conferenceTime);
+        p.acwTime = seconds(row.acwTime);
+        p.speedOfAnswer = seconds(row.speedOfAnswer);
+        p.skill = row.skill;
 
-        parsed.abandons = row.abandons * 1;
-        parsed.serviceLevel = row.serviceLevel * 1;
+        p.abandons = row.abandons * 1;
+        p.serviceLevel = row.serviceLevel * 1;
     }
     else if (model == AgentLogin) {
         datestring = row.date;
-        parsed.agentUsername = row.agentUsername;
-        parsed.agentName = row.agentName;
-        parsed.agentGroup = row.agentGroup;
-        parsed.reasonCode = row.reasonCode;
-        parsed.handleTime = seconds(row.handleTime);
-        parsed.loginTime = seconds(row.loginTime);
-        parsed.notReadyTime = seconds(row.notReadyTime);
-        parsed.readyTime = seconds(row.readyTime);
-        parsed.transfers = row.transfers * 1;
+        p.agentUsername = row.agentUsername;
+        p.agentName = row.agentName;
+        p.agentGroup = row.agentGroup;
+        p.reasonCode = row.reasonCode;
+        p.handleTime = seconds(row.handleTime);
+        p.loginTime = seconds(row.loginTime);
+        p.notReadyTime = seconds(row.notReadyTime);
+        p.readyTime = seconds(row.readyTime);
+        p.transfers = row.transfers * 1;
     }
     else {
         log.error('report.parseRow called without model!')
     }
 
     // Shared fields
-    parsed.calls = row.calls * 1;
-    parsed.date = moment.tz(
+    p.calls = row.calls * 1;
+    p.date = moment.tz(
         moment(datestring, 'YYYY/MM/DD HH:mm'),
         'America/Los_Angeles'
     ).toDate();
 
-    return parsed;
+    return p;
 }
 
 

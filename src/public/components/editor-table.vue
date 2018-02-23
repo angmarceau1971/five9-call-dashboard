@@ -25,7 +25,7 @@
                         ref="headerRow">
                         {{ header }}
                     </th>
-                    <th v-if="!!remover">Delete</th>
+
                 </tr>
             </thead>
             <div class="table-body-wrapper">
@@ -75,7 +75,9 @@ export default {
 
     computed: {
         completeHeaders: function() {
-            return this.headers.concat(['Save']);
+            let newHeaders = this.headers.concat(['Save']);
+            if (!!this.remover) return newHeaders.concat(['Delete']);
+            else return newHeaders;
         }
     },
 
@@ -85,7 +87,12 @@ export default {
         this.load();
     },
 
+    /**
+     * Any time an update occurs, the headers' width needs to be matched to the
+     * body's width (because the header is contained in its own fixed div).
+     */
     updated() {
+        if (this.items.length == 0) return;
         let headerRow = this.$refs.headerRow;
         let bodyRow = this.$refs.bodyRows[0].children;
         let i = 0;

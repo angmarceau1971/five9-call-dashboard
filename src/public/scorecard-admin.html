@@ -76,6 +76,53 @@
                 </template>
             </editor-table>
         </div>
+
+
+        <div class="section goals">
+            <h2>Goals</h2>
+            <editor-table
+                @message="updateMessage"
+                :updater="goalUpdater"
+                :loader="goalLoader"
+                :adder="goalAdder"
+                :remover="goalRemover"
+                :headers="['Name', 'Agent Groups', 'Comparator', 'Thresholds', 'Fields']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input
+                            v-model="props.item.name"
+                            type="text"
+                        />
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.agentGroups"
+                            type="text"
+                        ></textarea>
+                    </td>
+                    <td>
+                        <input
+                            v-model="props.item.comparator"
+                            type="text"
+                        />
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.thresholds"
+                            type="text"
+                        ></textarea>
+                    </td>
+                    <td>
+                        <textarea
+                            v-model="props.item.fields"
+                            type="text"
+                        ></textarea>
+                    </td>
+
+                </template>
+            </editor-table>
+        </div>
     </div>
     </body>
 

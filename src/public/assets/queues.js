@@ -114,20 +114,24 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["f"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["h"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["l"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["m"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["k"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["i"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["j"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["n"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["j"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["n"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
+/* unused harmony export getGoalsForAgentGroups */
+/* harmony export (immutable) */ __webpack_exports__["o"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["p"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["m"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["k"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["l"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["q"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -180,6 +184,51 @@ async function updateField(field) {
   let response = await request({
     field: field
   }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * List of all goals.
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalList() {
+  let response = await request({}, 'goals', 'GET');
+  return response.json();
+}
+/**
+ * List of goals that apply to the given agent group(s).
+ * @param  {Array of Strings}   agentGroups
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalsForAgentGroups(agentGroups) {
+  let response = await request({
+    agentGroups: agentGroups
+  }, 'goals', 'GET');
+  return response.json();
+}
+/**
+ * Updates a goal on server.
+ * @param  {Object}  goal new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a goal from server.
+ * @param  {Object}  goal object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'DELETE');
   return response.text();
 }
 /**
@@ -432,13 +481,13 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["h" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["j" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
 
       try {
-        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["d" /* getReportResults */](time, 'service-level'); // slData = [];
+        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["f" /* getReportResults */](time, 'service-level'); // slData = [];
       } catch (err) {
         Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
         slData = [];
