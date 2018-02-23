@@ -41,3 +41,10 @@ svg text {
 .modal, .info-box {
     background-color: hsla(0, 0%, 95%, 0.9);
 }
+
+.green {
+    color: hsl(120, 100%, 32%);
+}
+.red {
+    color: hsl(345, 83%, 52%);
+}

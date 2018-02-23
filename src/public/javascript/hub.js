@@ -25,6 +25,7 @@ export const store = new Vuex.Store({
         data: {},
         datasources: {},
         timeoutIds: {},
+        goals: []
     },
     getters: {
         /**
@@ -56,6 +57,11 @@ export const store = new Vuex.Store({
                 delete datum._id;
                 return datum;
             });
+        },
+        goalForField: (state) => (field) => {
+            return state.goals.filter((goal) =>
+                goal.field.name == field.name
+            )[0];
         }
     },
     mutations: {
@@ -80,6 +86,9 @@ export const store = new Vuex.Store({
         setFields(state, fields) {
             state.fields = fields;
         },
+        setGoals(state, goals) {
+            state.goals = goals;
+        },
         changeDatasource(state, datasource) {
             const ds = clone(datasource);
             Vue.set(state.datasources, ds.id, ds);
@@ -103,6 +112,8 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
+            const goals = await api.getGoalList();
+            context.commit('setGoals', goals);
             return context.dispatch('nextUpdate', null);
         },
 

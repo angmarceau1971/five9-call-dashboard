@@ -145,12 +145,6 @@ h2, h3 {
     min-width: 220px;
 }
 
-.green {
-    color: hsl(120, 35%, 50%);
-}
-.red {
-    color: hsl(0, 55%, 60%);
-}
 
 
 /*  Data table formatting  */

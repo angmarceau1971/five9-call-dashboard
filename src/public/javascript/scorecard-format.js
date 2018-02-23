@@ -2,12 +2,15 @@ import * as hub from './hub';
 
 let comparators = {
     '>=': (value, goal) => value >= goal,
-    '<=': (value, goal) => value <= goal
+    '<=': (value, goal) => value <= goal,
+    '<' : (value, goal) => value <  goal,
+    '>' : (value, goal) => value >  goal,
+    '==': (value, goal) => value == goal,
 };
 
 
 export function formatValue(value, field) {
-    let formattedValue, style;
+    let formattedValue;
     if (typeof(field) == 'string') {
         field = hub.store.getters.field(field);
     }
@@ -18,15 +21,7 @@ export function formatValue(value, field) {
         }
     }
 
-    if (field.hasGoal) {
-        style = comparators[field.comparator](
-            value, field.goal
-        )
-        ? 'green'
-        : 'red';
-    } else {
-        style = '';
-    }
+    let style = getStyleFromGoal(value, field);
 
     if (field.format.type == 'Number' || field.format.type == 'Percentage') {
         formattedValue = d3.format(field.format.string)(value);
@@ -45,3 +40,14 @@ export function formatValue(value, field) {
         styleClass: style
     };
 };
+
+
+function getStyleFromGoal(value, field) {
+    let goal = hub.store.getters.goalForField(field);
+    if (!goal) return '';
+    if (value < goal.thresholds[0]) {
+        return 'green';
+    } else {
+        return 'red';
+    }
+}

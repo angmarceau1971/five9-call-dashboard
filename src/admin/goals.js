@@ -8,13 +8,13 @@ const goalSchema = mongoose.Schema({
     name: {
         type: String
     },
-    // Fields to apply goal to
-    fields: {
-        type: [{
+    // Field to apply goal to
+    field: {
+        type: {
             source: String,
             name: String
-        }],
-        default: []
+        },
+        default: {}
     },
     // Agent group(s) to apply goal to
     agentGroups: {
@@ -40,22 +40,14 @@ const Goal = mongoose.model('Goal', goalSchema);
  * @param  {Array of Strings} agentGroups
  * @return {Promise -> Array} goals that match any of the agent groups passed in
  */
-async function getGoalsForAgentGroups(agentGroups) {
-    return new Promise((resolve, reject) => {
-        Goal.find({
-            agentGroups: {
-                $elemMatch: {
-                    $or: agentGroups
-                }
+function getGoalsForAgentGroups(agentGroups) {
+    return Goal.find({
+        agentGroups: {
+            $elemMatch: {
+                $or: agentGroups
             }
-        }, (err, docs) => {
-            if (err) {
-                log.error(err);
-                reject(err);
-            }
-            resolve(docs);
-        })
-    });
+        }
+    }).exec();
 }
 
 
@@ -77,14 +69,14 @@ async function update(goal) {
 module.exports.update = update;
 
 
-async function getAll() {
-    return await Goal.find({});
+function getAll() {
+    return Goal.find({}).exec();
 }
 module.exports.getAll = getAll;
 
-async function remove(goal) {
+function remove(goal) {
     log.message(`Deleting goal ${goal.name}.`);
-    const oid = new mongoose.Types.ObjectId(goal._id);
-    return Goal.find({ _id: oid }).remove();
+    const oid = mongoose.Types.ObjectId(goal._id);
+    return Goal.remove({ _id: oid }).exec();
 }
 module.exports.remove = remove;
