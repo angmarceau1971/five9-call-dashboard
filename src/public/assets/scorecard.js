@@ -1415,7 +1415,7 @@ function formatValue(value, field) {
 
 function getStyleFromGoal(value, field) {
   let goal = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.goalForField(field);
-  if (!goal) return '';
+  if (!goal || isNaN(value)) return '';
   let meetsGoal = getGoalComparer(goal.comparator);
 
   if (meetsGoal === undefined) {

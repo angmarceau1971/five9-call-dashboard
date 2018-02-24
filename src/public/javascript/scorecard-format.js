@@ -44,7 +44,7 @@ export function formatValue(value, field) {
 
 function getStyleFromGoal(value, field) {
     let goal = hub.store.getters.goalForField(field);
-    if (!goal) return '';
+    if (!goal || isNaN(value)) return '';
 
     let meetsGoal = getGoalComparer(goal.comparator);
     if (meetsGoal === undefined) {
