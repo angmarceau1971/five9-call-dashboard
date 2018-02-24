@@ -137,7 +137,7 @@ h2, h3 {
 }
 .scorecard-wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1em;
 }
 
@@ -149,7 +149,6 @@ h2, h3 {
 
 /*  Data table formatting  */
 .data-table-wrapper {
-    max-height: 20em;
     width: 100%;
     margin: 1em 0;
 }

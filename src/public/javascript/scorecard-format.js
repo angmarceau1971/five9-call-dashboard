@@ -45,9 +45,31 @@ export function formatValue(value, field) {
 function getStyleFromGoal(value, field) {
     let goal = hub.store.getters.goalForField(field);
     if (!goal) return '';
-    if (value < goal.thresholds[0]) {
+
+    let meetsGoal = getGoalComparer(goal.comparator);
+    if (meetsGoal === undefined) {
+        console.log(`Undefined comparator ${goal.comparator} for ${goal.name}, with field ${field.name}.`);
+        return '';
+    }
+
+    // 2 goal levels: return green, yellow, or red
+    if (goal.thresholds.length == 2) {
+        if (meetsGoal(value, goal.thresholds[0])) {
+            return 'green';
+        } else if (meetsGoal(value, goal.thresholds[1])) {
+            return 'yellow';
+        } else {
+            return 'red';
+        }
+    }
+    // Goal.thresholds.length != 2: return green or ready
+    if (meetsGoal(value, goal.thresholds[0])) {
         return 'green';
     } else {
         return 'red';
     }
+}
+
+function getGoalComparer(comparator) {
+    return comparators[comparator];
 }

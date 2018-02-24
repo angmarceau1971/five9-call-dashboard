@@ -15,8 +15,11 @@ body, body button  {
                 0 2px 4px rgba(0,0,0,0.8);
 }
 
-.stats-box, .dropdown-button, .insidedrop, .top-bar {
-    background-color: #2b2b2d;
+.stats-box {
+    background-color: hsla(240, 2%, 22%, 0.89);
+}
+.dropdown-button, .insidedrop, .top-bar {
+    background-color: hsl(240, 2%, 22%);
 }
 .dropdown-button {
     border-right: 1px solid #333;
@@ -41,7 +44,9 @@ svg text {
 .green {
     color: hsl(120, 100%, 47%);
 }
-.red {
-    color: hsl(345, 100%, 65%);
+.yellow {
+    color: hsl(61, 100%, 67%);
 }
-
+.red {
+    color: hsl(345, 97%, 72%);
+}

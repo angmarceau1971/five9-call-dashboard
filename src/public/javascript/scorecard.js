@@ -11,8 +11,8 @@ const debounce = require('debounce');
 const aht = {
     title: 'Average Handle Time',
     id: 'card:1',
-    layoutOrder: 1,
-    columns: 2
+    layoutOrder: 2,
+    columns: 1
 };
 aht.data = [];
 aht.widgets = [
@@ -74,7 +74,7 @@ aht.widgets = [
 const calls = {
     title: 'Calls Handled',
     id: 'card:2',
-    layoutOrder: 2,
+    layoutOrder: 3,
     columns: 1
 };
 calls.data = [];
@@ -127,7 +127,7 @@ calls.widgets = [
 const sla = {
     title: 'Service Level',
     id: 'card:3',
-    layoutOrder: 3,
+    layoutOrder: 1,
     columns: 1
 };
 sla.data = [];

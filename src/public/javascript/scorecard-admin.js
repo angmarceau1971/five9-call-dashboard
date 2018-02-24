@@ -47,7 +47,6 @@ const vm = new Vue({
             try {
                 clean.agentGroups = JSON.parse(clean.agentGroups);
                 clean.thresholds = JSON.parse(clean.thresholds);
-                clean.field = JSON.parse(clean.field);
             } catch (err) {
                 return `Unable to save: ${err}.`;
             }
@@ -59,7 +58,6 @@ const vm = new Vue({
             const stringin = function(goal) {
                 goal.agentGroups = str(goal.agentGroups);
                 goal.thresholds = str(goal.thresholds);
-                goal.field = str(goal.field);
                 return goal;
             }
             return goals.map(stringin);

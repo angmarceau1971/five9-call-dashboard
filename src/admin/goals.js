@@ -10,11 +10,8 @@ const goalSchema = mongoose.Schema({
     },
     // Field to apply goal to
     field: {
-        type: {
-            source: String,
-            name: String
-        },
-        default: {}
+        type: String,
+        default: ''
     },
     // Agent group(s) to apply goal to
     agentGroups: {

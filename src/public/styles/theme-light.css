@@ -43,7 +43,10 @@ svg text {
 }
 
 .green {
-    color: hsl(120, 100%, 32%);
+    color: hsl(120, 100%, 37%);
+}
+.yellow {
+    color: hsl(39, 100%, 43%);
 }
 .red {
     color: hsl(345, 83%, 52%);

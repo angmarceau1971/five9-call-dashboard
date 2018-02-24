@@ -202,7 +202,7 @@ export default {
 .card {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 3em;
+    grid-gap: 2.5em;
 }
 
 /* Since the card's grid determines margins, remove margins from the first
@@ -213,7 +213,7 @@ export default {
 }
 .card {
     transition: all 1s;
-    padding: 0.5em;
+    padding: 0.5em 0;
 }
 
 /* Buttons to edit card and/or add widgets */

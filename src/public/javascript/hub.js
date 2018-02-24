@@ -60,7 +60,7 @@ export const store = new Vuex.Store({
         },
         goalForField: (state) => (field) => {
             return state.goals.filter((goal) =>
-                goal.field.name == field.name
+                goal.field == field.name
             )[0];
         }
     },
