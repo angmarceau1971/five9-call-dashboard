@@ -112,8 +112,6 @@ export const store = new Vuex.Store({
             // load fields from server
             const fields = await api.getFieldList();
             context.commit('setFields', fields);
-            const goals = await api.getGoalList();
-            context.commit('setGoals', goals);
             return context.dispatch('nextUpdate', null);
         },
 
@@ -126,7 +124,10 @@ export const store = new Vuex.Store({
         },
 
         async updateUser(context, username) {
-            context.commit('setUser', await api.getUserInformation(username));
+            let user = await api.getUserInformation(username);
+            context.commit('setUser', user);
+            let goals = await api.getGoalsForAgentGroups(user.agentGroups);
+            context.commit('setGoals', goals);
         },
 
         async nextUpdate(context, ms) {

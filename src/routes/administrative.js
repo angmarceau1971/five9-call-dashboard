@@ -26,7 +26,7 @@ module.exports.addTo = function(router) {
     //////////////////////////////////////////
     // Goal endpoints
     // Get list of fields
-    router.get('/goals', verify.apiMiddleware(), async (req, res) => {
+    router.post('/goals', verify.apiMiddleware(), async (req, res) => {
         let goalList;
         if (req.body.agentGroups) {
             goalList = await goals.getGoalsForAgentGroups(req.body.agentGroups);

@@ -59,7 +59,7 @@ export async function updateField(field) {
  * @return {Promise} resolves to array of goal objects
  */
 export async function getGoalList() {
-    let response = await request({}, 'goals', 'GET');
+    let response = await request({}, 'goals', 'POST');
     return response.json();
 }
 /**
@@ -68,7 +68,7 @@ export async function getGoalList() {
  * @return {Promise} resolves to array of goal objects
  */
 export async function getGoalsForAgentGroups(agentGroups) {
-    let response = await request({agentGroups: agentGroups}, 'goals', 'GET');
+    let response = await request({agentGroups: agentGroups}, 'goals', 'POST');
     return response.json();
 }
 /**

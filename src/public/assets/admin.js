@@ -1039,24 +1039,24 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["h"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["j"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["k"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getUserInformation;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["n"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["o"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
-/* unused harmony export getGoalsForAgentGroups */
-/* harmony export (immutable) */ __webpack_exports__["o"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["p"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["p"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["q"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["m"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["k"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["l"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["q"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["n"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["l"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["m"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -1117,7 +1117,7 @@ async function updateField(field) {
  */
 
 async function getGoalList() {
-  let response = await request({}, 'goals', 'GET');
+  let response = await request({}, 'goals', 'POST');
   return response.json();
 }
 /**
@@ -1129,7 +1129,7 @@ async function getGoalList() {
 async function getGoalsForAgentGroups(agentGroups) {
   let response = await request({
     agentGroups: agentGroups
-  }, 'goals', 'GET');
+  }, 'goals', 'POST');
   return response.json();
 }
 /**
@@ -1406,7 +1406,7 @@ $(document).ready(() => {
   // Listen for server reboot request
   $('.reboot-server').click(async event => {
     $('.message').text(`Computing....`);
-    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["k" /* rebootServer */]();
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["l" /* rebootServer */]();
     $('.message').text(msg);
   }); // Listen for data reload requests
 
@@ -1419,7 +1419,7 @@ $(document).ready(() => {
     const body = {
       time: time
     };
-    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["l" /* reloadData */](body);
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["m" /* reloadData */](body);
     $('.message').text(msg);
   });
 }); // Handle Vue form
@@ -1435,7 +1435,7 @@ const vm = new Vue({
   },
   methods: {
     adminUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["m" /* updateAdminUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["n" /* updateAdminUser */](user);
     },
     adminLoader: async function () {
       return __WEBPACK_IMPORTED_MODULE_0__api__["c" /* getAdminUsers */]();

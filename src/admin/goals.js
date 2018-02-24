@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const log = require('../utility/log');
-
+const intersection = require('ramda/src/intersection');
 
 const goalSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -37,16 +37,12 @@ const Goal = mongoose.model('Goal', goalSchema);
  * @param  {Array of Strings} agentGroups
  * @return {Promise -> Array} goals that match any of the agent groups passed in
  */
-function getGoalsForAgentGroups(agentGroups) {
-    return Goal.find({
-        agentGroups: {
-            $elemMatch: {
-                $or: agentGroups
-            }
-        }
-    }).exec();
+async function getGoalsForAgentGroups(agentGroups) {
+    return (await getAll()).filter((goal) => {
+        return (intersection(agentGroups, goal.agentGroups).length > 0);
+    });
 }
-
+module.exports.getGoalsForAgentGroups = getGoalsForAgentGroups;
 
 async function update(goal) {
     const oid = new mongoose.Types.ObjectId(goal._id);
