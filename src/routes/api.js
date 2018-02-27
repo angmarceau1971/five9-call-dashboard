@@ -126,6 +126,17 @@ router.get('/users/data/:username', verify.apiMiddleware(), async (req, res) => 
     }
 });
 
+// Change a user's theme
+router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
+    res.set('Content-Type', 'application/text');
+    try {
+        await users.updateTheme(req.user.username, req.body.newTheme);
+        res.send(`Theme updated successfully.`);
+    } catch (err) {
+        res.status(500).send(`An error occurred while changing themes: ${err}.`);
+    }
+});
+
 // Get list of admin users
 router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
     const admins = await users.getAdminUsers();
@@ -140,6 +151,7 @@ router.patch('/users/admin', verify.apiMiddleware('admin'), async (req, res) => 
     res.set('Content-Type', 'application/text');
     res.status(200).send(`User "${req.body.user.username}" has been updated.`);
 });
+
 
 
 // Notify server that a 502 has occurred

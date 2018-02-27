@@ -109,6 +109,10 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        async updateTheme(newTheme) {
+            return api.updateUserTheme(this.currentUser, newTheme);
+        },
+
         // Call when page first loads
         async startProcess(context) {
             // load fields from server

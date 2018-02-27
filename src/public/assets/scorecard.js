@@ -597,6 +597,7 @@ module.exports = clone;
 /* harmony export (immutable) */ __webpack_exports__["k"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["r"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
 /* harmony export (immutable) */ __webpack_exports__["o"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
@@ -610,7 +611,7 @@ module.exports = clone;
 /* harmony export (immutable) */ __webpack_exports__["n"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["l"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["m"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["r"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["s"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -640,8 +641,27 @@ async function queueStats() {
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
 }
+/**
+ * Return user information from username.
+ * @param  {String} username
+ * @return {Promise -> Object} User's object
+ */
+
 async function getUserInformation(username) {
   const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
+}
+/**
+ * Set a user's theme preferences.
+ * @param  {String} username
+ * @param  {Object} newTheme with theme fields
+ * @return {Promise -> String} response message
+ */
+
+async function updateUserTheme(username, newTheme) {
+  const response = await request({
+    newTheme: newTheme
+  }, `users/theme`, 'PATCH');
   return response.json();
 }
 /**
@@ -1642,6 +1662,10 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
   },
   actions: {
+    async updateTheme(newTheme) {
+      return __WEBPACK_IMPORTED_MODULE_2__api__["r" /* updateUserTheme */](this.currentUser, newTheme);
+    },
+
     // Call when page first loads
     async startProcess(context) {
       // load fields from server
@@ -14490,16 +14514,22 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     'editor-table': __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__["a" /* default */]
   },
   computed: {
-    user: {
+    username: {
       get() {
         return store.state.currentUser;
       },
 
       set(value) {
-        console.log(value); // if (this.updateUserDebounce) this.updateUserDebounce.clear();
-
+        console.log(value);
+        if (this.updateUserDebounce) this.updateUserDebounce.clear();
         store.dispatch('updateUser', value);
         this.refresh();
+      }
+
+    },
+    user: {
+      get() {
+        return store.state.userInformation;
       }
 
     },
@@ -14513,15 +14543,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       } else {
         return '';
       }
-    },
-    usingBackgroundImage: {
-      get() {
-        return false;
-      },
-
-      set(nowUsing) {// set user preference
-      }
-
     }
   },
 
@@ -14531,18 +14552,23 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     this.isLoaded = true;
   },
 
+  watch: {
+    user: function (newUser) {
+      this.changeTheme(newUser.theme);
+    }
+  },
   methods: {
     ///////////////////////////
     // UI / interactions
     refresh: async function () {
       store.dispatch('forceRefresh');
     },
-    backgroundStyles: function () {// Return background: css if user has a bg image
-      //
-    },
     changeTheme: function (newTheme) {
       document.getElementById('theme_css').href = `styles/theme-${newTheme}.css`;
-      this.theme = newTheme;
+      this.theme = newTheme; // store.dispatch('updateTheme', {
+      //     theme: newTheme,
+      //
+      // })
     },
     mouseleaveThemeSubMenu: function (event) {
       if (!event.relatedTarget) return;

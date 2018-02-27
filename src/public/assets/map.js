@@ -252,6 +252,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["k"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["r"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
 /* harmony export (immutable) */ __webpack_exports__["o"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
@@ -265,7 +266,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["n"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["l"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["m"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["r"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["s"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -295,8 +296,27 @@ async function queueStats() {
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
 }
+/**
+ * Return user information from username.
+ * @param  {String} username
+ * @return {Promise -> Object} User's object
+ */
+
 async function getUserInformation(username) {
   const response = await request({}, `users/data/${username}`, 'GET');
+  return response.json();
+}
+/**
+ * Set a user's theme preferences.
+ * @param  {String} username
+ * @param  {Object} newTheme with theme fields
+ * @return {Promise -> String} response message
+ */
+
+async function updateUserTheme(username, newTheme) {
+  const response = await request({
+    newTheme: newTheme
+  }, `users/theme`, 'PATCH');
   return response.json();
 }
 /**

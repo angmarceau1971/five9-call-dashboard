@@ -319,15 +319,20 @@ const vm = new Vue({
     },
 
     computed: {
-        user: {
+        username: {
             get() {
-                return store.state.currentUser
+                return store.state.currentUser;
             },
             set(value) {
                 console.log(value);
-                // if (this.updateUserDebounce) this.updateUserDebounce.clear();
+                if (this.updateUserDebounce) this.updateUserDebounce.clear();
                 store.dispatch('updateUser', value);
                 this.refresh();
+            }
+        },
+        user: {
+            get() {
+                return store.state.userInformation;
             }
         },
         // Get name of theme that isn't currently selected
@@ -340,14 +345,6 @@ const vm = new Vue({
             } else {
                 return '';
             }
-        },
-        usingBackgroundImage: {
-            get() {
-                return false;
-            },
-            set(nowUsing) {
-                // set user preference
-            }
         }
     },
 
@@ -357,6 +354,12 @@ const vm = new Vue({
         this.isLoaded = true;
     },
 
+    watch: {
+        user: function(newUser) {
+            this.changeTheme(newUser.theme);
+        }
+    },
+
     methods: {
         ///////////////////////////
         // UI / interactions
@@ -364,15 +367,14 @@ const vm = new Vue({
             store.dispatch('forceRefresh');
         },
 
-        backgroundStyles: function() {
-            // Return background: css if user has a bg image
-            //
-        },
-
         changeTheme: function(newTheme) {
             document.getElementById('theme_css').href =
                                     `styles/theme-${newTheme}.css`;
             this.theme = newTheme;
+            // store.dispatch('updateTheme', {
+            //     theme: newTheme,
+            //
+            // })
         },
 
         mouseleaveThemeSubMenu: function(event) {

@@ -16,13 +16,29 @@ const skillGroup = require('../models/skill-group.js');
 // Schema for user data
 const usersSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    username: String,
+    username: {
+        type: String,
+        unique: true
+    },
     active: Boolean,
     isAdmin: { type: Boolean, default: false },
     // Array of Agent Groups that user belongs to
     agentGroups: [String],
     firstName: String,
-    lastName: String
+    lastName: String,
+    // Theme options
+    theme: { // dark or light theme
+        type: String,
+        default: 'dark'
+    },
+    lightBackgroundImageUrl: {
+        type: String,
+        default: ''
+    },
+    darkBackgroundImageUrl: {
+        type: String,
+        default: ''
+    }
 });
 
 // Model to store users
@@ -130,6 +146,24 @@ async function updateAdminStatus(username, isNowAdmin) {
 }
 module.exports.updateAdminStatus = updateAdminStatus;
 
+/**
+ * Update user's theme fields. 
+ * @param  {String} username
+ * @param  {Object} newTheme with fields theme, lightBackgroundImageUrl, and
+ *                           darkBackgroundImageUrl
+ * @return {Promise}
+ */
+async function updateTheme(username, newTheme) {
+    log.message(`Updating theme for ${username} to ${JSON.stringify(newTheme)}.`);
+    return await Users.updateOne(
+        { username: username },
+        { $set: {
+            'theme': newTheme.theme,
+            'lightBackgroundImageUrl': newTheme.lightBackgroundImageUrl,
+            'darkBackgroundImageUrl': newTheme.darkBackgroundImageUrl
+        } }
+    );
+}
 
 ////////////////////////////////////////////////
 // Database updating
@@ -180,7 +214,10 @@ async function refreshUserDatabase(usersModel) {
             active: d.active == 'true' ? true : false,
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
             firstName: d.firstName[0],
-            lastName: d.lastName[0]
+            lastName: d.lastName[0],
+            theme: 'dark',
+            lightBackgroundImageUrl: '',
+            darkBackgroundImageUrl: ''
         };
 
         // Update or add each Five9 user to database
@@ -189,7 +226,8 @@ async function refreshUserDatabase(usersModel) {
             { username: newUser.username }, // query
             [], // sort
             { $set: newUser }, // update
-            { upsert: true }, // options - add to collection if not found
+            // options - add to collection if not found
+            { upsert: true, setDefaultsOnInsert: true },
             function(err, doc) {
                 if (err) log.error(`Error while updating user: ${err}.`);
             }

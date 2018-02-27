@@ -29,11 +29,27 @@ export function getReportResults(params, type) {
     return getData(params, `reports/${type}`);
 }
 
-
+/**
+ * Return user information from username.
+ * @param  {String} username
+ * @return {Promise -> Object} User's object
+ */
 export async function getUserInformation(username) {
     const response = await request({}, `users/data/${username}`, 'GET');
     return response.json();
 }
+
+/**
+ * Set a user's theme preferences.
+ * @param  {String} username
+ * @param  {Object} newTheme with theme fields
+ * @return {Promise -> String} response message
+ */
+export async function updateUserTheme(username, newTheme) {
+    const response = await request({ newTheme: newTheme }, `users/theme`, 'PATCH');
+    return response.json();
+}
+
 
 /**
  * List of available fields for widgets.
