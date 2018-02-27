@@ -4,7 +4,9 @@
  * Data is made accessible through the `store` Vuex object, which all Vue
  * components can access.
  */
-
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
 import * as api from './api';
 import * as filters from './filters';
 const sift = require('sift');

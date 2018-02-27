@@ -1,12 +1,15 @@
+import Vue from 'vue';
 import Dashboard from '../components/dashboard.vue';
 import * as hub from './hub';
 import { formatValue } from './scorecard-format';
 import EditorTable from '../components/editor-table.vue';
 
-// Node libraries
+
+// NPM libraries
 const isEmpty = require('ramda/src/isEmpty');
 const clone = require('ramda/src/clone');
 const debounce = require('debounce');
+
 
 const aht = {
     title: 'Average Handle Time',
@@ -294,7 +297,6 @@ const layout = {
 
 
 
-Vue.use(Vuex);
 const store = hub.store;
 
 const vm = new Vue({
@@ -306,7 +308,9 @@ const vm = new Vue({
         datasourceMessage: '',
         isLoaded: false,
         theme: 'dark',
-        showMenu: false
+        showMenu: false,
+        showMenuThemes: false,
+        updateUserDebounce: undefined
     },
 
     components: {
@@ -320,7 +324,10 @@ const vm = new Vue({
                 return store.state.currentUser
             },
             set(value) {
-                this.updateUserDebounced(value);
+                console.log(value);
+                // if (this.updateUserDebounce) this.updateUserDebounce.clear();
+                store.dispatch('updateUser', value);
+                this.refresh();
             }
         },
         // Get name of theme that isn't currently selected
@@ -332,6 +339,14 @@ const vm = new Vue({
                 return `Hi, ${store.state.userInformation.firstName}!`
             } else {
                 return '';
+            }
+        },
+        usingBackgroundImage: {
+            get() {
+                return false;
+            },
+            set(nowUsing) {
+                // set user preference
             }
         }
     },
@@ -345,19 +360,32 @@ const vm = new Vue({
     methods: {
         ///////////////////////////
         // UI / interactions
-        updateUserDebounced: debounce(async function(username) {
-            store.dispatch('updateUser', username);
-            this.refresh();
-        }, 250),
-
         refresh: async function() {
             store.dispatch('forceRefresh');
+        },
+
+        backgroundStyles: function() {
+            // Return background: css if user has a bg image
+            //
         },
 
         changeTheme: function(newTheme) {
             document.getElementById('theme_css').href =
                                     `styles/theme-${newTheme}.css`;
             this.theme = newTheme;
+        },
+
+        mouseleaveThemeSubMenu: function(event) {
+            if (!event.relatedTarget) return;
+            let elMenu = this.$refs.themeSubMenu;
+            let classList = Array.from(event.relatedTarget.classList);
+            if (classList.includes('submenu-button') || isDescendant(elMenu, event.relatedTarget)) {
+                event.stopPropagation();
+                return;
+            }
+            else {
+                // this.showMenuThemes = false;
+            }
         },
 
         ///////////////////////////
@@ -527,4 +555,27 @@ function objectMap(object, fun) {
         newObj[key] = fun(object[key]);
         return newObj;
     }, {})
+}
+
+let buffer = function(func, wait, scope) {
+    var timer = null;
+    return function() {
+        if (timer) clearTimeout(timer);
+        var args = arguments;
+        timer = setTimeout(function() {
+            timer = null;
+            func.apply(scope, args);
+        }, wait);
+    };
+};
+
+function isDescendant(parent, child) {
+    var node = child.parentNode;
+    while (node != null) {
+        if (node == parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
 }

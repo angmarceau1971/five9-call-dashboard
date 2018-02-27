@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 97);
+/******/ 	return __webpack_require__(__webpack_require__.s = 103);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,6 +97,61 @@ function formatAMPM(date) {
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
 }
+
+/***/ }),
+
+/***/ 103:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(104);
+
+
+/***/ }),
+
+/***/ 104:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(7);
+
+const vm = new Vue({
+  el: '#upload-app',
+  components: {},
+  data: {
+    message: '',
+    selectedTableName: 'SkillGroup'
+  },
+  methods: {
+    updateMessage: function (msg) {
+      this.message = msg;
+    },
+    uploadFile: async function (event) {
+      const file = event.target.files[0];
+
+      if (!file) {
+        this.updateMessage('No file selected.');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = async function (e) {
+        const params = {
+          csv: e.target.result,
+          tableName: this.selectedTableName,
+          confirmedChanges: false
+        };
+        const response = await __WEBPACK_IMPORTED_MODULE_0__api_js__["r" /* uploadData */](params);
+        this.updateMessage(response); // clear input file
+
+        this.$refs['fileInput'].value = '';
+      }.bind(this);
+
+      reader.readAsText(file);
+    }
+  }
+});
 
 /***/ }),
 
@@ -408,61 +463,6 @@ function getParameters(requestType) {
 
   return params;
 }
-
-/***/ }),
-
-/***/ 97:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(98);
-
-
-/***/ }),
-
-/***/ 98:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(7);
-
-const vm = new Vue({
-  el: '#upload-app',
-  components: {},
-  data: {
-    message: '',
-    selectedTableName: 'SkillGroup'
-  },
-  methods: {
-    updateMessage: function (msg) {
-      this.message = msg;
-    },
-    uploadFile: async function (event) {
-      const file = event.target.files[0];
-
-      if (!file) {
-        this.updateMessage('No file selected.');
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = async function (e) {
-        const params = {
-          csv: e.target.result,
-          tableName: this.selectedTableName,
-          confirmedChanges: false
-        };
-        const response = await __WEBPACK_IMPORTED_MODULE_0__api_js__["r" /* uploadData */](params);
-        this.updateMessage(response); // clear input file
-
-        this.$refs['fileInput'].value = '';
-      }.bind(this);
-
-      reader.readAsText(file);
-    }
-  }
-});
 
 /***/ })
 

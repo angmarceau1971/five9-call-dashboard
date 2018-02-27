@@ -238,7 +238,6 @@ button {
     right: calc(40px + 1em);
 }
 
-
 .btn:hover {
     color: #444;
     letter-spacing: 5px;
