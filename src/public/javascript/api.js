@@ -46,8 +46,11 @@ export async function getUserInformation(username) {
  * @return {Promise -> String} response message
  */
 export async function updateUserTheme(username, newTheme) {
-    const response = await request({ newTheme: newTheme }, `users/theme`, 'PATCH');
-    return response.json();
+    const response = await request(
+        { username: username, newTheme: newTheme },
+        `users/theme`, 'PATCH'
+    );
+    return response.text();
 }
 
 

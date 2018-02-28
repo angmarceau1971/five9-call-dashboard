@@ -236,9 +236,10 @@ async function getUserInformation(username) {
 
 async function updateUserTheme(username, newTheme) {
   const response = await request({
+    username: username,
     newTheme: newTheme
   }, `users/theme`, 'PATCH');
-  return response.json();
+  return response.text();
 }
 /**
  * List of available fields for widgets.

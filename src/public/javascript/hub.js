@@ -109,8 +109,11 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
-        async updateTheme(newTheme) {
-            return api.updateUserTheme(this.currentUser, newTheme);
+        async updateTheme(context, newTheme) {
+            await api.updateUserTheme(context.state.currentUser, newTheme);
+            let updatedUser = clone(context.state.userInformation);
+            updatedUser.theme = newTheme;
+            context.commit('setUser', updatedUser);
         },
 
         // Call when page first loads

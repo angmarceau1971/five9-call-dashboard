@@ -35,12 +35,12 @@
                     v-if="showMenuThemes"
                     ref="themeSubMenu">
                     <div class="toggle-buttons">
-                        <button @click="changeTheme('dark')"
-                            :class="{ checked: theme=='dark' }">
+                        <button @click="changeThemeColor('dark')"
+                            :class="{ checked: theme.color=='dark' }">
                             Dark
                         </button>
-                        <button @click="changeTheme('light')"
-                            :class="{ checked: theme=='light' }">
+                        <button @click="changeThemeColor('light')"
+                            :class="{ checked: theme.color=='light' }">
                             Light
                         </button>
                     </div>

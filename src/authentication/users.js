@@ -27,17 +27,19 @@ const usersSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
     // Theme options
-    theme: { // dark or light theme
-        type: String,
-        default: 'dark'
-    },
-    lightBackgroundImageUrl: {
-        type: String,
-        default: ''
-    },
-    darkBackgroundImageUrl: {
-        type: String,
-        default: ''
+    theme: {
+        color: { // dark or light theme
+            type: String,
+            default: 'dark'
+        },
+        lightBackgroundImageUrl: {
+            type: String,
+            default: ''
+        },
+        darkBackgroundImageUrl: {
+            type: String,
+            default: ''
+        }
     }
 });
 
@@ -147,7 +149,7 @@ async function updateAdminStatus(username, isNowAdmin) {
 module.exports.updateAdminStatus = updateAdminStatus;
 
 /**
- * Update user's theme fields. 
+ * Update user's theme fields.
  * @param  {String} username
  * @param  {Object} newTheme with fields theme, lightBackgroundImageUrl, and
  *                           darkBackgroundImageUrl
@@ -158,12 +160,11 @@ async function updateTheme(username, newTheme) {
     return await Users.updateOne(
         { username: username },
         { $set: {
-            'theme': newTheme.theme,
-            'lightBackgroundImageUrl': newTheme.lightBackgroundImageUrl,
-            'darkBackgroundImageUrl': newTheme.darkBackgroundImageUrl
+            'theme': newTheme
         } }
     );
 }
+module.exports.updateTheme = updateTheme;
 
 ////////////////////////////////////////////////
 // Database updating
@@ -215,9 +216,11 @@ async function refreshUserDatabase(usersModel) {
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
             firstName: d.firstName[0],
             lastName: d.lastName[0],
-            theme: 'dark',
-            lightBackgroundImageUrl: '',
-            darkBackgroundImageUrl: ''
+            theme: {
+                color: 'dark',
+                lightBackgroundImageUrl: '',
+                darkBackgroundImageUrl: ''
+            }
         };
 
         // Update or add each Five9 user to database

@@ -660,9 +660,10 @@ async function getUserInformation(username) {
 
 async function updateUserTheme(username, newTheme) {
   const response = await request({
+    username: username,
     newTheme: newTheme
   }, `users/theme`, 'PATCH');
-  return response.json();
+  return response.text();
 }
 /**
  * List of available fields for widgets.
@@ -1662,8 +1663,11 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
   },
   actions: {
-    async updateTheme(newTheme) {
-      return __WEBPACK_IMPORTED_MODULE_2__api__["r" /* updateUserTheme */](this.currentUser, newTheme);
+    async updateTheme(context, newTheme) {
+      await __WEBPACK_IMPORTED_MODULE_2__api__["r" /* updateUserTheme */](context.state.currentUser, newTheme);
+      let updatedUser = clone(context.state.userInformation);
+      updatedUser.theme = newTheme;
+      context.commit('setUser', updatedUser);
     },
 
     // Call when page first loads
@@ -14504,7 +14508,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     layout: layout,
     datasourceMessage: '',
     isLoaded: false,
-    theme: 'dark',
     showMenu: false,
     showMenuThemes: false,
     updateUserDebounce: undefined
@@ -14535,7 +14538,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     // Get name of theme that isn't currently selected
     otherTheme: function () {
-      return this.theme == 'dark' ? 'light' : 'dark';
+      return this.theme.color == 'dark' ? 'light' : 'dark';
     },
     userGreeting: function () {
       if (store.state.userInformation.firstName) {
@@ -14543,6 +14546,28 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       } else {
         return '';
       }
+    },
+    theme: {
+      get() {
+        return this.user.theme ? this.user.theme : {};
+      },
+
+      set(newTheme) {
+        store.dispatch('updateTheme', newTheme);
+      }
+
+    },
+    backgroundStyles: function () {
+      return {};
+    }
+  },
+  watch: {
+    // When the current user changes, make any needed adjustments
+    user: {
+      handler: function (newUser) {
+        document.getElementById('theme_css').href = `styles/theme-${newUser.theme.color}.css`;
+      },
+      deep: true
     }
   },
 
@@ -14552,23 +14577,16 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     this.isLoaded = true;
   },
 
-  watch: {
-    user: function (newUser) {
-      this.changeTheme(newUser.theme);
-    }
-  },
   methods: {
     ///////////////////////////
     // UI / interactions
     refresh: async function () {
       store.dispatch('forceRefresh');
     },
-    changeTheme: function (newTheme) {
-      document.getElementById('theme_css').href = `styles/theme-${newTheme}.css`;
-      this.theme = newTheme; // store.dispatch('updateTheme', {
-      //     theme: newTheme,
-      //
-      // })
+    changeThemeColor: function (newColor) {
+      let newTheme = clone(this.user.theme);
+      newTheme.color = newColor;
+      store.dispatch('updateTheme', newTheme);
     },
     mouseleaveThemeSubMenu: function (event) {
       if (!event.relatedTarget) return;

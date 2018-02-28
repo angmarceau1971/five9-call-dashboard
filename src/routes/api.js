@@ -126,14 +126,27 @@ router.get('/users/data/:username', verify.apiMiddleware(), async (req, res) => 
     }
 });
 
-// Change a user's theme
+
+/**
+ * Change a user's theme. Admin's can change any user's theme, while non-admin's
+ * can only change their own themes.
+ * @param {String} username user to update
+ * @param {Object} newTheme new theme object to assign
+ * @return {String} success or error message
+ */
 router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        await users.updateTheme(req.user.username, req.body.newTheme);
+        let userIsAdmin = await users.isAdmin(req.user.username);
+        if (req.user.username != req.body.username && !userIsAdmin) {
+            let msg = `Current user ${req.user.username} is trying to change theme for other user "${req.body.username}", but is not admin.`;
+            log.error(msg);
+            throw new Error(msg);
+        }
+        await users.updateTheme(req.body.username, req.body.newTheme);
         res.send(`Theme updated successfully.`);
     } catch (err) {
-        res.status(500).send(`An error occurred while changing themes: ${err}.`);
+        res.status(500).send(`An error occurred while changing themes: ${err}`);
     }
 });
 

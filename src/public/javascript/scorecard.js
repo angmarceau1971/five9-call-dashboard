@@ -307,7 +307,6 @@ const vm = new Vue({
         layout: layout,
         datasourceMessage: '',
         isLoaded: false,
-        theme: 'dark',
         showMenu: false,
         showMenuThemes: false,
         updateUserDebounce: undefined
@@ -337,7 +336,7 @@ const vm = new Vue({
         },
         // Get name of theme that isn't currently selected
         otherTheme: function() {
-            return this.theme == 'dark' ? 'light' : 'dark';
+            return this.theme.color == 'dark' ? 'light' : 'dark';
         },
         userGreeting: function() {
             if (store.state.userInformation.firstName) {
@@ -345,6 +344,28 @@ const vm = new Vue({
             } else {
                 return '';
             }
+        },
+        theme: {
+            get() {
+                return this.user.theme ? this.user.theme : {};
+            },
+            set(newTheme) {
+                store.dispatch('updateTheme', newTheme);
+            }
+        },
+        backgroundStyles: function() {
+            return {};
+        }
+    },
+
+    watch: {
+        // When the current user changes, make any needed adjustments
+        user: {
+            handler: function(newUser) {
+                document.getElementById('theme_css').href =
+                                        `styles/theme-${newUser.theme.color}.css`;
+            },
+            deep: true
         }
     },
 
@@ -354,11 +375,6 @@ const vm = new Vue({
         this.isLoaded = true;
     },
 
-    watch: {
-        user: function(newUser) {
-            this.changeTheme(newUser.theme);
-        }
-    },
 
     methods: {
         ///////////////////////////
@@ -367,14 +383,10 @@ const vm = new Vue({
             store.dispatch('forceRefresh');
         },
 
-        changeTheme: function(newTheme) {
-            document.getElementById('theme_css').href =
-                                    `styles/theme-${newTheme}.css`;
-            this.theme = newTheme;
-            // store.dispatch('updateTheme', {
-            //     theme: newTheme,
-            //
-            // })
+        changeThemeColor: function(newColor) {
+            let newTheme = clone(this.user.theme);
+            newTheme.color = newColor;
+            store.dispatch('updateTheme', newTheme);
         },
 
         mouseleaveThemeSubMenu: function(event) {
