@@ -15,7 +15,7 @@
     <body>
     <div id="app" class="body-wrapper">
 
-    <header class="top-bar">
+        <header class="top-bar">
             <button class="dropdown-button" @mouseover="showMenu=true"
             >&#9776;
             </button>
@@ -35,11 +35,11 @@
                     v-if="showMenuThemes"
                     ref="themeSubMenu">
                     <div class="toggle-buttons">
-                        <button @click="changeThemeColor('dark')"
+                        <button @click="changeTheme('color', 'dark')"
                             :class="{ checked: theme.color=='dark' }">
                             Dark
                         </button>
-                        <button @click="changeThemeColor('light')"
+                        <button @click="changeTheme('color', 'light')"
                             :class="{ checked: theme.color=='light' }">
                             Light
                         </button>
@@ -64,13 +64,15 @@
                             v-model="theme.lightBackgroundImageUrl"/>
                     </div>
 
+                    <button @click="saveTheme">Save Theme</button>
+
                 </div>
 
                 <button
                     class="insidedrop"
                     @click="$store.commit('toggleEditMode')"
                     id="toggle-edit-mode"
-                    
+                    v-if="user.isAdmin"
                 >Edit Mode
                 </button>
 

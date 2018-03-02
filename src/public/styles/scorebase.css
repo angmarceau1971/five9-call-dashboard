@@ -24,7 +24,7 @@ body * {
 
 .content-wrapper {
     padding: 2%;
-    min-height: calc(100vh-50px);
+    min-height: calc(100vh - 50px);
 }
 
 .stats-box {
@@ -65,10 +65,7 @@ button {
     min-height: 30px;
     letter-spacing: 3px;
     transition: all 200ms linear;
-}
-
-.btn {
-    background-color: #e6e6e6;
+    color: #333;
 }
 
 a {
@@ -93,8 +90,8 @@ a:visited {
     background-color: #666;
 }
 .dropdown-content .toggle-buttons .checked {
-    background: hsl(120, 23%, 38%);
-    color: hsl(120, 100%, 92%);
+    background: hsl(120, 53%, 38%);
+    color: hsl(120, 100%, 95%);
 }
 .dropdown-content .toggle-buttons .checked:hover {
     background: hsl(120, 96%, 23%);

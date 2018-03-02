@@ -4,6 +4,9 @@ html {
 body, body button  {
     color: #ddd;
 }
+button {
+    background-color: #777;
+}
 
 .top-bar {
     border-top: 3px solid hsl(345, 100%, 47%);
@@ -27,7 +30,7 @@ body, body button  {
 .dropdown-content {
     box-shadow: 1px 3px 3px rgba(0,0,0, 0.6);
 }
-.dropdown-content button {
+.dropdown-content button, .dropdown-content.submenu {
     border-top: 1px solid #333;
 }
 .dropdown-content button:hover {

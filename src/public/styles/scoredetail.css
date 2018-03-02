@@ -83,13 +83,17 @@ h2, h3 {
     z-index: 1;
 }
 .dropdown-content.submenu {
-    display: block;
+    display: inline-block;
     min-width: 200px;
     padding: 1em;
     left: 100%;
+    top: 0;
 }
 .dropdown-content.submenu > * {
-    margin: 2em 0.5em;
+    margin: 2em 0;
+}
+.dropdown-content.submenu input[type="text"] {
+    width: 100%;
 }
 
 /* buttons inside the dropdown */
@@ -108,7 +112,6 @@ h2, h3 {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    /* box-sizing: border-box; */
 }
 .top-bar .nav > * {
     padding: 0 2em;

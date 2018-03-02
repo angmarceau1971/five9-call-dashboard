@@ -1,7 +1,7 @@
 html {
     background: linear-gradient(to right, hsl(32, 35%, 92%), hsl(144, 0%, 94%));
 }
-body, body button  {
+body, body button {
     color: #444;
 }
 
@@ -28,7 +28,7 @@ body, body button  {
 .dropdown-content {
     box-shadow: 1px 3px 3px rgba(12,13,14,0.2);
 }
-.dropdown-content button {
+.dropdown-content button, .dropdown-content.submenu {
     border-top: 1px solid #ddd;
 }
 .dropdown-content button:hover {

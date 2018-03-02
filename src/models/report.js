@@ -356,7 +356,6 @@ async function getData(timeFilter, reportModel) {
  * @return {Promise}            resolves when data loads
  */
 async function refreshDatabase(time, reportModel, reportName) {
-    log.message(`Updating Report database with ${reportName}`);
     let csvData;
 
     // Get CSV data

@@ -643,12 +643,14 @@ function getReportResults(params, type) {
 }
 /**
  * Return user information from username.
- * @param  {String} username
+ * @param  {String} username if blank, will return currently logged-in user's
+ *                           data
  * @return {Promise -> Object} User's object
  */
 
-async function getUserInformation(username) {
-  const response = await request({}, `users/data/${username}`, 'GET');
+async function getUserInformation(username = '') {
+  let path = username ? `users/data/${username}` : `users/data`;
+  const response = await request({}, path, 'GET');
   return response.json();
 }
 /**
@@ -1553,8 +1555,12 @@ const sift = __webpack_require__(53);
 
 const clone = __webpack_require__(6);
 /**
- * Vuex is used to see if app is in edit mode (editMode Boolean), and store
- * field (meta) data.
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
  * @type {Vuex}
  */
 
@@ -1562,7 +1568,7 @@ const clone = __webpack_require__(6);
 const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   state: {
     fields: [],
-    editMode: true,
+    editMode: false,
     currentUser: '',
     user: {},
     data: {},
@@ -1570,6 +1576,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     timeoutIds: {},
     goals: []
   },
+  // Helper functions to retrieve data
   getters: {
     /**
      * Return field object matching the field name.
@@ -1606,6 +1613,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       return state.goals.filter(goal => goal.field == field.name)[0];
     }
   },
+  // Functions to modify the store's state (all synchronous)
   mutations: {
     toggleEditMode(state) {
       state.editMode = !state.editMode;
@@ -1662,6 +1670,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     }
 
   },
+  // Asynchronous actions
   actions: {
     async updateTheme(context, newTheme) {
       await __WEBPACK_IMPORTED_MODULE_2__api__["r" /* updateUserTheme */](context.state.currentUser, newTheme);
@@ -1681,7 +1690,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     async forceRefresh(context) {
       for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
         clearTimeout(id);
-        console.log(`cleared ${id} for ${sourceName}`);
+        console.log(`cleared timeout ${id} for ${sourceName}`);
       }
 
       context.dispatch('startProcess');
@@ -14505,19 +14514,27 @@ const layout = {
 const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];
 const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app',
-  store,
+  store: store,
   data: {
     layout: layout,
     datasourceMessage: '',
     isLoaded: false,
     showMenu: false,
-    showMenuThemes: false,
-    updateUserDebounce: undefined
+    showMenuThemes: false
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
     'editor-table': __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__["a" /* default */]
   },
+
+  async beforeMount() {
+    store.commit('setDatasources', this.layout.datasources); // load user's data
+
+    await store.dispatch('updateUser', '');
+    await store.dispatch('startProcess');
+    this.isLoaded = true;
+  },
+
   computed: {
     username: {
       get() {
@@ -14525,8 +14542,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       },
 
       set(value) {
-        console.log(value);
-        if (this.updateUserDebounce) this.updateUserDebounce.clear();
         store.dispatch('updateUser', value);
         this.refresh();
       }
@@ -14580,22 +14595,19 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       deep: true
     }
   },
-
-  async beforeMount() {
-    store.commit('setDatasources', this.layout.datasources);
-    await store.dispatch('startProcess');
-    this.isLoaded = true;
-  },
-
   methods: {
     ///////////////////////////
     // UI / interactions
     refresh: async function () {
       store.dispatch('forceRefresh');
     },
-    changeThemeColor: function (newColor) {
+    changeTheme: function (attribute, value) {
       let newTheme = clone(this.user.theme);
-      newTheme.color = newColor;
+      newTheme[attribute] = value;
+      store.dispatch('updateTheme', newTheme);
+    },
+    saveTheme: function () {
+      let newTheme = clone(this.user.theme);
       store.dispatch('updateTheme', newTheme);
     },
     updateThemeStyles: function (theme) {
@@ -14606,10 +14618,11 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       let elMenu = this.$refs.themeSubMenu;
       let classList = Array.from(event.relatedTarget.classList);
 
-      if (classList.includes('submenu-button') || isDescendant(elMenu, event.relatedTarget)) {
+      if (elMenu === event.relatedTarget || classList.includes('submenu-button') || isDescendant(elMenu, event.relatedTarget)) {
         event.stopPropagation();
         return;
-      } else {// this.showMenuThemes = false;
+      } else {
+        this.showMenuThemes = false;
       }
     },
     ///////////////////////////

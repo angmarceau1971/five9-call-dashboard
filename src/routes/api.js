@@ -110,9 +110,12 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 // Administrative Functions         //
 //////////////////////////////////////
 // Get information stored on a user based on username
-router.get('/users/data/:username', verify.apiMiddleware(), async (req, res) => {
+// If no username is supplied, returns data for currently logged-in user
+router.get('/users/data/:username?', verify.apiMiddleware(), async (req, res) => {
     try {
-        const user = await users.getUserInformation(req.params.username);
+        let username = req.params.username
+                       ? req.params.username : req.user.username;
+        const user = await users.getUserInformation(username);
         if (user) {
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(user));

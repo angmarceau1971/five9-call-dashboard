@@ -219,12 +219,14 @@ function getReportResults(params, type) {
 }
 /**
  * Return user information from username.
- * @param  {String} username
+ * @param  {String} username if blank, will return currently logged-in user's
+ *                           data
  * @return {Promise -> Object} User's object
  */
 
-async function getUserInformation(username) {
-  const response = await request({}, `users/data/${username}`, 'GET');
+async function getUserInformation(username = '') {
+  let path = username ? `users/data/${username}` : `users/data`;
+  const response = await request({}, path, 'GET');
   return response.json();
 }
 /**

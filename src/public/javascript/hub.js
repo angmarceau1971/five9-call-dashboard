@@ -14,14 +14,18 @@ const clone = require('ramda/src/clone');
 
 
 /**
- * Vuex is used to see if app is in edit mode (editMode Boolean), and store
- * field (meta) data.
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
  * @type {Vuex}
  */
 export const store = new Vuex.Store({
     state: {
         fields: [],
-        editMode: true,
+        editMode: false,
         currentUser: '',
         user: {},
         data: {},
@@ -29,6 +33,8 @@ export const store = new Vuex.Store({
         timeoutIds: {},
         goals: []
     },
+
+    // Helper functions to retrieve data
     getters: {
         /**
          * Return field object matching the field name.
@@ -66,6 +72,8 @@ export const store = new Vuex.Store({
             )[0];
         }
     },
+
+    // Functions to modify the store's state (all synchronous)
     mutations: {
         toggleEditMode(state) {
             state.editMode = !state.editMode;
@@ -108,6 +116,8 @@ export const store = new Vuex.Store({
             }, {});
         }
     },
+
+    // Asynchronous actions
     actions: {
         async updateTheme(context, newTheme) {
             await api.updateUserTheme(context.state.currentUser, newTheme);
@@ -127,7 +137,7 @@ export const store = new Vuex.Store({
         async forceRefresh(context) {
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
-                console.log(`cleared ${id} for ${sourceName}`);
+                console.log(`cleared timeout ${id} for ${sourceName}`);
             }
             context.dispatch('startProcess');
         },

@@ -73,7 +73,6 @@ aht.widgets = [
     },
 ];
 
-
 const calls = {
     title: 'Calls Handled',
     id: 'card:2',
@@ -125,7 +124,6 @@ calls.widgets = [
         }
     },
 ];
-
 
 const sla = {
     title: 'Service Level',
@@ -296,25 +294,30 @@ const layout = {
 };
 
 
-
 const store = hub.store;
-
 const vm = new Vue({
     el: '#app',
-    store,
+    store: store,
 
     data: {
         layout: layout,
         datasourceMessage: '',
         isLoaded: false,
         showMenu: false,
-        showMenuThemes: false,
-        updateUserDebounce: undefined
+        showMenuThemes: false
     },
 
     components: {
         'dashboard': Dashboard,
         'editor-table': EditorTable
+    },
+
+    async beforeMount() {
+        store.commit('setDatasources', this.layout.datasources);
+        // load user's data
+        await store.dispatch('updateUser', '');
+        await store.dispatch('startProcess');
+        this.isLoaded = true;
     },
 
     computed: {
@@ -323,8 +326,6 @@ const vm = new Vue({
                 return store.state.currentUser;
             },
             set(value) {
-                console.log(value);
-                if (this.updateUserDebounce) this.updateUserDebounce.clear();
                 store.dispatch('updateUser', value);
                 this.refresh();
             }
@@ -378,13 +379,6 @@ const vm = new Vue({
         }
     },
 
-    async beforeMount() {
-        store.commit('setDatasources', this.layout.datasources);
-        await store.dispatch('startProcess');
-        this.isLoaded = true;
-    },
-
-
     methods: {
         ///////////////////////////
         // UI / interactions
@@ -392,9 +386,14 @@ const vm = new Vue({
             store.dispatch('forceRefresh');
         },
 
-        changeThemeColor: function(newColor) {
+        changeTheme: function(attribute, value) {
             let newTheme = clone(this.user.theme);
-            newTheme.color = newColor;
+            newTheme[attribute] = value;
+            store.dispatch('updateTheme', newTheme);
+        },
+
+        saveTheme: function() {
+            let newTheme = clone(this.user.theme);
             store.dispatch('updateTheme', newTheme);
         },
 
@@ -407,12 +406,14 @@ const vm = new Vue({
             if (!event.relatedTarget) return;
             let elMenu = this.$refs.themeSubMenu;
             let classList = Array.from(event.relatedTarget.classList);
-            if (classList.includes('submenu-button') || isDescendant(elMenu, event.relatedTarget)) {
+            if (elMenu === event.relatedTarget
+                || classList.includes('submenu-button')
+                || isDescendant(elMenu, event.relatedTarget)) {
                 event.stopPropagation();
                 return;
             }
             else {
-                // this.showMenuThemes = false;
+                this.showMenuThemes = false;
             }
         },
 
