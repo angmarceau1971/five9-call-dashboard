@@ -331,7 +331,7 @@ const vm = new Vue({
         },
         user: {
             get() {
-                return store.state.userInformation;
+                return store.state.user;
             }
         },
         // Get name of theme that isn't currently selected
@@ -339,8 +339,8 @@ const vm = new Vue({
             return this.theme.color == 'dark' ? 'light' : 'dark';
         },
         userGreeting: function() {
-            if (store.state.userInformation.firstName) {
-                return `Hi, ${store.state.userInformation.firstName}!`
+            if (this.user.firstName) {
+                return `Hi, ${this.user.firstName}!`
             } else {
                 return '';
             }
@@ -354,7 +354,17 @@ const vm = new Vue({
             }
         },
         backgroundStyles: function() {
-            return {};
+            let bgUrl = this.theme.color == 'dark'
+                        ? this.theme.darkBackgroundImageUrl
+                        : this.theme.lightBackgroundImageUrl;
+            if (this.theme.useBackgroundImage && bgUrl.length > 1) {
+                return {
+                    background: `url("${bgUrl}") no-repeat center center fixed`
+                };
+            }
+            else {
+                return {};
+            }
         }
     },
 
@@ -362,8 +372,7 @@ const vm = new Vue({
         // When the current user changes, make any needed adjustments
         user: {
             handler: function(newUser) {
-                document.getElementById('theme_css').href =
-                                        `styles/theme-${newUser.theme.color}.css`;
+                this.updateThemeStyles(newUser.theme);
             },
             deep: true
         }
@@ -387,6 +396,11 @@ const vm = new Vue({
             let newTheme = clone(this.user.theme);
             newTheme.color = newColor;
             store.dispatch('updateTheme', newTheme);
+        },
+
+        updateThemeStyles: function(theme) {
+            document.getElementById('theme_css').href =
+                                    `styles/theme-${theme.color}.css`;
         },
 
         mouseleaveThemeSubMenu: function(event) {

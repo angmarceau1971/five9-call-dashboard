@@ -1,4 +1,4 @@
-body {
+html {
     background: hsl(240, 6%, 9%);
 }
 body, body button  {
@@ -18,7 +18,7 @@ body, body button  {
 .stats-box {
     background-color: hsla(240, 2%, 22%, 0.89);
 }
-.dropdown-button, .insidedrop, .top-bar {
+.dropdown-button, .insidedrop, .submenu, .top-bar {
     background-color: hsl(240, 2%, 22%);
 }
 .dropdown-button {

@@ -23,7 +23,7 @@ export const store = new Vuex.Store({
         fields: [],
         editMode: true,
         currentUser: '',
-        userInformation: {},
+        user: {},
         data: {},
         datasources: {},
         timeoutIds: {},
@@ -80,7 +80,7 @@ export const store = new Vuex.Store({
          */
         setUser(state, user) {
             state.currentUser = user.username;
-            state.userInformation = clone(user);
+            state.user = clone(user);
         },
         setTimeoutId(state, { datasourceName, id }) {
             state.timeoutIds[datasourceName] = id;
@@ -111,7 +111,7 @@ export const store = new Vuex.Store({
     actions: {
         async updateTheme(context, newTheme) {
             await api.updateUserTheme(context.state.currentUser, newTheme);
-            let updatedUser = clone(context.state.userInformation);
+            let updatedUser = clone(context.state.user);
             updatedUser.theme = newTheme;
             context.commit('setUser', updatedUser);
         },

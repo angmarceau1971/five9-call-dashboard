@@ -39,6 +39,10 @@ const usersSchema = mongoose.Schema({
         darkBackgroundImageUrl: {
             type: String,
             default: ''
+        },
+        useBackgroundImage: {
+            type: Boolean,
+            default: false
         }
     }
 });

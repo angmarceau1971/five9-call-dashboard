@@ -45,14 +45,33 @@
                         </button>
                     </div>
 
-                    <input type="text" value="www.foobarexample.com"/>
+                    <input type="checkbox" id="useBackgroundImage"
+                        v-model="theme.useBackgroundImage"/>
+                    <label for="useBackgroundImage">Use Background Image</label>
+
+                    <div v-if="theme.color == 'dark'">
+                        <label for="darkBackgroundImageUrl">
+                            Dark Background URL
+                        </label>
+                        <input type="text" id="darkBackgroundImageUrl"
+                            v-model="theme.darkBackgroundImageUrl"/>
+                    </div>
+                    <div v-if="theme.color == 'light'">
+                        <label for="lightBackgroundImageUrl">
+                            Light Background URL
+                        </label>
+                        <input type="text" id="lightBackgroundImageUrl"
+                            v-model="theme.lightBackgroundImageUrl"/>
+                    </div>
+
                 </div>
 
                 <button
                     class="insidedrop"
                     @click="$store.commit('toggleEditMode')"
-                    id="toggle-edit-mode">
-                    Edit Mode
+                    id="toggle-edit-mode"
+                    
+                >Edit Mode
                 </button>
 
                 <button class="insidedrop"
@@ -90,7 +109,7 @@
         </header>
 
         <div class="content-wrapper"
-            :styles="backgroundStyles">
+            :style="backgroundStyles">
             <input type="file" id="file-input"
                 v-if="$store.state.editMode"
                 v-show="false"

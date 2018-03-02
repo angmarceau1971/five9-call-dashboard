@@ -11,7 +11,7 @@ const clone = require('ramda/src/clone');
  */
 export function clean(original) {
     let filter = clone(original);
-    const user = hub.store.state.userInformation;
+    const user = hub.store.state.user;
 
     // Clean up dates
     let dateKey;

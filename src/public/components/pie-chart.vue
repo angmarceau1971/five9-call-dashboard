@@ -232,7 +232,9 @@ export default {
             `;
         },
         stopHoveringOverPieSlice: function(d, i) {
-            this.infoBox.message = '';
+            setTimeout(function() {
+                this.infoBox.message = '';
+            }.bind(this), 1000);
         },
         getColor: function(d) {
             // If this is a reason code pie chart, try to use custom colors

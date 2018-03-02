@@ -1,4 +1,4 @@
-body {
+html {
     background: linear-gradient(to right, hsl(32, 35%, 92%), hsl(144, 0%, 94%));
 }
 body, body button  {
@@ -17,9 +17,9 @@ body, body button  {
 }
 
 .stats-box {
-    background-color: hsl(36, 100%, 98%);
+    background-color: hsla(36, 100%, 98%, 0.94);
 }
-.dropdown-button, .insidedrop, .top-bar {
+.dropdown-button, .insidedrop, .submenu, .top-bar {
     background-color: hsla(36, 84%, 97%, 1);
 }
 .dropdown-button {
