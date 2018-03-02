@@ -13355,6 +13355,12 @@ const dateMatcher = {
       $gte: moment().startOf('month').toDate(),
       $lt: moment().endOf('month').toDate()
     };
+  },
+  '<last month>': function () {
+    return {
+      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
+      $lt: moment().subtract(1, 'months').endOf('month').toDate()
+    };
   }
 };
 
