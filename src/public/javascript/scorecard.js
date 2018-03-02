@@ -243,7 +243,7 @@ const layout = {
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 60,
+            "refreshRate": 180,
             "source": "AcdFeed"
         },
         {
@@ -264,7 +264,7 @@ const layout = {
             "groupBy": [
                 "dateDay"
             ],
-            "refreshRate": 60,
+            "refreshRate": 180,
             "source": "AcdFeed"
         },
         {
@@ -287,7 +287,7 @@ const layout = {
                 "dateDay",
                 "reasonCode"
             ],
-            "refreshRate": 60,
+            "refreshRate": 180,
             "source": "AgentLogin"
         }
     ]

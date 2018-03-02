@@ -1,9 +1,10 @@
 const verify = require('../authentication/verify'); // check user permissions
 const fields = require('../admin/fields');
 const goals = require('../admin/goals');
+const links = require('../admin/links');
 const admin = require('../admin/admin');
 
-
+// To use this module, require it and pass in router to add endpoints to.
 module.exports.addTo = function(router) {
     //////////////////////////////////////////
     // Field endpoints
@@ -25,7 +26,7 @@ module.exports.addTo = function(router) {
 
     //////////////////////////////////////////
     // Goal endpoints
-    // Get list of fields
+    // Get list of goals
     router.post('/goals', verify.apiMiddleware(), async (req, res) => {
         let goalList;
         if (req.body.agentGroups) {
@@ -81,6 +82,35 @@ module.exports.addTo = function(router) {
         const message = numRemoved > 0
                         ? `Job "${req.body.job.data.title}" has been deleted.`
                         : `No job found matching "${req.body.job.data.title}".`;
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(message);
+    });
+
+
+    //////////////////////////////////////////
+    // Helpful Links endpoints
+    // Get list of links
+    router.post('/links', verify.apiMiddleware(), async (req, res) => {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(await links.getAll()));
+    });
+
+    // Modify a link
+    router.put('/links', verify.apiMiddleware('admin'), async (req, res) => {
+        res.set('Content-Type', 'application/text');
+        let link = req.body.link;
+        try {
+            let response = await links.update(link);
+            res.status(200).send(`Link "${link.name}" has been updated.`);
+        } catch (err) {
+            res.status(500).send(`Error while updating ${link.name}: ${err}.`);
+        }
+    });
+
+    // Delete a scheduled goalsing job
+    router.delete('/links', verify.apiMiddleware('admin'), async (req, res) => {
+        const numRemoved = await links.remove(req.body.link);
+        const message = `Link "${req.body.link.name}" has been deleted.`;
         res.set('Content-Type', 'application/text');
         res.status(200).send(message);
     });

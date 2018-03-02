@@ -123,11 +123,42 @@
                 </template>
             </editor-table>
         </div>
+
+
+        <div class="section links">
+            <h2>Helpful Links</h2>
+            <editor-table
+                @message="updateMessage"
+                :updater="linkUpdater"
+                :loader="linkLoader"
+                :adder="linkAdder"
+                :remover="linkRemover"
+                :headers="['Name', 'URL', 'Agent Groups']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input
+                            v-model="props.item.name"
+                            type="text"
+                        />
+                    </td>
+                    <td>
+                        <input
+                            v-model="props.item.url"
+                            type="text"
+                        />
+                    </td>
+                    <td>
+                        <textarea
+                        v-model="props.item.agentGroups"
+                        type="text"
+                        ></textarea>
+                    </td>
+                </template>
+            </editor-table>
+        </div>
     </div>
     </body>
 
-
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/vuex"></script>
     <script src="./assets/scorecard-admin.js" type="text/javascript"></script>
 </html>

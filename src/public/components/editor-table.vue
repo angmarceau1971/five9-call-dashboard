@@ -170,7 +170,6 @@ td input[type="number"] {
 }
 .editor-wrapper button {
     box-sizing: border-box;
-    color: black;
     border: 4px solid #444;
     border-radius: 6px;
     min-width: 80px;
@@ -181,6 +180,6 @@ td input[type="number"] {
 .editor-wrapper .add-button {
     font-size: 2em;
     font-weight: lighter;
-    color: hsl(208, 57%, 62%);
+    color: hsl(208, 72%, 72%);
 }
 </style>

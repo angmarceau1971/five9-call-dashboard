@@ -409,7 +409,7 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\n}\n.table-body-wrapper[data-v-44c58087] {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\n}\n.editor-list thead[data-v-44c58087] {\r\n    position: fixed;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue"],"names":[],"mappings":";AAmIA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,yBAAA;IACA,YAAA;CACA;AACA;IACA,kBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,uBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,aAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"(header, i) in completeHeaders\"\r\n                        ref=\"headerRow\">\r\n                        {{ header }}\r\n                    </th>\r\n\r\n                </tr>\r\n            </thead>\r\n            <div class=\"table-body-wrapper\">\r\n                <tr class=\"row\" v-for=\"(item, i) in items\" ref=\"bodyRows\">\r\n                    <slot name=\"item\" :item=\"item\">\r\n                        <p>\r\n                            This is just a dang filler! Use\r\n                            <a target=\"_blank\"\r\n                            href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                              slot-scope</a>\r\n                            to render `td` elements in parent.\r\n                        </p>\r\n                    </slot>\r\n\r\n                    <td>\r\n                        <button class=\"save-button\" title=\"Save changes\"\r\n                            @click=\"update(item)\"\r\n                        >Save</button>\r\n                    </td>\r\n                    <td v-if=\"!!remover\">\r\n                        <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                            @click=\"remove(item)\"\r\n                        >Delete</button>\r\n                    </td>\r\n                </tr>\r\n            </div>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        completeHeaders: function() {\r\n            let newHeaders = this.headers.concat(['Save']);\r\n            if (!!this.remover) return newHeaders.concat(['Delete']);\r\n            else return newHeaders;\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    /**\r\n     * Any time an update occurs, the headers' width needs to be matched to the\r\n     * body's width (because the header is contained in its own fixed div).\r\n     */\r\n    updated() {\r\n        if (this.items.length == 0) return;\r\n        let headerRow = this.$refs.headerRow;\r\n        let bodyRow = this.$refs.bodyRows[0].children;\r\n        let i = 0;\r\n        for (let cell of bodyRow) {\r\n            let cellStyles = getComputedStyle(cell);\r\n            headerRow[i].style.width = cellStyles.width;\r\n            i++;\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\r\n}\r\n.table-body-wrapper {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\r\n}\r\n.editor-list thead {\r\n    position: fixed;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    color: black;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 57%, 62%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\n}\n.table-body-wrapper[data-v-44c58087] {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\n}\n.editor-list thead[data-v-44c58087] {\r\n    position: fixed;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue"],"names":[],"mappings":";AAmIA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,yBAAA;IACA,YAAA;CACA;AACA;IACA,kBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,uBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"(header, i) in completeHeaders\"\r\n                        ref=\"headerRow\">\r\n                        {{ header }}\r\n                    </th>\r\n\r\n                </tr>\r\n            </thead>\r\n            <div class=\"table-body-wrapper\">\r\n                <tr class=\"row\" v-for=\"(item, i) in items\" ref=\"bodyRows\">\r\n                    <slot name=\"item\" :item=\"item\">\r\n                        <p>\r\n                            This is just a dang filler! Use\r\n                            <a target=\"_blank\"\r\n                            href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                              slot-scope</a>\r\n                            to render `td` elements in parent.\r\n                        </p>\r\n                    </slot>\r\n\r\n                    <td>\r\n                        <button class=\"save-button\" title=\"Save changes\"\r\n                            @click=\"update(item)\"\r\n                        >Save</button>\r\n                    </td>\r\n                    <td v-if=\"!!remover\">\r\n                        <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                            @click=\"remove(item)\"\r\n                        >Delete</button>\r\n                    </td>\r\n                </tr>\r\n            </div>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        completeHeaders: function() {\r\n            let newHeaders = this.headers.concat(['Save']);\r\n            if (!!this.remover) return newHeaders.concat(['Delete']);\r\n            else return newHeaders;\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    /**\r\n     * Any time an update occurs, the headers' width needs to be matched to the\r\n     * body's width (because the header is contained in its own fixed div).\r\n     */\r\n    updated() {\r\n        if (this.items.length == 0) return;\r\n        let headerRow = this.$refs.headerRow;\r\n        let bodyRow = this.$refs.bodyRows[0].children;\r\n        let i = 0;\r\n        for (let cell of bodyRow) {\r\n            let cellStyles = getComputedStyle(cell);\r\n            headerRow[i].style.width = cellStyles.width;\r\n            i++;\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\r\n}\r\n.table-body-wrapper {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\r\n}\r\n.editor-list thead {\r\n    position: fixed;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -928,25 +928,28 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["i"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["k"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["r"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["d"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["o"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["p"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["m"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["u"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["e"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["q"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["r"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["q"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["c"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["n"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["l"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["m"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["s"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["s"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["t"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["c"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["p"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["n"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["o"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["v"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -1024,7 +1027,7 @@ async function updateField(field) {
   return response.text();
 }
 /**
- * List of all goals.
+ * List of all links.
  * @return {Promise} resolves to array of goal objects
  */
 
@@ -1066,6 +1069,39 @@ async function deleteGoal(goal) {
   let response = await request({
     goal: goal
   }, 'goals', 'DELETE');
+  return response.text();
+}
+/**
+ * List of all links.
+ * @return {Promise} resolves to array of link objects
+ */
+
+async function getLinkList() {
+  let response = await request({}, 'links', 'POST');
+  return response.json();
+}
+/**
+ * Updates a link on server.
+ * @param  {Object}  link new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateLink(link) {
+  let response = await request({
+    link: link
+  }, 'links', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a link from server.
+ * @param  {Object}  link object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteLink(link) {
+  let response = await request({
+    link: link
+  }, 'links', 'DELETE');
   return response.text();
 }
 /**
@@ -1443,10 +1479,10 @@ const vm = new Vue({
   },
   methods: {
     jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["q" /* updateSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["t" /* updateSkillJob */](job);
     },
     jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getSkillJobs */]();
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getSkillJobs */]();
       return jobs.map(job => {
         if (!job.data) {
           job.data = this.jobAdder().data;
@@ -1467,7 +1503,7 @@ const vm = new Vue({
       };
     },
     jobRemover: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* deleteSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* deleteSkillJob */](job);
     },
     updateMessage: function (msg) {
       this.message = msg;

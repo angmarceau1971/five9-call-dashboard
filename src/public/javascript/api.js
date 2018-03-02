@@ -76,7 +76,7 @@ export async function updateField(field) {
 
 
 /**
- * List of all goals.
+ * List of all links.
  * @return {Promise} resolves to array of goal objects
  */
 export async function getGoalList() {
@@ -108,6 +108,34 @@ export async function updateGoal(goal) {
  */
 export async function deleteGoal(goal) {
     let response = await request({goal: goal}, 'goals', 'DELETE');
+    return response.text();
+}
+
+
+/**
+ * List of all links.
+ * @return {Promise} resolves to array of link objects
+ */
+export async function getLinkList() {
+    let response = await request({}, 'links', 'POST');
+    return response.json();
+}
+/**
+ * Updates a link on server.
+ * @param  {Object}  link new object
+ * @return {Promise} resolves to response message
+ */
+export async function updateLink(link) {
+    let response = await request({link: link}, 'links', 'PUT');
+    return response.text();
+}
+/**
+ * Delete a link from server.
+ * @param  {Object}  link object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteLink(link) {
+    let response = await request({link: link}, 'links', 'DELETE');
     return response.text();
 }
 

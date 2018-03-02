@@ -1,13 +1,13 @@
 import * as api from './api.js';
-import ApiEditorTable from '../components/editor-table.vue';
+import Vue from 'vue';
+import EditorTable from '../components/editor-table.vue';
 const clone = require('ramda/src/clone');
-
 
 const vm = new Vue({
     el: '#admin-app',
 
     components: {
-        'editor-table': ApiEditorTable
+        'editor-table': EditorTable
     },
 
     data: {
@@ -73,6 +73,38 @@ const vm = new Vue({
         },
         goalRemover: function(goal) {
             return api.deleteGoal(goal);
+        },
+
+        // Link functions
+        linkUpdater: async function(link) {
+            let clean = clone(link);
+            try {
+                clean.agentGroups = JSON.parse(clean.agentGroups);
+            } catch (err) {
+                return `Unable to save: ${err}.`;
+            }
+            return api.updateLink(clean);
+        },
+        linkLoader: async function() {
+            let links = await api.getLinkList();
+            const str = (s) => JSON.stringify(s, null, 2);
+            const stringin = function(link) {
+                link.agentGroups = str(link.agentGroups);
+                return link;
+            }
+            return links.map(stringin);
+        },
+        linkAdder: function() {
+            return {
+                name: '',
+                agentGroups: [],
+                comparator: '<',
+                thresholds: [],
+                field: ''
+            }
+        },
+        linkRemover: function(link) {
+            return api.deleteLink(link);
         }
     }
 });
