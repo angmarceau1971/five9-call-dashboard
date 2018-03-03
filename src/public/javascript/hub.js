@@ -31,7 +31,8 @@ export const store = new Vuex.Store({
         data: {},
         datasources: {},
         timeoutIds: {},
-        goals: []
+        goals: [],
+        links: []
     },
 
     // Helper functions to retrieve data
@@ -99,6 +100,9 @@ export const store = new Vuex.Store({
         setGoals(state, goals) {
             state.goals = goals;
         },
+        setLinks(state, links) {
+            state.links = links.sort((a, b) => a.name > b.name);
+        },
         changeDatasource(state, datasource) {
             const ds = clone(datasource);
             Vue.set(state.datasources, ds.id, ds);
@@ -128,9 +132,10 @@ export const store = new Vuex.Store({
 
         // Call when page first loads
         async startProcess(context) {
-            // load fields from server
-            const fields = await api.getFieldList();
-            context.commit('setFields', fields);
+            // load fields and helpful links from server
+            context.commit('setFields', await api.getFieldList());
+            context.commit('setLinks', await api.getLinkList());
+            // Start updating based on data sources
             return context.dispatch('nextUpdate', null);
         },
 

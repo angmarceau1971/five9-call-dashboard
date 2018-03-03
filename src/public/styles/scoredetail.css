@@ -103,6 +103,9 @@ h2, h3 {
     display: block;
     width: 100%;
 }
+.dropdown-content a {
+    text-decoration: none;
+}
 
 /* change color of dropdown links on hover */
 .dropdown-content button:hover {
@@ -137,7 +140,7 @@ h2, h3 {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000000;
+    z-index: 10000;
     text-align: center;
     justify-content: center;
     background: hsla(0, 0%, 33%, 0.75);
@@ -204,64 +207,3 @@ h2, h3 {
     width: 100%;
     min-width: 100%;
 }
-
-
-
-/***********************/
-/* Toggle switches
-/***********************/
-.onoffswitch {
-    position: relative;
-    width: 160px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    display: none;
-}
-.onoffswitch-label {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
-    border-radius: 30px;
-}
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%;
-    height: 40px; padding: 0; line-height: 40px;
-    font-size: 1em; color: white; font-weight: bold;
-    box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    padding-left: 20px;
-    content: "Dark";
-    background-color: #333;
-    color: white;
-}
-.onoffswitch-inner:after {
-    padding-right: 30px;
-    text-align: right;
-    content: "Light";
-    background-color: hsl(120, 100%, 47%);
-    color: white;
-}
-.onoffswitch-switch {
-    display: block;
-    width: 30px;
-    height: 30px;
-    margin: auto 12px;
-    background: #FFFFFF;
-    position: absolute; top: 0; bottom: 0;
-    right: 105px;
-    border: 2px solid #999999;
-    border-radius: 30px;
-    transition: all 0.3s ease-in 0s;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px;
-}

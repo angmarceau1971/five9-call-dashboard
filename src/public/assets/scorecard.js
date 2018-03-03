@@ -1610,7 +1610,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     data: {},
     datasources: {},
     timeoutIds: {},
-    goals: []
+    goals: [],
+    links: []
   },
   // Helper functions to retrieve data
   getters: {
@@ -1687,6 +1688,10 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.goals = goals;
     },
 
+    setLinks(state, links) {
+      state.links = links.sort((a, b) => a.name > b.name);
+    },
+
     changeDatasource(state, datasource) {
       const ds = clone(datasource);
       __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
@@ -1717,9 +1722,10 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Call when page first loads
     async startProcess(context) {
-      // load fields from server
-      const fields = await __WEBPACK_IMPORTED_MODULE_2__api__["e" /* getFieldList */]();
-      context.commit('setFields', fields);
+      // load fields and helpful links from server
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["e" /* getFieldList */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["h" /* getLinkList */]())); // Start updating based on data sources
+
       return context.dispatch('nextUpdate', null);
     },
 

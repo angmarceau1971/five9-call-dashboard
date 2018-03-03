@@ -96,6 +96,13 @@
                     id="export-layout">
                     Add Card
                 </button>
+
+                <a v-for="(link, i) in $store.state.links"
+                    :key="i"
+                    :href="link.url"
+                    target="_blank">
+                    <button class="insidedrop">{{ link.name }}</button>
+                </a>
             </div>
 
             <div class="nav">
