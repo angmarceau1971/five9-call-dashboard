@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = 43);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -335,7 +335,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(11)
+var listToStyles = __webpack_require__(12)
 
 /*
 type StyleObject = {
@@ -556,7 +556,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _clone = /*#__PURE__*/__webpack_require__(12);
+var _clone = /*#__PURE__*/__webpack_require__(13);
 
 var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
@@ -1126,6 +1126,33 @@ module.exports = _isPlaceholder;
 /* 11 */
 /***/ (function(module, exports) {
 
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
 /**
  * Translates the list format produced by css-loader into something
  * easier to manipulate.
@@ -1156,10 +1183,10 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(13);
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(14);
 
 var type = /*#__PURE__*/__webpack_require__(9);
 
@@ -1208,7 +1235,7 @@ function _clone(value, refFrom, refTo, deep) {
 module.exports = _clone;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 function _cloneRegExp(pattern) {
@@ -1217,17 +1244,17 @@ function _cloneRegExp(pattern) {
 module.exports = _cloneRegExp;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(8);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(18);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(15)
+  __webpack_require__(16)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -1273,13 +1300,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(16);
+var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1299,7 +1326,7 @@ if(false) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -1313,7 +1340,7 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1433,12 +1460,12 @@ if (false) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(22);
 
 let comparators = {
   '>=': (value, goal) => value >= goal,
@@ -1514,11 +1541,11 @@ function getGoalComparer(comparator) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(31);
 /* unused harmony namespace reexport */
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
@@ -1565,465 +1592,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export loadData */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(30);
-/**
- * This module controls interaction with the server.
- *
- * Data is made accessible through the `store` Vuex object, which all Vue
- * components can access.
- */
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
-
-
-
-const sift = __webpack_require__(53);
-
-const clone = __webpack_require__(6);
-/**
- * This Vuex store is the ultimate source of truth. It handles all access to
- * data and interactions with the server.
- *
- * Also included here are global-impacting settings like Edit Mode and user
- * data.
- *
- * @type {Vuex}
- */
-
-
-const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-  state: {
-    fields: [],
-    editMode: false,
-    currentUser: '',
-    user: {},
-    data: {},
-    datasources: {},
-    timeoutIds: {},
-    goals: [],
-    links: []
-  },
-  // Helper functions to retrieve data
-  getters: {
-    /**
-     * Return field object matching the field name.
-     * @param  {String} fieldName name in `source.name` or just `name` format
-     * @return {Object}  field object
-     */
-    field: state => fieldName => {
-      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
-    },
-    rawFieldName: state => fullFieldName => {
-      let [source, field] = fullFieldName.split('.');
-      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
-      return field;
-    },
-    getData: state => (filter, datasource) => {
-      if (!state.data[datasource]) {
-        console.log(`getData: datasource ${datasource} doesn't exist.`);
-        return [];
-      }
-
-      if (!filter) {
-        console.log(`getData: filter not defined.`);
-        return [];
-      }
-
-      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
-      let data = sift(filt, state.data[datasource]);
-      return data.map(datum => {
-        delete datum._id;
-        return datum;
-      });
-    },
-    goalForField: state => field => {
-      return state.goals.filter(goal => goal.field == field.name)[0];
-    }
-  },
-  // Functions to modify the store's state (all synchronous)
-  mutations: {
-    toggleEditMode(state) {
-      state.editMode = !state.editMode;
-    },
-
-    updateData(state, {
-      newData,
-      datasource
-    }) {
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, datasource, newData);
-    },
-
-    /**
-     * Set the current username and user information
-     * @param  {Object} state
-     * @param  {String} user new user object
-     */
-    setUser(state, user) {
-      state.currentUser = user.username;
-      state.user = clone(user);
-    },
-
-    setTimeoutId(state, {
-      datasourceName,
-      id
-    }) {
-      state.timeoutIds[datasourceName] = id;
-    },
-
-    setFields(state, fields) {
-      state.fields = fields;
-    },
-
-    setGoals(state, goals) {
-      state.goals = goals;
-    },
-
-    setLinks(state, links) {
-      state.links = links.sort((a, b) => a.name > b.name);
-    },
-
-    changeDatasource(state, datasource) {
-      const ds = clone(datasource);
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
-    },
-
-    /**
-     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
-     * datasource objects stored in database.
-     * @param {Object} state
-     * @param {Array}  datasources array of datasource objects
-     */
-    setDatasources(state, datasources) {
-      state.datasources = clone(datasources).reduce((newObj, source) => {
-        newObj[source.id] = source;
-        return newObj;
-      }, {});
-    }
-
-  },
-  // Asynchronous actions
-  actions: {
-    async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* updateUserTheme */](context.state.currentUser, newTheme);
-      let updatedUser = clone(context.state.user);
-      updatedUser.theme = newTheme;
-      context.commit('setUser', updatedUser);
-    },
-
-    // Call when page first loads
-    async startProcess(context) {
-      // load fields and helpful links from server
-      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["e" /* getFieldList */]()));
-      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["h" /* getLinkList */]())); // Start updating based on data sources
-
-      return context.dispatch('nextUpdate', null);
-    },
-
-    async forceRefresh(context) {
-      for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
-        clearTimeout(id);
-        console.log(`cleared timeout ${id} for ${sourceName}`);
-      }
-
-      context.dispatch('startProcess');
-    },
-
-    async updateUser(context, username) {
-      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getUserInformation */](username);
-      context.commit('setUser', user);
-      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["g" /* getGoalsForAgentGroups */](user.agentGroups);
-      context.commit('setGoals', goals);
-    },
-
-    async nextUpdate(context, ms) {
-      console.log(`Refresh at ${moment()}`);
-
-      if (!context.state.currentUser) {
-        console.log('No current user assigned. Skipping update.');
-        return;
-      } // Load data from server
-
-
-      for (const [id, source] of Object.entries(context.state.datasources)) {
-        const data = await loadData(getParams(source));
-        console.log(data);
-        context.commit('updateData', {
-          newData: data,
-          datasource: source.name
-        }); // and schedule the next update
-
-        clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
-
-        let timeout = setTimeout(function next() {
-          context.dispatch('nextUpdate', source.refreshRate * 1000);
-        }, source.refreshRate * 1000);
-        context.commit('setTimeoutId', {
-          datasourceName: source.name,
-          id: timeout
-        });
-      }
-
-      ;
-    }
-
-  }
-});
-/* harmony export (immutable) */ __webpack_exports__["a"] = store;
-
-const getField = store.getters.field;
-/* unused harmony export getField */
-
-
-function getParams(datasource) {
-  const params = {
-    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
-    fields: datasource.fields,
-    groupBy: datasource.groupBy,
-    source: datasource.source
-  };
-  return params;
-}
-
-async function loadData(params) {
-  console.log(params);
-  const data = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getStatistics */](params);
-  const cleaned = data.map(d => {
-    d['dateDay'] = moment(d['dateDay']).toDate();
-    d._id.dateDay = moment(d._id.dateDay).toDate();
-    return d;
-  });
-  return cleaned;
-}
-
-/***/ }),
 /* 21 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(31);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(59);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(55)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\data-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
-  } else {
-    hotAPI.reload("data-v-48d3d2c4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
-/* harmony export (immutable) */ __webpack_exports__["b"] = summarize;
-/* unused harmony export fieldsToServer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
-/**
- * Handle expression parsing for calculated fields.
- */
-
-
-const clone = __webpack_require__(6);
-/**
- * Extract an overall value from a set of data, based on the provided field.
- * @param  {Array} data   array of data objects
- * @param  {String} field to extract value for
- * @return {Number}       value
- */
-
-
-function getValueForField(data, field) {
-  return process(data, field);
-}
-/**
- * Extract overall value from a given set of data.
- * @param  {Array} data
- * @param  {String} field full field name ("source.field" format)
- * @return {Number} value
- */
-
-function process(data, field) {
-  let [source, fieldName] = field.split('.');
-  if (source == 'Calculated') return processCalculated(data, fieldName);
-  if (fieldName) return sum(data, fieldName);else return sum(data, field);
-}
-/**
- * Extract overall value from a calculated field.
- * @param  {Array} data
- * @param  {String} field field name without source
- * @return {Number} value
- */
-
-
-function processCalculated(data, field) {
-  if (field == 'aht') {
-    return sum(data, 'handleTime') / sum(data, 'calls');
-  } else if (field == 'talk') {
-    return sum(data, 'talkTime') / sum(data, 'calls');
-  } else if (field == 'acw') {
-    return sum(data, 'acwTime') / sum(data, 'calls');
-  } else if (field == 'hold') {
-    return sum(data, 'holdTime') / sum(data, 'calls');
-  } else if (field == 'serviceLevel') {
-    return sum(data, 'serviceLevel') / sum(data, 'calls');
-  }
-
-  throw new Error(`Parser does not recognize field "${field}".`);
-}
-/**
- * Group and summarize data by a given field.
- * @param  {Array}  data         original data from server
- * @param  {String} summaryField field to summarize/group by
- * @param  {Array}  valueFields  full field names to summarize stats for
- * @return {Object}              summarized data
- */
-
-
-function summarize(data, summaryField, valueFields) {
-  // Date keys are coerced to strings by d3.nest, so parse them back if needed
-  let keyParse = key => key;
-
-  if (summaryField == 'dateDay' || summaryField == 'date') {
-    keyParse = key => new Date(key);
-  } // Summarize data
-
-
-  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
-    // Sum up each requested field
-    return valueFields.reduce((result, field) => {
-      result[field] = process(values, field);
-      return result;
-    }, {});
-  }).entries(data); // Flatten the summarized nested data back to original format
-
-  return nested.map(datum => {
-    return Object.assign(datum.value, {
-      [summaryField]: keyParse(datum.key)
-    });
-  });
-}
-
-function sum(obj, key) {
-  return obj.reduce((sum, item) => sum + item[key], 0);
-}
-/**
- *
- * @param  {String} exp expression
- * @return {Array of Strings} names of fields needed to calculate `exp`
- */
-
-
-function requiredFields(exp) {
-  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
-}
-
-function expressionForField(field) {
-  return field.calculation;
-}
-
-function fieldsToServer(fields) {
-  return fields.reduce((list, field) => {
-    let [source, name] = field.fullName.split('.');
-
-    if (source == 'Calculated') {
-      const f = requiredFields(expressionForField(field));
-      return list.concat(f.map(n => n.split('.')[1]));
-    }
-
-    return list.concat(name);
-  }, []);
-}
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-function _has(prop, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-module.exports = _has;
-
-/***/ }),
-/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -12825,16 +12394,897 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21), __webpack_require__(42).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(23).setImmediate))
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export loadData */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(33);
+/**
+ * This module controls interaction with the server.
+ *
+ * Data is made accessible through the `store` Vuex object, which all Vue
+ * components can access.
+ */
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+
+
+const sift = __webpack_require__(53);
+
+const clone = __webpack_require__(6);
+/**
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
+ * @type {Vuex}
+ */
+
+
+const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    fields: [],
+    editMode: false,
+    currentUser: '',
+    user: {},
+    data: {},
+    datasources: {},
+    timeoutIds: {},
+    goals: [],
+    links: []
+  },
+  // Helper functions to retrieve data
+  getters: {
+    /**
+     * Return field object matching the field name.
+     * @param  {String} fieldName name in `source.name` or just `name` format
+     * @return {Object}  field object
+     */
+    field: state => fieldName => {
+      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
+    },
+    rawFieldName: state => fullFieldName => {
+      let [source, field] = fullFieldName.split('.');
+      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
+      return field;
+    },
+    getData: state => (filter, datasource) => {
+      if (!state.data[datasource]) {
+        console.log(`getData: datasource ${datasource} doesn't exist.`);
+        return [];
+      }
+
+      if (!filter) {
+        console.log(`getData: filter not defined.`);
+        return [];
+      }
+
+      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
+      let data = sift(filt, state.data[datasource]);
+      return data.map(datum => {
+        delete datum._id;
+        return datum;
+      });
+    },
+    goalForField: state => field => {
+      return state.goals.filter(goal => goal.field == field.name)[0];
+    }
+  },
+  // Functions to modify the store's state (all synchronous)
+  mutations: {
+    toggleEditMode(state) {
+      state.editMode = !state.editMode;
+    },
+
+    updateData(state, {
+      newData,
+      datasource
+    }) {
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, datasource, newData);
+    },
+
+    /**
+     * Set the current username and user information
+     * @param  {Object} state
+     * @param  {String} user new user object
+     */
+    setUser(state, user) {
+      state.currentUser = user.username;
+      state.user = clone(user);
+    },
+
+    setTimeoutId(state, {
+      datasourceName,
+      id
+    }) {
+      state.timeoutIds[datasourceName] = id;
+    },
+
+    setFields(state, fields) {
+      state.fields = fields;
+    },
+
+    setGoals(state, goals) {
+      state.goals = goals;
+    },
+
+    setLinks(state, links) {
+      state.links = links.sort((a, b) => a.name > b.name);
+    },
+
+    changeDatasource(state, datasource) {
+      const ds = clone(datasource);
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
+    },
+
+    /**
+     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+     * datasource objects stored in database.
+     * @param {Object} state
+     * @param {Array}  datasources array of datasource objects
+     */
+    setDatasources(state, datasources) {
+      state.datasources = clone(datasources).reduce((newObj, source) => {
+        newObj[source.id] = source;
+        return newObj;
+      }, {});
+    }
+
+  },
+  // Asynchronous actions
+  actions: {
+    async updateTheme(context, newTheme) {
+      await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* updateUserTheme */](context.state.currentUser, newTheme);
+      let updatedUser = clone(context.state.user);
+      updatedUser.theme = newTheme;
+      context.commit('setUser', updatedUser);
+    },
+
+    // Call when page first loads
+    async startProcess(context) {
+      // load fields and helpful links from server
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["e" /* getFieldList */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["h" /* getLinkList */]())); // Start updating based on data sources
+
+      return context.dispatch('nextUpdate', null);
+    },
+
+    async forceRefresh(context) {
+      for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
+        clearTimeout(id);
+        console.log(`cleared timeout ${id} for ${sourceName}`);
+      }
+
+      context.dispatch('startProcess');
+    },
+
+    async updateUser(context, username) {
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getUserInformation */](username);
+      context.commit('setUser', user);
+      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["g" /* getGoalsForAgentGroups */](user.agentGroups);
+      context.commit('setGoals', goals);
+    },
+
+    async nextUpdate(context, ms) {
+      console.log(`Refresh at ${moment()}`);
+
+      if (!context.state.currentUser) {
+        console.log('No current user assigned. Skipping update.');
+        return;
+      } // Load data from server
+
+
+      for (const [id, source] of Object.entries(context.state.datasources)) {
+        const data = await loadData(getParams(source));
+        console.log(data);
+        context.commit('updateData', {
+          newData: data,
+          datasource: source.name
+        }); // and schedule the next update
+
+        clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
+
+        let timeout = setTimeout(function next() {
+          context.dispatch('nextUpdate', source.refreshRate * 1000);
+        }, source.refreshRate * 1000);
+        context.commit('setTimeoutId', {
+          datasourceName: source.name,
+          id: timeout
+        });
+      }
+
+      ;
+    }
+
+  }
+});
+/* harmony export (immutable) */ __webpack_exports__["a"] = store;
+
+const getField = store.getters.field;
+/* unused harmony export getField */
+
+
+function getParams(datasource) {
+  const params = {
+    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
+    fields: datasource.fields,
+    groupBy: datasource.groupBy,
+    source: datasource.source
+  };
+  return params;
+}
+
+async function loadData(params) {
+  console.log(params);
+  const data = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getStatistics */](params);
+  const cleaned = data.map(d => {
+    d['dateDay'] = moment(d['dateDay']).toDate();
+    d._id.dateDay = moment(d._id.dateDay).toDate();
+    return d;
+  });
+  return cleaned;
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(24);
+// On some exotic environments, it's not clear which object `setimmeidate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(25)))
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
 
 /***/ }),
 /* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(34);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(59);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(55)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\data-table.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-48d3d2c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = summarize;
+/* unused harmony export fieldsToServer */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(22);
+/**
+ * Handle expression parsing for calculated fields.
+ */
+
+
+const clone = __webpack_require__(6);
+/**
+ * Extract an overall value from a set of data, based on the provided field.
+ * @param  {Array} data   array of data objects
+ * @param  {String} field to extract value for
+ * @return {Number}       value
+ */
+
+
+function getValueForField(data, field) {
+  return process(data, field);
+}
+/**
+ * Extract overall value from a given set of data.
+ * @param  {Array} data
+ * @param  {String} field full field name ("source.field" format)
+ * @return {Number} value
+ */
+
+function process(data, field) {
+  let [source, fieldName] = field.split('.');
+  if (source == 'Calculated') return processCalculated(data, fieldName);
+  if (fieldName) return sum(data, fieldName);else return sum(data, field);
+}
+/**
+ * Extract overall value from a calculated field.
+ * @param  {Array} data
+ * @param  {String} field field name without source
+ * @return {Number} value
+ */
+
+
+function processCalculated(data, field) {
+  if (field == 'aht') {
+    return sum(data, 'handleTime') / sum(data, 'calls');
+  } else if (field == 'talk') {
+    return sum(data, 'talkTime') / sum(data, 'calls');
+  } else if (field == 'acw') {
+    return sum(data, 'acwTime') / sum(data, 'calls');
+  } else if (field == 'hold') {
+    return sum(data, 'holdTime') / sum(data, 'calls');
+  } else if (field == 'serviceLevel') {
+    return sum(data, 'serviceLevel') / sum(data, 'calls');
+  }
+
+  throw new Error(`Parser does not recognize field "${field}".`);
+}
+/**
+ * Group and summarize data by a given field.
+ * @param  {Array}  data         original data from server
+ * @param  {String} summaryField field to summarize/group by
+ * @param  {Array}  valueFields  full field names to summarize stats for
+ * @return {Object}              summarized data
+ */
+
+
+function summarize(data, summaryField, valueFields) {
+  // Date keys are coerced to strings by d3.nest, so parse them back if needed
+  let keyParse = key => key;
+
+  if (summaryField == 'dateDay' || summaryField == 'date') {
+    keyParse = key => new Date(key);
+  } // Summarize data
+
+
+  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
+    // Sum up each requested field
+    return valueFields.reduce((result, field) => {
+      result[field] = process(values, field);
+      return result;
+    }, {});
+  }).entries(data); // Flatten the summarized nested data back to original format
+
+  return nested.map(datum => {
+    return Object.assign(datum.value, {
+      [summaryField]: keyParse(datum.key)
+    });
+  });
+}
+
+function sum(obj, key) {
+  return obj.reduce((sum, item) => sum + item[key], 0);
+}
+/**
+ *
+ * @param  {String} exp expression
+ * @return {Array of Strings} names of fields needed to calculate `exp`
+ */
+
+
+function requiredFields(exp) {
+  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
+}
+
+function expressionForField(field) {
+  return field.calculation;
+}
+
+function fieldsToServer(fields) {
+  return fields.reduce((list, field) => {
+    let [source, name] = field.fullName.split('.');
+
+    if (source == 'Calculated') {
+      const f = requiredFields(expressionForField(field));
+      return list.concat(f.map(n => n.split('.')[1]));
+    }
+
+    return list.concat(name);
+  }, []);
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+module.exports = _has;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(39);
 //
 //
 //
@@ -12952,17 +13402,17 @@ return Vue$3;
 });
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascript_scorecard_format__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__drag_n_drop_sort_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__drag_n_drop_sort_js__ = __webpack_require__(39);
 //
 //
 //
@@ -13153,7 +13603,7 @@ return Vue$3;
 });
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13194,11 +13644,11 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(33);
 //
 //
 //
@@ -13308,14 +13758,14 @@ const clone = __webpack_require__(6);
 });
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = clean;
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(22);
 
 
 const clone = __webpack_require__(6);
@@ -13407,12 +13857,12 @@ const dateMatcher = {
 };
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(20);
 //
 //
 //
@@ -13466,11 +13916,11 @@ const dateMatcher = {
 });
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(19);
 //
 //
 //
@@ -13511,14 +13961,14 @@ const dateMatcher = {
 });
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
 //
@@ -13809,13 +14259,13 @@ const props = {
 });
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 //
 //
 //
@@ -13890,14 +14340,14 @@ const props = {
 });
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
 //
@@ -14134,7 +14584,7 @@ const props = {
 });
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14206,7 +14656,7 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14251,10 +14701,10 @@ function sortOrder(a, b, event, dropId, el) {
 });
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(24);
+var _has = /*#__PURE__*/__webpack_require__(28);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -14268,7 +14718,7 @@ var _isArguments = function () {
 module.exports = _isArguments;
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(2);
@@ -14306,24 +14756,24 @@ function _curry2(fn) {
 module.exports = _curry2;
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(41);
+module.exports = __webpack_require__(44);
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__ = __webpack_require__(15);
 
 
 
@@ -14568,7 +15018,12 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     datasourceMessage: '',
     isLoaded: false,
     showMenu: false,
-    showMenuThemes: false
+    // show main menu
+    showMenuThemes: false,
+    // show themes submenu
+    showLinks: false,
+    // show helpful links / bookmarks
+    theme: {}
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
@@ -14612,16 +15067,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         return '';
       }
     },
-    theme: {
-      get() {
-        return this.user.theme ? this.user.theme : {};
-      },
-
-      set(newTheme) {
-        store.dispatch('updateTheme', newTheme);
-      }
-
-    },
     backgroundStyles: function () {
       let bgUrl = this.theme.color == 'dark' ? this.theme.darkBackgroundImageUrl : this.theme.lightBackgroundImageUrl;
 
@@ -14638,7 +15083,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     // When the current user changes, make any needed adjustments
     user: {
       handler: function (newUser) {
-        this.updateThemeStyles(newUser.theme);
+        this.theme = clone(newUser.theme);
+        this.updateThemeStyles(this.theme);
       },
       deep: true
     }
@@ -14650,13 +15096,14 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       store.dispatch('forceRefresh');
     },
     changeTheme: function (attribute, value) {
-      let newTheme = clone(this.user.theme);
-      newTheme[attribute] = value;
-      store.dispatch('updateTheme', newTheme);
+      this.theme[attribute] = value;
+      this.updateThemeStyles(this.theme);
     },
     saveTheme: function () {
-      let newTheme = clone(this.user.theme);
-      store.dispatch('updateTheme', newTheme);
+      if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
+      store.dispatch('updateTheme', this.theme);
+      this.showMenuThemes = false;
+      this.showMenu = false;
     },
     updateThemeStyles: function (theme) {
       document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
@@ -14872,461 +15319,11 @@ function isDescendant(parent, child) {
 }
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(43);
-// On some exotic environments, it's not clear which object `setimmeidate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21), __webpack_require__(44)))
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(29);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(77);
 var disposed = false
@@ -15378,7 +15375,7 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(30);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(72);
 var disposed = false
@@ -15474,7 +15471,7 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(32);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(54);
 var disposed = false
@@ -17350,7 +17347,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__ = __webpack_require__(58);
 var disposed = false
@@ -17493,7 +17490,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(36);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(63);
 var disposed = false
@@ -17753,7 +17750,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(37);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(67);
 var disposed = false
@@ -17917,7 +17914,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(38);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(71);
 var disposed = false
@@ -18250,7 +18247,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(40);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(76);
 var disposed = false
@@ -18535,7 +18532,7 @@ module.exports = isEmpty;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(38);
+var _isArguments = /*#__PURE__*/__webpack_require__(41);
 
 var _isArray = /*#__PURE__*/__webpack_require__(80);
 
@@ -18619,7 +18616,7 @@ module.exports = _isString;
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(39);
+var _curry2 = /*#__PURE__*/__webpack_require__(42);
 
 var _equals = /*#__PURE__*/__webpack_require__(84);
 
@@ -18665,7 +18662,7 @@ var _containsWith = /*#__PURE__*/__webpack_require__(86);
 
 var _functionName = /*#__PURE__*/__webpack_require__(87);
 
-var _has = /*#__PURE__*/__webpack_require__(24);
+var _has = /*#__PURE__*/__webpack_require__(28);
 
 var identical = /*#__PURE__*/__webpack_require__(88);
 
@@ -18863,7 +18860,7 @@ module.exports = _functionName;
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(39);
+var _curry2 = /*#__PURE__*/__webpack_require__(42);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -18909,9 +18906,9 @@ module.exports = identical;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(2);
 
-var _has = /*#__PURE__*/__webpack_require__(24);
+var _has = /*#__PURE__*/__webpack_require__(28);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(38);
+var _isArguments = /*#__PURE__*/__webpack_require__(41);
 
 // cover IE < 9 keys issues
 

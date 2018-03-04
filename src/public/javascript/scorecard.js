@@ -303,8 +303,10 @@ const vm = new Vue({
         layout: layout,
         datasourceMessage: '',
         isLoaded: false,
-        showMenu: false,
-        showMenuThemes: false
+        showMenu: false, // show main menu
+        showMenuThemes: false, // show themes submenu
+        showLinks: false, // show helpful links / bookmarks
+        theme: {}
     },
 
     components: {
@@ -346,14 +348,6 @@ const vm = new Vue({
                 return '';
             }
         },
-        theme: {
-            get() {
-                return this.user.theme ? this.user.theme : {};
-            },
-            set(newTheme) {
-                store.dispatch('updateTheme', newTheme);
-            }
-        },
         backgroundStyles: function() {
             let bgUrl = this.theme.color == 'dark'
                         ? this.theme.darkBackgroundImageUrl
@@ -373,7 +367,8 @@ const vm = new Vue({
         // When the current user changes, make any needed adjustments
         user: {
             handler: function(newUser) {
-                this.updateThemeStyles(newUser.theme);
+                this.theme = clone(newUser.theme);
+                this.updateThemeStyles(this.theme);
             },
             deep: true
         }
@@ -387,14 +382,15 @@ const vm = new Vue({
         },
 
         changeTheme: function(attribute, value) {
-            let newTheme = clone(this.user.theme);
-            newTheme[attribute] = value;
-            store.dispatch('updateTheme', newTheme);
+            this.theme[attribute] = value;
+            this.updateThemeStyles(this.theme);
         },
 
         saveTheme: function() {
-            let newTheme = clone(this.user.theme);
-            store.dispatch('updateTheme', newTheme);
+            if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
+            store.dispatch('updateTheme', this.theme);
+            this.showMenuThemes = false;
+            this.showMenu = false;
         },
 
         updateThemeStyles: function(theme) {

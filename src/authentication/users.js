@@ -126,7 +126,9 @@ module.exports.getUserInformation = getUserInformation;
 function getAgentGroupsForAgent(username, data) {
     return data
         .filter(function hasAgent(group) {
-            return group.agents.includes(username);
+            return group.agents
+                ? group.agents.includes(username)
+                : false;
         })
         .map(function getGroupName(group) {
             return group.name[0];

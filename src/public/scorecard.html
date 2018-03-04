@@ -10,6 +10,8 @@
         <link href="styles/scoredetail.css" rel="stylesheet" type="text/css">
         <!-- Default to dark theme -->
         <link href="styles/theme-dark.css" rel="stylesheet" type="text/css" id="theme_css">
+
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     </head>
 
     <body>
@@ -23,13 +25,13 @@
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
                     @click="refresh">
-                    Refresh
+                    <i class="fas fa-sync-alt"></i> Refresh
                 </button>
 
                 <button class="insidedrop submenu-button"
                     @mouseover="showMenuThemes=true"
                     @mouseleave="mouseleaveThemeSubMenu"
-                >Theme</button>
+                ><i class="fas fa-image"></i> Theme</button>
                 <div class="dropdown-content submenu"
                     @mouseleave="mouseleaveThemeSubMenu"
                     v-if="showMenuThemes"
@@ -73,7 +75,7 @@
                     @click="$store.commit('toggleEditMode')"
                     id="toggle-edit-mode"
                     v-if="user.isAdmin"
-                >Edit Mode
+                ><i class="fas fa-cogs"></i> Edit Mode
                 </button>
 
                 <button class="insidedrop"
@@ -94,14 +96,25 @@
                     v-if="$store.state.editMode"
                     @click="addCard"
                     id="export-layout">
-                    Add Card
+                    <i class="far fa-plus-square"></i> Add Card
                 </button>
 
-                <a v-for="(link, i) in $store.state.links"
+                <button class="insidedrop"
+                    @click="showLinks = !showLinks">
+                    <i class="fas fa-globe"></i> Helpful Links
+                </button>
+                <a v-if="showLinks"
+                    v-for="(link, i) in $store.state.links"
                     :key="i"
                     :href="link.url"
                     target="_blank">
-                    <button class="insidedrop">{{ link.name }}</button>
+                    <button class="insidedrop helpful-link">{{ link.name }}</button>
+                </a>
+
+                <a target="_blank" href="https://jabbroadband.sharepoint.com/sites/Corporate/ContactCenterOperations/Lists/Dashboard Feedback/overview.aspx">
+                    <button class="insidedrop feedback-button">
+                        <i class="fas fa-comment"></i> Feedback
+                    </button>
                 </a>
             </div>
 
@@ -126,8 +139,12 @@
                 ref="fileInput" />
 
             <div class="loading-screen"
-                v-if="!isLoaded"
-            ><h2>Dashboard Loading...</h2></div>
+                v-if="!isLoaded">
+                <h2>Dashboard Loading...
+                    <br /><br />
+                    <i class="fas fa-circle-notch fa-pulse" style="font-size:2em;"></i>
+                </h2>
+            </div>
 
             <dashboard
                 v-if="isLoaded"

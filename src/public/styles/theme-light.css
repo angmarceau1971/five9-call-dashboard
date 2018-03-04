@@ -17,10 +17,13 @@ body, body button {
 }
 
 .stats-box {
-    background-color: hsla(36, 100%, 98%, 0.94);
+    background-color: hsla(36, 100%, 98%, 0.92);
 }
 .dropdown-button, .insidedrop, .submenu, .top-bar {
     background-color: hsla(36, 84%, 97%, 1);
+}
+.insidedrop.helpful-link {
+    background-color: hsla(35, 79%, 90%, 1);
 }
 .dropdown-button {
     border-right: 1px solid #ddd;
@@ -34,6 +37,7 @@ body, body button {
 .dropdown-content button:hover {
     background-color: hsl(345, 100%, 80%);
 }
+
 
 svg text {
     fill: #222;

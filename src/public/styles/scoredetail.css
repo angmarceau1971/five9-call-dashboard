@@ -75,6 +75,10 @@ h2, h3 {
     min-width: 100px;
     max-width: 200px;
 }
+/* Helpful Links buttons are indented slightly more */
+.insidedrop.helpful-link {
+    padding-left: 3em;
+}
 
 /* dropdown content (hidden by default) */
 .dropdown-content {

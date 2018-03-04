@@ -5,6 +5,7 @@ const bodyParser = require('body-parser'); // parse JSON requests
 const compression = require('compression'); // compress file to GZIP
 const cors = require('cors'); // CORS middleware
 const express = require('express');
+const favicon = require('serve-favicon');
 const helmet = require('helmet'); // security
 const moment = require('moment'); // dates/times
 const passport = require('passport'); // user authentication
@@ -40,6 +41,8 @@ const viewRoutes = require('./routes/views');
 const app = express();
 // GZIP it up
 app.use(compression());
+// Add Favicons
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // Allow CORS
 app.use(cors());
 // Serve static files

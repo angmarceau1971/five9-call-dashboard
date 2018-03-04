@@ -22,7 +22,10 @@ button {
     background-color: hsla(240, 2%, 22%, 0.89);
 }
 .dropdown-button, .insidedrop, .submenu, .top-bar {
-    background-color: hsl(240, 2%, 22%);
+    background-color: hsl(210, 1%, 21%);
+}
+.insidedrop.helpful-link {
+    background-color: hsl(211, 23%, 15%);
 }
 .dropdown-button {
     border-right: 1px solid #333;
