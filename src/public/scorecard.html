@@ -74,9 +74,21 @@
                     class="insidedrop"
                     @click="$store.commit('toggleEditMode')"
                     id="toggle-edit-mode"
-                    v-if="user.isAdmin"
-                ><i class="fas fa-cogs"></i> Edit Mode
+                    v-if="user.isAdmin">
+                    <i class="fas fa-cogs"></i> Edit Mode
                 </button>
+
+                <a target="_blank" href="https://nathanclonts.com/dashboard/queues">
+                    <button class="insidedrop feedback-button">
+                        <i class="fas fa-list"></i> Queues
+                    </button>
+                </a>
+
+                <a target="_blank" href="https://nathanclonts.com/dashboard/maps">
+                    <button class="insidedrop feedback-button">
+                        <i class="fas fa-map"></i> Map
+                    </button>
+                </a>
 
                 <button class="insidedrop"
                     v-if="$store.state.editMode"

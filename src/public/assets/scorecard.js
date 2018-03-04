@@ -12564,7 +12564,6 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     async forceRefresh(context) {
       for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
         clearTimeout(id);
-        console.log(`cleared timeout ${id} for ${sourceName}`);
       }
 
       context.dispatch('startProcess');
@@ -12583,16 +12582,20 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       if (!context.state.currentUser) {
         console.log('No current user assigned. Skipping update.');
         return;
-      } // Load data from server
-
+      }
 
       for (const [id, source] of Object.entries(context.state.datasources)) {
-        const data = await loadData(getParams(source));
-        console.log(data);
-        context.commit('updateData', {
-          newData: data,
-          datasource: source.name
-        }); // and schedule the next update
+        // Load data from server
+        try {
+          const data = await loadData(getParams(source));
+          context.commit('updateData', {
+            newData: data,
+            datasource: source.name
+          });
+        } catch (err) {
+          console.log(`Error while loading data: ${err}`);
+        } // and schedule the next update
+
 
         clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
 
@@ -12627,7 +12630,6 @@ function getParams(datasource) {
 }
 
 async function loadData(params) {
-  console.log(params);
   const data = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getStatistics */](params);
   const cleaned = data.map(d => {
     d['dateDay'] = moment(d['dateDay']).toDate();

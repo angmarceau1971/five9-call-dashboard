@@ -142,7 +142,6 @@ export const store = new Vuex.Store({
         async forceRefresh(context) {
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
-                console.log(`cleared timeout ${id} for ${sourceName}`);
             }
             context.dispatch('startProcess');
         },
@@ -161,13 +160,16 @@ export const store = new Vuex.Store({
                 return;
             }
 
-            // Load data from server
             for (const [id, source] of Object.entries(context.state.datasources)) {
-                const data = await loadData(getParams(source));
-                console.log(data);
-                context.commit('updateData', {
-                    newData: data, datasource: source.name
-                });
+                // Load data from server
+                try {
+                    const data = await loadData(getParams(source));
+                    context.commit('updateData', {
+                        newData: data, datasource: source.name
+                    });
+                } catch (err) {
+                    console.log(`Error while loading data: ${err}`);
+                }
 
                 // and schedule the next update
                 clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
@@ -197,7 +199,6 @@ function getParams(datasource) {
 }
 
 export async function loadData(params) {
-    console.log(params);
     const data = await api.getStatistics(params);
     const cleaned = data.map((d) => {
         d['dateDay'] = moment(d['dateDay']).toDate();
