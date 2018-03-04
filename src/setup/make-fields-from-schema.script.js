@@ -1,7 +1,7 @@
 // Creates fields from schemas, if current field list is blank
 //
 
-const report = require('../models/report');
+const report = require('../datasources/report');
 const fields = require('../admin/fields');
 const log = require('../utility/log');
 

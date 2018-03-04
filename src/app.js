@@ -23,8 +23,8 @@ const secure = require('./secure_settings.js'); // local/secure settings
 ///////////////////////////
 // Data management
 const database = require('./utility/database'); // connection instance to DB
-const report = require('./models/report'); // data feeds for SL & calls
-const queue  = require('./models/queue-stats'); // real-time queue feeds
+const report = require('./datasources/report'); // data feeds for SL & calls
+const queue  = require('./datasources/queue-stats'); // real-time queue feeds
 const users = require('./authentication/users'); // stores usernames to check auth
 const verify = require('./authentication/verify'); // check user permissions
 const customers = require('./customers/customers');

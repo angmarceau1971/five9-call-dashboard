@@ -21,9 +21,10 @@ export function clean(original) {
     else if (filter.dateDay) {
         dateKey = 'dateDay';
     }
-    else { throw new Error('No date key defined in filter.'); }
-    let dateFn = dateMatcher[filter[dateKey]];
-    filter[dateKey] = dateFn();
+    if (dateKey) {
+        let dateFn = dateMatcher[filter[dateKey]];
+        filter[dateKey] = dateFn();
+    }
 
     // Insert actual username
     if (filter.agentUsername && filter.agentUsername.$in

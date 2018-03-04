@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Lookup to determine which skills this agent should be taking
-const skillGroup = require('../models/skill-group.js');
+const skillGroup = require('../datasources/skill-group.js');
 
 
 //////////////////////////////////////////

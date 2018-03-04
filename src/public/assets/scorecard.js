@@ -13791,12 +13791,13 @@ function clean(original) {
     dateKey = 'date';
   } else if (filter.dateDay) {
     dateKey = 'dateDay';
-  } else {
-    throw new Error('No date key defined in filter.');
   }
 
-  let dateFn = dateMatcher[filter[dateKey]];
-  filter[dateKey] = dateFn(); // Insert actual username
+  if (dateKey) {
+    let dateFn = dateMatcher[filter[dateKey]];
+    filter[dateKey] = dateFn();
+  } // Insert actual username
+
 
   if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
     filter.agentUsername.$in[filter.agentUsername.$in.indexOf('<current user>')] = user.username;
@@ -15009,6 +15010,20 @@ const layout = {
     "groupBy": ["dateDay", "reasonCode"],
     "refreshRate": 180,
     "source": "AgentLogin"
+  }, {
+    "id": "4",
+    "name": "Queue Data",
+    "fields": {
+      "sum": ["CallsInQueue"]
+    },
+    "filter": {
+      "skillGroup": {
+        $in: ["<current user group>"]
+      }
+    },
+    "groupBy": ['SkillName'],
+    "refreshRate": 180,
+    "source": "QueueStats"
   }]
 };
 const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];

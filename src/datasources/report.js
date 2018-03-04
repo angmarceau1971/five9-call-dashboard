@@ -156,121 +156,11 @@ async function loadData(time) {
 }
 
 
-/**
- * Get agent statistics from the ACD Queue data source.
- *
- * @param  {Object} filter for MongoDB. Requires date.$gte and date.$lt
- * @param  {Object} fields to include, in format { sum: ['f1', 'f2',...] }
- * @param  {Array}  groupBy break down / summarize by these fields
- * @return {Promise} resolves to JSON data matching query
- */
-async function getScorecardStatistics({ filter, fields, groupBy, source }) {
-    // Construct MongoDB aggregation object
-    const aggregation = [
-        {
-            $match: {
-                $and: [
-                    {
-                        date: {
-                            $gte: moment(filter.date.$gte, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
-                            $lt:  moment(filter.date.$lt, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
-                        }
-                    },
-                    ...createFilter(filter)
-                ]
-            }
-        }, {
-            $addFields: {
-                dateDay: {
-                    '$dateToString': { format: '%Y-%m-%d', date: '$date' }
-                }
-            }
-        }, {
-            $group: createGroup(groupBy, fields)
-        }
-    ];
-
-    let model = getModelFromSourceName(source);
-    let data = await getStatisticsFrom(model, aggregation);
-    return mergeIdToData(data);
-}
-/**
- * Merge _id fields into each datum. E.g., the input:
- *      [ { calls: 1, _id: { name: 'Frodo' } } ]
- * will return:
- *      [ { calls: 1, name: 'Frodo', _id: { name: 'Frodo ' } } ]
- * @param {Array} data from MongoDB
- * @return {Array} data with each entry including _id as regular fields
- */
-function mergeIdToData(data) {
-    return data.map((datum) => Object.assign(datum, datum._id));
-}
-
-/**
- *
- * @param  {String} sourceName
- * @return {Mongoose Model} model associated with name
- */
-function getModelFromSourceName(sourceName) {
-    switch (sourceName) {
-        case 'AcdFeed':
-            return AcdFeed;
-            break;
-        case 'AgentLogin':
-            return AgentLogin;
-            break;
-        case 'CallLog':
-            return CallLog;
-            break;
-        default:
-            throw new Error(`Source name "${sourceName}" isn't a valid model.`);
-    }
-}
-
-
-async function getStatisticsFrom(model, aggregation) {
-    return new Promise((resolve, reject) => {
-        model.aggregate(aggregation, (err, data) => {
-            if (err) reject(err);
-            resolve(data);
-        });
-    });
-}
-
-// transform filter object into MongoDB-style $match
-function createFilter(obj) {
-    // remove dates - parsed separately
-    const filter = Object.keys(obj)
-        .filter((key) => key != 'date')
-        .map((key) => {
-                return { [key]: obj[key] };
-            });
-    return filter;
-}
-
-// create $group-ings off the fields in the groupBy array
-function createGroup(groupBy, fields) {
-    let group = {
-        _id: groupBy.reduce((result, field) => {
-                result[field] = `$${field}`;
-                return result;
-            }, {})
-    };
-    group = fields.sum.reduce((result, field) => {
-        result[field] = { $sum: `$${field}` };
-        return result;
-    }, group);
-    return group;
-}
-
-
-
-
 // Summarize call and service level data by skill. Params should give start
 // and end time for data.
 async function getServiceLevelData(params) {
     return new Promise((resolve, reject) => {
-        CallLog.aggregate([
+        AcdFeed.aggregate([
             // Filter for the selected date and skills
             { $match:
                 { date: {
@@ -503,13 +393,15 @@ async function onReady(fun) {
 }
 
 
+module.exports.CallLog = CallLog;
+module.exports.AcdFeed = AcdFeed;
+module.exports.AgentLogin = AgentLogin;
+
 module.exports.getHeadersFromCsv = getHeadersFromCsv;
 module.exports.onReady = onReady;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;
-module.exports.getScorecardStatistics = getScorecardStatistics;
-module.exports.CallLog = CallLog;
 module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;
 module.exports.acdFeedSchema = acdFeedSchema;

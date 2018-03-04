@@ -18,14 +18,15 @@ const moment = require('moment'); // dates/times
 const log = require('../utility/log'); // recording updates
 const path = require('path');
 
-const report = require('../models/report'); // data feeds for SL & calls
-const queue  = require('../models/queue-stats'); // real-time queue feeds
+const datasource = require('../datasources/controller');
+const report = require('../datasources/report'); // data feeds for SL & calls
+const queue  = require('../datasources/queue-stats'); // real-time queue feeds
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
 const customers = require('../customers/customers'); // customer database
 
 const uploader = require('../custom-upload/custom-upload');
-const skillGroup = require('../models/skill-group');
+const skillGroup = require('../datasources/skill-group');
 
 
 const addAdminRoutes = require('./administrative.js').addTo(router);
@@ -34,11 +35,11 @@ router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
     report.onReady(async () => {
         let data;
         try {
-            data = await report.getScorecardStatistics(req.body);
+            data = await datasource.getScorecardStatistics(req.body);
             res.set('Content-Type', 'application/json');
             res.send(JSON.stringify(data));
         } catch (err) {
-            log.error(`Error during scorecard retrieval: ` + JSON.stringify(err));
+            log.error(`Error during scorecard retrieval: ${err}`);
             res.set('Content-Type', 'application/text');
             res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
         }

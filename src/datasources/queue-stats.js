@@ -137,6 +137,7 @@ async function onReady(fun) {
 }
 
 
+module.exports.QueueStats = QueueStats;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getData = getData;
 module.exports.onReady = onReady;

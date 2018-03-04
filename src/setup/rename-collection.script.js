@@ -1,6 +1,6 @@
 //
 
-const report = require('../models/report');
+const report = require('../datasources/report');
 const fields = require('../admin/fields');
 
 const mongoose = require('mongoose');

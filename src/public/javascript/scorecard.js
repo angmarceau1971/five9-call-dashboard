@@ -289,6 +289,25 @@ const layout = {
             ],
             "refreshRate": 180,
             "source": "AgentLogin"
+        },
+        {
+            "id": "4",
+            "name": "Queue Data",
+            "fields": {
+                "sum": [
+                    "CallsInQueue",
+                ]
+            },
+            "filter": {
+                "skillGroup": {
+                    $in: ["<current user group>"]
+                }
+            },
+            "groupBy": [
+                'SkillName'
+            ],
+            "refreshRate": 180,
+            "source": "QueueStats"
         }
     ]
 };
