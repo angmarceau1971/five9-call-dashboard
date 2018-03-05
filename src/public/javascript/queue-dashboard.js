@@ -8,13 +8,12 @@ let timeout = null;
 // Object to manage the gizmos (queue widgets)
 let gizmo = null;
 
-$(document).ready(() => {
+async function startItUp() {
+    gizmo = new GizmoManager();
+    await gizmo.load();
 
     // listen for sign-in button press
     $('.play-pause').click(async (event) => {
-        gizmo = new GizmoManager();
-        await gizmo.load();
-
         // prevent redirection
         event.preventDefault();
 
@@ -50,7 +49,8 @@ $(document).ready(() => {
 
     // Trigger "play" button to start updating when page is loaded.
     $('.play-pause').trigger('click');
-});
+};
+window.addEventListener('load', startItUp);
 
 
 async function runQueueDashboard() {

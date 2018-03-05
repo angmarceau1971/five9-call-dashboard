@@ -104,16 +104,6 @@ function formatAMPM(date) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
-
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (immutable) */ __webpack_exports__["l"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["n"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getReportResults;
@@ -139,7 +129,7 @@ const API_URL = 'http://localhost:3000/api/';
 /* harmony export (immutable) */ __webpack_exports__["w"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(6);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract data from Five9.
@@ -480,6 +470,16 @@ function getParameters(requestType) {
 
 /***/ }),
 
+/***/ 6:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+
 /***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -494,7 +494,7 @@ module.exports = __webpack_require__(96);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gizmo__ = __webpack_require__(97);
 
 
@@ -503,12 +503,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 let timeout = null; // Object to manage the gizmos (queue widgets)
 
 let gizmo = null;
-$(document).ready(() => {
-  // listen for sign-in button press
-  $('.play-pause').click(async event => {
-    gizmo = new __WEBPACK_IMPORTED_MODULE_2__gizmo__["a" /* default */]();
-    await gizmo.load(); // prevent redirection
 
+async function startItUp() {
+  gizmo = new __WEBPACK_IMPORTED_MODULE_2__gizmo__["a" /* default */]();
+  await gizmo.load(); // listen for sign-in button press
+
+  $('.play-pause').click(async event => {
+    // prevent redirection
     event.preventDefault(); // Currently running?
     // stop any current event loops running
 
@@ -541,7 +542,10 @@ $(document).ready(() => {
   }); // Trigger "play" button to start updating when page is loaded.
 
   $('.play-pause').trigger('click');
-});
+}
+
+;
+window.addEventListener('load', startItUp);
 
 async function runQueueDashboard() {
   async function eventLoop(interval) {
@@ -755,7 +759,7 @@ function jsonToViewData(json, includeFields = ['Skill Name', 'Calls In Queue', '
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = GizmoManager;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
  // Handling of queue gizmo widgets.
 // Manages state and DOM (modals to edit skills & name).
 
