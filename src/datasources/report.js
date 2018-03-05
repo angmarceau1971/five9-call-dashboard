@@ -346,7 +346,14 @@ function parseRow(model, row) {
         p.skill = row.skill;
 
         p.abandons = row.abandons * 1;
-        p.serviceLevel = row.serviceLevel * 1;
+        if (p.abandons) {
+            p.serviceLevel = 0;
+        } else {
+            // Within SL if answered within 60 seconds for _COM skills; 120 for others
+            let slThreshold = p.skill.substr(p.skill.length - 4) == '_COM'
+                            ? 60 : 120;
+            p.serviceLevel = p.speedOfAnswer <= slThreshold ? 1 : 0;
+        }
     }
     else if (model == AgentLogin) {
         datestring = row.date;
