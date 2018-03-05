@@ -221,12 +221,7 @@ async function refreshUserDatabase(usersModel) {
             active: d.active == 'true' ? true : false,
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
             firstName: d.firstName[0],
-            lastName: d.lastName[0],
-            theme: {
-                color: 'dark',
-                lightBackgroundImageUrl: '',
-                darkBackgroundImageUrl: ''
-            }
+            lastName: d.lastName[0]
         };
 
         // Update or add each Five9 user to database

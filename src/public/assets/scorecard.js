@@ -15127,14 +15127,23 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     mouseleaveThemeSubMenu: function (event) {
       if (!event.relatedTarget) return;
-      let elMenu = this.$refs.themeSubMenu;
       let classList = Array.from(event.relatedTarget.classList);
 
-      if (elMenu === event.relatedTarget || classList.includes('submenu-button') || isDescendant(elMenu, event.relatedTarget)) {
+      if (event.relatedTarget == this.$refs.themeSubMenu || classList.includes('submenu-button') || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
         event.stopPropagation();
         return;
       } else {
         this.showMenuThemes = false;
+      }
+    },
+    mouseleaveMenu: function (event) {
+      if (!event.relatedTarget) return;
+
+      if (event.relatedTarget === this.$refs.menuButton || isDescendant(this.$refs.menu, event.relatedTarget)) {
+        event.stopPropagation();
+        return;
+      } else {
+        this.showMenu = false;
       }
     },
     ///////////////////////////
