@@ -239,6 +239,18 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
 });
 
 
+// Get skill group data
+router.get('/skill-group', verify.apiMiddleware(), async (req, res) => {
+    try {
+        let data = await skillGroup.getAll();
+        res.set('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(data));
+    } catch (err) {
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`${err}`);
+    }
+});
+
 
 
 //////////////////////////////////////

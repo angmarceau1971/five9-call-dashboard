@@ -120,3 +120,13 @@ function getFromAgentGroup(agentGroup) {
         });
 }
 module.exports.getFromAgentGroup = getFromAgentGroup;
+
+
+/**
+ *
+ * @return {Promise -> [Object]} return all skill group objects
+ */
+function getAll() {
+    return SkillGroup.find({});
+}
+module.exports.getAll = getAll;

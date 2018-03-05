@@ -111,6 +111,14 @@ export async function deleteGoal(goal) {
     return response.text();
 }
 
+/**
+ * Get skill groups with associated names, agentGroups and skills
+ * @return {Promise -> [Object]} array of objects from SkillGroup table
+ */
+export async function getSkillGroups() {
+    let response = await request({}, 'skill-group', 'GET');
+    return response.json();
+}
 
 /**
  * List of all links.

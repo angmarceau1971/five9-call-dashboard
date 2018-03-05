@@ -928,28 +928,29 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["k"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["m"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["n"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["u"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["v"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["q"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["r"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["r"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["s"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["s"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["t"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["t"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["u"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["p"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["n"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["o"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["v"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["q"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["o"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["p"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["w"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -1070,6 +1071,15 @@ async function deleteGoal(goal) {
     goal: goal
   }, 'goals', 'DELETE');
   return response.text();
+}
+/**
+ * Get skill groups with associated names, agentGroups and skills
+ * @return {Promise -> [Object]} array of objects from SkillGroup table
+ */
+
+async function getSkillGroups() {
+  let response = await request({}, 'skill-group', 'GET');
+  return response.json();
 }
 /**
  * List of all links.
@@ -1479,10 +1489,10 @@ const vm = new Vue({
   },
   methods: {
     jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["t" /* updateSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["u" /* updateSkillJob */](job);
     },
     jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getSkillJobs */]();
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["k" /* getSkillJobs */]();
       return jobs.map(job => {
         if (!job.data) {
           job.data = this.jobAdder().data;

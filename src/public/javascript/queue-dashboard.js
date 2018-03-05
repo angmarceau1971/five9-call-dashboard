@@ -9,10 +9,12 @@ let timeout = null;
 let gizmo = null;
 
 $(document).ready(() => {
-    gizmo = new GizmoManager();
 
     // listen for sign-in button press
     $('.play-pause').click(async (event) => {
+        gizmo = new GizmoManager();
+        await gizmo.load();
+
         // prevent redirection
         event.preventDefault();
 
@@ -47,7 +49,7 @@ $(document).ready(() => {
     });
 
     // Trigger "play" button to start updating when page is loaded.
-    if (Object.keys(gizmo.gizmos).length > 0) $('.play-pause').trigger('click');
+    $('.play-pause').trigger('click');
 });
 
 

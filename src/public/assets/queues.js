@@ -114,28 +114,29 @@ const API_URL = 'http://localhost:3000/api/';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["k"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["m"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["n"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["u"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["v"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["q"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["r"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["r"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["s"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["s"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["t"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["t"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["u"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["d"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["p"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["n"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["o"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["v"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["q"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["o"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["p"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["w"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(5);
@@ -256,6 +257,15 @@ async function deleteGoal(goal) {
     goal: goal
   }, 'goals', 'DELETE');
   return response.text();
+}
+/**
+ * Get skill groups with associated names, agentGroups and skills
+ * @return {Promise -> [Object]} array of objects from SkillGroup table
+ */
+
+async function getSkillGroups() {
+  let response = await request({}, 'skill-group', 'GET');
+  return response.json();
 }
 /**
  * List of all links.
@@ -494,10 +504,11 @@ let timeout = null; // Object to manage the gizmos (queue widgets)
 
 let gizmo = null;
 $(document).ready(() => {
-  gizmo = new __WEBPACK_IMPORTED_MODULE_2__gizmo__["a" /* default */](); // listen for sign-in button press
-
+  // listen for sign-in button press
   $('.play-pause').click(async event => {
-    // prevent redirection
+    gizmo = new __WEBPACK_IMPORTED_MODULE_2__gizmo__["a" /* default */]();
+    await gizmo.load(); // prevent redirection
+
     event.preventDefault(); // Currently running?
     // stop any current event loops running
 
@@ -529,7 +540,7 @@ $(document).ready(() => {
     createQueueList(thisgizmo, table);
   }); // Trigger "play" button to start updating when page is loaded.
 
-  if (Object.keys(gizmo.gizmos).length > 0) $('.play-pause').trigger('click');
+  $('.play-pause').trigger('click');
 });
 
 async function runQueueDashboard() {
@@ -540,7 +551,7 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["m" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["n" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
@@ -744,8 +755,10 @@ function jsonToViewData(json, includeFields = ['Skill Name', 'Calls In Queue', '
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = GizmoManager;
-// Handling of queue gizmo widgets.
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(7);
+ // Handling of queue gizmo widgets.
 // Manages state and DOM (modals to edit skills & name).
+
 function GizmoManager() {
   // Object storing info on filters & names for each gizmo-widget
   this.gizmos = null; // which gizmo has a menu open?
@@ -852,24 +865,34 @@ function GizmoManager() {
   }; // Load gizmos from local storage on startup
 
 
-  this.load = function () {
+  this.load = async function () {
     let data = localStorage.getItem('user_gizmos');
 
     if (!data) {
-      this.gizmos = {};
+      let skillGroups = await __WEBPACK_IMPORTED_MODULE_0__api__["j" /* getSkillGroups */]();
+      let i = 0;
+      this.gizmos = skillGroups.reduce((res, skillGroup) => {
+        res[`gizmo-${i++}`] = {
+          name: skillGroup.name,
+          queueList: [],
+          showQueueList: false,
+          skillFilter: skillGroup.skills
+        };
+        return res;
+      }, {});
+      console.log('Loading default gizmos:', this.gizmos);
     } else {
       this.gizmos = JSON.parse(data);
-      console.log('Loading gizmos:', this.gizmos); // Build view
+      console.log('Loading saved gizmos:', this.gizmos);
+    } // Build view
 
-      for (const id of Object.keys(this.gizmos)) {
-        this.build(id);
-      }
 
-      ;
+    for (const id of Object.keys(this.gizmos)) {
+      this.build(id);
     }
-  };
 
-  this.load();
+    ;
+  };
 } // Breaks down "skill1, skill2 , skill3" string
 //          to ['skill1','skill2','skill3'] array
 

@@ -1,3 +1,4 @@
+import * as api from './api';
 
 // Handling of queue gizmo widgets.
 // Manages state and DOM (modals to edit skills & name).
@@ -118,21 +119,30 @@ export default function GizmoManager() {
     }
 
     // Load gizmos from local storage on startup
-    this.load = function() {
+    this.load = async function() {
         let data = localStorage.getItem('user_gizmos');
         if (!data) {
-            this.gizmos = {};
+            let skillGroups = await api.getSkillGroups();
+            let i = 0;
+            this.gizmos = skillGroups.reduce((res, skillGroup) => {
+                res[`gizmo-${i++}`] = {
+                    name: skillGroup.name,
+                    queueList: [],
+                    showQueueList: false,
+                    skillFilter: skillGroup.skills
+                };
+                return res;
+            }, {});
+            console.log('Loading default gizmos:', this.gizmos);
         } else {
             this.gizmos = JSON.parse(data);
-            console.log('Loading gizmos:', this.gizmos);
-            // Build view
-            for (const id of Object.keys(this.gizmos)) {
-                this.build(id);
-            };
+            console.log('Loading saved gizmos:', this.gizmos);
         }
+        // Build view
+        for (const id of Object.keys(this.gizmos)) {
+            this.build(id);
+        };
     }
-
-    this.load();
 }
 
 // Breaks down "skill1, skill2 , skill3" string
