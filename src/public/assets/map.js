@@ -730,7 +730,7 @@ async function updateMap(callMap) {
   })); // if any zips with calls are missing from customerData, add them here
 
   let missing = getZipsWithoutCustomers(callData, customerData);
-  data.concat(missing); // Determine the field being mapped -- total calls or per customer
+  data = data.concat(missing); // Determine the field being mapped -- total calls or per customer
 
   let field;
 
@@ -806,7 +806,7 @@ async function getCustomerData() {
 }
 
 function getZipsWithoutCustomers(callData, customerData) {
-  callData.filter(d => isZipWithoutCustomers(d.zipCode, customerData)).map(d => ({
+  return callData.filter(d => isZipWithoutCustomers(d.zipCode, customerData)).map(d => ({
     zipCode: d.zipCode,
     calls: d.calls,
     customers: 0

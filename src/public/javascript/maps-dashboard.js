@@ -114,7 +114,7 @@ async function updateMap(callMap) {
 
     // if any zips with calls are missing from customerData, add them here
     let missing = getZipsWithoutCustomers(callData, customerData);
-    data.concat(missing);
+    data = data.concat(missing);
 
     // Determine the field being mapped -- total calls or per customer
     let field;
