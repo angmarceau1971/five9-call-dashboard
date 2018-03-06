@@ -195,7 +195,7 @@ async function getCustomerData() {
 
 
 function getZipsWithoutCustomers(callData, customerData) {
-    callData
+    return callData
         .filter((d) => isZipWithoutCustomers(d.zipCode, customerData))
         .map((d) => ({
             zipCode: d.zipCode,
