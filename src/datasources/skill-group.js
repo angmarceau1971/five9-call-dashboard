@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const log = require('../utility/log');
-const uploader = require('../custom-upload/custom-upload');
+const uploader = require('./custom-upload');
 
 const skillGroupSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,

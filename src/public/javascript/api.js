@@ -76,7 +76,7 @@ export async function updateField(field) {
 
 
 /**
- * List of all links.
+ * List of all goals.
  * @return {Promise} resolves to array of goal objects
  */
 export async function getGoalList() {
@@ -108,6 +108,33 @@ export async function updateGoal(goal) {
  */
 export async function deleteGoal(goal) {
     let response = await request({goal: goal}, 'goals', 'DELETE');
+    return response.text();
+}
+
+/**
+ * List of all datasources.
+ * @return {Promise} resolves to array of datasource objects
+ */
+export async function getDatasources() {
+    let response = await request({}, 'datasources', 'GET');
+    return response.json();
+}
+/**
+ * Updates a datasource on server.
+ * @param  {Object}  datasource new object
+ * @return {Promise} resolves to response message
+ */
+export async function updateDatasource(datasource) {
+    let response = await request({datasource: datasource}, 'datasources', 'PUT');
+    return response.text();
+}
+/**
+ * Delete a datasource from server.
+ * @param  {Object}  datasource object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteDatasource(datasource) {
+    let response = await request({datasource: datasource}, 'datasources', 'DELETE');
     return response.text();
 }
 

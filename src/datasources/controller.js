@@ -46,9 +46,9 @@ module.exports.getScorecardStatistics = getScorecardStatistics;
 
 /**
  * Merge _id fields into each datum. E.g., the input:
- *      [ { calls: 1, _id: { name: 'Frodo' } } ]
+ *      [ { calls: 42, _id: { name: 'Frodo' } } ]
  * will return:
- *      [ { calls: 1, name: 'Frodo', _id: { name: 'Frodo ' } } ]
+ *      [ { calls: 42, name: 'Frodo', _id: { name: 'Frodo' } } ]
  * @param {Array} data from MongoDB
  * @return {Array} data with each entry including _id as regular fields
  */
@@ -123,3 +123,9 @@ function createGroup(groupBy, fields) {
     }, group);
     return group;
 }
+
+
+async function getAll() {
+    return
+}
+module.exports.getAll = getAll;

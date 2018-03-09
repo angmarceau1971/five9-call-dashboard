@@ -123,14 +123,13 @@ export const store = new Vuex.Store({
 
     // Asynchronous actions
     actions: {
-        async updateTheme(context, newTheme) {
-            await api.updateUserTheme(context.state.currentUser, newTheme);
-            let updatedUser = clone(context.state.user);
-            updatedUser.theme = newTheme;
-            context.commit('setUser', updatedUser);
-        },
-
         // Call when page first loads
+        async updateUser(context, username) {
+            let user = await api.getUserInformation(username);
+            context.commit('setUser', user);
+            let goals = await api.getGoalsForAgentGroups(user.agentGroups);
+            context.commit('setGoals', goals);
+        },
         async startProcess(context) {
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
@@ -139,6 +138,7 @@ export const store = new Vuex.Store({
             return context.dispatch('nextUpdate', null);
         },
 
+        // Force a refresh. For testing purposes.
         async forceRefresh(context) {
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
@@ -146,15 +146,10 @@ export const store = new Vuex.Store({
             context.dispatch('startProcess');
         },
 
-        async updateUser(context, username) {
-            let user = await api.getUserInformation(username);
-            context.commit('setUser', user);
-            let goals = await api.getGoalsForAgentGroups(user.agentGroups);
-            context.commit('setGoals', goals);
-        },
-
+        // Refresh data based on current datasources
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
+            console.log(`User is: ${JSON.stringify(context.state.user)}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
@@ -181,6 +176,14 @@ export const store = new Vuex.Store({
                         id: timeout
                 });
             };
+        },
+
+        // Save a new theme to server
+        async updateTheme(context, newTheme) {
+            await api.updateUserTheme(context.state.currentUser, newTheme);
+            let updatedUser = clone(context.state.user);
+            updatedUser.theme = newTheme;
+            context.commit('setUser', updatedUser);
         }
     }
 });

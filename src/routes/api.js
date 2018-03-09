@@ -25,11 +25,11 @@ const users = require('../authentication/users'); // stores usernames to check a
 const verify = require('../authentication/verify'); // check user permissions
 const customers = require('../customers/customers'); // customer database
 
-const uploader = require('../custom-upload/custom-upload');
+const uploader = require('../datasources/custom-upload');
 const skillGroup = require('../datasources/skill-group');
 
-
-const addAdminRoutes = require('./administrative.js').addTo(router);
+// Include endpoints defined in other files
+const addAdminRoutes = require('./administrative').addTo(router);
 
 router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
     report.onReady(async () => {

@@ -29,7 +29,7 @@ aht.widgets = [
             'Calculated.acw',
             'Calculated.hold'
         ],
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -47,7 +47,7 @@ aht.widgets = [
             'Calculated.acw',
             'Calculated.hold'
         ],
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -63,7 +63,7 @@ aht.widgets = [
             'x': 'dateDay',
             'y': 'Calculated.aht'
         },
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -86,7 +86,7 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Today',
         'fieldName': 'AcdFeed.calls',
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -99,7 +99,7 @@ calls.widgets = [
         'component': 'single-value',
         'title': 'Month to Date',
         'fieldName': 'AcdFeed.calls',
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -115,7 +115,7 @@ calls.widgets = [
             'x': 'dateDay',
             'y': 'AcdFeed.calls'
         },
-        'datasource': 'Agent Stats',
+        'datasource': 'Agent Call Stats',
         'filter': {
             agentUsername: {
                 $in: ['<current user>']
@@ -219,7 +219,7 @@ const layout = {
     datasources: [
         {
             "id": "1",
-            "name": "Agent Stats",
+            "name": "Agent Call Stats",
             "fields": {
                 "sum": [
                     "calls",

@@ -1,9 +1,12 @@
-import * as api from './api.js';
+import Vue from 'vue';
+import * as api from './api';
+import EditorTable from '../components/editor-table.vue';
 
 const vm = new Vue({
     el: '#upload-app',
 
     components: {
+        'editor-table': EditorTable
     },
 
     data: {
@@ -15,6 +18,39 @@ const vm = new Vue({
         updateMessage: function(msg) {
             this.message = msg;
         },
+
+        // Data source manipulation
+        datasourceUpdater: async function(datasource) {
+            let clean = clone(datasource);
+            try {
+                clean.fields = JSON.parse(clean.fields);
+            } catch (err) {
+                return `Unable to save: ${err}.`;
+            }
+            return api.updateDatasource(clean);
+        },
+        datasourceLoader: async function() {
+            let datasources = await api.getDatasources();
+            const str = (s) => JSON.stringify(s, null, 2);
+            const stringin = function(datasource) {
+                datasource.fields = str(datasource.fields);
+                return datasource;
+            }
+            return datasources.map(stringin);
+        },
+        datasourceAdder: function() {
+            return {
+                name: '',
+                fields: [],
+                defaultUpdateType: 'addTo',
+                lastUpdated: ''
+            }
+        },
+        datasourceRemover: function(datasource) {
+            return api.deleteDatasource(datasource);
+        },
+
+        // Utility functions
         uploadFile: async function(event) {
             const file = event.target.files[0];
             if (!file) {
@@ -34,6 +70,10 @@ const vm = new Vue({
                 this.$refs['fileInput'].value = '';
             }.bind(this);
             reader.readAsText(file);
-        }
+        },
+        formatDateTime: function(d) {
+            if (!d) return 'N/A';
+            return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
+        },
     }
 });

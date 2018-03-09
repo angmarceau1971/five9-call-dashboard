@@ -61,6 +61,36 @@ module.exports.addTo = function(router) {
 
 
     //////////////////////////////////////////
+    // Custom Datasource endpoints
+    // Get list of datasources
+    router.get('/datasources', verify.apiMiddleware(), async (req, res) => {
+        let datasourceList = await datasources.getAll();
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(datasourceList));
+    });
+
+    // Modify a datasource
+    router.put('/datasources', verify.apiMiddleware('admin'), async (req, res) => {
+        res.set('Content-Type', 'application/text');
+        let datasource = req.body.datasource;
+        try {
+            let response = await datasources.update(datasource);
+            res.status(200).send(`Datasource "${datasource.name}" has been updated.`);
+        } catch (err) {
+            res.status(500).send(`Error while updating ${datasource.name}: ${err}.`);
+        }
+    });
+
+    // Delete a data source
+    router.delete('/datasources', verify.apiMiddleware('admin'), async (req, res) => {
+        const numRemoved = await datasources.remove(req.body.datasource);
+        const message = `Datasource "${req.body.datasource.name}" has been deleted.`;
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(message);
+    });
+
+
+    //////////////////////////////////////////
     // Skilling job endpoints
     // Get list of scheduled skilling jobs
     router.get('/skill', verify.apiMiddleware('admin'), async (req, res) => {
