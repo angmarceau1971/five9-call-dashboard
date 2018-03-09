@@ -226,9 +226,8 @@ async function refreshUserDatabase(usersModel) {
 
         // Update or add each Five9 user to database
         // http://mongodb.github.io/node-mongodb-native/3.0/api/Collection.html#findAndModify
-        usersModel.collection.findAndModify(
+        usersModel.findOneAndUpdate(
             { username: newUser.username }, // query
-            [], // sort
             { $set: newUser }, // update
             // options - add to collection if not found
             { upsert: true, setDefaultsOnInsert: true },

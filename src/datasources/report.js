@@ -132,7 +132,11 @@ async function scheduleUpdate(interval) {
     time.end   = moment().format('YYYY-MM-DD') + 'T23:59:59';
 
     // update from Five9
-    await loadData(time);
+    try {
+        await loadData(time);
+    } catch (err) {
+        log.error(`Error during report.loadData: ${err}.`);
+    }
 
     // Schedule next update
     currentlyUpdatingData = false;
@@ -316,8 +320,9 @@ async function refreshDatabase(time, reportModel, reportName) {
  * @return {Object}       formatted data to insert in collection
  */
 function parseRow(model, row) {
-    let datestring;
+    // parsed row object
     const p = {};
+    let datestring;
     let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
 
     if (model == CallLog) {
@@ -374,8 +379,8 @@ function parseRow(model, row) {
     // Shared fields
     p.calls = row.calls * 1;
     p.date = moment.tz(
-        moment(datestring, 'YYYY/MM/DD HH:mm'),
-        'America/Los_Angeles'
+        datestring, 'YYYY/MM/DD HH:mm',
+        'America/Los_Angeles' // Default Five9 report timezone from API
     ).toDate();
 
     return p;
@@ -392,7 +397,7 @@ async function onReady(fun) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 50000) {
-        log.message(`Report.onReady called while database is updating; waiting 1000ms`);
+        // log.message(`Report.onReady called while database is updating; waiting 1000ms`);
         waited += 1000;
         await wait(1000);
     }

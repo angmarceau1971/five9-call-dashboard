@@ -35,11 +35,14 @@ let currentlyUpdatingData = false;
 async function scheduleUpdate(interval) {
     currentlyUpdatingData = true;
 
-    // ensure session is open
-    await five9.openStatisticsSession();
-
-    // update from Five9
-    await refreshDatabase();
+    try {
+        // ensure session is open
+        await five9.openStatisticsSession();
+        // update from Five9
+        await refreshDatabase();
+    } catch (err) {
+        log.error(`Error during queue-stats.scheduleUpdate: ${err}.`);
+    }
 
     // Schedule next update
     currentlyUpdatingData = false;
@@ -129,7 +132,7 @@ async function onReady(fun) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 50000) {
-        log.message(`QueueStats.onReady called while database is updating; waiting 1000ms`);
+        // log.message(`QueueStats.onReady called while database is updating; waiting 1000ms`);
         waited += 1000;
         await wait(1000);
     }

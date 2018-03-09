@@ -23,8 +23,13 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
             }
         }, {
             $addFields: {
+                // Add day field
                 dateDay: {
-                    '$dateToString': { format: '%Y-%m-%d', date: '$date' }
+                    '$dateToString': {
+                        format: '%Y-%m-%d',
+                        date: '$date',
+                        timezone: 'America/Denver' // must be MongoDB >=3.6
+                    }
                 }
             }
         }, {

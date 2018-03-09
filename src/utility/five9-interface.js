@@ -256,7 +256,8 @@ async function httpsRequest(options, body) {
         req.on('socket', (socket) => {
             socket.setTimeout(50000);
             socket.on('timeout', () => {
-                log.error(`----- Five9 request timed out`);
+                log.error(`----- Five9 request timed out\n
+                            Body sent in request:\n${body}\n`);
                 req.abort();
                 reject(new pt.TimeoutError('Five9 request timed out.'));
             });
