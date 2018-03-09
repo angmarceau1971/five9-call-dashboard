@@ -26,6 +26,7 @@ module.exports.connect = connect;
 
 /**
  * Get an instance of the MongoDB `db` object
+ * TODO: is this broken?
  * @return {Object} db connection object
  */
 function getMongoDb() {

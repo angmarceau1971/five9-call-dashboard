@@ -1,6 +1,8 @@
 /**
  * This module helps handle manual data uploads via CSV files.
  *
+ * Models included are CustomDatasource, which describes a type of custom data,
+ * and CustomData, which houses the actual uploaded data.
  */
 
 const csv = require('csvtojson'); // CSV parsing
@@ -15,6 +17,9 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
+////////////////////////////////////////////////////////////////////////////////
+// Custom Datasource manipulation
+////////////////////////////////////////////////////////////////////////////////
 // Definition for custom datasources
 const customDatasourceSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -116,7 +121,24 @@ function remove(datasource) {
 }
 module.exports.remove = remove;
 
+/**
+ * @param  {Object} datasource
+ * @param  {Date}   updateTime
+ * @return {Promise}
+ */
+async function setDatasourceLastUpdated(datasource, updateTime) {
+    const oid = mongoose.Types.ObjectId(datasource._id);
+    return await CustomDatasource.updateOne(
+        { _id: oid },
+        { $set: { 'lastUpdated': updateTime } }
+    );
+}
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Data updating functions
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Add data to custom collection.
@@ -141,7 +163,7 @@ async function upload(datasourceName, csvData) {
     }
 
     // Save it
-    // TODO update datasource with lastUpdate time
+    setDatasourceLastUpdated(datasource, new Date());
     return CustomData.collection.insert(data);
 }
 module.exports.upload = upload;
