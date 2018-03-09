@@ -28,7 +28,7 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
                     '$dateToString': {
                         format: '%Y-%m-%d',
                         date: '$date',
-                        timezone: 'America/Denver' // must be MongoDB >=3.6
+                        timezone: 'America/Denver'
                     }
                 }
             }
