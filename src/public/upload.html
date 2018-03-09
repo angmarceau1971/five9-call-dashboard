@@ -22,6 +22,15 @@
             {{ message }}
         </div>
 
+        <div class="section data-upload">
+            <h3>Upload new data</h3>
+                <input v-model="selectedDatasourceName" placeholder="Custom datasource name" />
+                <input type="file" accept=".csv" name="Data Upload"
+                    ref="fileInput"
+                    @change="uploadFile"
+                />
+        </div>
+
         <div class="section custom-sources">
             <h3>Custom Data Sources</h3>
             <editor-table
@@ -36,7 +45,7 @@
                         <input v-model="props.item.name" />
                     </td>
                     <td>
-                        <input v-model="props.item.fields" />
+                        <textarea v-model="props.item.fields"></textarea>
                     </td>
 
                     <td>
@@ -61,7 +70,7 @@
             <h3>Upload new Skill Group mapping</h3>
                 <input type="file" accept=".csv" name="Skill Group File Upload"
                     ref="fileInput"
-                    @change="uploadFile"
+                    @change="uploadSkillGroupFile"
                 />
         </div>
     </div>

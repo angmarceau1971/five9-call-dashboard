@@ -9,7 +9,8 @@ const skillGroupSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     // Array of skills in this group
     skills: {

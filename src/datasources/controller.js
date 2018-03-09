@@ -4,6 +4,8 @@ const log = require('../utility/log'); // recording updates
 const report = require('./report'); // data feeds for SL & calls
 const queue  = require('./queue-stats'); // real-time queue feeds
 
+const custom = require('./custom-upload');
+
 /**
  * Get agent statistics from the ACD Queue data source.
  *
@@ -123,9 +125,3 @@ function createGroup(groupBy, fields) {
     }, group);
     return group;
 }
-
-
-async function getAll() {
-    return
-}
-module.exports.getAll = getAll;

@@ -7,6 +7,7 @@ const csv = require('csvtojson'); // CSV parsing
 const five9 = require('../utility/five9-interface'); // Five9 interface helper functions
 const log = require('../utility/log'); // recording updates
 const moment = require('moment-timezone'); // dates/times
+const uniq = require('ramda/src/uniq');
 
 const secure = require('../secure_settings.js'); // local/secure settings
 const db = require('../utility/database').getMongoDb();
@@ -14,39 +15,181 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
-/**
- * Create a new MongoDB collection.
- * @param  {String} tableName name for new collection
- * @return {Promise}          resolves to new collection
- */
-async function createNewTable(tableName) {
-    return new Promise((resolve, reject) => {
-        db.createCollection(tableName, function (err, collection) {
-            if (err) {
-                log.error(`custom-upload.createNewTable: ${err}`);
-                reject(err);
+// Definition for custom datasources
+const customDatasourceSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    // Array of field objects, each having `name` and `type` properties
+    fields: {
+        type: [{
+            _id: false,
+            name: String,
+            fieldType: { // this is a property called `type`
+                type: String,
+                enum: ['Number', 'String', 'Date']
             }
-            resolve(collection);
-        });
-    });
+        }],
+        default: []
+    },
+    // When updating, should all data be replaced, or should new data be
+    // appended to existing data?
+    defaultUpdateType: {
+        type: String,
+        default: 'addTo',
+        enum: ['addTo', 'overwrite']
+    },
+    // Record when the data was last uploaded
+    lastUpdated: {
+        type: Date
+    }
+});
+
+const CustomDatasource = mongoose.model(
+    'CustomDatasource', customDatasourceSchema
+);
+module.exports.CustomDatasource = CustomDatasource;
+
+// Model to store actual uploaded data
+const customDataSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    // Name of datasource.collectionName associated with this datum
+    _datasourceName: {
+        type: String,
+        required: true
+    },
+    // Any additional fields are added by custom upload
+});
+const CustomData = mongoose.model('CustomData', customDataSchema);
+
+
+/**
+ * Get list of custom datasources
+ * @return {Promise -> Array} resolves to array of CustomDatasource objects
+ */
+function getAll() {
+    return CustomDatasource.find({});
 }
+module.exports.getAll = getAll;
+/**
+ * Get list of custom datasources
+ * @param  {String} datasourceName
+ * @return {Promise -> Array} resolves to array of CustomDatasource objects
+ */
+function getDatasourceByName(datasourceName) {
+    return CustomDatasource.findOne({ name: datasourceName }).lean().exec();
+}
+module.exports.getAll = getAll;
+
+
+/**
+ * Save custom datasource to table. Will modify entry if it already exists;
+ * otherwise, it will add a new datasource.
+ * @param  {Object} datasource
+ * @return {Promise -> Object}
+ */
+async function update(datasource) {
+    const oid = new mongoose.Types.ObjectId(datasource._id);
+
+    log.message(`Updating ${datasource.name} to: ${JSON.stringify(datasource)}`);
+    let response = await CustomDatasource.replaceOne(
+        { _id: oid },
+        datasource
+    );
+    if (response.nModified > 0) {
+        log.message(`Field ${datasource.name} has been modified.`);
+        return response;
+    }
+    // If this datasource doesn't exist, create a new collection for it
+    log.message(`No match for datasource ID. Adding new datasource ${datasource.name}.`);
+    return CustomDatasource.collection.insert(datasource);
+}
+module.exports.update = update;
+
+function remove(datasource) {
+    log.message(`Deleting goal ${datasource.name}.`);
+    const oid = mongoose.Types.ObjectId(datasource._id);
+    return CustomDatasource.remove({ _id: oid }).exec();
+}
+module.exports.remove = remove;
+
+
 
 /**
  * Add data to custom collection.
- * @param  {String} tableName collection name
- * @param  {Array}  data      array of new data
- * @param  {Boolean} confirmedNewHeaders true if user has already verified that
- *                                       new headers/fields/columns should be created
+ * @param  {String} datasourceName name of associated data source
+ * @param  {String} csvData      array of new data
  * @return {Promise}          resolves to new documents
  */
-async function upload(tableName, data, confirmedNewHeaders) {
-    throw new Error('custom upload not implemented');
-    // if data contains headers not yet in table, confirm with user
-    if (!confirmedNewHeaders && hasNewHeaders(coll, data)) {
-
+async function upload(datasourceName, csvData) {
+    let datasource = await getDatasourceByName(datasourceName);
+    if (!datasource) {
+        throw new Error(`Datasource ${datasourceName} not found.`);
     }
+
+    // Process data from CSV
+    let data = await parseCsv(csvData, getRowParser(datasource));
+
+    // if data contains headers not defined in datasource, deny!
+    let newFields = nonSchemaFields(datasource, data);
+    if (newFields.length > 0) {
+        throw new Error(`Uploaded data has a field/header(s) not defined in datasource ${datasourceName}:
+                        ${newFields.join(', ')}`);
+    }
+
+    // Save it
+    // TODO update datasource with lastUpdate time
+    return CustomData.collection.insert(data);
 }
 module.exports.upload = upload;
+
+/**
+ * Returns a function that takes a row of data, and applies formatting based on
+ * the datasource that it rolls into.
+ * @param  {Object} datasource that data will be added to
+ * @return {Function} function accepting object representing a raw row / document
+ */
+function getRowParser(datasource) {
+    let converters = {
+        'Number': (x) => x * 1,
+        'String': (x) => String(x),
+        'Date':   (x) => new Date(x)
+    };
+    let fieldConverter = datasource.fields.reduce((o, field) => {
+        o[field.name] = converters[field.fieldType];
+        return o;
+    }, {});
+
+    return function rowParser(row) {
+        for (let field of Object.keys(row)) {
+            row[field] = fieldConverter[field](row[field]);
+        }
+        row._datasourceName = datasource.name;
+        return row;
+    }
+}
+
+/**
+ * Check that @param datasource includes all the fields in @param data.
+ * Assumes each object in data array has the same keys (as in parsed CSV data).
+ * @param  {Object} datasource
+ * @param  {Array}  data
+ * @return {Array} of fields that aren't in schema
+ */
+function nonSchemaFields(datasource, data) {
+    let fields = [];
+    for (let fieldName of Object.keys(data[0])) {
+        if (fieldName !== '_datasourceName'
+            && datasource.fields
+                .filter((field) => field.name == fieldName)
+                .length == 0)
+            fields.push(fieldName);
+    }
+    return uniq(fields);
+}
 
 /**
  * Convert CSV data string into Array of objects.
@@ -63,7 +206,7 @@ async function parseCsv(csvString, rowProcessor=(x)=>x){
         csv({ delimiter: ',' })
             .fromString(csvString)
             .on('json', (res) => {
-                let datum
+                let datum;
                 try {
                     datum = rowProcessor(res);
                 } catch (err) {

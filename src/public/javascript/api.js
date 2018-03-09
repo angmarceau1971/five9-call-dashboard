@@ -234,8 +234,7 @@ export async function reloadData(params) {
 
 /**
  * [uploadData description]
- * @param  {Object} params including fields tableName, csv, and
- *                          confirmedChanges (optional)
+ * @param  {Object} params including fields datasourceName and csv
  * @return {Promise}       resolves to string (server response message)
  */
 export async function uploadData(params) {

@@ -2,6 +2,8 @@ import Vue from 'vue';
 import * as api from './api';
 import EditorTable from '../components/editor-table.vue';
 
+const clone = require('ramda/src/clone');
+
 const vm = new Vue({
     el: '#upload-app',
 
@@ -11,7 +13,7 @@ const vm = new Vue({
 
     data: {
         message: '',
-        selectedTableName: 'SkillGroup'
+        selectedDatasourceName: ''
     },
 
     methods: {
@@ -52,6 +54,12 @@ const vm = new Vue({
 
         // Utility functions
         uploadFile: async function(event) {
+            return this.handleFileUpload(event, this.selectedDatasourceName);
+        },
+        uploadSkillGroupFile: async function(event) {
+            return this.handleFileUpload(event, 'SkillGroup')
+        },
+        handleFileUpload: async function(event, datasourceName) {
             const file = event.target.files[0];
             if (!file) {
                 this.updateMessage('No file selected.')
@@ -61,7 +69,7 @@ const vm = new Vue({
             reader.onload = async function(e) {
                 const params = {
                     csv: e.target.result,
-                    tableName: this.selectedTableName,
+                    datasourceName: datasourceName,
                     confirmedChanges: false
                 };
                 const response = await api.uploadData(params);
@@ -71,6 +79,7 @@ const vm = new Vue({
             }.bind(this);
             reader.readAsText(file);
         },
+
         formatDateTime: function(d) {
             if (!d) return 'N/A';
             return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');

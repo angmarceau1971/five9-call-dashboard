@@ -216,23 +216,20 @@ router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
 //////////////////////////////////////
 /**
  * Handle upload of data via CSV.
- * @param {String}  req.body.tableName collection to upload data to
+ * @param {String}  req.body.datasourceName collection to upload data to
  * @param {String}  req.body.csv data in CSV format
- * @param {Boolean} req.body.confirmedChanges has user already confirmed any
- *                      changes needed (such as adding headers)
  */
 router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
-        if (req.body.tableName == 'SkillGroup') {
+        if (req.body.datasourceName == 'SkillGroup') {
             const data = await skillGroup.process(req.body.csv);
             await skillGroup.upload(data);
         }
         else {
-            const data = await uploader.parseCsv(req.body.csv);
-            await uploader.upload(req.body.tableName, data, req.body.confirmedChanges);
+            await uploader.upload(req.body.datasourceName, req.body.csv);
         }
-        res.status(200).send(`Data uploaded successfully to ${req.body.tableName}.`);
+        res.status(200).send(`Data uploaded successfully to ${req.body.datasourceName}.`);
     } catch (err) {
         res.status(500).send(`${err}.\nCheck that column headers and value formats are correct.`);
     }
