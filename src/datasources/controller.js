@@ -15,32 +15,48 @@ const custom = require('./custom-upload');
  * @return {Promise} resolves to JSON data matching query
  */
 async function getScorecardStatistics({ filter, fields, groupBy, source }) {
-    // Construct MongoDB aggregation object
-    const aggregation = [
-        {
-            $match: {
-                $and: [
-                    ...createFilter(filter)
-                ]
+    // Get data model and filter object
+    let model = getModelFromSourceName(source);
+    let cleanFilter = createFilter(filter);
+
+    // Custom models should be filtered for datasource
+    if (model === custom) {
+        filter.push({
+            _datasourceName: {
+                $eq: source
             }
-        }, {
-            $addFields: {
-                // Add day field
-                dateDay: {
-                    '$dateToString': {
-                        format: '%Y-%m-%d',
-                        date: '$date',
-                        timezone: 'America/Denver'
+        });
+    }
+
+    let data;
+    // If data is being summarized, use MongoDB's aggregation pipeline
+    if (groupBy.length > 0) {
+        let aggregation = [
+            {
+                $match: {
+                    $and: cleanFilter
+                }
+            }, {
+                $addFields: {
+                    // Add day field
+                    dateDay: {
+                        '$dateToString': {
+                            format: '%Y-%m-%d',
+                            date: '$date',
+                            timezone: 'America/Denver'
+                        }
                     }
                 }
+            }, {
+                $group: createGroup(groupBy, fields)
             }
-        }, {
-            $group: createGroup(groupBy, fields)
-        }
-    ];
+        ];
+        data = await getStatisticsFrom(model, aggregation);
+    // If data isn't being grouped, just return raw matching documents
+    } else {
+        data = await model.find({ $and: cleanFilter }).lean().exec();
+    }
 
-    let model = getModelFromSourceName(source);
-    let data = await getStatisticsFrom(model, aggregation);
     return mergeIdToData(data);
 }
 module.exports.getScorecardStatistics = getScorecardStatistics;
@@ -77,8 +93,9 @@ function getModelFromSourceName(sourceName) {
         case 'QueueStats':
             return queue.QueueStats;
             break;
+        // If it's not one of the above sources, assume it's a custom model
         default:
-            throw new Error(`Source name "${sourceName}" isn't a valid model.`);
+            return custom.CustomData;
     }
 }
 
@@ -119,9 +136,15 @@ function createGroup(groupBy, fields) {
                 return result;
             }, {})
     };
-    group = fields.sum.reduce((result, field) => {
-        result[field] = { $sum: `$${field}` };
-        return result;
-    }, group);
+    if (fields.sum)
+        group = fields.sum.reduce((result, field) => {
+            result[field] = { $sum: `$${field}` };
+            return result;
+        }, group);
+    if (fields.push)
+        group = fields.push.reduce((result, field) => {
+            result[field] = { $push: `$${field}` };
+            return result;
+        }, group);
     return group;
 }

@@ -68,7 +68,9 @@ const customDataSchema = mongoose.Schema({
     },
     // Any additional fields are added by custom upload
 });
+
 const CustomData = mongoose.model('CustomData', customDataSchema);
+module.exports.CustomData = CustomData;
 
 
 /**

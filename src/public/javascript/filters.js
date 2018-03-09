@@ -36,6 +36,14 @@ export function clean(original) {
     if (filter.agentUsername && filter.agentUsername.$eq == '<current user>') {
         filter.agentUsername.$eq = user.username;
     }
+    // Insert actual full name
+    if (filter.agentName && filter.agentName.$in
+        && filter.agentName.$in.includes("<current user's full name>")) {
+        filter.agentName.$in[
+            filter.agentName.$in.indexOf("<current user's full name>")
+        ] = `${user.lastName}, ${user.firstName}`;
+    }
+
 
     // Update appropriate skill groups
     if (filter.skillGroup) {

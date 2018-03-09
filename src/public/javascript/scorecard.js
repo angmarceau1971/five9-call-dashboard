@@ -292,22 +292,16 @@ const layout = {
         },
         {
             "id": "4",
-            "name": "Queue Data",
-            "fields": {
-                "sum": [
-                    "CallsInQueue",
-                ]
-            },
+            "name": "QA",
+            "fields": {},
             "filter": {
-                "skillGroup": {
-                    $in: ["<current user group>"]
+                "agentName": {
+                    $in: ["<current user's full name>"]
                 }
             },
-            "groupBy": [
-                'SkillName'
-            ],
+            "groupBy": [],
             "refreshRate": 180,
-            "source": "QueueStats"
+            "source": "QA"
         }
     ]
 };

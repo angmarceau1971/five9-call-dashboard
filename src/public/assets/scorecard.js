@@ -13131,8 +13131,7 @@ function getParams(datasource) {
 async function loadData(params) {
   const data = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getStatistics */](params);
   const cleaned = data.map(d => {
-    d['dateDay'] = moment(d['dateDay']).toDate();
-    d._id.dateDay = moment(d._id.dateDay).toDate();
+    if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
     return d;
   });
   return cleaned;
@@ -13854,6 +13853,11 @@ function clean(original) {
 
   if (filter.agentUsername && filter.agentUsername.$eq == '<current user>') {
     filter.agentUsername.$eq = user.username;
+  } // Insert actual full name
+
+
+  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
+    filter.agentName.$in[filter.agentName.$in.indexOf("<current user's full name>")] = `${user.lastName}, ${user.firstName}`;
   } // Update appropriate skill groups
 
 
@@ -15059,18 +15063,16 @@ const layout = {
     "source": "AgentLogin"
   }, {
     "id": "4",
-    "name": "Queue Data",
-    "fields": {
-      "sum": ["CallsInQueue"]
-    },
+    "name": "QA",
+    "fields": {},
     "filter": {
-      "skillGroup": {
-        $in: ["<current user group>"]
+      "agentName": {
+        $in: ["<current user's full name>"]
       }
     },
-    "groupBy": ['SkillName'],
+    "groupBy": [],
     "refreshRate": 180,
-    "source": "QueueStats"
+    "source": "QA"
   }]
 };
 const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];

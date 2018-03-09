@@ -204,8 +204,7 @@ function getParams(datasource) {
 export async function loadData(params) {
     const data = await api.getStatistics(params);
     const cleaned = data.map((d) => {
-        d['dateDay'] = moment(d['dateDay']).toDate();
-        d._id.dateDay = moment(d._id.dateDay).toDate();
+        if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
         return d;
     });
     return cleaned;
