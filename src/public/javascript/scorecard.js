@@ -244,7 +244,7 @@ const layout = {
         calls,
         sla,
         state,
-        qa
+        // qa
     ],
     datasources: [
         {

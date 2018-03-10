@@ -19,6 +19,12 @@ Accepts data prop with structure:
             :width="width" :height="height">
         </svg>
 
+        <div v-if="chartData.length == 0"
+            :style="{transform: `translate(0, ${height /2}px)`}"
+            class="text-overlay font-color-seconday">
+            N/A
+        </div>
+
         <!-- "Play" symbol &#9658; -->
         <div class="data-dropdown-title"
             title="Click to show or hide data table">
@@ -215,15 +221,17 @@ export default {
         updateChart: function(data) {
             this.g.selectAll('.arc, .path').remove().exit();
 
-            let arc = this.g.selectAll('arc')
-                .data(this.pie(data))
-                .enter().append('g')
-                  .attr('class', 'arc')
-                  .on('mouseover', this.hoverOverPieSlice)
-                  .on('mouseout', this.stopHoveringOverPieSlice);
-            arc.append('path')
-                .attr('d', this.path)
-                .attr('fill', this.getColor);
+            if (data.length > 0) {
+                let arc = this.g.selectAll('arc')
+                    .data(this.pie(data))
+                    .enter().append('g')
+                      .attr('class', 'arc')
+                      .on('mouseover', this.hoverOverPieSlice)
+                      .on('mouseout', this.stopHoveringOverPieSlice);
+                arc.append('path')
+                    .attr('d', this.path)
+                    .attr('fill', this.getColor);
+            }
         },
         hoverOverPieSlice: function(d, i) {
             this.infoBox.message = `
@@ -292,6 +300,13 @@ export default {
         transform: rotate(90deg);
     }
 
+    .text-overlay {
+        position: absolute;
+        width: 100%;
+        font-size: 1.5em;
+        top: -1.5em;
+        font-weight: lighter;
+    }
 
     h1, .content {
       margin-left: 20px;

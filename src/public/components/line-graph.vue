@@ -1,11 +1,6 @@
 /**
 Line graph widget. Uses D3 to render an SVG based on data and fields props.
 
-Accepts data prop with structure:
-{
-  'yyyy-mm-dd': 1,
-  'yyyy-mm-dd': 2, ...
-}
  */
 
 <template>
@@ -78,7 +73,7 @@ const props = {
             bottom: 25,
         }),
     },
-    statsType: { // individual or team
+    statsType: { // `individual` or `team`
         type: String,
         default: 'individual'
     }

@@ -55,3 +55,7 @@ svg text {
 .red {
     color: hsl(345, 83%, 52%);
 }
+
+.font-color-seconday {
+    color: hsl(0, 0%, 74%);
+}

@@ -149,7 +149,6 @@ export const store = new Vuex.Store({
         // Refresh data based on current datasources
         async nextUpdate(context, ms) {
             console.log(`Refresh at ${moment()}`);
-            console.log(`User is: ${JSON.stringify(context.state.user)}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
