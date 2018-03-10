@@ -1001,7 +1001,7 @@ function getParameters(requestType) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'http://localhost:3000/api/';
+const API_URL = 'https://nathanclonts.com/dashboard/api/';
 /* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
 
 
@@ -1308,10 +1308,8 @@ module.exports = _cloneRegExp;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(8);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(18);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c5b49b9e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(18);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(16)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -1325,34 +1323,17 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-44c58087"
+var __vue_scopeId__ = "data-v-c5b49b9e"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c5b49b9e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\editor-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-44c58087", Component.options)
-  } else {
-    hotAPI.reload("data-v-44c58087", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -1368,31 +1349,18 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("571a7959", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("0d77700d", content, true, {});
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\n}\n.table-body-wrapper[data-v-44c58087] {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\n}\n.editor-list thead[data-v-44c58087] {\r\n    position: fixed;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue"],"names":[],"mappings":";AAmIA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,yBAAA;IACA,YAAA;CACA;AACA;IACA,kBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,uBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"(header, i) in completeHeaders\"\r\n                        ref=\"headerRow\">\r\n                        {{ header }}\r\n                    </th>\r\n\r\n                </tr>\r\n            </thead>\r\n            <div class=\"table-body-wrapper\">\r\n                <tr class=\"row\" v-for=\"(item, i) in items\" ref=\"bodyRows\">\r\n                    <slot name=\"item\" :item=\"item\">\r\n                        <p>\r\n                            This is just a dang filler! Use\r\n                            <a target=\"_blank\"\r\n                            href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                              slot-scope</a>\r\n                            to render `td` elements in parent.\r\n                        </p>\r\n                    </slot>\r\n\r\n                    <td>\r\n                        <button class=\"save-button\" title=\"Save changes\"\r\n                            @click=\"update(item)\"\r\n                        >Save</button>\r\n                    </td>\r\n                    <td v-if=\"!!remover\">\r\n                        <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                            @click=\"remove(item)\"\r\n                        >Delete</button>\r\n                    </td>\r\n                </tr>\r\n            </div>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        completeHeaders: function() {\r\n            let newHeaders = this.headers.concat(['Save']);\r\n            if (!!this.remover) return newHeaders.concat(['Delete']);\r\n            else return newHeaders;\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    /**\r\n     * Any time an update occurs, the headers' width needs to be matched to the\r\n     * body's width (because the header is contained in its own fixed div).\r\n     */\r\n    updated() {\r\n        if (this.items.length == 0) return;\r\n        let headerRow = this.$refs.headerRow;\r\n        let bodyRow = this.$refs.bodyRows[0].children;\r\n        let i = 0;\r\n        for (let cell of bodyRow) {\r\n            let cellStyles = getComputedStyle(cell);\r\n            headerRow[i].style.width = cellStyles.width;\r\n            i++;\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\r\n}\r\n.table-body-wrapper {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\r\n}\r\n.editor-list thead {\r\n    position: fixed;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".editor-wrapper[data-v-c5b49b9e]{width:100%;overflow-x:scroll}.editor-list[data-v-c5b49b9e]{display:table;transform:translateX(0);width:100%}.table-body-wrapper[data-v-c5b49b9e]{max-height:450px;overflow-y:scroll;margin-top:4em}.editor-list thead[data-v-c5b49b9e]{position:fixed}.editor-list .row[data-v-c5b49b9e]{height:3em}td[data-v-c5b49b9e],th[data-v-c5b49b9e]{padding:0 .5em;min-width:120px;vertical-align:middle}th[data-v-c5b49b9e]{text-align:left}td[data-v-c5b49b9e]{border-bottom:1px solid #a1a2a5;align-items:center;height:3em}td input[type=text][data-v-c5b49b9e]{width:8em}td input[type=number][data-v-c5b49b9e]{width:4em}.editor-wrapper button[data-v-c5b49b9e]{box-sizing:border-box;border:4px solid #444;border-radius:6px;min-width:80px}.editor-wrapper button[data-v-c5b49b9e]:hover{background-color:#fff}.editor-wrapper .add-button[data-v-c5b49b9e]{font-size:2em;font-weight:lighter;color:#84bbeb}", ""]);
 
 // exports
 
@@ -1402,120 +1370,10 @@ exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "editor-wrapper" }, [
-    _c("table", { staticClass: "editor-list" }, [
-      _c("thead", [
-        _c(
-          "tr",
-          _vm._l(_vm.completeHeaders, function(header, i) {
-            return _c("th", { ref: "headerRow", refInFor: true }, [
-              _vm._v(
-                "\n                    " + _vm._s(header) + "\n                "
-              )
-            ])
-          })
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "table-body-wrapper" },
-        _vm._l(_vm.items, function(item, i) {
-          return _c(
-            "tr",
-            { ref: "bodyRows", refInFor: true, staticClass: "row" },
-            [
-              _vm._t("item", [_vm._m(0, true)], { item: item }),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "save-button",
-                    attrs: { title: "Save changes" },
-                    on: {
-                      click: function($event) {
-                        _vm.update(item)
-                      }
-                    }
-                  },
-                  [_vm._v("Save")]
-                )
-              ]),
-              _vm._v(" "),
-              !!_vm.remover
-                ? _c("td", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "delete-button",
-                        attrs: { title: "Permanently delete row" },
-                        on: {
-                          click: function($event) {
-                            _vm.remove(item)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ])
-                : _vm._e()
-            ],
-            2
-          )
-        })
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "add-button",
-        attrs: { title: "Add a new row" },
-        on: { click: _vm.addRow }
-      },
-      [_vm._v("+")]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "\n                        This is just a dang filler! Use\n                        "
-      ),
-      _c(
-        "a",
-        {
-          attrs: {
-            target: "_blank",
-            href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
-          }
-        },
-        [_vm._v("\n                          slot-scope")]
-      ),
-      _vm._v(
-        "\n                        to render `td` elements in parent.\n                    "
-      )
-    ])
-  }
-]
-render._withStripped = true
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"editor-wrapper"},[_c('table',{staticClass:"editor-list"},[_c('thead',[_c('tr',_vm._l((_vm.completeHeaders),function(header,i){return _c('th',{ref:"headerRow",refInFor:true},[_vm._v("\n                    "+_vm._s(header)+"\n                ")])}))]),_vm._v(" "),_c('div',{staticClass:"table-body-wrapper"},_vm._l((_vm.items),function(item,i){return _c('tr',{ref:"bodyRows",refInFor:true,staticClass:"row"},[_vm._t("item",[_vm._m(0,true)],{item:item}),_vm._v(" "),_c('td',[_c('button',{staticClass:"save-button",attrs:{"title":"Save changes"},on:{"click":function($event){_vm.update(item)}}},[_vm._v("Save")])]),_vm._v(" "),(!!_vm.remover)?_c('td',[_c('button',{staticClass:"delete-button",attrs:{"title":"Permanently delete row"},on:{"click":function($event){_vm.remove(item)}}},[_vm._v("Delete")])]):_vm._e()],2)}))]),_vm._v(" "),_c('button',{staticClass:"add-button",attrs:{"title":"Add a new row"},on:{"click":_vm.addRow}},[_vm._v("+")])])}
+var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_vm._v("\n                        This is just a dang filler! Use\n                        "),_c('a',{attrs:{"target":"_blank","href":"https://vuejs.org/v2/guide/components.html#Scoped-Slots"}},[_vm._v("\n                          slot-scope")]),_vm._v("\n                        to render `td` elements in parent.\n                    ")])}]
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-44c58087", esExports)
-  }
-}
 
 /***/ }),
 /* 19 */
@@ -12860,7 +12718,6 @@ process.umask = function() { return 0; };
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(31);
 /* unused harmony namespace reexport */
-var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -12883,23 +12740,6 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\widget-base.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1add60b1", Component.options)
-  } else {
-    hotAPI.reload("data-v-1add60b1", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -13157,10 +12997,8 @@ async function loadData(params) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(34);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(59);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9e845fb2_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(59);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(55)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -13179,29 +13017,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9e845fb2_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\data-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
-  } else {
-    hotAPI.reload("data-v-48d3d2c4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -15456,8 +15277,7 @@ function isDescendant(parent, child) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(29);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(77);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_85cec492_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(77);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -15474,29 +15294,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_85cec492_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\dashboard.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c21f7d6a", Component.options)
-  } else {
-    hotAPI.reload("data-v-c21f7d6a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -15508,10 +15311,8 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(30);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(72);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_896a7164_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(72);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(47)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -15530,29 +15331,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_896a7164_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\card.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3bec8029", Component.options)
-  } else {
-    hotAPI.reload("data-v-3bec8029", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -15568,31 +15352,18 @@ var content = __webpack_require__(48);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("1e5068c2", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("003c2389", content, true, {});
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue"],"names":[],"mappings":";AAyMA;IACA,cAAA;IACA,2BAAA;IACA,gBAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,iBAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <pie-chart class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('pie-chart')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></pie-chart>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport PieChart from './pie-chart.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph,\r\n        'pie-chart': PieChart\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n            // CSS Grid positioning\r\n            gridPositioning: {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".card{display:grid;grid-template-columns:1fr;grid-gap:2.5em}.card>.widget>:first-child{margin-top:0}.card{transition:all 1s;padding:.5em 0}.card .add-button,.card .edit-button{display:inline;text-decoration:none;position:absolute;font-size:1.25em;color:#fff;margin:4%;width:2em;height:2em;align-content:center;justify-content:center;background-color:hsla(0,0%,39%,.5);border-radius:2em}.card .add-button:hover,.card .edit-button:hover{background-color:hsla(0,0%,39%,.3)}.card .edit-button{top:0;left:0}.card .add-button{top:0;right:0}", ""]);
 
 // exports
 
@@ -15604,10 +15375,8 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(32);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(54);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_418064fc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(54);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(50)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -15626,29 +15395,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_418064fc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\editor.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a38dd874", Component.options)
-  } else {
-    hotAPI.reload("data-v-a38dd874", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -15664,31 +15416,18 @@ var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("208c43bc", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("409d4006", content, true, {});
 
 /***/ }),
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.dateDay\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".modal-wrapper{position:absolute;top:0;left:0;width:100%}.edit-form{top:-100px}.modal-wrapper .add-button,.modal-wrapper .edit-button{display:inline;text-decoration:none;position:absolute;font-size:1.25em;color:#fff;margin:4%;width:2em;height:2em;align-content:center;justify-content:center;background-color:hsla(0,0%,39%,.5);border-radius:2em}.modal-wrapper .add-button:hover,.modal-wrapper .edit-button:hover{background-color:hsla(0,0%,39%,.3)}.modal-wrapper .edit-button{top:0;left:0}.modal-wrapper .add-button{top:0;right:0}", ""]);
 
 // exports
 
@@ -17231,207 +16970,10 @@ var index_esm = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal-wrapper" }, [
-    _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
-      _vm._v("☰")
-    ]),
-    _vm._v(" "),
-    _vm.editingNow
-      ? _c("div", { staticClass: "edit-form modal" }, [
-          _c("h1", [_vm._v(_vm._s(_vm.newObject.title))]),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Title")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newObject.title,
-                expression: "newObject.title"
-              }
-            ],
-            domProps: { value: _vm.newObject.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.newObject, "title", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Data Source")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.datasource,
-                  expression: "newObject.datasource"
-                }
-              ],
-              attrs: { name: "datasource-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "datasource",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.datasources, function(source) {
-              return _c("option", { domProps: { value: source.name } }, [
-                _vm._v(_vm._s(source.name))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Field")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.fieldName,
-                  expression: "newObject.fieldName"
-                }
-              ],
-              attrs: { name: "field-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "fieldName",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.fields, function(field) {
-              return _c("option", { domProps: { value: field.fullName } }, [
-                _vm._v(
-                  _vm._s(field.displayName || field.name) +
-                    "\n             " +
-                    _vm._s(field.source == "N/A" ? "" : " - " + field.source)
-                )
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Date")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.filter.dateDay,
-                  expression: "newObject.filter.dateDay"
-                }
-              ],
-              attrs: { name: "date-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject.filter,
-                    "dateDay",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.dateOptions, function(option) {
-              return _c("option", { domProps: { value: option } }, [
-                _vm._v(_vm._s(option))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "button-wrapper" }, [
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(true)
-                  }
-                }
-              },
-              [_vm._v("Save")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(false)
-                  }
-                }
-              },
-              [_vm._v("Cancel")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "delete", on: { click: _vm.deleteObject } },
-              [_vm._v("Delete")]
-            )
-          ])
-        ])
-      : _vm._e()
-  ])
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal-wrapper"},[_c('button',{staticClass:"edit-button",on:{"click":_vm.edit}},[_vm._v("☰")]),_vm._v(" "),(_vm.editingNow)?_c('div',{staticClass:"edit-form modal"},[_c('h1',[_vm._v(_vm._s(_vm.newObject.title))]),_vm._v(" "),_c('h3',[_vm._v("Title")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.newObject.title),expression:"newObject.title"}],domProps:{"value":(_vm.newObject.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.newObject, "title", $event.target.value)}}}),_vm._v(" "),_c('h3',[_vm._v("Data Source")]),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.newObject.datasource),expression:"newObject.datasource"}],attrs:{"name":"datasource-dropdown"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$set(_vm.newObject, "datasource", $event.target.multiple ? $$selectedVal : $$selectedVal[0])}}},_vm._l((_vm.$store.state.datasources),function(source){return _c('option',{domProps:{"value":source.name}},[_vm._v(_vm._s(source.name))])})),_vm._v(" "),_c('h3',[_vm._v("Field")]),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.newObject.fieldName),expression:"newObject.fieldName"}],attrs:{"name":"field-dropdown"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$set(_vm.newObject, "fieldName", $event.target.multiple ? $$selectedVal : $$selectedVal[0])}}},_vm._l((_vm.$store.state.fields),function(field){return _c('option',{domProps:{"value":field.fullName}},[_vm._v(_vm._s(field.displayName || field.name)+"\n             "+_vm._s(field.source=='N/A' ? '' : (" - " + (field.source))))])})),_vm._v(" "),_c('h3',[_vm._v("Date")]),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.newObject.filter.dateDay),expression:"newObject.filter.dateDay"}],attrs:{"name":"date-dropdown"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.$set(_vm.newObject.filter, "dateDay", $event.target.multiple ? $$selectedVal : $$selectedVal[0])}}},_vm._l((_vm.dateOptions),function(option){return _c('option',{domProps:{"value":option}},[_vm._v(_vm._s(option))])})),_vm._v(" "),_c('div',{staticClass:"button-wrapper"},[_c('button',{on:{"click":function($event){_vm.exit(true)}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.exit(false)}}},[_vm._v("Cancel")]),_vm._v(" "),_c('button',{staticClass:"delete",on:{"click":_vm.deleteObject}},[_vm._v("Delete")])])]):_vm._e()])}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a38dd874", esExports)
-  }
-}
 
 /***/ }),
 /* 55 */
@@ -17444,31 +16986,18 @@ var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("9c7d97ce", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("79485764", content, true, {});
 
 /***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -17480,8 +17009,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__ = __webpack_require__(58);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_17da287a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__ = __webpack_require__(58);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -17498,29 +17026,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_17da287a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\data-table-row.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-067c065e", Component.options)
-  } else {
-    hotAPI.reload("data-v-067c065e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -17530,91 +17041,20 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "tr",
-    { class: { highlight: _vm.isHighlighted } },
-    _vm._l(_vm.datum, function(val, key) {
-      return _c(
-        "td",
-        {
-          class: _vm.formatted(val, key).styleClass,
-          on: { mouseover: _vm.highlight, mouseleave: _vm.unhighlight }
-        },
-        [
-          _vm._v(
-            "\n        " + _vm._s(_vm.formatted(val, key).value) + "\n    "
-          )
-        ]
-      )
-    })
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('tr',{class:{ highlight: _vm.isHighlighted }},_vm._l((_vm.datum),function(val,key){return _c('td',{class:_vm.formatted(val, key).styleClass,on:{"mouseover":_vm.highlight,"mouseleave":_vm.unhighlight}},[_vm._v("\n        "+_vm._s(_vm.formatted(val, key).value)+"\n    ")])}))}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-067c065e", esExports)
-  }
-}
 
 /***/ }),
 /* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "data-table-wrapper",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("table", { staticClass: "data-table" }, [
-        _c("thead", [
-          _c(
-            "tr",
-            _vm._l(_vm.displayHeaders, function(header) {
-              return _c("th", [_vm._v(_vm._s(header))])
-            })
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.data, function(datum, i) {
-            return _c("data-table-row", {
-              key: i,
-              tag: "tr",
-              attrs: { datum: datum }
-            })
-          })
-        )
-      ])
-    ]
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"data-table-wrapper",attrs:{"draggable":_vm.$store.state.editMode},on:{"dragstart":_vm.dragstartHandler}},[_c('table',{staticClass:"data-table"},[_c('thead',[_c('tr',_vm._l((_vm.displayHeaders),function(header){return _c('th',[_vm._v(_vm._s(header))])}))]),_vm._v(" "),_c('tbody',_vm._l((_vm.data),function(datum,i){return _c("data-table-row",{key:i,tag:"tr",attrs:{"datum":datum}})}))])])}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-48d3d2c4", esExports)
-  }
-}
 
 /***/ }),
 /* 60 */
@@ -17623,10 +17063,8 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(36);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(63);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3e7cba2d_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(63);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(61)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -17640,34 +17078,17 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-21d5040e"
+var __vue_scopeId__ = "data-v-3e7cba2d"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3e7cba2d_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\line-graph.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-21d5040e", Component.options)
-  } else {
-    hotAPI.reload("data-v-21d5040e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -17683,31 +17104,18 @@ var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("3a8ea719", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("468301ba", content, true, {});
 
 /***/ }),
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e], .data-dropdown-title[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-21d5040e] {\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 30px;\n}\n.rotating-play-icon[data-v-21d5040e] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-21d5040e] {\n    transform: rotate(90deg);\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 99%, 80%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue"],"names":[],"mappings":";AA+RA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,kBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" :style=\"{ stroke: lineColor }\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                    :style=\"{ fill: lineColor }\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >\r\n            {{ infoBox.message }}\r\n        </div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"data\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    statsType: { // `individual` or `team`\r\n        type: String,\r\n        default: 'individual'\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        },\r\n        lineColor() {\r\n            if (this.statsType == 'team') {\r\n                return 'hsl(345, 91%, 48%)';\r\n            } else {\r\n                return 'steelblue';\r\n            }\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            if (this.data.length > 0 && this.showTable == false) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            const field = this.$store.getters.field(this.fields.y);\r\n            if (field.goal) {\r\n                let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                    ({\r\n                        x: this.scaled.x(xVal),\r\n                        y: this.scaled.y(field.goal)\r\n                    })\r\n                );\r\n                this.paths.goalLine = this.createLine(goalPoints);\r\n            }\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                // .attr('fill', '#ddd')\r\n                .attr('dx', '-1em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n    .data-dropdown-title {\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 30px;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 99%, 80%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".line-graph[data-v-3e7cba2d]{max-width:100%;min-height:200px}.graph-wrap[data-v-3e7cba2d]:hover{cursor:pointer}.graph-wrap[data-v-3e7cba2d]{height:175px;width:100%}.data-dropdown-title[data-v-3e7cba2d],.graph-wrap text[data-v-3e7cba2d]{text-anchor:middle;font-size:.8em}.data-dropdown-title[data-v-3e7cba2d]{font-size:.6em;text-align:left;margin-left:30px}.rotating-play-icon[data-v-3e7cba2d]{font-size:.75em;display:inline-block;transition:all .2s ease-in}.rotating-play-icon.rotate-90deg[data-v-3e7cba2d]{transform:rotate(90deg)}.content[data-v-3e7cba2d],h1[data-v-3e7cba2d]{margin-left:20px}label[data-v-3e7cba2d]{display:inline-block;width:150px}.line[data-v-3e7cba2d]{fill:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:1.5}.goal-line[data-v-3e7cba2d]{fill:none;stroke:#d3d3d3;stroke-opacity:.7;stroke-width:1}.axis[data-v-3e7cba2d]{font-size:.5em}.selector[data-v-3e7cba2d]{stroke:rgba(154,209,254,.7);stroke-width:1;fill:none}.info-box[data-v-3e7cba2d]{display:inline-block;position:absolute;top:0;left:0;color:inherit;border-radius:2px;padding:.5em;z-index:100000}", ""]);
 
 // exports
 
@@ -17717,170 +17125,10 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "line-graph",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c(
-        "div",
-        {
-          ref: "graph-wrap",
-          staticClass: "graph-wrap",
-          on: { click: _vm.toggleTable }
-        },
-        [
-          _c(
-            "svg",
-            {
-              attrs: { width: _vm.width, height: _vm.height },
-              on: { mousemove: _vm.mouseover, mouseleave: _vm.mouseleave }
-            },
-            [
-              _c("text", { staticClass: "title", attrs: { x: 55, y: 10 } }, [
-                _vm._v(_vm._s(_vm.fieldDisplayName(_vm.fields.y)))
-              ]),
-              _vm._v(" "),
-              _c("g", {
-                ref: "yaxis",
-                staticClass: "axis",
-                style: {
-                  transform:
-                    "translate(" +
-                    _vm.margin.left +
-                    "px," +
-                    _vm.margin.top +
-                    "px)"
-                }
-              }),
-              _vm._v(" "),
-              _c("g", {
-                ref: "xaxis",
-                staticClass: "axis",
-                style: {
-                  transform:
-                    "translate(" +
-                    _vm.margin.left +
-                    "px," +
-                    (_vm.height - _vm.margin.bottom) +
-                    "px)"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "g",
-                {
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.margin.left +
-                      "px, " +
-                      _vm.margin.top +
-                      "px)"
-                  }
-                },
-                [
-                  _c("path", {
-                    staticClass: "area",
-                    attrs: { d: _vm.paths.area }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "goal-line",
-                    attrs: { d: _vm.paths.goalLine }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "line",
-                    style: { stroke: _vm.lineColor },
-                    attrs: { d: _vm.paths.line }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "selector",
-                    attrs: { d: _vm.paths.selector }
-                  }),
-                  _vm._v(" "),
-                  _vm._l(_vm.points, function(point) {
-                    return _c("circle", {
-                      staticClass: "data-circle",
-                      style: { fill: _vm.lineColor },
-                      attrs: { r: _vm.circleRadius, cx: point.x, cy: point.y }
-                    })
-                  })
-                ],
-                2
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "data-dropdown-title",
-              attrs: { title: "Click to show or hide data table" }
-            },
-            [
-              _c(
-                "span",
-                {
-                  staticClass: "rotating-play-icon",
-                  class: { "rotate-90deg": _vm.showTable }
-                },
-                [_vm._v("\r\n                ►\r\n            ")]
-              ),
-              _vm._v("\r\n            Data\r\n        ")
-            ]
-          ),
-          _vm._v(" "),
-          _vm.infoBox.message
-            ? _c(
-                "div",
-                {
-                  staticClass: "info-box",
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.infoBox.x +
-                      "px, " +
-                      _vm.infoBox.y +
-                      "px)"
-                  }
-                },
-                [
-                  _vm._v(
-                    "\r\n            " +
-                      _vm._s(_vm.infoBox.message) +
-                      "\r\n        "
-                  )
-                ]
-              )
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _vm.showTable ? _c("data-table", { attrs: { data: _vm.data } }) : _vm._e()
-    ],
-    1
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"line-graph",attrs:{"draggable":_vm.$store.state.editMode},on:{"dragstart":_vm.dragstartHandler}},[_c('div',{ref:"graph-wrap",staticClass:"graph-wrap",on:{"click":_vm.toggleTable}},[_c('svg',{attrs:{"width":_vm.width,"height":_vm.height},on:{"mousemove":_vm.mouseover,"mouseleave":_vm.mouseleave}},[_c('text',{staticClass:"title",attrs:{"x":55,"y":10}},[_vm._v(_vm._s(_vm.fieldDisplayName(_vm.fields.y)))]),_vm._v(" "),_c('g',{ref:"yaxis",staticClass:"axis",style:({transform: ("translate(" + (_vm.margin.left) + "px," + (_vm.margin.top) + "px)")})}),_vm._v(" "),_c('g',{ref:"xaxis",staticClass:"axis",style:({transform: ("translate(" + (_vm.margin.left) + "px," + (_vm.height-_vm.margin.bottom) + "px)")})}),_vm._v(" "),_c('g',{style:({transform: ("translate(" + (_vm.margin.left) + "px, " + (_vm.margin.top) + "px)")})},[_c('path',{staticClass:"area",attrs:{"d":_vm.paths.area}}),_vm._v(" "),_c('path',{staticClass:"goal-line",attrs:{"d":_vm.paths.goalLine}}),_vm._v(" "),_c('path',{staticClass:"line",style:({ stroke: _vm.lineColor }),attrs:{"d":_vm.paths.line}}),_vm._v(" "),_c('path',{staticClass:"selector",attrs:{"d":_vm.paths.selector}}),_vm._v(" "),_vm._l((_vm.points),function(point){return _c('circle',{staticClass:"data-circle",style:({ fill: _vm.lineColor }),attrs:{"r":_vm.circleRadius,"cx":point.x,"cy":point.y}})})],2)]),_vm._v(" "),_c('div',{staticClass:"data-dropdown-title",attrs:{"title":"Click to show or hide data table"}},[_c('span',{staticClass:"rotating-play-icon",class:{ 'rotate-90deg': _vm.showTable }},[_vm._v("\n                ►\n            ")]),_vm._v("\n            Data\n        ")]),_vm._v(" "),(_vm.infoBox.message)?_c('div',{staticClass:"info-box",style:({transform: ("translate(" + (_vm.infoBox.x) + "px, " + (_vm.infoBox.y) + "px)")})},[_vm._v("\n            "+_vm._s(_vm.infoBox.message)+"\n        ")]):_vm._e()]),_vm._v(" "),(_vm.showTable)?_c('data-table',{attrs:{"data":_vm.data}}):_vm._e()],1)}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-21d5040e", esExports)
-  }
-}
 
 /***/ }),
 /* 64 */
@@ -17889,10 +17137,8 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(37);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(67);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_17d6c882_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(67);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(65)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -17906,34 +17152,17 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-4ae719c5"
+var __vue_scopeId__ = "data-v-17d6c882"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_17d6c882_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\single-value.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4ae719c5", Component.options)
-  } else {
-    hotAPI.reload("data-v-4ae719c5", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -17949,31 +17178,18 @@ var content = __webpack_require__(66);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("69ee75ae", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("194e7a1b", content, true, {});
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 110px;\n}\n.subvalue-wrapper[data-v-4ae719c5] {\r\n    display: flex;\r\n    justify-content: center;\n}\n.subvalue[data-v-4ae719c5] {\r\n    margin: 1em 1.5em 0.5em 1.5em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/single-value.vue"],"names":[],"mappings":";AAoFA;IACA,kBAAA;CACA;AACA;IACA,cAAA;IACA,wBAAA;CACA;AACA;IACA,8BAAA;CACA","file":"single-value.vue","sourcesContent":["/**\r\n * Widget that displays a single value with a title, and optionally sub-values.\r\n * @prop {String} fieldName\r\n * @prop {Array} subFields - optional\r\n * ... and other base widget props (filter, datasource,...)\r\n */\r\n<template>\r\n<div class=\"single-value\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\"\r\n    >\r\n    <h3>{{ title }}</h3>\r\n    <p class=\"metric\"\r\n      :class=\"formatted.styleClass\"\r\n      :title=\"field.displayName\"\r\n    >{{ formatted.value }}\r\n    </p>\r\n\r\n    <div class=\"subvalue-wrapper\">\r\n        <p class=\"subvalue\"\r\n            v-if=\"subFields\"\r\n            v-for=\"v in subValues\"\r\n            :title=\"v.fieldName\"\r\n            :class=\"v.styleClass\"\r\n        >{{ v.value }}</p>\r\n    </div>\r\n\r\n    <editor\r\n        v-if=\"$store.state.editMode\"\r\n        :initialObject=\"$props\"\r\n        @modify-widget=\"modify\"\r\n    ></editor>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport * as parse from '../javascript/parse';\r\n\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    props: ['title', 'fieldName', 'subFields'],\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        },\r\n        data: function() {\r\n            return this.$store.getters.getData(this.filter, this.datasource);\r\n        },\r\n        value: function() {\r\n            return parse.getValueForField(this.data, this.fieldName);\r\n        },\r\n        subValues: function() {\r\n            if (!this.subFields) return [];\r\n            return this.subFields.map((field) => {\r\n                let formatted = formatValue(\r\n                    parse.getValueForField(this.data, field),\r\n                    field\r\n                );\r\n                return {\r\n                    value: formatted.value,\r\n                    styleClass: formatted.styleClass,\r\n                    fieldName: this.$store.getters.field(field).displayName\r\n                }\r\n            });\r\n        }\r\n    },\r\n    methods: {\r\n        modify: function(newWidget) {\r\n            this.$emit('modify-widget', newWidget, this.id);\r\n        }\r\n    }\r\n};\r\n\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.single-value {\r\n    min-height: 110px;\r\n}\r\n.subvalue-wrapper {\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n.subvalue {\r\n    margin: 1em 1.5em 0.5em 1.5em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".single-value[data-v-17d6c882]{min-height:110px}.subvalue-wrapper[data-v-17d6c882]{display:flex;justify-content:center}.subvalue[data-v-17d6c882]{margin:1em 1.5em .5em}", ""]);
 
 // exports
 
@@ -17983,68 +17199,10 @@ exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 1
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "single-value",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("h3", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c(
-        "p",
-        {
-          staticClass: "metric",
-          class: _vm.formatted.styleClass,
-          attrs: { title: _vm.field.displayName }
-        },
-        [_vm._v(_vm._s(_vm.formatted.value) + "\r\n    ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "subvalue-wrapper" },
-        _vm._l(_vm.subValues, function(v) {
-          return _vm.subFields
-            ? _c(
-                "p",
-                {
-                  staticClass: "subvalue",
-                  class: v.styleClass,
-                  attrs: { title: v.fieldName }
-                },
-                [_vm._v(_vm._s(v.value))]
-              )
-            : _vm._e()
-        })
-      ),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c("editor", {
-            attrs: { initialObject: _vm.$props },
-            on: { "modify-widget": _vm.modify }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"single-value",attrs:{"draggable":_vm.$store.state.editMode},on:{"dragstart":_vm.dragstartHandler}},[_c('h3',[_vm._v(_vm._s(_vm.title))]),_vm._v(" "),_c('p',{staticClass:"metric",class:_vm.formatted.styleClass,attrs:{"title":_vm.field.displayName}},[_vm._v(_vm._s(_vm.formatted.value)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"subvalue-wrapper"},_vm._l((_vm.subValues),function(v){return (_vm.subFields)?_c('p',{staticClass:"subvalue",class:v.styleClass,attrs:{"title":v.fieldName}},[_vm._v(_vm._s(v.value))]):_vm._e()})),_vm._v(" "),(_vm.$store.state.editMode)?_c('editor',{attrs:{"initialObject":_vm.$props},on:{"modify-widget":_vm.modify}}):_vm._e()],1)}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ae719c5", esExports)
-  }
-}
 
 /***/ }),
 /* 68 */
@@ -18053,10 +17211,8 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(38);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(71);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3c648ca0_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(71);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(69)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -18070,34 +17226,17 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-57308e94"
+var __vue_scopeId__ = "data-v-3c648ca0"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3c648ca0_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\pie-chart.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-57308e94", Component.options)
-  } else {
-    hotAPI.reload("data-v-57308e94", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -18113,31 +17252,18 @@ var content = __webpack_require__(70);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("07cfff32", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("509600c6", content, true, {});
 
 /***/ }),
 /* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n    min-height: 180px;\n}\n.graph-wrap[data-v-57308e94]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-57308e94] {\n    height: 180px;\n    width: 100%;\n    position: relative;\n}\n.graph-wrap text[data-v-57308e94], .data-dropdown-title[data-v-57308e94] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-57308e94] {\n    position: absolute;\n    bottom: 10px;\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 1em;\n}\n.rotating-play-icon[data-v-57308e94] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-57308e94] {\n    transform: rotate(90deg);\n}\n.text-overlay[data-v-57308e94] {\n    position: absolute;\n    width: 100%;\n    font-size: 1.5em;\n    top: -1.5em;\n    font-weight: lighter;\n}\nh1[data-v-57308e94], .content[data-v-57308e94] {\n  margin-left: 20px;\n}\nlabel[data-v-57308e94] {\n  display: inline-block;\n  width: 150px;\n}\n.info-box[data-v-57308e94] {\n    display: inline-block;\n    position: absolute;\n    top: -20px;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/pie-chart.vue"],"names":[],"mappings":";AA6QA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AAEA;IACA,mBAAA;IACA,aAAA;IACA,iBAAA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAEA;IACA,mBAAA;IACA,YAAA;IACA,iBAAA;IACA,YAAA;IACA,qBAAA;CACA;AAEA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,sBAAA;IACA,mBAAA;IACA,WAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"pie-chart.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"pie-chart\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <h3>{{ title }}</h3>\r\n\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg\r\n            :width=\"width\" :height=\"height\">\r\n        </svg>\r\n\r\n        <div v-if=\"chartData.length == 0\"\r\n            :style=\"{transform: `translate(0, ${height /2}px)`}\"\r\n            class=\"text-overlay font-color-seconday\">\r\n            N/A\r\n        </div>\r\n\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"tableData\"\r\n        :headers=\"tableHeaders\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nconst reasonCodeColors = {\r\n    'Lunch': 'hsl(204, 54%, 52%)',\r\n    'One on One': 'hsl(206, 54%, 63%)',\r\n    'Break': 'hsl(209, 56%, 73%)',\r\n    'Training': 'hsl(205, 56%, 82%)',\r\n    'After Call Work': 'hsl(345, 85%, 51%)',\r\n    'Not Ready': 'hsl(345, 90%, 62%)',\r\n    'Outbound': 'hsl(345, 90%, 82%)',\r\n};\r\nconst reasonCodeSortOrder = [\r\n    'Lunch', 'One on One', 'Break', 'Training',\r\n    'After Call Work', 'Not Ready', 'Outbound',\r\n];\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 0,\r\n            bottom: 0,\r\n        }),\r\n    },\r\n    title: {\r\n        type: String\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'pie-chart',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 180,\r\n            height: 180,\r\n            radius: 90,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            },\r\n            // D3 objects\r\n            color: null,\r\n            pie: null,\r\n            path: null,\r\n            label: null,\r\n            svg: null,\r\n            g: null\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);\r\n            return grouped;\r\n        },\r\n        // Data with only fields needed to display chart\r\n        chartData() {\r\n            return this.data\r\n                .map((d) => {\r\n                    return {\r\n                        [this.fields.groupBy]: d[this.fields.groupBy],\r\n                        [this.fields.display]: d[this.fields.display]\r\n                    }\r\n                })\r\n                .filter((d) => d[this.fields.groupBy].trim() != '');\r\n        },\r\n        // Clean up data for data table\r\n        tableData() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            let additionalRows = [];\r\n            return this.data\r\n                .map((d) => {\r\n                    return {\r\n                        'reasonCode': d.reasonCode,\r\n                        'notReadyTime': d.notReadyTime\r\n                    }\r\n                })\r\n                // Remove blank reason code\r\n                .filter((d) => d.reasonCode.trim() != '')\r\n                // Add in Login and Handle Time rows\r\n                .concat(additionalRows);\r\n        },\r\n        tableHeaders() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            return ['Reason Code', 'Time'];\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n\r\n        // Set up D3\r\n        this.svg = d3.select(this.$el).select('svg');\r\n        this.g = this.svg.append('g').attr('transform',\r\n                                `translate(${this.width/2}, ${this.height/2})`);\r\n        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);\r\n        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);\r\n        this.pie = d3.pie()\r\n            .padAngle(.05)\r\n            .sort(this.sortValues)\r\n            .value((d) => d[this.fields.display]);\r\n        this.path = d3.arc()\r\n            .outerRadius(this.radius - 10)\r\n            .innerRadius((this.radius - 10) * 0.6);\r\n        this.label = d3.arc()\r\n            .outerRadius(this.radius - 40)\r\n            .innerRadius(this.radius - 40);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.updateChart(this.data); },\r\n        chartData: function(newData) { this.updateChart(newData); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable: function() {\r\n            if (this.data && !this.showTable) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        updateChart: function(data) {\r\n            this.g.selectAll('.arc, .path').remove().exit();\r\n\r\n            if (data.length > 0) {\r\n                let arc = this.g.selectAll('arc')\r\n                    .data(this.pie(data))\r\n                    .enter().append('g')\r\n                      .attr('class', 'arc')\r\n                      .on('mouseover', this.hoverOverPieSlice)\r\n                      .on('mouseout', this.stopHoveringOverPieSlice);\r\n                arc.append('path')\r\n                    .attr('d', this.path)\r\n                    .attr('fill', this.getColor);\r\n            }\r\n        },\r\n        hoverOverPieSlice: function(d, i) {\r\n            this.infoBox.message = `\r\n                ${d.data.reasonCode}:\r\n                ${formatValue(d.data[this.fields.display], this.fields.display).value}\r\n            `;\r\n        },\r\n        stopHoveringOverPieSlice: function(d, i) {\r\n            this.infoBox.message = '';\r\n        },\r\n        getColor: function(d) {\r\n            // If this is a reason code pie chart, try to use custom colors\r\n            if (this.fields.groupBy == 'reasonCode'\r\n                && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {\r\n                return reasonCodeColors[d.data.reasonCode]\r\n            // Default to blues scale\r\n            } else {\r\n                return this.colorScale(d.data[this.fields.groupBy]);\r\n            }\r\n        },\r\n        sortValues: function (a, b) {\r\n            if (this.fields.groupBy == 'reasonCode') {\r\n                return reasonCodeSortOrder.indexOf(a.reasonCode)\r\n                    <  reasonCodeSortOrder.indexOf(b.reasonCode)\r\n                    ?  -1 : 1\r\n            } else {\r\n                return 0;\r\n            }\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .pie-chart {\r\n        max-width: 100%;\r\n        min-height: 180px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 180px;\r\n        width: 100%;\r\n        position: relative;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n\r\n    .data-dropdown-title {\r\n        position: absolute;\r\n        bottom: 10px;\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 1em;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n    .text-overlay {\r\n        position: absolute;\r\n        width: 100%;\r\n        font-size: 1.5em;\r\n        top: -1.5em;\r\n        font-weight: lighter;\r\n    }\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: -20px;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, ".pie-chart[data-v-3c648ca0]{max-width:100%;min-height:180px}.graph-wrap[data-v-3c648ca0]:hover{cursor:pointer}.graph-wrap[data-v-3c648ca0]{height:180px;width:100%;position:relative}.data-dropdown-title[data-v-3c648ca0],.graph-wrap text[data-v-3c648ca0]{text-anchor:middle;font-size:.8em}.data-dropdown-title[data-v-3c648ca0]{position:absolute;bottom:10px;font-size:.6em;text-align:left;margin-left:1em}.rotating-play-icon[data-v-3c648ca0]{font-size:.75em;display:inline-block;transition:all .2s ease-in}.rotating-play-icon.rotate-90deg[data-v-3c648ca0]{transform:rotate(90deg)}.text-overlay[data-v-3c648ca0]{position:absolute;width:100%;font-size:1.5em;top:-1.5em;font-weight:lighter}.content[data-v-3c648ca0],h1[data-v-3c648ca0]{margin-left:20px}label[data-v-3c648ca0]{display:inline-block;width:150px}.info-box[data-v-3c648ca0]{display:inline-block;position:absolute;top:-20px;left:0;color:inherit;border-radius:2px;padding:.5em;z-index:100000}", ""]);
 
 // exports
 
@@ -18147,248 +17273,20 @@ exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "pie-chart",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("h3", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          ref: "graph-wrap",
-          staticClass: "graph-wrap",
-          on: { click: _vm.toggleTable }
-        },
-        [
-          _c("svg", { attrs: { width: _vm.width, height: _vm.height } }),
-          _vm._v(" "),
-          _vm.chartData.length == 0
-            ? _c(
-                "div",
-                {
-                  staticClass: "text-overlay font-color-seconday",
-                  style: { transform: "translate(0, " + _vm.height / 2 + "px)" }
-                },
-                [_vm._v("\r\n            N/A\r\n        ")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "data-dropdown-title",
-              attrs: { title: "Click to show or hide data table" }
-            },
-            [
-              _c(
-                "span",
-                {
-                  staticClass: "rotating-play-icon",
-                  class: { "rotate-90deg": _vm.showTable }
-                },
-                [_vm._v("\r\n                ►\r\n            ")]
-              ),
-              _vm._v("\r\n            Data\r\n        ")
-            ]
-          ),
-          _vm._v(" "),
-          _vm.infoBox.message
-            ? _c(
-                "div",
-                {
-                  staticClass: "info-box",
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.infoBox.x +
-                      "px, " +
-                      _vm.infoBox.y +
-                      "px)"
-                  }
-                },
-                [_vm._v(_vm._s(_vm.infoBox.message))]
-              )
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _vm.showTable
-        ? _c("data-table", {
-            attrs: { data: _vm.tableData, headers: _vm.tableHeaders }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"pie-chart",attrs:{"draggable":_vm.$store.state.editMode},on:{"dragstart":_vm.dragstartHandler}},[_c('h3',[_vm._v(_vm._s(_vm.title))]),_vm._v(" "),_c('div',{ref:"graph-wrap",staticClass:"graph-wrap",on:{"click":_vm.toggleTable}},[_c('svg',{attrs:{"width":_vm.width,"height":_vm.height}}),_vm._v(" "),(_vm.chartData.length == 0)?_c('div',{staticClass:"text-overlay font-color-seconday",style:({transform: ("translate(0, " + (_vm.height /2) + "px)")})},[_vm._v("\n            N/A\n        ")]):_vm._e(),_vm._v(" "),_c('div',{staticClass:"data-dropdown-title",attrs:{"title":"Click to show or hide data table"}},[_c('span',{staticClass:"rotating-play-icon",class:{ 'rotate-90deg': _vm.showTable }},[_vm._v("\n                ►\n            ")]),_vm._v("\n            Data\n        ")]),_vm._v(" "),(_vm.infoBox.message)?_c('div',{staticClass:"info-box",style:({transform: ("translate(" + (_vm.infoBox.x) + "px, " + (_vm.infoBox.y) + "px)")})},[_vm._v(_vm._s(_vm.infoBox.message))]):_vm._e()]),_vm._v(" "),(_vm.showTable)?_c('data-table',{attrs:{"data":_vm.tableData,"headers":_vm.tableHeaders}}):_vm._e()],1)}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-57308e94", esExports)
-  }
-}
 
 /***/ }),
 /* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "card metric-wrapper stats-box",
-      style: _vm.gridPositioning,
-      attrs: { id: _vm.id },
-      on: { dragover: _vm.dragWidgetHandler, drop: _vm.dropWidgetHandler }
-    },
-    [
-      _c(
-        "h2",
-        {
-          staticClass: "title descriptor",
-          attrs: { draggable: _vm.$store.state.editMode },
-          on: { dragstart: _vm.dragstartHandler }
-        },
-        [_vm._v(_vm._s(_vm.title))]
-      ),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c(
-            "button",
-            {
-              staticClass: "edit-button",
-              on: {
-                click: function($event) {
-                  _vm.$emit("edit-card", _vm.id)
-                }
-              }
-            },
-            [_vm._v("☰")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c(
-            "button",
-            { staticClass: "add-button", on: { click: _vm.addWidget } },
-            [_vm._v("+")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("single-value"), function(widget, i) {
-        return _c(
-          "single-value",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: {
-                "dragstart-widget": _vm.dragstartWidgetHandler,
-                "modify-widget": _vm.modifyWidget
-              }
-            },
-            "single-value",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("line-graph"), function(widget, i) {
-        return _c(
-          "line-graph",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
-            },
-            "line-graph",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("pie-chart"), function(widget, i) {
-        return _c(
-          "pie-chart",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
-            },
-            "pie-chart",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("data-table"), function(widget, i) {
-        return _c(
-          "data-table",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              attrs: { data: _vm.data, highlightedDate: _vm.highlightedDate },
-              on: {
-                hoverDate: _vm.hoverDate,
-                unhoverDate: _vm.unhoverDate,
-                "dragstart-widget": _vm.dragstartWidgetHandler
-              }
-            },
-            "data-table",
-            widget,
-            false
-          )
-        )
-      })
-    ],
-    2
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"card metric-wrapper stats-box",style:(_vm.gridPositioning),attrs:{"id":_vm.id},on:{"dragover":_vm.dragWidgetHandler,"drop":_vm.dropWidgetHandler}},[_c('h2',{staticClass:"title descriptor",attrs:{"draggable":_vm.$store.state.editMode},on:{"dragstart":_vm.dragstartHandler}},[_vm._v(_vm._s(_vm.title))]),_vm._v(" "),(_vm.$store.state.editMode)?_c('button',{staticClass:"edit-button",on:{"click":function($event){_vm.$emit('edit-card', _vm.id)}}},[_vm._v("☰")]):_vm._e(),_vm._v(" "),(_vm.$store.state.editMode)?_c('button',{staticClass:"add-button",on:{"click":_vm.addWidget}},[_vm._v("+")]):_vm._e(),_vm._v(" "),_vm._l((_vm.widgetsOfType('single-value')),function(widget,i){return _c('single-value',_vm._b({key:widget.id,ref:widget.id,refInFor:true,staticClass:"widget",style:({ order: widget.layoutOrder }),on:{"dragstart-widget":_vm.dragstartWidgetHandler,"modify-widget":_vm.modifyWidget}},'single-value',widget,false))}),_vm._v(" "),_vm._l((_vm.widgetsOfType('line-graph')),function(widget,i){return _c('line-graph',_vm._b({key:widget.id,ref:widget.id,refInFor:true,staticClass:"widget",style:({ order: widget.layoutOrder }),on:{"dragstart-widget":_vm.dragstartWidgetHandler}},'line-graph',widget,false))}),_vm._v(" "),_vm._l((_vm.widgetsOfType('pie-chart')),function(widget,i){return _c('pie-chart',_vm._b({key:widget.id,ref:widget.id,refInFor:true,staticClass:"widget",style:({ order: widget.layoutOrder }),on:{"dragstart-widget":_vm.dragstartWidgetHandler}},'pie-chart',widget,false))}),_vm._v(" "),_vm._l((_vm.widgetsOfType('data-table')),function(widget,i){return _c('data-table',_vm._b({key:widget.id,ref:widget.id,refInFor:true,staticClass:"widget",style:({ order: widget.layoutOrder }),attrs:{"data":_vm.data,"highlightedDate":_vm.highlightedDate},on:{"hoverDate":_vm.hoverDate,"unhoverDate":_vm.unhoverDate,"dragstart-widget":_vm.dragstartWidgetHandler}},'data-table',widget,false))})],2)}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3bec8029", esExports)
-  }
-}
 
 /***/ }),
 /* 73 */
@@ -18397,10 +17295,8 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(40);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(76);
-var disposed = false
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_869d2f0e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(76);
 function injectStyle (ssrContext) {
-  if (disposed) return
   __webpack_require__(74)
 }
 var normalizeComponent = __webpack_require__(0)
@@ -18419,29 +17315,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_869d2f0e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "src\\public\\components\\card-editor.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9d3c827e", Component.options)
-  } else {
-    hotAPI.reload("data-v-9d3c827e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 /* harmony default export */ __webpack_exports__["a"] = (Component.exports);
 
@@ -18457,31 +17336,18 @@ var content = __webpack_require__(75);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("fff1ea5c", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+var update = __webpack_require__(4)("09095b1f", content, true, {});
 
 /***/ }),
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"card-editor.vue","sourceRoot":""}]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -18491,150 +17357,20 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal" }, [
-    _c("h1", [_vm._v(_vm._s(_vm.newCard.title))]),
-    _vm._v(" "),
-    _c("h3", [_vm._v("Title")]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.newCard.title,
-          expression: "newCard.title"
-        }
-      ],
-      domProps: { value: _vm.newCard.title },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.newCard, "title", $event.target.value)
-        }
-      }
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "button-wrapper" }, [
-      _c(
-        "button",
-        {
-          on: {
-            click: function($event) {
-              _vm.$emit("exit-edit", true, _vm.newCard.id, _vm.newCard)
-            }
-          }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          on: {
-            click: function($event) {
-              _vm.$emit("exit-edit", false)
-            }
-          }
-        },
-        [_vm._v("Cancel")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "delete",
-          on: {
-            click: function($event) {
-              _vm.$emit("delete-card", _vm.id)
-            }
-          }
-        },
-        [_vm._v("Delete")]
-      )
-    ])
-  ])
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modal"},[_c('h1',[_vm._v(_vm._s(_vm.newCard.title))]),_vm._v(" "),_c('h3',[_vm._v("Title")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.newCard.title),expression:"newCard.title"}],domProps:{"value":(_vm.newCard.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.newCard, "title", $event.target.value)}}}),_vm._v(" "),_c('div',{staticClass:"button-wrapper"},[_c('button',{on:{"click":function($event){_vm.$emit('exit-edit', true, _vm.newCard.id, _vm.newCard)}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.$emit('exit-edit', false)}}},[_vm._v("Cancel")]),_vm._v(" "),_c('button',{staticClass:"delete",on:{"click":function($event){_vm.$emit('delete-card', _vm.id)}}},[_vm._v("Delete")])])])}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9d3c827e", esExports)
-  }
-}
 
 /***/ }),
 /* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "dashboard scorecard-wrapper",
-      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
-    },
-    [
-      _vm._l(_vm.layout.cards, function(card, i) {
-        return _c(
-          "card",
-          _vm._b(
-            {
-              key: i,
-              ref: card.id,
-              refInFor: true,
-              on: {
-                "edit-card": _vm.editCard,
-                "modify-widget": _vm.modifyWidget,
-                "update-widgets": _vm.updateWidgets
-              }
-            },
-            "card",
-            card,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm.editingCard
-        ? _c(
-            "card-editor",
-            _vm._b(
-              {
-                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
-              },
-              "card-editor",
-              _vm.editedCard,
-              false
-            )
-          )
-        : _vm._e()
-    ],
-    2
-  )
-}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"dashboard scorecard-wrapper",on:{"dragover":_vm.dragoverHandler,"drop":_vm.dropHandler}},[_vm._l((_vm.layout.cards),function(card,i){return _c('card',_vm._b({key:i,ref:card.id,refInFor:true,on:{"edit-card":_vm.editCard,"modify-widget":_vm.modifyWidget,"update-widgets":_vm.updateWidgets}},'card',card,false))}),_vm._v(" "),(_vm.editingCard)?_c('card-editor',_vm._b({on:{"exit-edit":_vm.exitEdit,"delete-card":_vm.deleteCard}},'card-editor',_vm.editedCard,false)):_vm._e()],2)}
 var staticRenderFns = []
-render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
-  }
-}
 
 /***/ }),
 /* 78 */
