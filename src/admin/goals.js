@@ -52,7 +52,7 @@ async function update(goal) {
         { _id: oid },
         goal
     );
-    if (response.nModified > 0) {
+    if (response.n > 0) {
         log.message(`Field ${goal.name} has been modified.`);
         return response;
     }

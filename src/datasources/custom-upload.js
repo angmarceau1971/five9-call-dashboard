@@ -106,7 +106,7 @@ async function update(datasource) {
         { _id: oid },
         datasource
     );
-    if (response.nModified > 0) {
+    if (response.n > 0) {
         log.message(`Field ${datasource.name} has been modified.`);
         return response;
     }

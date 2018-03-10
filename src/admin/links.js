@@ -29,7 +29,7 @@ async function update(link) {
         { _id: oid },
         link
     );
-    if (response.nModified > 0) {
+    if (response.n > 0) {
         log.message(`Field ${link.name} has been modified.`);
         return response;
     }

@@ -17,7 +17,6 @@ const aht = {
     layoutOrder: 2,
     columns: 1
 };
-aht.data = [];
 aht.widgets = [
     {
         'id': 'widget:0',
@@ -79,7 +78,6 @@ const calls = {
     layoutOrder: 3,
     columns: 1
 };
-calls.data = [];
 calls.widgets = [
     {
         'id': 'widget:0',
@@ -131,7 +129,6 @@ const sla = {
     layoutOrder: 1,
     columns: 1
 };
-sla.data = [];
 sla.widgets = [
     {
         'id': 'widget:0',
@@ -175,7 +172,6 @@ const state = {
     layoutOrder: 4,
     columns: 1
 };
-state.data = [];
 state.widgets = [
     {
         'id': 'widget:0',
@@ -209,12 +205,46 @@ state.widgets = [
     }
 ];
 
+const qa = {
+    title: 'QA',
+    id: 'card:5',
+    layoutOrder: 5,
+    columns: 2
+};
+qa.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Month to Date',
+        'fieldName': 'QA.score',
+        'datasource': 'QA',
+        'filter': {
+            date: '<month-to-date>'
+        }
+    },
+    {
+        'id': 'widget:1',
+        'component': 'line-graph',
+        'title': 'QA by Day',
+        'fields': {
+            'x': 'date',
+            'y': 'QA.score'
+        },
+        'datasource': 'QA',
+        'filter': {
+            date: '<month-to-date>'
+        }
+    },
+];
+
+
 const layout = {
     cards: [
         aht,
         calls,
         sla,
-        state
+        state,
+        qa
     ],
     datasources: [
         {
@@ -333,6 +363,9 @@ const vm = new Vue({
         await store.dispatch('updateUser', '');
         await store.dispatch('startProcess');
         this.isLoaded = true;
+        // Hack to make sure data loads in cases where first round is blank
+        // TODO: fix bug causing data to be blank after first `startProcess`
+        setTimeout(this.refresh.bind(this), 5000);
     },
 
     computed: {

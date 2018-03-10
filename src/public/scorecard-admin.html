@@ -29,7 +29,7 @@
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
                 :adder="fieldAdder"
-                :headers="['Name', 'Display Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculation', 'Data Source']"
+                :headers="['Name', 'Display Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculated Field', 'Calculation', 'Data Source']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -64,6 +64,12 @@
                         />
                     </td>
                     <td>
+                        <select v-model="props.item.calculatedField">
+                            <option :value="true">True</option>
+                            <option :value="false">False</option>
+                        </select>
+                    </td>
+                    <td>
                         <textarea v-if="props.item.calculatedField"
                             v-model="props.item.calculation"
                             type="text"
@@ -71,7 +77,8 @@
                         <p v-else>N/A</p>
                     </td>
                     <td>
-                        <p>{{ props.item.source }}</p>
+                        <input v-model="props.item.source"
+                            type="text"/>
                     </td>
                 </template>
             </editor-table>

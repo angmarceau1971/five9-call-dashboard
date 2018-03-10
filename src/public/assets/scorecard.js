@@ -13132,6 +13132,7 @@ async function loadData(params) {
   const data = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getStatistics */](params);
   const cleaned = data.map(d => {
     if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
+    if (d['date']) d['date'] = moment(d['date']).toDate();
     return d;
   });
   return cleaned;
@@ -14846,7 +14847,6 @@ const aht = {
   layoutOrder: 2,
   columns: 1
 };
-aht.data = [];
 aht.widgets = [{
   'id': 'widget:0',
   'component': 'single-value',
@@ -14895,7 +14895,6 @@ const calls = {
   layoutOrder: 3,
   columns: 1
 };
-calls.data = [];
 calls.widgets = [{
   'id': 'widget:0',
   'component': 'single-value',
@@ -14942,7 +14941,6 @@ const sla = {
   layoutOrder: 1,
   columns: 1
 };
-sla.data = [];
 sla.widgets = [{
   'id': 'widget:0',
   'component': 'single-value',
@@ -14981,7 +14979,6 @@ const state = {
   layoutOrder: 4,
   columns: 1
 };
-state.data = [];
 state.widgets = [{
   'id': 'widget:0',
   'component': 'pie-chart',
@@ -15011,8 +15008,36 @@ state.widgets = [{
     dateDay: '<month-to-date>'
   }
 }];
+const qa = {
+  title: 'QA',
+  id: 'card:5',
+  layoutOrder: 5,
+  columns: 2
+};
+qa.widgets = [{
+  'id': 'widget:0',
+  'component': 'single-value',
+  'title': 'Month to Date',
+  'fieldName': 'QA.score',
+  'datasource': 'QA',
+  'filter': {
+    date: '<month-to-date>'
+  }
+}, {
+  'id': 'widget:1',
+  'component': 'line-graph',
+  'title': 'QA by Day',
+  'fields': {
+    'x': 'date',
+    'y': 'QA.score'
+  },
+  'datasource': 'QA',
+  'filter': {
+    date: '<month-to-date>'
+  }
+}];
 const layout = {
-  cards: [aht, calls, sla, state],
+  cards: [aht, calls, sla, state, qa],
   datasources: [{
     "id": "1",
     "name": "Agent Call Stats",
@@ -15101,7 +15126,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
     await store.dispatch('updateUser', '');
     await store.dispatch('startProcess');
-    this.isLoaded = true;
+    this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
+    // TODO: fix bug causing data to be blank after first `startProcess`
+
+    setTimeout(this.refresh.bind(this), 5000);
   },
 
   computed: {

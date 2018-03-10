@@ -39,7 +39,7 @@ async function update(field) {
         { _id: oid },
         field
     );
-    if (response.nModified > 0) {
+    if (response.n > 0) {
         log.message(`Field ${field.name} has been modified.`);
         return response;
     }
