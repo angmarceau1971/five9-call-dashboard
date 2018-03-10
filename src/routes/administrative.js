@@ -24,6 +24,14 @@ module.exports.addTo = function(router) {
         res.status(200).send(`Field "${field.name}" has been updated.`);
     });
 
+    // Delete a field
+    router.delete('/fields', verify.apiMiddleware('admin'), async (req, res) => {
+        let field = req.body.field;
+        let response = await fields.remove(field);
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(`Field "${field.name}" has been deleted.`);
+    });
+
 
     //////////////////////////////////////////
     // Goal endpoints

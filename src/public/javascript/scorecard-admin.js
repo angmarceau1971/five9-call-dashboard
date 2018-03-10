@@ -40,6 +40,9 @@ const vm = new Vue({
                 calculation: ''
             }
         },
+        fieldRemover: function(field) {
+            return api.deleteField(field);
+        },
 
         // Goal functions
         goalUpdater: async function(goal) {

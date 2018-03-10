@@ -54,6 +54,13 @@ async function getFieldList() {
 }
 module.exports.getFieldList = getFieldList;
 
+function remove(field) {
+    log.message(`Deleting field ${field.name}.`);
+    const oid = mongoose.Types.ObjectId(field._id);
+    return FieldList.remove({ _id: oid }).exec();
+}
+module.exports.remove = remove;
+
 
 /**
  * Creates basic field list based on fields in Report model.

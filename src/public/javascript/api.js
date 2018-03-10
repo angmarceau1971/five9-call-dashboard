@@ -73,6 +73,15 @@ export async function updateField(field) {
     let response = await request({field: field}, 'fields', 'PUT');
     return response.text();
 }
+/**
+ * Delete a field from server.
+ * @param  {Object}  field object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteField(field) {
+    let response = await request({field: field}, 'fields', 'DELETE');
+    return response.text();
+}
 
 
 /**

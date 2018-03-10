@@ -957,32 +957,33 @@ function formatAMPM(date) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["n"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["p"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["u"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["v"] = updateGoal;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["t"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["q"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["v"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["w"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["u"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["w"] = updateLink;
-/* harmony export (immutable) */ __webpack_exports__["c"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["d"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["e"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["s"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["q"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["r"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["z"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["x"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["t"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["r"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["s"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["A"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -1057,6 +1058,18 @@ async function updateField(field) {
   let response = await request({
     field: field
   }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a field from server.
+ * @param  {Object}  field object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteField(field) {
+  let response = await request({
+    field: field
+  }, 'fields', 'DELETE');
   return response.text();
 }
 /**
@@ -1524,10 +1537,10 @@ const vm = new Vue({
   },
   methods: {
     jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["x" /* updateSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["y" /* updateSkillJob */](job);
     },
     jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* getSkillJobs */]();
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getSkillJobs */]();
       return jobs.map(job => {
         if (!job.data) {
           job.data = this.jobAdder().data;
@@ -1548,7 +1561,7 @@ const vm = new Vue({
       };
     },
     jobRemover: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* deleteSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["e" /* deleteSkillJob */](job);
     },
     updateMessage: function (msg) {
       this.message = msg;
