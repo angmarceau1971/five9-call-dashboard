@@ -42,7 +42,7 @@ const app = express();
 // GZIP it up
 app.use(compression());
 // Add Favicons
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // Allow CORS
 app.use(cors());
 // Serve static files
