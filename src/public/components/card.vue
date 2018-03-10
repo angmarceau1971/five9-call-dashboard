@@ -203,6 +203,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2.5em;
+    border-radius: 2px;
 }
 
 /* Since the card's grid determines margins, remove margins from the first

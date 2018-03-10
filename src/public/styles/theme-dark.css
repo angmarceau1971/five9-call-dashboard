@@ -13,9 +13,7 @@ button {
 }
 
 .stats-box, .top-bar {
-    box-shadow: 0 2px 5px rgba(44, 44, 44, 0.8),
-                0 2px 5px rgba(0,0,0,0.7),
-                0 2px 4px rgba(0,0,0,0.8);
+    box-shadow: 0 2px 5px rgba(23, 23, 23, 0.8), 0 2px 5px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .stats-box {
