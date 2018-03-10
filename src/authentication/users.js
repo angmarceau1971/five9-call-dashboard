@@ -22,6 +22,7 @@ const usersSchema = mongoose.Schema({
     },
     active: Boolean,
     isAdmin: { type: Boolean, default: false },
+    isSupervisor: { type: Boolean, default: false },
     // Array of Agent Groups that user belongs to
     agentGroups: [String],
     firstName: String,
@@ -90,16 +91,21 @@ async function isAdmin(username) {
 }
 module.exports.isAdmin = isAdmin;
 
-function getAdminFromData(username, data) {
-    for (let i=0; i < data.length; i++) {
-        if (data[i].username == username) return data[i].isAdmin;
-    }
-    return false;
+/**
+ * @param  {String}  username to check on
+ * @return {Boolean} true if user is an admin
+ */
+async function isSupervisor(username) {
+    let user = await Users.findOne({ username: username });
+    if (!user || !user.isSupervisor) return false;
+    return true;
 }
+module.exports.isSupervisor = isSupervisor;
+
 
 /**
- * Get user data object with fields:
- *      agentGroups, skillGroups, skills, isAdmin, active, username
+ * Get user object, including additional fields:
+ *      skillGroups, skills
  *
  * @param  {String} username
  * @return {Object}
@@ -140,10 +146,15 @@ async function getAdminUsers() {
 }
 module.exports.getAdminUsers = getAdminUsers;
 
+async function getSupervisorUsers() {
+    return await Users.find({ isSupervisor: true });
+}
+module.exports.getSupervisorUsers = getSupervisorUsers;
+
 /**
  * @param  {String}  username
  * @param  {Boolean} isNowAdmin new admin status for user
- * @return
+ * @return {Promise}
  */
 async function updateAdminStatus(username, isNowAdmin) {
     log.message(`Updating admin status for ${username} to ${isNowAdmin}.`);
@@ -153,6 +164,20 @@ async function updateAdminStatus(username, isNowAdmin) {
     );
 }
 module.exports.updateAdminStatus = updateAdminStatus;
+
+/**
+ * @param  {String}  username
+ * @param  {Boolean} isNowSup new supervisor status for user
+ * @return {Promise}
+ */
+async function updateSupervisorStatus(username, isNowSup) {
+    log.message(`Updating supervisor status for ${username} to ${isNowSup}.`);
+    return await Users.updateOne(
+        { username: username },
+        { $set: { 'isSupervisor': isNowSup } }
+    );
+}
+module.exports.updateSupervisorStatus = updateSupervisorStatus;
 
 /**
  * Update user's theme fields.

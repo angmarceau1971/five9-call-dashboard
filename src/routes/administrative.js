@@ -3,10 +3,41 @@ const fields = require('../admin/fields');
 const goals = require('../admin/goals');
 const links = require('../admin/links');
 const admin = require('../admin/admin');
+const users = require('../authentication/users'); // stores usernames to check auth
 const customData = require('../datasources/custom-upload');
 
 // To use this module, require it and pass in router to add endpoints to.
 module.exports.addTo = function(router) {
+    //////////////////////////////////////////
+    // Users endpoints
+    // Get list of admin users
+    router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
+        const admins = await users.getAdminUsers();
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(admins));
+    });
+    // Modify an admin user
+    router.patch('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
+        // User object passed in PATCH body (not necessarily the same as currently logged-in user)
+        await users.updateAdminStatus(req.body.user.username, req.body.user.isAdmin);
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(`User "${req.body.user.username}" has been updated.`);
+    });
+
+    // Get list of supervisor users
+    router.get('/users/supervisor', verify.apiMiddleware('admin'), async (req, res) => {
+        const supervisors = await users.getSupervisorUsers();
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(supervisors));
+    });
+    // Modify a supervisor user
+    router.patch('/users/supervisor', verify.apiMiddleware('admin'), async (req, res) => {
+        // User object passed in PATCH body (not necessarily the same as currently logged-in user)
+        await users.updateSupervisorStatus(req.body.user.username, req.body.user.isSupervisor);
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(`User "${req.body.user.username}" has been updated.`);
+    });
+
     //////////////////////////////////////////
     // Field endpoints
     // Get list of fields
@@ -133,7 +164,6 @@ module.exports.addTo = function(router) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(await links.getAll()));
     });
-
     // Modify a link
     router.put('/links', verify.apiMiddleware('admin'), async (req, res) => {
         res.set('Content-Type', 'application/text');
@@ -145,12 +175,11 @@ module.exports.addTo = function(router) {
             res.status(500).send(`Error while updating ${link.name}: ${err}.`);
         }
     });
-
-    // Delete a scheduled goalsing job
+    // Delete a link
     router.delete('/links', verify.apiMiddleware('admin'), async (req, res) => {
         const numRemoved = await links.remove(req.body.link);
         const message = `Link "${req.body.link.name}" has been deleted.`;
         res.set('Content-Type', 'application/text');
         res.status(200).send(message);
     });
-}
+};

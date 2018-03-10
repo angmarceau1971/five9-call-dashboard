@@ -105,32 +105,34 @@ function formatAMPM(date) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["o"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["q"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["r"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["u"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateSupervisorUser;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["v"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["w"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["w"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["x"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["u"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["v"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["t"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["r"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["s"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["A"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["s"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["t"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["C"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -159,7 +161,9 @@ async function queueStats() {
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
-}
+} ///////////////////////////////////////////////////////////////////////
+// Users
+
 /**
  * Return user information from username.
  * @param  {String} username if blank, will return currently logged-in user's
@@ -185,7 +189,35 @@ async function updateUserTheme(username, newTheme) {
     newTheme: newTheme
   }, `users/theme`, 'PATCH');
   return response.text();
+} // Admin users
+
+async function getAdminUsers() {
+  let response = await request({}, 'users/admin', 'GET');
+  let users = await response.json();
+  console.log(users);
+  return users;
 }
+async function updateAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'PATCH');
+  return response.text();
+} // Supervisor users
+
+async function getSupervisorUsers() {
+  let response = await request({}, 'users/supervisor', 'GET');
+  let users = await response.json();
+  console.log(users);
+  return users;
+}
+async function updateSupervisorUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/supervisor', 'PATCH');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Fields
+
 /**
  * List of available fields for widgets.
  * @return {Promise} resolves to array of field objects
@@ -218,7 +250,9 @@ async function deleteField(field) {
     field: field
   }, 'fields', 'DELETE');
   return response.text();
-}
+} ///////////////////////////////////////////////////////////////////////
+// Goals
+
 /**
  * List of all goals.
  * @return {Promise} resolves to array of goal objects
@@ -263,7 +297,9 @@ async function deleteGoal(goal) {
     goal: goal
   }, 'goals', 'DELETE');
   return response.text();
-}
+} ///////////////////////////////////////////////////////////////////////
+// Datasources' settings
+
 /**
  * List of all datasources.
  * @return {Promise} resolves to array of datasource objects
@@ -305,7 +341,9 @@ async function deleteDatasource(datasource) {
 async function getSkillGroups() {
   let response = await request({}, 'skill-group', 'GET');
   return response.json();
-}
+} ///////////////////////////////////////////////////////////////////////
+// 'Helpful Links'
+
 /**
  * List of all links.
  * @return {Promise} resolves to array of link objects
@@ -338,7 +376,9 @@ async function deleteLink(link) {
     link: link
   }, 'links', 'DELETE');
   return response.text();
-}
+} ///////////////////////////////////////////////////////////////////////
+// Skilling jobs
+
 /**
  * List of available scheduled skilling jobs.
  * @return {Promise} resolves to array of field objects
@@ -382,19 +422,9 @@ async function deleteSkillJob(job) {
     job: job
   }, 'skill', 'DELETE');
   return response.text();
-}
-async function getAdminUsers() {
-  let response = await request({}, 'users/admin', 'GET');
-  let users = await response.json();
-  console.log(users);
-  return users;
-}
-async function updateAdminUser(user) {
-  let response = await request({
-    user: user
-  }, 'users/admin', 'PATCH');
-  return response.text();
-}
+} ///////////////////////////////////////////////////////////////////////
+// Server utilities
+
 async function rebootServer() {
   const response = await request({}, 'reboot-server', 'POST');
   return response.text();
@@ -404,7 +434,7 @@ async function reloadData(params) {
   return response.text();
 }
 /**
- * [uploadData description]
+ * Upload CSV file to custom data source.
  * @param  {Object} params including fields datasourceName and csv
  * @return {Promise}       resolves to string (server response message)
  */
@@ -416,7 +446,10 @@ async function uploadData(params) {
   } catch (err) {
     return err.message;
   }
-}
+} ///////////////////////////////////////////////////////////////////////
+// Request helpers
+///////////////////////////////////////////////////////////////////////
+
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -603,7 +636,7 @@ async function runQueueDashboard() {
 
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["q" /* queueStats */](); // Get SL stats
+      data = await __WEBPACK_IMPORTED_MODULE_1__api__["r" /* queueStats */](); // Get SL stats
 
       time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
       time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';

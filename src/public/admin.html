@@ -39,6 +39,32 @@
                     </div>
 
                     <div class="section schedule">
+                        <h3>Supervisor Users</h3>
+                        <p>
+                            These users can view data for all agents.
+                        </p>
+                        <editor-table
+                            :loader=supervisorLoader
+                            :updater=supervisorUpdater
+                            :adder=supervisorAdder
+                            :headers="['Username', 'Is Supervisor?']"
+                            @message="updateMessage"
+                        >
+                            <template slot="item" slot-scope="props">
+                                <td>
+                                    <input v-model="props.item.username" />
+                                </td>
+                                <td>
+                                    <select v-model="props.item.isSupervisor">
+                                        <option value="false">False</option>
+                                        <option value="true">True</option>
+                                    </select>
+                                </td>
+                            </template>
+                        </editor-table>
+                    </div>
+
+                    <div class="section schedule">
                         <h3>Admin Users</h3>
                         <p>
                             Users listed here can make all the changes you can.

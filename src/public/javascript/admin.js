@@ -21,13 +21,13 @@ $(document).ready(() => {
 
 
 // Handle Vue form
-import ApiEditorTable from '../components/editor-table.vue';
+import EditorTable from '../components/editor-table.vue';
 
 const vm = new Vue({
     el: '#admin-app',
 
     components: {
-        'editor-table': ApiEditorTable
+        'editor-table': EditorTable
     },
 
     data: {
@@ -35,6 +35,23 @@ const vm = new Vue({
     },
 
     methods: {
+        updateMessage: function(msg) {
+            $('.message').text(msg);
+            this.message = msg;
+        },
+        // Supervisor users
+        supervisorUpdater: async function(user) {
+            return api.updateSupervisorUser(user);
+        },
+        supervisorLoader: async function() {
+            return api.getSupervisorUsers();
+        },
+        supervisorAdder: function() {
+            return {
+                username: ''
+            };
+        },
+        // Administrator users
         adminUpdater: async function(user) {
             return api.updateAdminUser(user);
         },
@@ -45,10 +62,6 @@ const vm = new Vue({
             return {
                 username: ''
             };
-        },
-        updateMessage: function(msg) {
-            $('.message').text(msg);
-            this.message = msg;
         }
     }
 });

@@ -154,22 +154,6 @@ router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
     }
 });
 
-// Get list of admin users
-router.get('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
-    const admins = await users.getAdminUsers();
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify(admins));
-});
-
-// Modify an admin users
-router.patch('/users/admin', verify.apiMiddleware('admin'), async (req, res) => {
-    // User object passed in PATCH body (not necessarily the same as currently logged-in user)
-    await users.updateAdminStatus(req.body.user.username, req.body.user.isAdmin);
-    res.set('Content-Type', 'application/text');
-    res.status(200).send(`User "${req.body.user.username}" has been updated.`);
-});
-
-
 
 // Notify server that a 502 has occurred
 router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {

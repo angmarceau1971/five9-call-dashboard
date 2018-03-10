@@ -7,7 +7,6 @@ import { API_URL } from './local_settings.js';
 // and formats data originating in Five9 reports.
 ////////////////////////////////////////////////////////////////
 
-
 // Get agent/ACD statistics
 export async function getStatistics(filter) {
     const response = await request(filter, 'statistics');
@@ -29,6 +28,9 @@ export function getReportResults(params, type) {
     return getData(params, `reports/${type}`);
 }
 
+
+///////////////////////////////////////////////////////////////////////
+// Users
 /**
  * Return user information from username.
  * @param  {String} username if blank, will return currently logged-in user's
@@ -40,7 +42,6 @@ export async function getUserInformation(username = '') {
     const response = await request({}, path, 'GET');
     return response.json();
 }
-
 /**
  * Set a user's theme preferences.
  * @param  {String} username
@@ -55,7 +56,33 @@ export async function updateUserTheme(username, newTheme) {
     return response.text();
 }
 
+// Admin users
+export async function getAdminUsers() {
+    let response = await request({}, 'users/admin', 'GET');
+    let users = await response.json();
+    console.log(users)
+    return users;
+}
+export async function updateAdminUser(user) {
+    let response = await request({user: user}, 'users/admin', 'PATCH');
+    return response.text();
+}
 
+// Supervisor users
+export async function getSupervisorUsers() {
+    let response = await request({}, 'users/supervisor', 'GET');
+    let users = await response.json();
+    console.log(users)
+    return users;
+}
+export async function updateSupervisorUser(user) {
+    let response = await request({user: user}, 'users/supervisor', 'PATCH');
+    return response.text();
+}
+
+
+///////////////////////////////////////////////////////////////////////
+// Fields
 /**
  * List of available fields for widgets.
  * @return {Promise} resolves to array of field objects
@@ -84,6 +111,8 @@ export async function deleteField(field) {
 }
 
 
+///////////////////////////////////////////////////////////////////////
+// Goals
 /**
  * List of all goals.
  * @return {Promise} resolves to array of goal objects
@@ -120,6 +149,9 @@ export async function deleteGoal(goal) {
     return response.text();
 }
 
+
+///////////////////////////////////////////////////////////////////////
+// Datasources' settings
 /**
  * List of all datasources.
  * @return {Promise} resolves to array of datasource objects
@@ -156,6 +188,8 @@ export async function getSkillGroups() {
     return response.json();
 }
 
+///////////////////////////////////////////////////////////////////////
+// 'Helpful Links'
 /**
  * List of all links.
  * @return {Promise} resolves to array of link objects
@@ -183,6 +217,8 @@ export async function deleteLink(link) {
     return response.text();
 }
 
+///////////////////////////////////////////////////////////////////////
+// Skilling jobs
 /**
  * List of available scheduled skilling jobs.
  * @return {Promise} resolves to array of field objects
@@ -220,18 +256,9 @@ export async function deleteSkillJob(job) {
     return response.text();
 }
 
-export async function getAdminUsers() {
-    let response = await request({}, 'users/admin', 'GET');
-    let users = await response.json();
-    console.log(users)
-    return users;
-}
 
-export async function updateAdminUser(user) {
-    let response = await request({user: user}, 'users/admin', 'PATCH');
-    return response.text();
-}
-
+///////////////////////////////////////////////////////////////////////
+// Server utilities
 export async function rebootServer() {
     const response = await request({}, 'reboot-server', 'POST');
     return response.text();
@@ -242,7 +269,7 @@ export async function reloadData(params) {
 }
 
 /**
- * [uploadData description]
+ * Upload CSV file to custom data source.
  * @param  {Object} params including fields datasourceName and csv
  * @return {Promise}       resolves to string (server response message)
  */
@@ -255,6 +282,12 @@ export async function uploadData(params) {
     }
 }
 
+
+
+///////////////////////////////////////////////////////////////////////
+// Request helpers
+///////////////////////////////////////////////////////////////////////
+
 /**
  *  Helper function that pulls credentials from DOM, then makes request to server.
  * @param  {Object} parameters POSTed to server
@@ -265,8 +298,6 @@ async function getData(parameters, endpoint) {
     const response = await request(parameters, endpoint);
     return await response.json();
 }
-
-
 
 
 /**
