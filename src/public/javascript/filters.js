@@ -95,5 +95,11 @@ const dateMatcher = {
             $gte: moment().subtract(1, 'months').startOf('month').toDate(),
             $lt:  moment().subtract(1, 'months').endOf('month').toDate()
         }
+    },
+    '<last 3 months>': function() {
+        return {
+            $gte: moment().subtract(3, 'months').startOf('month').toDate(),
+            $lt:  moment().endOf('month').toDate()
+        }
     }
 };

@@ -23,35 +23,28 @@ export function getValueForField(data, field) {
  */
 function process(data, field) {
     let [source, fieldName] = field.split('.');
-    if (source == 'Calculated') return processCalculated(data, fieldName);
-    if (fieldName) return sum(data, fieldName);
+    if (fieldName == 'aht') {
+        return sum(data, 'handleTime') / sum(data, 'calls');
+    }
+    else if (fieldName == 'talk') {
+        return sum(data, 'talkTime') / sum(data, 'calls');
+    }
+    else if (fieldName == 'acw') {
+        return sum(data, 'acwTime') / sum(data, 'calls');
+    }
+    else if (fieldName == 'hold') {
+        return sum(data, 'holdTime') / sum(data, 'calls');
+    }
+    else if (fieldName == 'serviceLevel') {
+        return sum(data, 'serviceLevel') / sum(data, 'calls');
+    }
+    else if (fieldName == 'score') {
+        return average(data, 'score');
+    }
+    else if (fieldName) return sum(data, fieldName);
     else return sum(data, field);
 }
 
-/**
- * Extract overall value from a calculated field.
- * @param  {Array} data
- * @param  {String} field field name without source
- * @return {Number} value
- */
-function processCalculated(data, field) {
-    if (field == 'aht') {
-        return sum(data, 'handleTime') / sum(data, 'calls');
-    }
-    else if (field == 'talk') {
-        return sum(data, 'talkTime') / sum(data, 'calls');
-    }
-    else if (field == 'acw') {
-        return sum(data, 'acwTime') / sum(data, 'calls');
-    }
-    else if (field == 'hold') {
-        return sum(data, 'holdTime') / sum(data, 'calls');
-    }
-    else if (field == 'serviceLevel') {
-        return sum(data, 'serviceLevel') / sum(data, 'calls');
-    }
-    throw new Error(`Parser does not recognize field "${field}".`);
-}
 
 /**
  * Group and summarize data by a given field.
@@ -86,8 +79,24 @@ export function summarize(data, summaryField, valueFields) {
 }
 
 
-function sum(obj, key) {
-    return obj.reduce((sum, item) => sum + item[key], 0);
+/**
+ * Takes sum of array of objects based on the given key.
+ * @param  {Array} arr of objects
+ * @param  {String} key property to sum
+ * @return {Number}
+ */
+function sum(arr, key) {
+    return arr.reduce((total, item) => total + item[key], 0);
+}
+
+/**
+ * Takes average of array of objects based on the given key.
+ * @param  {Array} arr of objects
+ * @param  {String} key property to average
+ * @return {Number}
+ */
+function average(arr, key) {
+    return sum(arr, key) / arr.length;
 }
 
 /**

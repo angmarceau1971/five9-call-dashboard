@@ -45,7 +45,9 @@ Accepts data prop with structure:
 
         <div v-if="infoBox.message" class="info-box"
             :style="{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}"
-        >{{ infoBox.message }}</div>
+        >
+            {{ infoBox.message }}
+        </div>
     </div>
 
     <data-table
@@ -261,10 +263,8 @@ export default {
                     // InfoBox coords are slightly to the lower-right of mouse
                     const dataPoint = this.data[closestPoint.index];
                     this.infoBox.message = `
-                        ${this.fieldDisplayName(this.fields.x)}:
-                        ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
-                        \n${this.fieldDisplayName(this.fields.y)}:
-                        ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
+                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
+                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
                     `;
                     this.infoBox.x = x + 30;
                     this.infoBox.y = y + 40;

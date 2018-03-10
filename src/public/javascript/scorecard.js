@@ -232,7 +232,7 @@ qa.widgets = [
         },
         'datasource': 'QA',
         'filter': {
-            date: '<month-to-date>'
+            date: '<last 3 months>'
         }
     },
 ];
