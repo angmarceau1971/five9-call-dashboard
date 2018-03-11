@@ -629,23 +629,30 @@ async function startItUp() {
 window.addEventListener('load', startItUp);
 
 async function runQueueDashboard() {
+  let lastSlUpdate = null;
+  let slData = [];
+
   async function eventLoop(interval) {
     // Get the current queue data
-    let data, slData;
-    let time = {};
-
     try {
       // Retrieve current queue stats
-      data = await __WEBPACK_IMPORTED_MODULE_1__api__["r" /* queueStats */](); // Get SL stats
+      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["r" /* queueStats */](); // Get SL stats
+      // Only update SL every 3 minutes
 
-      time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
-      time.end = moment().format('YYYY-MM-DD') + 'T23:59:59';
+      let currentTime = new Date();
 
-      try {
-        slData = await __WEBPACK_IMPORTED_MODULE_1__api__["l" /* getReportResults */](time, 'service-level'); // slData = [];
-      } catch (err) {
-        Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
-        slData = [];
+      if (currentTime - lastSlUpdate > 180000) {
+        try {
+          let time = {
+            start: moment().format('YYYY-MM-DD') + 'T00:00:00',
+            end: moment().format('YYYY-MM-DD') + 'T23:59:59'
+          };
+          slData = await __WEBPACK_IMPORTED_MODULE_1__api__["l" /* getReportResults */](time, 'service-level');
+          lastSlUpdate = currentTime;
+        } catch (err) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
+          slData = [];
+        }
       } // Update the view / DOM
 
 

@@ -54,28 +54,34 @@ window.addEventListener('load', startItUp);
 
 
 async function runQueueDashboard() {
+    let lastSlUpdate = null;
+    let slData = [];
+
     async function eventLoop(interval) {
         // Get the current queue data
-        let data, slData;
-        let time = {};
-
         try {
             // Retrieve current queue stats
-            data = await api.queueStats();
+            let data = await api.queueStats();
 
             // Get SL stats
-            time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
-            time.end   = moment().format('YYYY-MM-DD') + 'T23:59:59';
-            try {
-                slData = await api.getReportResults(time, 'service-level');
-                // slData = [];
-            } catch (err) {
-                error(err, `An error occurred when getting service level data: ${err}`);
-                slData = [];
+            // Only update SL every 3 minutes
+            let currentTime = new Date();
+            if ((currentTime - lastSlUpdate) > 180000) {
+                try {
+                    let time = {
+                        start: moment().format('YYYY-MM-DD') + 'T00:00:00',
+                        end:   moment().format('YYYY-MM-DD') + 'T23:59:59'
+                    };
+                    slData = await api.getReportResults(time, 'service-level');
+                    lastSlUpdate = currentTime;
+                } catch (err) {
+                    error(err, `An error occurred when getting service level data: ${err}`);
+                    slData = [];
+                }
             }
-
             // Update the view / DOM
             refreshView(data, slData);
+
         } catch (err) {
             error(err);
         }
