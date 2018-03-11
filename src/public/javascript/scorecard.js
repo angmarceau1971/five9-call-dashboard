@@ -265,7 +265,7 @@ const layout = {
                 },
                 "date": "<month-to-date>",
                 "skillGroup": {
-                    $in: ["<current user group>"]
+                    $in: ["<current skill group>"]
                 }
             },
             "groupBy": [
@@ -288,7 +288,7 @@ const layout = {
             "filter": {
                 "date": "<month-to-date>",
                 "skillGroup": {
-                    $in: ["<current user group>"]
+                    $in: ["<current skill group>"]
                 }
             },
             "groupBy": [

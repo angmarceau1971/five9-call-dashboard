@@ -13914,7 +13914,7 @@ function clean(original) {
 
 
   if (filter.skillGroup) {
-    if (filter.skillGroup.$in[0] == '<current user group>') {
+    if (filter.skillGroup.$in[0] == '<current skill group>') {
       filter.skill = {
         $in: user.skills
       };
@@ -15111,7 +15111,7 @@ const layout = {
       },
       "date": "<month-to-date>",
       "skillGroup": {
-        $in: ["<current user group>"]
+        $in: ["<current skill group>"]
       }
     },
     "groupBy": ["dateDay", "agentUsername", "skill"],
@@ -15126,7 +15126,7 @@ const layout = {
     "filter": {
       "date": "<month-to-date>",
       "skillGroup": {
-        $in: ["<current user group>"]
+        $in: ["<current skill group>"]
       }
     },
     "groupBy": ["dateDay"],

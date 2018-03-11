@@ -47,7 +47,7 @@ export function clean(original) {
 
     // Update appropriate skill groups
     if (filter.skillGroup) {
-        if (filter.skillGroup.$in[0] == '<current user group>') {
+        if (filter.skillGroup.$in[0] == '<current skill group>') {
             filter.skill = { $in: user.skills };
         }
         else {
