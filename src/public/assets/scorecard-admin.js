@@ -12868,8 +12868,16 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
       clean.displayName = field.displayName.trim();
       return __WEBPACK_IMPORTED_MODULE_0__api_js__["w" /* updateField */](clean);
     },
-    fieldLoader: function () {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getFieldList */]();
+    fieldLoader: async function () {
+      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getFieldList */](); // Sort by source then name
+
+      return fields.sort((a, b) => {
+        if (a.source == b.source) {
+          return a.name < b.name ? -1 : 1;
+        } else {
+          return a.source < b.source ? -1 : 1;
+        }
+      });
     },
     updateMessage: function (msg) {
       this.message = msg;

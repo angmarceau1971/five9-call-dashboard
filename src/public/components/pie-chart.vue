@@ -21,7 +21,7 @@ Accepts data prop with structure:
 
         <div v-if="chartData.length == 0"
             :style="{transform: `translate(0, ${height /2}px)`}"
-            class="text-overlay font-color-seconday">
+            class="text-overlay font-color-secondary">
             N/A
         </div>
 

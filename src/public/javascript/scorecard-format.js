@@ -23,8 +23,9 @@ export function formatValue(value, field) {
 
     let style = getStyleFromGoal(value, field);
 
-    if (field.format.type == 'Number' || field.format.type == 'Percentage') {
-        formattedValue = d3.format(field.format.string)(value);
+    if (isNumberType(field.format.type)) {
+        if (isNaN(value)) formattedValue = "N/A";
+        else formattedValue = d3.format(field.format.string)(value);
     } else if (field.format.type == 'Duration') {
         formattedValue = moment('2018-01-01').startOf('day')
             .seconds(value)
@@ -44,7 +45,10 @@ export function formatValue(value, field) {
 
 function getStyleFromGoal(value, field) {
     let goal = hub.store.getters.goalForField(field);
-    if (!goal || isNaN(value)) return '';
+    if (isNaN(value) && isNumberType(field.format.type)) {
+        return 'font-color-secondary';
+    }
+    if (!goal) return '';
 
     let meetsGoal = getGoalComparer(goal.comparator);
     if (meetsGoal === undefined) {
@@ -72,4 +76,8 @@ function getStyleFromGoal(value, field) {
 
 function getGoalComparer(comparator) {
     return comparators[comparator];
+}
+
+function isNumberType(fieldType) {
+    return (fieldType == 'Number' || fieldType == 'Percentage');
 }

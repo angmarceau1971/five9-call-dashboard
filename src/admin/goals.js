@@ -33,16 +33,28 @@ const goalSchema = mongoose.Schema({
 const Goal = mongoose.model('Goal', goalSchema);
 
 /**
- *
+ * Returns goals that include the passed-in agent groups, or include all agent
+ * groups.
  * @param  {Array of Strings} agentGroups
  * @return {Promise -> Array} goals that match any of the agent groups passed in
  */
 async function getGoalsForAgentGroups(agentGroups) {
-    return (await getAll()).filter((goal) => {
-        return (intersection(agentGroups, goal.agentGroups).length > 0);
-    });
+    let appliesToGroups = (goal) => goalIncludesAgentGroups(goal, agentGroups);
+    return (await getAll()).filter(appliesToGroups);
 }
 module.exports.getGoalsForAgentGroups = getGoalsForAgentGroups;
+
+/**
+ * True if the given goal applies to the given agent groups
+ * @param  {Object} goal
+ * @param  {Object} agentGroups
+ * @return {Boolean}
+ */
+function goalIncludesAgentGroups(goal, agentGroups) {
+    return (goal.agentGroups.length == 0
+            || intersection(agentGroups, goal.agentGroups).length > 0
+        );
+}
 
 async function update(goal) {
     const oid = new mongoose.Types.ObjectId(goal._id);

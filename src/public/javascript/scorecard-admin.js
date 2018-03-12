@@ -21,8 +21,16 @@ const vm = new Vue({
             clean.displayName = field.displayName.trim();
             return api.updateField(clean);
         },
-        fieldLoader: function() {
-            return api.getFieldList();
+        fieldLoader: async function() {
+            let fields = await api.getFieldList();
+            // Sort by source then name
+            return fields.sort((a, b) => {
+                if (a.source == b.source) {
+                    return a.name < b.name ? -1 : 1;
+                } else {
+                    return a.source < b.source ? -1 : 1;
+                }
+            });
         },
         updateMessage: function(msg) {
             this.message = msg;

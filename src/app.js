@@ -48,7 +48,7 @@ app.use(cors());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 // Parse JSON requests
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 // And throw in some security middleware for good measure...
 app.use(helmet());

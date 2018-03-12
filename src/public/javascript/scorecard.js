@@ -209,7 +209,7 @@ const qa = {
     title: 'QA',
     id: 'card:5',
     layoutOrder: 5,
-    columns: 2
+    columns: 1
 };
 qa.widgets = [
     {
@@ -244,7 +244,7 @@ const layout = {
         calls,
         sla,
         state,
-        // qa
+        qa
     ],
     datasources: [
         {
@@ -327,10 +327,11 @@ const layout = {
             "filter": {
                 "agentName": {
                     $in: ["<current user's full name>"]
-                }
+                },
+                "date": "<last 3 months>"
             },
             "groupBy": [],
-            "refreshRate": 180,
+            "refreshRate": 21600, // update every 6 hours
             "source": "QA"
         }
     ]
