@@ -1,0 +1,15 @@
+body .stats-box .metric {
+    font-size: 2.5em;
+    font-weight: lighter;
+}
+body .stats-box .department-name {
+    font-size: 2em;
+    font-weight: lighter;
+}
+
+body .stats-box .gizmo-control {
+    color: hsl(0, 0%, 71%);
+    z=:;
+    font-size: 1em;
+    margin-right: 0.25em;
+}

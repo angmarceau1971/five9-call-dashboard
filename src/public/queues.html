@@ -6,10 +6,15 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400" rel="stylesheet">
         <link href="styles/base.css" rel="stylesheet" type="text/css">
         <link href="styles/modal.css" rel="stylesheet" type="text/css">
         <link href="styles/queues.css" rel="stylesheet" type="text/css">
+
+        <!-- Placeholder for big-screen CSS -->
+        <link href="" rel="stylesheet" type="text/css" id="big-display">
+
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     </head>
     <body>
         <div class="content-wrapper">
@@ -30,10 +35,14 @@
                 </div>
             </div>
 
-            <!-- Refresh start/stop: play=&#9658; pause=&#10074;&#10074; -->
-            <button class="play-pause btn round-button" title="Start or stop updating">&#9658;</button>
-            <!-- Create new gizmo button -->
-            <button class="add-gizmo btn round-button" title="Add new gizmo">+</button>
+            <div class="edit-buttons">
+                <!-- Create new gizmo button -->
+                <button class="add-gizmo btn round-button" title="Add new gizmo">+</button>
+                <!-- Refresh start/stop: play=&#9658; pause=&#10074;&#10074; -->
+                <button class="play-pause btn round-button" title="Start or stop updating">&#9658;</button>
+                <!-- Big-screen display mode -->
+                <button class="big-display btn round-button" title="Toggle big-screen display"><i class="fas fa-tv"></i></button>
+            </div>
 
             <!-- Status message -->
             <p id="message" class="message">
@@ -43,7 +52,7 @@
             <!-- Template for cloning new queue gizmos. Hidden by default. -->
             <div class="stats-box template" id="gizmo-template">
                 <a class="skills-edit-toggle gizmo-control" href="#" title="Modify this gizmo widget">&#9776;</a>
-                <h3 class="department-name">
+                <h3 class="department-name" style="z-index:1000;">
                     Gizmo Widget Thing!
                 </h3>
                 <div class="metric-wrapper">

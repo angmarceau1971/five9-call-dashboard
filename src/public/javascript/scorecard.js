@@ -390,7 +390,7 @@ const vm = new Vue({
         },
         userGreeting: function() {
             if (this.user.firstName) {
-                return `Hi, ${this.user.firstName}!`
+                return `Hi, ${this.user.firstName}!`;
             } else {
                 return '';
             }

@@ -49,6 +49,13 @@ async function startItUp() {
 
     // Trigger "play" button to start updating when page is loaded.
     $('.play-pause').trigger('click');
+    $('.big-display').click(function(event) {
+        if (document.getElementById('big-display').href.slice(-4) != '.css') {
+            document.getElementById('big-display').href = `styles/big-display.css`;
+        } else {
+            document.getElementById('big-display').href = '';
+        }
+    });
 };
 window.addEventListener('load', startItUp);
 

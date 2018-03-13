@@ -12,3 +12,10 @@
 .queue-list .type-number {
     text-align: right;
 }
+
+.edit-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 80px;
+}
