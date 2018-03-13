@@ -65,16 +65,12 @@ body * {
 }
 
 .stats-box .department-name {
-    margin-top: 0;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
     font-size: 1.2em;
     font-weight: normal;
 }
 
 .stats-box .department-name {
-    margin: auto 1em;
+    margin: auto 0.2em;
     height: 2em;
 }
 
@@ -117,7 +113,7 @@ body * {
 .gizmo-control {
     text-decoration: none;
     position: absolute;
-    font-size: 1.5em;
+    font-size: 1em;
     color: #888;
     margin: 4%;
 }
