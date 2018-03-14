@@ -71,7 +71,7 @@ async function isActive(username) {
     }
     let waited = 0;
     while (currentlyUpdatingData && waited < 30000) {
-        log.message(`Users.isActive called while database is updating; waiting 1000ms.`);
+        log.debug(`Users.isActive called while database is updating; waiting 1000ms.`);
         waited += 1000;
         await wait(1000);
     }
@@ -157,7 +157,7 @@ module.exports.getSupervisorUsers = getSupervisorUsers;
  * @return {Promise}
  */
 async function updateAdminStatus(username, isNowAdmin) {
-    log.message(`Updating admin status for ${username} to ${isNowAdmin}.`);
+    log.info(`Updating admin status for ${username} to ${isNowAdmin}.`, 'user status');
     return await Users.updateOne(
         { username: username },
         { $set: { 'isAdmin': isNowAdmin } }
@@ -171,7 +171,7 @@ module.exports.updateAdminStatus = updateAdminStatus;
  * @return {Promise}
  */
 async function updateSupervisorStatus(username, isNowSup) {
-    log.message(`Updating supervisor status for ${username} to ${isNowSup}.`);
+    log.info(`Updating supervisor status for ${username} to ${isNowSup}.`, 'user status');
     return await Users.updateOne(
         { username: username },
         { $set: { 'isSupervisor': isNowSup } }
@@ -187,7 +187,7 @@ module.exports.updateSupervisorStatus = updateSupervisorStatus;
  * @return {Promise}
  */
 async function updateTheme(username, newTheme) {
-    log.message(`Updating theme for ${username} to ${JSON.stringify(newTheme)}.`);
+    log.info(`Updating theme for ${username} to ${JSON.stringify(newTheme)}.`, 'user status');
     return await Users.updateOne(
         { username: username },
         { $set: {
@@ -206,7 +206,7 @@ module.exports.updateTheme = updateTheme;
 let currentlyUpdatingData = false;
 async function scheduleUpdate(interval) {
     currentlyUpdatingData = true;
-    log.message(`Updating users database`);
+    log.info(`Updating users database`, 'data upload');
     await refreshUserDatabase(Users);
 
     currentlyUpdatingData = false;
@@ -234,7 +234,7 @@ async function refreshUserDatabase(usersModel) {
     ]);
 
     if (!data || !data.length) {
-        log.error(`No users data returned by Five9! Aborting Users update.`);
+        log.error(`No users data returned by Five9! Aborting Users update.`, 'data upload');
         return;
     }
 
@@ -257,7 +257,7 @@ async function refreshUserDatabase(usersModel) {
             // options - add to collection if not found
             { upsert: true, setDefaultsOnInsert: true },
             function(err, doc) {
-                if (err) log.error(`Error while updating user: ${err}.`);
+                if (err) log.error(`Error while updating user: ${err}.`, 'data upload');
             }
         );
         return newUser;
@@ -269,8 +269,8 @@ async function refreshUserDatabase(usersModel) {
             usersModel.remove(
                 { username: user.username },
                 function(err, doc) {
-                    if (err) log.error(`Error when removing user: ${err}`);
-                    log.message(`Removing user ${user.username} from Users table.`);
+                    if (err) log.error(`Error when removing user: ${err}`, 'user status');
+                    log.info(`Removing user ${user.username} from Users table.`, 'user status');
                 }
             );
         }

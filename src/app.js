@@ -95,7 +95,7 @@ app.use('/', viewRoutes);
 let timeoutId = null;
 
 const server = app.listen(port, async () => {
-    log.message(`Express listening on port ${port} at ${moment()}!`);
+    log.info(`Express listening on port ${port} at ${moment()}!`, 'startup');
 
     try {
         // Set up initial database connection

@@ -35,7 +35,7 @@ async function openStatisticsSession() {
         return response;
     }
 
-    log.error('setSessionParameters status != 200, response:' + JSON.stringify(response));
+    log.error('setSessionParameters status != 200, response:' + JSON.stringify(response), 'five9 response', response);
     throw new Error('Set sessions parameters HTTP status code: ' + response.statusCode);
     return response;
 }

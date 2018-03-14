@@ -20,42 +20,56 @@ router.get('/', verify.isLoggedIn(), async (req, res) => {
 // queue page
 router.get('/queues', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/queues.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'queues' });
     res.sendFile(dir);
 });
 
 // maps page
 router.get('/maps', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/maps.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'maps' });
     res.sendFile(dir);
 });
 
 // scorecard
 router.get('/scorecard', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/scorecard.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'scorecard' });
     res.sendFile(dir);
 });
 
 // scorecard fields
 router.get('/scorecard-admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/scorecard-admin.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'scorecard-admin' });
     res.sendFile(dir);
 });
 
 // scheduling skill jobs
 router.get('/skill', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/skill.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'skill' });
     res.sendFile(dir);
 });
 
 // Upload data
 router.get('/upload', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/upload.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'upload' });
     res.sendFile(dir);
 });
 
 // admin panel
 router.get('/admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/admin.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'admin' });
     res.sendFile(dir);
 });
 
