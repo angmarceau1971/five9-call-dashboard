@@ -21,7 +21,8 @@ const logSchema = mongoose.Schema({
     message: {
         type: String
     },
-    data: Object
+    data: Object,
+    timestamp: Date
 });
 const Log = mongoose.model('Log', logSchema);
 
@@ -33,7 +34,8 @@ function message(text, level='info', category='misc', data={}) {
         level: level,
         category: category,
         message: text,
-        data: data
+        data: data,
+        timestamp: moment().toDate()
     }, (err, doc) => {
         if (err) console.error(`[${moment()}] Error while logging message "${text}": ${err}`);
     });
