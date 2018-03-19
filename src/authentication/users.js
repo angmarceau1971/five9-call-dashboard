@@ -249,6 +249,18 @@ async function refreshUserDatabase(usersModel) {
             lastName: d.lastName[0]
         };
 
+        // Check if original copy of user had theme object defined -- if not,
+        // add it
+        let oldUser = data.find((user) => user.username == newUser.username);
+        if (!oldUser || !oldUser.theme) {
+            newUser.theme = {
+                color: 'dark',
+                lightBackgroundImageUrl: '',
+                darkBackgroundImageUrl: '',
+                useBackgroundImage: ''
+            };
+        }
+
         // Update or add each Five9 user to database
         // http://mongodb.github.io/node-mongodb-native/3.0/api/Collection.html#findAndModify
         usersModel.findOneAndUpdate(
