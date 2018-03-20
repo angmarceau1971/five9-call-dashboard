@@ -31,7 +31,7 @@
                 :loader="fieldLoader"
                 :adder="fieldAdder"
                 :remover="fieldRemover"
-                :headers="['Name', 'Display Name', 'Calculated Field', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculated Field', 'Calculation', 'Data Source']"
+                :headers="['Name', 'Display Name', 'Default Refresh Rate (sec)', 'Type', 'Format', 'Calculated Field', 'Calculation', 'Data Source']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -46,9 +46,6 @@
                             v-model="props.item.displayName"
                             type="text"
                         />
-                    </td>
-                    <td>
-                        <p>{{ props.item.calculatedField }}</p>
                     </td>
                     <td>
                         <input v-model="props.item.defaultRefreshRate"
