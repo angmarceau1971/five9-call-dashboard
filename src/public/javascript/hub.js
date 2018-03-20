@@ -71,6 +71,11 @@ export const store = new Vuex.Store({
             return state.goals.filter((goal) =>
                 goal.field == field.name
             )[0];
+        },
+        datasourceLastUpdated: (state) => (datasourceName) => {
+            let ds = state.datasources[datasourceName];
+            if (!ds || !ds.lastUpdated) return null;
+            return ds.lastUpdated;
         }
     },
 
@@ -111,7 +116,7 @@ export const store = new Vuex.Store({
          * Store datasources. Saved in { id: {Object} } form, in contrast to array of
          * datasource objects stored in database.
          * @param {Object} state
-         * @param {Array}  datasources array of datasource objects
+         * @param {Array}  datasources array of datasource objects from server
          */
         setDatasources(state, datasources) {
             state.datasources = clone(datasources).reduce((newObj, source) => {

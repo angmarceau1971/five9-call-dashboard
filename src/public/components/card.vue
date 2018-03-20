@@ -70,6 +70,16 @@
         @unhoverDate="unhoverDate"
         @dragstart-widget="dragstartWidgetHandler"
     ></data-table>
+
+    <datasource-last-updated class="widget"
+        v-for="(widget, i) in widgetsOfType('datasource-last-updated')"
+        v-bind="widget"
+        :key="widget.id"
+        :ref="widget.id"
+        :style="{ order: widget.layoutOrder }"
+        @dragstart-widget="dragstartWidgetHandler"
+        @modify-widget="modifyWidget"
+    ></datasource-last-updated>
 </div>
 </template>
 
@@ -80,6 +90,7 @@ import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
 import SingleValue from './single-value.vue';
 import PieChart from './pie-chart.vue';
+import DatasourceLastUpdated from './datasource-last-updated.vue';
 
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
@@ -90,7 +101,8 @@ export default {
         'single-value': SingleValue,
         'data-table': DataTable,
         'line-graph': LineGraph,
-        'pie-chart': PieChart
+        'pie-chart': PieChart,
+        'datasource-last-updated': DatasourceLastUpdated
     },
     data: function() {
         return {

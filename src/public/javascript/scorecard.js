@@ -235,6 +235,11 @@ qa.widgets = [
             date: '<last 3 months>'
         }
     },
+    {
+        'id': 'widget:2',
+        'component': 'datasource-last-updated',
+        'datasource': 'QA'
+    }
 ];
 
 
