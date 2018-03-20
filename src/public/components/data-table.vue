@@ -9,25 +9,34 @@
         <thead>
             <tr>
                 <th v-for="header in displayHeaders"
+                    ref="headerRow"
                 >{{ header }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr is="data-table-row"
+            <tr ref="bodyRows"
                 v-for="(datum, i) in data"
                 :key="i"
-                :datum="datum"
-            ></tr>
+                :class="{ highlight: isHighlighted(i) }"
+            >
+                <td
+                  v-for="(val, key) in datum"
+                  v-on:mouseover="highlight(i)"
+                  v-on:mouseleave="unhighlight(i)"
+                  :class="formatted(val, key).styleClass">
+                    {{ formatted(val, key).value }}
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 </template>
 
 <script>
-import DataTableRow from './data-table-row.vue';
 import WidgetBase from './widget-base.vue';
 
 import * as parse from '../javascript/parse';
+import { formatValue } from '../javascript/scorecard-format.js';
 
 /**
  *
@@ -35,24 +44,62 @@ import * as parse from '../javascript/parse';
  * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
  * @prop {String} datasource - name of datasource being used
  * @prop {Object} filter to apply to data
+ * @prop {Boolean} isChild - defaults to false
  */
 export default {
     extends: WidgetBase,
-    props: ['fields', 'headers', 'datasource', 'filter'],
-    components: {
-        'data-table-row': DataTableRow
+    props: {
+        fields: Array,
+        headers: Array,
+        datasource: String,
+        filter: Object,
+        summarize: {
+            type: Boolean,
+            default: true
+        },
+        isChild: {
+            type: Boolean,
+            default: false
+        }
     },
+
+    data () {
+        return {
+            highlightedRow: null
+        };
+    },
+
+    /**
+     * Any time an update occurs, the headers' width needs to be matched to the
+     * body's width (because the header is contained in its own fixed div).
+     */
+    updated() {
+        this.alignColumns();
+    },
+    mounted() {
+        this.alignColumns();
+    },
+
     computed: {
         data: function() {
             let data = this.$store.getters.getData(this.filter, this.datasource);
-            let grouped = parse.summarize(data, this.fields[0],
-                    this.fields.slice(1),
-                );
+            if (this.summarize) {
+                data = parse.summarize(data, this.fields[0],
+                        this.fields.slice(1),
+                    );
+            }
             // Sort by first field
-            grouped.sort((a, b) =>
+            data.sort((a, b) =>
                 a[this.fields[0]] < b[this.fields[0]] ? -1 : 1
             );
-            return grouped;
+            // Leave only fields that are defined in widget
+            return data.map((d) => {
+                let res = {};
+                for (let field of this.fields) {
+                    res[field] = d[field];
+                }
+                return res;
+            });
         },
         displayHeaders: function() {
             if (this.data.length == 0) return [];
@@ -65,6 +112,33 @@ export default {
                         else return fieldName;
                     }
                 );
+        }
+    },
+
+    methods: {
+        highlight: function(i) {
+            this.highlightedRow = i;
+        },
+        unhighlight: function() {
+            this.highlightedRow = null;
+        },
+        isHighlighted: function(i) {
+            return this.highlightedRow == i;
+        },
+        formatted: function (val, fieldName) {
+            let res = formatValue(val, fieldName);
+            return res;
+        },
+        alignColumns: function() {
+            if (this.data.length == 0) return;
+            let headerRow = this.$refs.headerRow;
+            let bodyRow = this.$refs.bodyRows[0].children;
+            let i = 0;
+            for (let cell of bodyRow) {
+                let cellStyles = getComputedStyle(cell);
+                headerRow[i].style.width = cellStyles.width;
+                i++;
+            }
         }
     }
 }

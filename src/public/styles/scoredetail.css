@@ -177,14 +177,15 @@ h2, h3 {
 
 /*  Data table formatting  */
 .data-table-wrapper {
-    width: 100%;
-    margin: 1em 0;
+    margin: 1em;
+    max-height: 15em;
+    overflow-y: scroll;
 }
 .data-table {
     table-layout: fixed;
     border-collapse: collapse;
-    margin: auto;
     font-size: 0.8em;
+    margin: auto;
 }
 .data-table thead tr {
     display: block;
@@ -206,7 +207,7 @@ h2, h3 {
 }
 .data-table td, .data-table th {
     padding: 0 0.5em;
-    width: 7em;
+    min-width: 7em;
 }
 .data-table td {
     border: 1px solid #ddd;

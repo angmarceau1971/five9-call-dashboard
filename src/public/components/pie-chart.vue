@@ -43,8 +43,11 @@ Accepts data prop with structure:
 
     <data-table
         v-if="showTable"
-        :data="tableData"
+        :datasource="datasource"
+        :filter="tableFilter"
+        :fields="tableFields"
         :headers="tableHeaders"
+        :isChild="true"
     ></data-table>
 </div>
 </template>
@@ -171,6 +174,20 @@ export default {
         tableHeaders() {
             if (this.fields.groupBy != 'reasonCode') return this.data;
             return ['Reason Code', 'Time'];
+        },
+        tableFields() {
+            if (this.fields.groupBy != 'reasonCode')
+                return Object.keys(this.data[0]);
+            return ['reasonCode', 'notReadyTime'];
+        },
+        tableFilter() {
+            if (this.fields.groupBy != 'reasonCode') return {};
+            // Filter out blank reason codes, in addition to the filters applied
+            // to this pie chart
+            let filt = Object.assign({
+                'reasonCode': { $ne: '' }
+            }, this.filter);
+            return filt;
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;

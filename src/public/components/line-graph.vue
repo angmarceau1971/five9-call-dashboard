@@ -49,6 +49,7 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
         :datasource="datasource"
         :filter="filter"
         :fields="tableFields"
+        :isChild="true"
     ></data-table>
 </div>
 </template>

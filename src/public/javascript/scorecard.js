@@ -247,7 +247,7 @@ const attendance = {
     title: 'Attendance Points',
     id: 'card:6',
     layoutOrder: 6,
-    columns: 1
+    columns: 2
 };
 attendance.widgets = [
     {
@@ -262,6 +262,7 @@ attendance.widgets = [
         'id': 'widget:1',
         'component': 'data-table',
         'title': 'Points',
+        'summarize': false,
         'filter': {},
         'fields': [
             'date',
