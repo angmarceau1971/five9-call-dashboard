@@ -44,6 +44,9 @@ function process(data, field) {
     else if (fieldName == 'attendancePoints') {
         return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
     }
+    else if (fieldName == 'code' || field == 'code') {
+        return data[0]['code'];
+    }
     else if (fieldName) return sum(data, fieldName);
     else return sum(data, field);
 }

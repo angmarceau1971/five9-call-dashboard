@@ -46,7 +46,9 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
 
     <data-table
         v-if="showTable"
-        :data="data"
+        :datasource="datasource"
+        :filter="filter"
+        :fields="tableFields"
     ></data-table>
 </div>
 </template>
@@ -141,8 +143,12 @@ export default {
             if (this.statsType == 'team') {
                 return 'hsl(345, 91%, 48%)';
             } else {
-                return 'steelblue';9704304431
+                return 'steelblue';
             }
+        },
+        // Return array of fields to be displayed by data-table
+        tableFields() {
+            return [this.fields.x, this.fields.y];
         }
     },
 

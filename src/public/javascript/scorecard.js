@@ -260,15 +260,15 @@ attendance.widgets = [
     },
     {
         'id': 'widget:1',
-        'component': 'line-graph',
-        'title': 'Point Changes',
+        'component': 'data-table',
+        'title': 'Points',
         'filter': {},
-        'fields': {
-            'x': 'date',
-            'y': 'pointsAdded',
-            'y2': 'pointsRolledOff',
-            'y3': 'Code'
-        },
+        'fields': [
+            'date',
+            'code',
+            'pointsAdded',
+            'pointsRolledOff'
+        ],
         'datasource': 'Attendance Points'
     },
     {
