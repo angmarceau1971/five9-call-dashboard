@@ -2,6 +2,7 @@ const verify = require('../authentication/verify'); // check user permissions
 const fields = require('../admin/fields');
 const goals = require('../admin/goals');
 const links = require('../admin/links');
+const log = require('../utility/log'); // recording updates
 const admin = require('../admin/admin');
 const users = require('../authentication/users'); // stores usernames to check auth
 const customData = require('../datasources/custom-upload');
@@ -117,6 +118,7 @@ module.exports.addTo = function(router) {
             let response = await customData.update(datasource);
             res.status(200).send(`Datasource "${datasource.name}" has been saved.`);
         } catch (err) {
+            log.error(`during api/datasources update: ${err}`);
             res.status(500).send(`Error while updating ${datasource.name}: ${err}.`);
         }
     });

@@ -213,7 +213,9 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
             await skillGroup.upload(data);
         }
         else {
-            await uploader.upload(req.body.datasourceName, req.body.csv);
+            await uploader.upload(req.body.datasourceName, req.body.csv,
+                req.body.updateType
+            );
         }
         res.status(200).send(`Data uploaded successfully to ${req.body.datasourceName}.`);
     } catch (err) {

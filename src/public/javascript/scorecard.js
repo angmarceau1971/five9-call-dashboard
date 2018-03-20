@@ -243,13 +243,50 @@ qa.widgets = [
 ];
 
 
+const attendance = {
+    title: 'Attendance Points',
+    id: 'card:6',
+    layoutOrder: 6,
+    columns: 1
+};
+attendance.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Current Points',
+        'fieldName': 'Calculated.attendancePoints',
+        'datasource': 'Attendance Points',
+        'filter': {}
+    },
+    {
+        'id': 'widget:1',
+        'component': 'line-graph',
+        'title': 'Point Changes',
+        'filter': {},
+        'fields': {
+            'x': 'date',
+            'y': 'pointsAdded',
+            'y2': 'pointsRolledOff',
+            'y3': 'Code'
+        },
+        'datasource': 'Attendance Points'
+    },
+    {
+        'id': 'widget:2',
+        'component': 'datasource-last-updated',
+        'datasource': 'Attendance Points'
+    }
+];
+
+
 const layout = {
     cards: [
         aht,
         calls,
         sla,
         state,
-        qa
+        qa,
+        attendance
     ],
     datasources: [
         {
@@ -338,6 +375,19 @@ const layout = {
             "groupBy": [],
             "refreshRate": 21600, // update every 6 hours
             "source": "QA"
+        },
+        {
+            "id": "5",
+            "name": "Attendance Points",
+            "fields": {},
+            "filter": {
+                "agentName": {
+                    $in: ["<current user's full name>"]
+                }
+            },
+            "groupBy": [],
+            "refreshRate": 7200, // update every 2 hours
+            "source": "Attendance Points"
         }
     ]
 };

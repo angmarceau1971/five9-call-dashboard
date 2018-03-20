@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 104);
+/******/ 	return __webpack_require__(__webpack_require__.s = 106);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -242,15 +242,15 @@ module.exports = type;
 
 /***/ }),
 
-/***/ 104:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(105);
+module.exports = __webpack_require__(107);
 
 
 /***/ }),
 
-/***/ 105:
+/***/ 107:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -498,7 +498,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("571a7959", content, false, {});
+var update = __webpack_require__(3)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -518,7 +518,7 @@ if(false) {
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -652,43 +652,6 @@ if (false) {
 /***/ }),
 
 /***/ 2:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-
-/***/ 3:
 /***/ (function(module, exports) {
 
 /*
@@ -771,7 +734,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -997,6 +960,43 @@ function applyToTag (styleElement, obj) {
   }
 }
 
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(13);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 
@@ -1563,7 +1563,7 @@ const API_URL = 'http://localhost:3000/api/';
 //
 //
 //
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],

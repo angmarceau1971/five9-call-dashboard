@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 44);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -201,42 +201,6 @@ module.exports = _curry1;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -318,7 +282,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -544,6 +508,42 @@ function applyToTag (styleElement, obj) {
   }
 }
 
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(13);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 /* 5 */
@@ -1106,7 +1106,7 @@ const API_URL = 'http://localhost:3000/api/';
 //
 //
 //
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -1401,7 +1401,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("571a7959", content, false, {});
+var update = __webpack_require__(3)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1420,7 +1420,7 @@ if(false) {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -12954,7 +12954,7 @@ if (false) {(function () {
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(33);
 /**
@@ -12969,11 +12969,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 
 
-const sift = __webpack_require__(54);
+const sift = __webpack_require__(55);
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
-const isEmpty = __webpack_require__(81);
+const isEmpty = __webpack_require__(34);
 /**
  * This Vuex store is the ultimate source of truth. It handles all access to
  * data and interactions with the server.
@@ -13210,16 +13210,25 @@ async function loadData(params) {
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports) {
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+module.exports = _has;
+
+/***/ }),
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(37);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(72);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(56)
+  __webpack_require__(68)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -13265,7 +13274,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13278,7 +13287,7 @@ if (false) {(function () {
  */
 
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 /**
  * Extract an overall value from a set of data, based on the provided field.
  * @param  {Array} data   array of data objects
@@ -13312,6 +13321,8 @@ function process(data, field) {
     return sum(data, 'serviceLevel') / sum(data, 'calls');
   } else if (fieldName == 'score') {
     return average(data, 'score');
+  } else if (fieldName == 'attendancePoints') {
+    return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
   } else if (fieldName) return sum(data, fieldName);else return sum(data, field);
 }
 /**
@@ -13396,22 +13407,13 @@ function fieldsToServer(fields) {
 }
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-function _has(prop, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-module.exports = _has;
-
-/***/ }),
 /* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(43);
 //
 //
 //
@@ -13534,13 +13536,13 @@ module.exports = _has;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(43);
 //
 //
 //
@@ -13747,7 +13749,7 @@ module.exports = _has;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(51);
 //
 //
 //
@@ -13857,7 +13859,7 @@ function uuidv4() {
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -13908,7 +13910,7 @@ const clone = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server or
  * apply to data.
@@ -14010,10 +14012,103 @@ const dateMatcher = {
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var empty = /*#__PURE__*/__webpack_require__(56);
+
+var equals = /*#__PURE__*/__webpack_require__(60);
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
+
+
+var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
+  return x != null && equals(x, empty(x));
+});
+module.exports = isEmpty;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var toString = Object.prototype.toString;
+var _isArguments = function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+};
+
+module.exports = _isArguments;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_row_vue__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 //
 //
@@ -14068,7 +14163,7 @@ const dateMatcher = {
 });
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14113,15 +14208,14 @@ const dateMatcher = {
 });
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
-//
 //
 //
 //
@@ -14214,8 +14308,7 @@ const props = {
       paths: {
         area: '',
         line: '',
-        selector: '',
-        goalLine: ''
+        selector: ''
       },
       circleRadius: 3,
       lastHoverPoint: {},
@@ -14239,7 +14332,9 @@ const props = {
       // Get data from hub
       let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
 
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.x, [this.fields.y]); // Sort along X axis
+      let yFields = [this.fields.y];
+      if (this.fields.y2) yFields.push(this.fields.y2);
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.x, yFields); // Sort along X axis
 
       grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1);
       return grouped;
@@ -14263,6 +14358,7 @@ const props = {
         return 'hsl(345, 91%, 48%)';
       } else {
         return 'steelblue';
+        9704304431;
       }
     }
 
@@ -14331,18 +14427,7 @@ const props = {
 
       this.scaled.x.domain(d3.extent(this.data, d => d[this.fields.x]));
       this.scaled.y.domain([0, this.ceil]);
-      this.points = []; // Draw goal line
-
-      const field = this.$store.getters.field(this.fields.y);
-
-      if (field.goal) {
-        let goalPoints = this.scaled.x.domain().map(xVal => ({
-          x: this.scaled.x(xVal),
-          y: this.scaled.y(field.goal)
-        }));
-        this.paths.goalLine = this.createLine(goalPoints);
-      } // Create graph points
-
+      this.points = []; // Create graph points
 
       for (let d of this.data) {
         this.points.push({
@@ -14406,13 +14491,13 @@ const props = {
 });
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(28);
 //
 //
 //
@@ -14487,13 +14572,13 @@ const props = {
 });
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
@@ -14551,7 +14636,7 @@ const props = {
 
 
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
 const reasonCodeColors = {
   'Lunch': 'hsl(204, 54%, 52%)',
@@ -14738,7 +14823,7 @@ const props = {
 });
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14774,7 +14859,7 @@ const props = {
 });
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14846,7 +14931,7 @@ function sortOrder(a, b, event, dropId, el) {
 ;
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14891,76 +14976,21 @@ function sortOrder(a, b, event, dropId, el) {
 });
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _has = /*#__PURE__*/__webpack_require__(28);
-
-var toString = Object.prototype.toString;
-var _isArguments = function () {
-  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
-    return toString.call(x) === '[object Arguments]';
-  } : function _isArguments(x) {
-    return _has('callee', x);
-  };
-};
-
-module.exports = _isArguments;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
-
-/**
- * Optimized internal two-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry2(fn) {
-  return function f2(a, b) {
-    switch (arguments.length) {
-      case 0:
-        return f2;
-      case 1:
-        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-          return fn(a, _b);
-        });
-      default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-          return fn(_a, b);
-        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-          return fn(a, _b);
-        }) : fn(a, b);
-    }
-  };
-}
-module.exports = _curry2;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(45);
-
-
-/***/ }),
 /* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(46);
+
+
+/***/ }),
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__ = __webpack_require__(15);
@@ -14970,11 +15000,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
  // NPM libraries
 
-const isEmpty = __webpack_require__(81);
+const isEmpty = __webpack_require__(34);
 
-const clone = __webpack_require__(2);
+const clone = __webpack_require__(4);
 
-const debounce = __webpack_require__(93);
+const debounce = __webpack_require__(95);
 
 const aht = {
   title: 'Average Handle Time',
@@ -15175,8 +15205,38 @@ qa.widgets = [{
   'component': 'datasource-last-updated',
   'datasource': 'QA'
 }];
+const attendance = {
+  title: 'Attendance Points',
+  id: 'card:6',
+  layoutOrder: 6,
+  columns: 1
+};
+attendance.widgets = [{
+  'id': 'widget:0',
+  'component': 'single-value',
+  'title': 'Current Points',
+  'fieldName': 'Calculated.attendancePoints',
+  'datasource': 'Attendance Points',
+  'filter': {}
+}, {
+  'id': 'widget:1',
+  'component': 'line-graph',
+  'title': 'Point Changes',
+  'filter': {},
+  'fields': {
+    'x': 'date',
+    'y': 'pointsAdded',
+    'y2': 'pointsRolledOff',
+    'y3': 'Code'
+  },
+  'datasource': 'Attendance Points'
+}, {
+  'id': 'widget:2',
+  'component': 'datasource-last-updated',
+  'datasource': 'Attendance Points'
+}];
 const layout = {
-  cards: [aht, calls, sla, state, qa],
+  cards: [aht, calls, sla, state, qa, attendance],
   datasources: [{
     "id": "1",
     "name": "Agent Call Stats",
@@ -15239,6 +15299,19 @@ const layout = {
     "refreshRate": 21600,
     // update every 6 hours
     "source": "QA"
+  }, {
+    "id": "5",
+    "name": "Attendance Points",
+    "fields": {},
+    "filter": {
+      "agentName": {
+        $in: ["<current user's full name>"]
+      }
+    },
+    "groupBy": [],
+    "refreshRate": 7200,
+    // update every 2 hours
+    "source": "Attendance Points"
   }]
 };
 const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];
@@ -15563,13 +15636,13 @@ function isDescendant(parent, child) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(29);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(94);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -15615,17 +15688,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(30);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(89);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(48)
+  __webpack_require__(49)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -15671,17 +15744,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(49);
+var content = __webpack_require__(50);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("1e5068c2", content, false, {});
+var update = __webpack_require__(3)("1e5068c2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -15697,10 +15770,10 @@ if(false) {
 }
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -15711,17 +15784,17 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(32);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(67);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(51)
+  __webpack_require__(52)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -15767,17 +15840,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(52);
+var content = __webpack_require__(53);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("208c43bc", content, false, {});
+var update = __webpack_require__(3)("208c43bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -15793,10 +15866,10 @@ if(false) {
 }
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -15807,7 +15880,7 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16751,7 +16824,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 /*
@@ -17340,7 +17413,461 @@ var index_esm = {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(35);
+
+var _isArray = /*#__PURE__*/__webpack_require__(57);
+
+var _isObject = /*#__PURE__*/__webpack_require__(58);
+
+var _isString = /*#__PURE__*/__webpack_require__(59);
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
+
+
+var empty = /*#__PURE__*/_curry1(function empty(x) {
+  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
+    return arguments;
+  }() :
+  // else
+  void 0;
+});
+module.exports = empty;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+module.exports = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === '[object Object]';
+}
+module.exports = _isObject;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+module.exports = _isString;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(36);
+
+var _equals = /*#__PURE__*/__webpack_require__(61);
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
+
+
+var equals = /*#__PURE__*/_curry2(function equals(a, b) {
+  return _equals(a, b, [], []);
+});
+module.exports = equals;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(62);
+
+var _containsWith = /*#__PURE__*/__webpack_require__(63);
+
+var _functionName = /*#__PURE__*/__webpack_require__(64);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var identical = /*#__PURE__*/__webpack_require__(65);
+
+var keys = /*#__PURE__*/__webpack_require__(66);
+
+var type = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
+
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  }
+
+  // if *a* array contains any element that is not included in *b*
+  return !_containsWith(function (b, aItem) {
+    return !_containsWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (identical(a, b)) {
+    return true;
+  }
+
+  var typeA = type(a);
+
+  if (typeA !== type(b)) {
+    return false;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+  }
+
+  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
+  }
+
+  switch (typeA) {
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
+        return a === b;
+      }
+      break;
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+        return false;
+      }
+      break;
+    case 'Date':
+      if (!identical(a.valueOf(), b.valueOf())) {
+        return false;
+      }
+      break;
+    case 'Error':
+      return a.name === b.name && a.message === b.message;
+    case 'RegExp':
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
+        return false;
+      }
+      break;
+  }
+
+  var idx = stackA.length - 1;
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+    idx -= 1;
+  }
+
+  switch (typeA) {
+    case 'Map':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'ArrayBuffer':
+      break;
+    default:
+      // Values of other types are only equal if identical.
+      return false;
+  }
+
+  var keysA = keys(a);
+  if (keysA.length !== keys(b).length) {
+    return false;
+  }
+
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
+
+  idx = keysA.length - 1;
+  while (idx >= 0) {
+    var key = keysA[idx];
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+      return false;
+    }
+    idx -= 1;
+  }
+  return true;
+}
+module.exports = _equals;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+function _arrayFromIterator(iter) {
+  var list = [];
+  var next;
+  while (!(next = iter.next()).done) {
+    list.push(next.value);
+  }
+  return list;
+}
+module.exports = _arrayFromIterator;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+function _containsWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+}
+module.exports = _containsWith;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports) {
+
+function _functionName(f) {
+  // String(x => x) evaluates to "x => x", so the pattern may not match.
+  var match = String(f).match(/^function (\w*)/);
+  return match == null ? '' : match[1];
+}
+module.exports = _functionName;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(36);
+
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
+
+var identical = /*#__PURE__*/_curry2(function identical(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+});
+module.exports = identical;
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(35);
+
+// cover IE < 9 keys issues
+
+
+var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// Safari bug
+var hasArgsEnumBug = /*#__PURE__*/function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+};
+
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+} : function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+  var prop, nIdx;
+  var ks = [];
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+      nIdx -= 1;
+    }
+  }
+  return ks;
+};
+var keys = /*#__PURE__*/_curry1(_keys);
+module.exports = keys;
+
+/***/ }),
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17547,17 +18074,17 @@ if (false) {
 }
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(57);
+var content = __webpack_require__(69);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("9c7d97ce", content, false, {});
+var update = __webpack_require__(3)("9c7d97ce", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -17573,10 +18100,10 @@ if(false) {
 }
 
 /***/ }),
-/* 57 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -17587,13 +18114,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 58 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_row_vue__ = __webpack_require__(38);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_067c065e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_row_vue__ = __webpack_require__(71);
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -17639,7 +18166,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 59 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17678,7 +18205,7 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17730,17 +18257,17 @@ if (false) {
 }
 
 /***/ }),
-/* 61 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(39);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(76);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(62)
+  __webpack_require__(74)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -17786,17 +18313,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 62 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(63);
+var content = __webpack_require__(75);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("3a8ea719", content, false, {});
+var update = __webpack_require__(3)("3a8ea719", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -17812,21 +18339,21 @@ if(false) {
 }
 
 /***/ }),
-/* 63 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
 // module
-exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e], .data-dropdown-title[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-21d5040e] {\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 30px;\n}\n.rotating-play-icon[data-v-21d5040e] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-21d5040e] {\n    transform: rotate(90deg);\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.goal-line[data-v-21d5040e] {\n    fill: none;\n    stroke: lightgrey;\n    stroke-opacity: 0.7;\n    stroke-width: 1.0;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 99%, 80%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue"],"names":[],"mappings":";AA+RA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,kBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,WAAA;IACA,kBAAA;IACA,oBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"goal-line\" :d=\"paths.goalLine\" />\r\n                <path class=\"line\" :d=\"paths.line\" :style=\"{ stroke: lineColor }\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                    :style=\"{ fill: lineColor }\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >\r\n            {{ infoBox.message }}\r\n        </div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"data\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    statsType: { // `individual` or `team`\r\n        type: String,\r\n        default: 'individual'\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        },\r\n        lineColor() {\r\n            if (this.statsType == 'team') {\r\n                return 'hsl(345, 91%, 48%)';\r\n            } else {\r\n                return 'steelblue';\r\n            }\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            if (this.data.length > 0 && this.showTable == false) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Draw goal line\r\n            const field = this.$store.getters.field(this.fields.y);\r\n            if (field.goal) {\r\n                let goalPoints = this.scaled.x.domain().map((xVal) =>\r\n                    ({\r\n                        x: this.scaled.x(xVal),\r\n                        y: this.scaled.y(field.goal)\r\n                    })\r\n                );\r\n                this.paths.goalLine = this.createLine(goalPoints);\r\n            }\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                // .attr('fill', '#ddd')\r\n                .attr('dx', '-1em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n    .data-dropdown-title {\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 30px;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .goal-line {\r\n        fill: none;\r\n        stroke: lightgrey;\r\n        stroke-opacity: 0.7;\r\n        stroke-width: 1.0;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 99%, 80%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e], .data-dropdown-title[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-21d5040e] {\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 30px;\n}\n.rotating-play-icon[data-v-21d5040e] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-21d5040e] {\n    transform: rotate(90deg);\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 99%, 80%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue"],"names":[],"mappings":";AAmRA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,kBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"line\" :d=\"paths.line\" :style=\"{ stroke: lineColor }\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                    :style=\"{ fill: lineColor }\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >\r\n            {{ infoBox.message }}\r\n        </div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :data=\"data\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    statsType: { // `individual` or `team`\r\n        type: String,\r\n        default: 'individual'\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let yFields = [this.fields.y];\r\n            if (this.fields.y2) yFields.push(this.fields.y2);\r\n            let grouped = parse.summarize(raw, this.fields.x, yFields);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            return grouped;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        },\r\n        lineColor() {\r\n            if (this.statsType == 'team') {\r\n                return 'hsl(345, 91%, 48%)';\r\n            } else {\r\n                return 'steelblue';9704304431\r\n            }\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n        this.onResize();\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            if (this.data.length > 0 && this.showTable == false) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                // .attr('fill', '#ddd')\r\n                .attr('dx', '-1em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n    .data-dropdown-title {\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 30px;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 99%, 80%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 64 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17903,11 +18430,6 @@ var render = function() {
                   _c("path", {
                     staticClass: "area",
                     attrs: { d: _vm.paths.area }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "goal-line",
-                    attrs: { d: _vm.paths.goalLine }
                   }),
                   _vm._v(" "),
                   _c("path", {
@@ -17996,17 +18518,17 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(40);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(80);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(66)
+  __webpack_require__(78)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -18052,17 +18574,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 66 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("69ee75ae", content, false, {});
+var update = __webpack_require__(3)("69ee75ae", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -18078,10 +18600,10 @@ if(false) {
 }
 
 /***/ }),
-/* 67 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -18092,7 +18614,7 @@ exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 1
 
 
 /***/ }),
-/* 68 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18160,17 +18682,17 @@ if (false) {
 }
 
 /***/ }),
-/* 69 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(41);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(84);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(70)
+  __webpack_require__(82)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -18216,17 +18738,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 70 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(71);
+var content = __webpack_require__(83);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("07cfff32", content, false, {});
+var update = __webpack_require__(3)("07cfff32", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -18242,10 +18764,10 @@ if(false) {
 }
 
 /***/ }),
-/* 71 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -18256,7 +18778,7 @@ exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n
 
 
 /***/ }),
-/* 72 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18355,17 +18877,17 @@ if (false) {
 }
 
 /***/ }),
-/* 73 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__ = __webpack_require__(42);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(88);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(108)
+  __webpack_require__(86)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -18411,8 +18933,73 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 74 */,
-/* 75 */
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(87);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("0b9ae522", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\ndiv[data-v-27782583] {\r\n    text-align: center;\n}\np[data-v-27782583] {\r\n    margin: 0;\r\n    font-size: 0.8em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/datasource-last-updated.vue"],"names":[],"mappings":";AAiCA;IACA,mBAAA;CACA;AACA;IACA,UAAA;IACA,iBAAA;CACA","file":"datasource-last-updated.vue","sourcesContent":["/**\r\n * Component to display a single table row of data. Child of DataTable widgets.\r\n */\r\n<template>\r\n    <div>\r\n        <p class=\"font-color-secondary\">\r\n            {{ lastUpdateMessage }}\r\n        </p>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\nimport { formatValue } from '../javascript/scorecard-format.js';\r\n\r\nexport default {\r\n    props: ['datasource'],\r\n    data () {\r\n        return {\r\n            isHighlighted: false\r\n        };\r\n    },\r\n    computed: {\r\n        lastUpdateMessage: function() {\r\n            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;\r\n            if (!time) return 'Last updated time not available';\r\n            return `Last updated ${moment(time).format('MM/DD/YY')}`;\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\ndiv {\r\n    text-align: center;\r\n}\r\np {\r\n    margin: 0;\r\n    font-size: 0.8em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("p", { staticClass: "font-color-secondary" }, [
+      _vm._v("\n        " + _vm._s(_vm.lastUpdateMessage) + "\n    ")
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-27782583", esExports)
+  }
+}
+
+/***/ }),
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18583,17 +19170,17 @@ if (false) {
 }
 
 /***/ }),
-/* 76 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(44);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(93);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(77)
+  __webpack_require__(91)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -18639,17 +19226,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 77 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(92);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("fff1ea5c", content, false, {});
+var update = __webpack_require__(3)("fff1ea5c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -18665,10 +19252,10 @@ if(false) {
 }
 
 /***/ }),
-/* 78 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -18679,7 +19266,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 79 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18764,7 +19351,7 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18829,499 +19416,7 @@ if (false) {
 }
 
 /***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var empty = /*#__PURE__*/__webpack_require__(82);
-
-var equals = /*#__PURE__*/__webpack_require__(86);
-
-/**
- * Returns `true` if the given value is its type's empty value; `false`
- * otherwise.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Logic
- * @sig a -> Boolean
- * @param {*} x
- * @return {Boolean}
- * @see R.empty
- * @example
- *
- *      R.isEmpty([1, 2, 3]);   //=> false
- *      R.isEmpty([]);          //=> true
- *      R.isEmpty('');          //=> true
- *      R.isEmpty(null);        //=> false
- *      R.isEmpty({});          //=> true
- *      R.isEmpty({length: 0}); //=> false
- */
-
-
-var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
-  return x != null && equals(x, empty(x));
-});
-module.exports = isEmpty;
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(42);
-
-var _isArray = /*#__PURE__*/__webpack_require__(83);
-
-var _isObject = /*#__PURE__*/__webpack_require__(84);
-
-var _isString = /*#__PURE__*/__webpack_require__(85);
-
-/**
- * Returns the empty value of its argument's type. Ramda defines the empty
- * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
- * types are supported if they define `<Type>.empty`,
- * `<Type>.prototype.empty` or implement the
- * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
- *
- * Dispatches to the `empty` method of the first argument, if present.
- *
- * @func
- * @memberOf R
- * @since v0.3.0
- * @category Function
- * @sig a -> a
- * @param {*} x
- * @return {*}
- * @example
- *
- *      R.empty(Just(42));      //=> Nothing()
- *      R.empty([1, 2, 3]);     //=> []
- *      R.empty('unicorns');    //=> ''
- *      R.empty({x: 1, y: 2});  //=> {}
- */
-
-
-var empty = /*#__PURE__*/_curry1(function empty(x) {
-  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
-    return arguments;
-  }() :
-  // else
-  void 0;
-});
-module.exports = empty;
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports) {
-
-/**
- * Tests whether or not an object is an array.
- *
- * @private
- * @param {*} val The object to test.
- * @return {Boolean} `true` if `val` is an array, `false` otherwise.
- * @example
- *
- *      _isArray([]); //=> true
- *      _isArray(null); //=> false
- *      _isArray({}); //=> false
- */
-module.exports = Array.isArray || function _isArray(val) {
-  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
-};
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-function _isObject(x) {
-  return Object.prototype.toString.call(x) === '[object Object]';
-}
-module.exports = _isObject;
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports) {
-
-function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-}
-module.exports = _isString;
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(43);
-
-var _equals = /*#__PURE__*/__webpack_require__(87);
-
-/**
- * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
- * cyclical data structures.
- *
- * Dispatches symmetrically to the `equals` methods of both arguments, if
- * present.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> b -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      R.equals(1, 1); //=> true
- *      R.equals(1, '1'); //=> false
- *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
- *
- *      var a = {}; a.v = a;
- *      var b = {}; b.v = b;
- *      R.equals(a, b); //=> true
- */
-
-
-var equals = /*#__PURE__*/_curry2(function equals(a, b) {
-  return _equals(a, b, [], []);
-});
-module.exports = equals;
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(88);
-
-var _containsWith = /*#__PURE__*/__webpack_require__(89);
-
-var _functionName = /*#__PURE__*/__webpack_require__(90);
-
-var _has = /*#__PURE__*/__webpack_require__(28);
-
-var identical = /*#__PURE__*/__webpack_require__(91);
-
-var keys = /*#__PURE__*/__webpack_require__(92);
-
-var type = /*#__PURE__*/__webpack_require__(10);
-
-/**
- * private _uniqContentEquals function.
- * That function is checking equality of 2 iterator contents with 2 assumptions
- * - iterators lengths are the same
- * - iterators values are unique
- *
- * false-positive result will be returned for comparision of, e.g.
- * - [1,2,3] and [1,2,3,4]
- * - [1,1,1] and [1,2,3]
- * */
-
-function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
-  var a = _arrayFromIterator(aIterator);
-  var b = _arrayFromIterator(bIterator);
-
-  function eq(_a, _b) {
-    return _equals(_a, _b, stackA.slice(), stackB.slice());
-  }
-
-  // if *a* array contains any element that is not included in *b*
-  return !_containsWith(function (b, aItem) {
-    return !_containsWith(eq, aItem, b);
-  }, b, a);
-}
-
-function _equals(a, b, stackA, stackB) {
-  if (identical(a, b)) {
-    return true;
-  }
-
-  var typeA = type(a);
-
-  if (typeA !== type(b)) {
-    return false;
-  }
-
-  if (a == null || b == null) {
-    return false;
-  }
-
-  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
-    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
-  }
-
-  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
-    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
-  }
-
-  switch (typeA) {
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
-        return a === b;
-      }
-      break;
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
-        return false;
-      }
-      break;
-    case 'Date':
-      if (!identical(a.valueOf(), b.valueOf())) {
-        return false;
-      }
-      break;
-    case 'Error':
-      return a.name === b.name && a.message === b.message;
-    case 'RegExp':
-      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
-        return false;
-      }
-      break;
-  }
-
-  var idx = stackA.length - 1;
-  while (idx >= 0) {
-    if (stackA[idx] === a) {
-      return stackB[idx] === b;
-    }
-    idx -= 1;
-  }
-
-  switch (typeA) {
-    case 'Map':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
-    case 'Set':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-    case 'Date':
-    case 'Error':
-    case 'RegExp':
-    case 'Int8Array':
-    case 'Uint8Array':
-    case 'Uint8ClampedArray':
-    case 'Int16Array':
-    case 'Uint16Array':
-    case 'Int32Array':
-    case 'Uint32Array':
-    case 'Float32Array':
-    case 'Float64Array':
-    case 'ArrayBuffer':
-      break;
-    default:
-      // Values of other types are only equal if identical.
-      return false;
-  }
-
-  var keysA = keys(a);
-  if (keysA.length !== keys(b).length) {
-    return false;
-  }
-
-  var extendedStackA = stackA.concat([a]);
-  var extendedStackB = stackB.concat([b]);
-
-  idx = keysA.length - 1;
-  while (idx >= 0) {
-    var key = keysA[idx];
-    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
-      return false;
-    }
-    idx -= 1;
-  }
-  return true;
-}
-module.exports = _equals;
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports) {
-
-function _arrayFromIterator(iter) {
-  var list = [];
-  var next;
-  while (!(next = iter.next()).done) {
-    list.push(next.value);
-  }
-  return list;
-}
-module.exports = _arrayFromIterator;
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-function _containsWith(pred, x, list) {
-  var idx = 0;
-  var len = list.length;
-
-  while (idx < len) {
-    if (pred(x, list[idx])) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-}
-module.exports = _containsWith;
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-function _functionName(f) {
-  // String(x => x) evaluates to "x => x", so the pattern may not match.
-  var match = String(f).match(/^function (\w*)/);
-  return match == null ? '' : match[1];
-}
-module.exports = _functionName;
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(43);
-
-/**
- * Returns true if its arguments are identical, false otherwise. Values are
- * identical if they reference the same memory. `NaN` is identical to `NaN`;
- * `0` and `-0` are not identical.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> a -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      var o = {};
- *      R.identical(o, o); //=> true
- *      R.identical(1, 1); //=> true
- *      R.identical(1, '1'); //=> false
- *      R.identical([], []); //=> false
- *      R.identical(0, -0); //=> false
- *      R.identical(NaN, NaN); //=> true
- */
-
-
-var identical = /*#__PURE__*/_curry2(function identical(a, b) {
-  // SameValue algorithm
-  if (a === b) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return a !== 0 || 1 / a === 1 / b;
-  } else {
-    // Step 6.a: NaN == NaN
-    return a !== a && b !== b;
-  }
-});
-module.exports = identical;
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _has = /*#__PURE__*/__webpack_require__(28);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(42);
-
-// cover IE < 9 keys issues
-
-
-var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
-var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-// Safari bug
-var hasArgsEnumBug = /*#__PURE__*/function () {
-  'use strict';
-
-  return arguments.propertyIsEnumerable('length');
-}();
-
-var contains = function contains(list, item) {
-  var idx = 0;
-  while (idx < list.length) {
-    if (list[idx] === item) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-};
-
-/**
- * Returns a list containing the names of all the enumerable own properties of
- * the supplied object.
- * Note that the order of the output array is not guaranteed to be consistent
- * across different JS platforms.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {k: v} -> [k]
- * @param {Object} obj The object to extract properties from
- * @return {Array} An array of the object's own properties.
- * @see R.keysIn, R.values
- * @example
- *
- *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
- */
-var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
-  return Object(obj) !== obj ? [] : Object.keys(obj);
-} : function keys(obj) {
-  if (Object(obj) !== obj) {
-    return [];
-  }
-  var prop, nIdx;
-  var ks = [];
-  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
-  for (prop in obj) {
-    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
-      ks[ks.length] = prop;
-    }
-  }
-  if (hasEnumBug) {
-    nIdx = nonEnumerableProps.length - 1;
-    while (nIdx >= 0) {
-      prop = nonEnumerableProps[nIdx];
-      if (_has(prop, obj) && !contains(ks, prop)) {
-        ks[ks.length] = prop;
-      }
-      nIdx -= 1;
-    }
-  }
-  return ks;
-};
-var keys = /*#__PURE__*/_curry1(_keys);
-module.exports = keys;
-
-/***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports) {
 
 /**
@@ -19391,86 +19486,6 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
-
-/***/ }),
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(109);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("0b9ae522", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\ndiv[data-v-27782583] {\r\n    text-align: center;\n}\np[data-v-27782583] {\r\n    margin: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/datasource-last-updated.vue"],"names":[],"mappings":";AAiCA;IACA,mBAAA;CACA;AACA;IACA,UAAA;CACA","file":"datasource-last-updated.vue","sourcesContent":["/**\r\n * Component to display a single table row of data. Child of DataTable widgets.\r\n */\r\n<template>\r\n    <div>\r\n        <p class=\"font-color-secondary\">\r\n            {{ lastUpdateMessage }}\r\n        </p>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\nimport { formatValue } from '../javascript/scorecard-format.js';\r\n\r\nexport default {\r\n    props: ['datasource'],\r\n    data () {\r\n        return {\r\n            isHighlighted: false\r\n        };\r\n    },\r\n    computed: {\r\n        lastUpdateMessage: function() {\r\n            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;\r\n            if (!time) return 'Last updated time not available';\r\n            return `Last updated ${moment(time).format('MM/DD/YY')}`;\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\ndiv {\r\n    text-align: center;\r\n}\r\np {\r\n    margin: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 110 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("p", { staticClass: "font-color-secondary" }, [
-      _vm._v("\n        " + _vm._s(_vm.lastUpdateMessage) + "\n    ")
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-27782583", esExports)
-  }
-}
 
 /***/ })
 /******/ ]);

@@ -13,7 +13,8 @@ const vm = new Vue({
 
     data: {
         message: '',
-        selectedDatasourceName: ''
+        selectedDatasourceName: '',
+        updateType: ''
     },
 
     methods: {
@@ -54,12 +55,14 @@ const vm = new Vue({
 
         // Utility functions
         uploadFile: async function(event) {
-            return this.handleFileUpload(event, this.selectedDatasourceName);
+            return this.handleFileUpload(event, this.selectedDatasourceName,
+                this.updateType
+            );
         },
         uploadSkillGroupFile: async function(event) {
-            return this.handleFileUpload(event, 'SkillGroup')
+            return this.handleFileUpload(event, 'SkillGroup', 'overwrite');
         },
-        handleFileUpload: async function(event, datasourceName) {
+        handleFileUpload: async function(event, datasourceName, updateType) {
             const file = event.target.files[0];
             if (!file) {
                 this.updateMessage('No file selected.')
@@ -70,7 +73,7 @@ const vm = new Vue({
                 const params = {
                     csv: e.target.result,
                     datasourceName: datasourceName,
-                    confirmedChanges: false
+                    updateType: updateType
                 };
                 const response = await api.uploadData(params);
                 this.updateMessage(response);

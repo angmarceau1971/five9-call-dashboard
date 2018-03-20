@@ -15,7 +15,6 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
             <g class="axis" ref="xaxis" :style="{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}"></g>
             <g :style="{transform: `translate(${margin.left}px, ${margin.top}px)`}">
                 <path class="area" :d="paths.area" />
-                <path class="goal-line" :d="paths.goalLine" />
                 <path class="line" :d="paths.line" :style="{ stroke: lineColor }" />
                 <path class="selector" :d="paths.selector" />
                 <circle v-for="point in points"
@@ -97,8 +96,7 @@ export default {
             paths: {
                 area: '',
                 line: '',
-                selector: '',
-                goalLine: ''
+                selector: ''
             },
             circleRadius: 3,
             lastHoverPoint: {},
@@ -122,7 +120,9 @@ export default {
             // Get data from hub
             let raw = this.$store.getters.getData(this.filter, this.datasource);
             // Summarize by displayed field(s)
-            let grouped = parse.summarize(raw, this.fields.x, [this.fields.y]);
+            let yFields = [this.fields.y];
+            if (this.fields.y2) yFields.push(this.fields.y2);
+            let grouped = parse.summarize(raw, this.fields.x, yFields);
             // Sort along X axis
             grouped.sort((a, b) =>
                 a[this.fields.x] < b[this.fields.x] ? -1 : 1
@@ -141,7 +141,7 @@ export default {
             if (this.statsType == 'team') {
                 return 'hsl(345, 91%, 48%)';
             } else {
-                return 'steelblue';
+                return 'steelblue';9704304431
             }
         }
     },
@@ -201,18 +201,6 @@ export default {
             this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));
             this.scaled.y.domain([0, this.ceil]);
             this.points = [];
-
-            // Draw goal line
-            const field = this.$store.getters.field(this.fields.y);
-            if (field.goal) {
-                let goalPoints = this.scaled.x.domain().map((xVal) =>
-                    ({
-                        x: this.scaled.x(xVal),
-                        y: this.scaled.y(field.goal)
-                    })
-                );
-                this.paths.goalLine = this.createLine(goalPoints);
-            }
 
             // Create graph points
             for (let d of this.data) {
@@ -328,12 +316,6 @@ export default {
         stroke-linejoin: round;
         stroke-linecap: round;
         stroke-width: 1.5;
-    }
-    .goal-line {
-        fill: none;
-        stroke: lightgrey;
-        stroke-opacity: 0.7;
-        stroke-width: 1.0;
     }
     .axis {
         font-size: 0.5em;

@@ -26,6 +26,14 @@
         <div class="section data-upload">
             <h3>Upload new data</h3>
                 <input v-model="selectedDatasourceName" placeholder="Custom datasource name" />
+                <select v-model="updateType">
+                    <option value="addTo">
+                        Add to data
+                    </option>
+                    <option value="overwrite">
+                        Overwrite all existing data
+                    </option>
+                </select>
                 <input type="file" accept=".csv" name="Data Upload"
                     ref="fileInput"
                     @change="uploadFile"

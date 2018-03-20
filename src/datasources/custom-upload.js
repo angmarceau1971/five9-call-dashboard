@@ -99,16 +99,18 @@ module.exports.getDatasourceByName = getDatasourceByName;
  * @return {Promise -> Object}
  */
 async function update(datasource) {
-    const oid = new mongoose.Types.ObjectId(datasource._id);
+    if (datasource._id) {
+        const oid = new mongoose.Types.ObjectId(datasource._id);
 
-    log.message(`Updating ${datasource.name} to: ${JSON.stringify(datasource)}`);
-    let response = await CustomDatasource.replaceOne(
-        { _id: oid },
-        datasource
-    );
-    if (response.n > 0) {
-        log.message(`Field ${datasource.name} has been modified.`);
-        return response;
+        log.message(`Updating ${datasource.name} to: ${JSON.stringify(datasource)}`);
+        let response = await CustomDatasource.replaceOne(
+            { _id: oid },
+            datasource
+        );
+        if (response.n > 0) {
+            log.message(`Field ${datasource.name} has been modified.`);
+            return response;
+        }
     }
     // If this datasource doesn't exist, create a new collection for it
     log.message(`No match for datasource ID. Adding new datasource ${datasource.name}.`);
@@ -145,10 +147,14 @@ async function setDatasourceLastUpdated(datasource, updateTime) {
 /**
  * Add data to custom collection.
  * @param  {String} datasourceName name of associated data source
- * @param  {String} csvData      array of new data
- * @return {Promise}          resolves to new documents
+ * @param  {String} csvData    array of new data
+ * @param  {String} updateType either 'addTo' or 'overwrite' existing data
+ * @return {Promise} resolves to new documents
  */
-async function upload(datasourceName, csvData) {
+async function upload(datasourceName, csvData, updateType='addTo') {
+    if (updateType != 'addTo' && updateType != 'overwrite') {
+        throw new Error(`updateType ${updateType} not recognized.`);
+    }
     let datasource = await getDatasourceByName(datasourceName);
     if (!datasource) {
         throw new Error(`Datasource ${datasourceName} not found.`);
@@ -164,6 +170,10 @@ async function upload(datasourceName, csvData) {
                         ${newFields.join(', ')}`);
     }
 
+    // If overwriting existing data, clear it all
+    if (updateType == 'overwrite') {
+        await CustomData.remove({ _datasourceName: datasourceName });
+    }
     // Save it
     setDatasourceLastUpdated(datasource, new Date());
     return CustomData.collection.insert(data);
