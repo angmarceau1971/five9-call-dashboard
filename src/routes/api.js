@@ -31,20 +31,22 @@ const skillGroup = require('../datasources/skill-group');
 // Include endpoints defined in other files
 const addAdminRoutes = require('./administrative').addTo(router);
 
-router.post('/statistics', verify.apiMiddleware(), async (req, res) => {
-    report.onReady(async () => {
-        let data;
-        try {
-            data = await datasource.getScorecardStatistics(req.body);
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(data));
-        } catch (err) {
-            log.error(`Error during scorecard retrieval: ${err}`);
-            res.set('Content-Type', 'application/text');
-            res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
-        }
-    })
-});
+router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
+    async (req, res) => {
+        report.onReady(async () => {
+            let data;
+            try {
+                data = await datasource.getScorecardStatistics(req.body);
+                res.set('Content-Type', 'application/json');
+                res.send(JSON.stringify(data));
+            } catch (err) {
+                log.error(`Error during scorecard retrieval: ${err}`);
+                res.set('Content-Type', 'application/text');
+                res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
+            }
+        })
+    }
+);
 
 // Five9 current queue statistics (ACDStatus endpoint at Five9)
 router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {

@@ -7,6 +7,7 @@
 const five9 = require('../utility/five9-interface');
 const log = require('../utility/log');
 const users = require('./users');
+const datasource = require('../datasources/controller');
 
 
 let basePage = '/';
@@ -71,6 +72,39 @@ async function isAllowed(level, req) {
     return false;
 }
 
+/**
+ * Middleware that enforces custom data must be filtered for current user,
+ * unless user is an admin or supervisor.
+ * @return {Function} middleware function
+ */
+function userAccess() {
+    return async function(req, res, next) {
+        if (!(await couldBeSensitive(req))) return next();
+
+        if (await users.isSupervisor(req.user.username) ||
+            await users.isAdmin(req.user.username)) {
+                return next();
+        }
+        // It's a sensitive request, and the user isn't an admin or supervisor
+        res.set('Content-Type', 'application/text');
+        res.status(403).send('Could not allow access to requested resource. Sorry!');
+    }
+}
+module.exports.userAccess = userAccess;
+
+/**
+ * True if datasource is custom, and response isn't filtered for the current userW
+ * @param  {Object} req Express request object
+ * @return {Boolean}    might be sensitive
+ */
+async function couldBeSensitive(req) {
+    if (!datasource.isCustomSource(req.body.source)) return false;
+    if (req.body.filter.username == req.user.username ||
+        req.body.filter.agentName == (await users.getFullName(req.user.username))) {
+        return false;
+    }
+    return true;
+}
 
 /**
  * Passport authentication strategy.

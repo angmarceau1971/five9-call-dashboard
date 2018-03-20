@@ -102,6 +102,11 @@ async function isSupervisor(username) {
 }
 module.exports.isSupervisor = isSupervisor;
 
+async function getFullName(username) {
+    let user = await Users.findOne({ username: username });
+    return `${user.lastName}, ${user.firstName}`;
+}
+module.exports.getFullName = getFullName;
 
 /**
  * Get user object, including additional fields:

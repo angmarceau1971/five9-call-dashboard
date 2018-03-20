@@ -75,7 +75,8 @@ function mergeIdToData(data) {
 }
 
 /**
- *
+ * Used to return model to extract data, and to determine if the model name is a
+ * custom field.
  * @param  {String} sourceName
  * @return {Mongoose Model} model associated with name
  */
@@ -98,6 +99,11 @@ function getModelFromSourceName(sourceName) {
             return custom.CustomData;
     }
 }
+
+function isCustomSource(sourceName) {
+    return getModelFromSourceName(sourceName) === custom.CustomData;
+}
+module.exports.isCustomSource = isCustomSource;
 
 
 async function getStatisticsFrom(model, aggregation) {
