@@ -179,7 +179,7 @@ h2, h3 {
 .data-table-wrapper {
     margin: 1em;
     max-height: 15em;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .data-table {
     table-layout: fixed;
