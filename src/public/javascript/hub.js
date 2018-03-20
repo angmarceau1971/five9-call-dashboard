@@ -11,6 +11,7 @@ import * as api from './api';
 import * as filters from './filters';
 const sift = require('sift');
 const clone = require('ramda/src/clone');
+const isEmpty = require('ramda/src/isEmpty');
 
 
 /**
@@ -72,10 +73,11 @@ export const store = new Vuex.Store({
                 goal.field == field.name
             )[0];
         },
-        datasourceLastUpdated: (state) => (datasourceName) => {
-            let ds = state.datasources[datasourceName];
-            if (!ds || !ds.lastUpdated) return null;
-            return ds.lastUpdated;
+        getDatasource: (state) => (datasourceName) => {
+            let ds = Object.entries(state.datasources).find(([id, ds]) => {
+                return ds.name == datasourceName;
+            })[1];
+            return ds;
         }
     },
 
@@ -162,10 +164,17 @@ export const store = new Vuex.Store({
             for (const [id, source] of Object.entries(context.state.datasources)) {
                 // Load data from server
                 try {
-                    const data = await loadData(getParams(source));
+                    let res = await loadData(getParams(source));
+                    let data = res.data;
+                    let meta = res.meta;
                     context.commit('updateData', {
                         newData: data, datasource: source.name
                     });
+                    if (!isEmpty(meta)) {
+                        let ds = clone(source);
+                        ds.lastUpdated = meta.lastUpdated;
+                        context.commit('changeDatasource', ds);
+                    }
                 } catch (err) {
                     console.log(`Error while loading data: ${err}`);
                 }
@@ -206,11 +215,11 @@ function getParams(datasource) {
 }
 
 export async function loadData(params) {
-    const data = await api.getStatistics(params);
-    const cleaned = data.map((d) => {
+    let res = await api.getStatistics(params);
+    res.data = res.data.map((d) => {
         if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
         if (d['date']) d['date'] = moment(d['date']).toDate();
         return d;
     });
-    return cleaned;
+    return res;
 }

@@ -89,7 +89,7 @@ module.exports.getAll = getAll;
 function getDatasourceByName(datasourceName) {
     return CustomDatasource.findOne({ name: datasourceName }).lean().exec();
 }
-module.exports.getAll = getAll;
+module.exports.getDatasourceByName = getDatasourceByName;
 
 
 /**

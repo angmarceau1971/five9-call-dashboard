@@ -3,7 +3,9 @@
  */
 <template>
     <div>
-        {{ lastUpdateMessage }}
+        <p class="font-color-secondary">
+            {{ lastUpdateMessage }}
+        </p>
     </div>
 </template>
 
@@ -19,10 +21,20 @@ export default {
     },
     computed: {
         lastUpdateMessage: function() {
-            let time = this.$store.getters.datasourceLastUpdated(this.datasource);
+            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;
             if (!time) return 'Last updated time not available';
-            return `Last updated ${time}`;
+            return `Last updated ${moment(time).format('MM/DD/YY')}`;
         }
     }
 }
 </script>
+
+
+<style scoped>
+div {
+    text-align: center;
+}
+p {
+    margin: 0;
+}
+</style>

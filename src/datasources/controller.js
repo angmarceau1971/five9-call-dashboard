@@ -17,10 +17,11 @@ const custom = require('./custom-upload');
 async function getScorecardStatistics({ filter, fields, groupBy, source }) {
     // Get data model and filter object
     let model = getModelFromSourceName(source);
+    let isCustomData = (model === custom.CustomData);
     let cleanFilter = createFilter(filter);
 
     // Custom models should be filtered for datasource
-    if (model === custom.CustomData) {
+    if (isCustomData) {
         cleanFilter.push({
             _datasourceName: {
                 $eq: source
@@ -57,7 +58,16 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
         data = await model.find({ $and: cleanFilter }).lean().exec();
     }
 
-    return mergeIdToData(data);
+    let finalData = mergeIdToData(data);
+    let meta = {};
+    if (isCustomData) {
+        meta.lastUpdated =
+            (await custom.getDatasourceByName(source)).lastUpdated;
+    }
+    return {
+        data: finalData,
+        meta: meta
+    };
 }
 module.exports.getScorecardStatistics = getScorecardStatistics;
 
