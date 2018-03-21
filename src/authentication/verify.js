@@ -99,10 +99,15 @@ module.exports.userAccess = userAccess;
  */
 async function couldBeSensitive(req) {
     if (!datasource.isCustomSource(req.body.source)) return false;
-    if (req.body.filter.username == req.user.username ||
-        req.body.filter.agentName == (await users.getFullName(req.user.username))) {
-        return false;
-    }
+    try {
+        if (req.body.filter.agentUsername.$in.includes(req.user.username)) return false;
+    } catch (err) { }
+
+    try {
+        if (req.body.filter.agentName.$in.includes(await users.getFullName(req.user.username))) {
+            return false;
+        }
+    } catch (err) { }
     return true;
 }
 
