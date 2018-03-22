@@ -47,6 +47,9 @@ function process(data, field) {
     else if (fieldName == 'code' || field == 'code') {
         return data[0]['code'];
     }
+    else if (fieldName == 'closeRate' || field == 'closeRate') {
+        return sum(data, 'orders') / sum(data, 'calls');
+    }
     else if (fieldName) return sum(data, fieldName);
     else return sum(data, field);
 }

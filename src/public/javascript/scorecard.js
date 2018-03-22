@@ -208,7 +208,7 @@ state.widgets = [
 const qa = {
     title: 'QA',
     id: 'card:5',
-    layoutOrder: 5,
+    layoutOrder: 6,
     columns: 1
 };
 qa.widgets = [
@@ -246,7 +246,7 @@ qa.widgets = [
 const attendance = {
     title: 'Attendance Points',
     id: 'card:6',
-    layoutOrder: 6,
+    layoutOrder: 7,
     columns: 2
 };
 attendance.widgets = [
@@ -279,6 +279,41 @@ attendance.widgets = [
     }
 ];
 
+const closeRate = {
+    title: 'Sales Close Rate',
+    id: 'card:7',
+    layoutOrder: 5,
+    columns: 1
+};
+closeRate.widgets = [
+    {
+        'id': 'widget:0',
+        'component': 'single-value',
+        'title': 'Sales!',
+        'fieldName': 'Calculated.closeRate',
+        'datasource': 'Close Rate',
+        'filter': {}
+    },
+    {
+        'id': 'widget:1',
+        'component': 'line-graph',
+        'title': 'Sales by Day',
+        'fields': {
+            'x': 'date',
+            'y': 'Calculated.closeRate'
+        },
+        'datasource': 'Close Rate',
+        'filter': {
+            date: '<month-to-date>'
+        }
+    },
+    {
+        'id': 'widget:2',
+        'component': 'datasource-last-updated',
+        'datasource': 'Close Rate'
+    }
+];
+
 
 const layout = {
     cards: [
@@ -287,7 +322,8 @@ const layout = {
         sla,
         state,
         qa,
-        attendance
+        attendance,
+        closeRate
     ],
     datasources: [
         {
@@ -389,6 +425,19 @@ const layout = {
             "groupBy": [],
             "refreshRate": 7200, // update every 2 hours
             "source": "Attendance Points"
+        },
+        {
+            "id": "6",
+            "name": "Close Rate",
+            "fields": {},
+            "filter": {
+                "agentUsername": {
+                    $in: ["<current user>"]
+                }
+            },
+            "groupBy": [],
+            "refreshRate": 7200, // update every 2 hours
+            "source": "Close Rate"
         }
     ]
 };
