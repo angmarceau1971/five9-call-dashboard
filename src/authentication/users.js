@@ -202,6 +202,7 @@ async function updateTheme(username, newTheme) {
 }
 module.exports.updateTheme = updateTheme;
 
+
 ////////////////////////////////////////////////
 // Database updating
 ////////////////////////////////////////////////
@@ -256,7 +257,7 @@ async function refreshUserDatabase(usersModel) {
 
         // Check if original copy of user had theme object defined -- if not,
         // add it
-        let oldUser = data.find((user) => user.username == newUser.username);
+        let oldUser = originalUsers.find((user) => user.username == newUser.username);
         if (!oldUser || !oldUser.theme) {
             newUser.theme = {
                 color: 'dark',
