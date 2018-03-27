@@ -50,6 +50,7 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
         :filter="filter"
         :fields="tableFields"
         :isChild="true"
+        :summarize="summarize"
     ></data-table>
 </div>
 </template>
@@ -78,6 +79,10 @@ const props = {
     statsType: { // `individual` or `team`
         type: String,
         default: 'individual'
+    },
+    summarize: { // whether to summarize data in table
+        type: Boolean,
+        default: true
     }
 };
 

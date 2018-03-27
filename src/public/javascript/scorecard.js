@@ -233,7 +233,8 @@ qa.widgets = [
         'datasource': 'QA',
         'filter': {
             date: '<last 3 months>'
-        }
+        },
+        'summarize': false
     },
     {
         'id': 'widget:2',

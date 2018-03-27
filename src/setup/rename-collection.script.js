@@ -20,7 +20,7 @@ async function rename(oldName, newName) {
 const oldName = process.argv[2].trim();
 const newName = process.argv[3].trim();
 if (!oldName || !newName) {
-    throw new Error(`oldName and newName not defined!`);
+    throw new Error(`oldName or newName not defined!`);
 }
 else {
     rename(oldName, newName).then(() => process.exit(0));

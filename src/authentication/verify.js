@@ -99,17 +99,29 @@ module.exports.userAccess = userAccess;
  */
 async function couldBeSensitive(req) {
     if (!datasource.isCustomSource(req.body.source)) return false;
-    try {
-        if (req.body.filter.agentUsername.$in.includes(req.user.username)) return false;
-    } catch (err) { }
 
-    try {
-        if (req.body.filter.agentName.$in.includes(await users.getFullName(req.user.username))) {
+    function onlyForAgent(query, criteria) {
+        try {
+            if (!query) return false;
+            let filt = query.$in;
+            if (filt[0] == criteria && filt.length == 1) return true;
+        } catch (err) {
             return false;
         }
-    } catch (err) { }
+    }
+
+    if (onlyForAgent(req.body.filter.agentUsername, req.user.username)) {
+        return false;
+    }
+    let fullName = await users.getFullName(req.user.username);
+    if (onlyForAgent(req.body.filter.agentName, fullName)) {
+        return false;
+    }
+
     return true;
 }
+module.exports.couldBeSensitive = couldBeSensitive;
+
 
 /**
  * Passport authentication strategy.

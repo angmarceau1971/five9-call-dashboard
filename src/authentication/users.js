@@ -187,17 +187,15 @@ module.exports.updateSupervisorStatus = updateSupervisorStatus;
 /**
  * Update user's theme fields.
  * @param  {String} username
- * @param  {Object} newTheme with fields theme, lightBackgroundImageUrl, and
- *                           darkBackgroundImageUrl
+ * @param  {Object} newTheme with fields theme, lightBackgroundImageUrl,
+ *                           darkBackgroundImageUrl, useBackgroundImage
  * @return {Promise}
  */
 async function updateTheme(username, newTheme) {
     log.info(`Updating theme for ${username} to ${JSON.stringify(newTheme)}.`, 'user status');
     return await Users.updateOne(
         { username: username },
-        { $set: {
-            'theme': newTheme
-        } }
+        { $set: { 'theme': newTheme } }
     );
 }
 module.exports.updateTheme = updateTheme;
