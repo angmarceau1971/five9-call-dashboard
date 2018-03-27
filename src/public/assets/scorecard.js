@@ -13213,8 +13213,10 @@ async function loadData(params) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getValueForField;
-/* harmony export (immutable) */ __webpack_exports__["b"] = summarize;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getValueForField;
+/* harmony export (immutable) */ __webpack_exports__["c"] = summarize;
+/* unused harmony export fieldNameFromString */
+/* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
 /* unused harmony export fieldsToServer */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 /**
@@ -13242,7 +13244,7 @@ function getValueForField(data, field) {
  */
 
 function process(data, field) {
-  let [source, fieldName] = field.split('.');
+  let fieldName = fieldNameFromString(field);
 
   if (fieldName == 'aht') {
     return sum(data, 'handleTime') / sum(data, 'calls');
@@ -13258,11 +13260,11 @@ function process(data, field) {
     return average(data, 'score');
   } else if (fieldName == 'attendancePoints') {
     return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
-  } else if (fieldName == 'code' || field == 'code') {
+  } else if (fieldName == 'code') {
     return data[0]['code'];
-  } else if (fieldName == 'closeRate' || field == 'closeRate') {
+  } else if (fieldName == 'closeRate') {
     return sum(data, 'orders') / sum(data, 'calls');
-  } else if (fieldName) return sum(data, fieldName);else return sum(data, field);
+  } else return sum(data, fieldName);
 }
 /**
  * Group and summarize data by a given field.
@@ -13295,6 +13297,34 @@ function summarize(data, summaryField, valueFields) {
       [summaryField]: keyParse(datum.key)
     });
   });
+}
+/**
+ * Return field name without source.
+ * @param  {String} field in `source.field` or just `field` format
+ * @return {String}       field without `source.`
+ */
+
+function fieldNameFromString(field) {
+  let [source, fieldName] = field.split('.');
+  if (!fieldName) fieldName = field;
+  return fieldName;
+}
+/**
+ *
+ * @param  {Array} includeFields array of string field names to include
+ * @return {Function} accepts a datum and leaves only fields in @param includeFields
+ */
+
+function filterFields(includeFields) {
+  return function (d) {
+    let res = {};
+
+    for (let field of includeFields) {
+      res[field] = d[field] || d[fieldNameFromString(field)];
+    }
+
+    return res;
+  };
 }
 /**
  * Takes sum of array of objects based on the given key.
@@ -14201,21 +14231,13 @@ module.exports = _curry2;
       let data = this.$store.getters.getData(this.filter, this.datasource);
 
       if (this.summarize) {
-        data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["b" /* summarize */](data, this.fields[0], this.fields.slice(1));
+        data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["c" /* summarize */](data, this.fields[0], this.fields.slice(1));
       } // Sort by first field
 
 
       data.sort((a, b) => a[this.fields[0]] < b[this.fields[0]] ? -1 : 1); // Leave only fields that are defined in widget
 
-      return data.map(d => {
-        let res = {};
-
-        for (let field of this.fields) {
-          res[field] = d[field];
-        }
-
-        return res;
-      });
+      return data.map(__WEBPACK_IMPORTED_MODULE_1__javascript_parse__["a" /* filterFields */](this.fields));
     },
     displayHeaders: function () {
       if (this.data.length == 0) return [];
@@ -14392,7 +14414,7 @@ const props = {
 
       let yFields = [this.fields.y];
       if (this.fields.y2) yFields.push(this.fields.y2);
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.x, yFields); // Sort along X axis
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["c" /* summarize */](raw, this.fields.x, yFields); // Sort along X axis
 
       grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1);
       return grouped;
@@ -14612,12 +14634,12 @@ const props = {
       return this.$store.getters.getData(this.filter, this.datasource);
     },
     value: function () {
-      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](this.data, this.fieldName);
+      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, this.fieldName);
     },
     subValues: function () {
       if (!this.subFields) return [];
       return this.subFields.map(field => {
-        let formatted = Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(__WEBPACK_IMPORTED_MODULE_2__javascript_parse__["a" /* getValueForField */](this.data, field), field);
+        let formatted = Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(__WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, field), field);
         return {
           value: formatted.value,
           styleClass: formatted.styleClass,
@@ -14775,7 +14797,7 @@ const props = {
       // Get data from hub
       let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
 
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* summarize */](raw, this.fields.groupBy, this.fields.sum);
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["c" /* summarize */](raw, this.fields.groupBy, this.fields.sum);
       return grouped;
     },
 
@@ -18230,7 +18252,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
 
 // exports
 

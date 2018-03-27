@@ -93,13 +93,7 @@ export default {
                 a[this.fields[0]] < b[this.fields[0]] ? -1 : 1
             );
             // Leave only fields that are defined in widget
-            return data.map((d) => {
-                let res = {};
-                for (let field of this.fields) {
-                    res[field] = d[field];
-                }
-                return res;
-            });
+            return data.map(parse.filterFields(this.fields));
         },
         displayHeaders: function() {
             if (this.data.length == 0) return [];

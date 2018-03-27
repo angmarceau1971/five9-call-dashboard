@@ -22,7 +22,7 @@ export function getValueForField(data, field) {
  * @return {Number} value
  */
 function process(data, field) {
-    let [source, fieldName] = field.split('.');
+    let fieldName = fieldNameFromString(field);
     if (fieldName == 'aht') {
         return sum(data, 'handleTime') / sum(data, 'calls');
     }
@@ -44,14 +44,13 @@ function process(data, field) {
     else if (fieldName == 'attendancePoints') {
         return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
     }
-    else if (fieldName == 'code' || field == 'code') {
+    else if (fieldName == 'code') {
         return data[0]['code'];
     }
-    else if (fieldName == 'closeRate' || field == 'closeRate') {
+    else if (fieldName == 'closeRate') {
         return sum(data, 'orders') / sum(data, 'calls');
     }
-    else if (fieldName) return sum(data, fieldName);
-    else return sum(data, field);
+    else return sum(data, fieldName);
 }
 
 
@@ -85,6 +84,33 @@ export function summarize(data, summaryField, valueFields) {
             datum.value,
             { [summaryField]: keyParse(datum.key) });
     });
+}
+
+
+/**
+ * Return field name without source.
+ * @param  {String} field in `source.field` or just `field` format
+ * @return {String}       field without `source.`
+ */
+export function fieldNameFromString(field) {
+    let [source, fieldName] = field.split('.');
+    if (!fieldName) fieldName = field;
+    return fieldName;
+}
+
+/**
+ *
+ * @param  {Array} includeFields array of string field names to include
+ * @return {Function} accepts a datum and leaves only fields in @param includeFields
+ */
+export function filterFields(includeFields) {
+    return function(d) {
+        let res = {};
+        for (let field of includeFields) {
+            res[field] = d[field] || d[fieldNameFromString(field)];
+        }
+        return res;
+    }
 }
 
 
