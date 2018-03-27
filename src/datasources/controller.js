@@ -10,7 +10,7 @@ const custom = require('./custom-upload');
 /**
  * Get statistics from a datasource.
  *
- * @param  {Object} filter for MongoDB. Requires date.$gte and date.$lt
+ * @param  {Object} filter for MongoDB
  * @param  {Object} fields to include, in format { sum: ['f1', 'f2',...] }
  * @param  {Array}  groupBy break down / summarize by these fields
  * @return {Promise} resolves to JSON data matching query
@@ -193,7 +193,8 @@ async function scheduleLookerUpdates(interval) {
         let data = formatFieldNames(raw, source.lookerFieldLookup);
         let clean = data.map(custom.rowParser(source));
         let deleted = await clearOldData(source, clean);
-        custom.CustomData.collection.insert(clean);
+        custom.setDatasourceLastUpdated(source, new Date());
+        await custom.CustomData.collection.insert(clean);
     }
     return setTimeout(() => scheduleLookerUpdates(interval), interval);
 }
