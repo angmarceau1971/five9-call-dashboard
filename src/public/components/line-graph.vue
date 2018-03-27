@@ -154,7 +154,10 @@ export default {
         },
         // Return array of fields to be displayed by data-table
         tableFields() {
-            return [this.fields.x, this.fields.y];
+            let fields = [this.fields.x, this.fields.y];
+            if (this.fields.y2) fields.push(this.fields.y2);
+            if (this.fields.y3) fields.push(this.fields.y3);
+            return fields;
         }
     },
 

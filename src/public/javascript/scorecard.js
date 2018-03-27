@@ -293,7 +293,11 @@ closeRate.widgets = [
         'title': 'Sales!',
         'fieldName': 'Calculated.closeRate',
         'datasource': 'Close Rate',
-        'filter': {}
+        'filter': {},
+        'subFields': [
+            'Close Rate.orders',
+            'Close Rate.calls'
+        ]
     },
     {
         'id': 'widget:1',
@@ -301,7 +305,9 @@ closeRate.widgets = [
         'title': 'Sales by Day',
         'fields': {
             'x': 'date',
-            'y': 'Calculated.closeRate'
+            'y': 'Calculated.closeRate',
+            'y2': 'Close Rate.orders',
+            'y3': 'Close Rate.calls',
         },
         'datasource': 'Close Rate',
         'filter': {

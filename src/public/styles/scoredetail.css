@@ -13,6 +13,7 @@ h2, h3 {
 /* Widgets */
 .widget {
     position: relative;
+    min-width: 0;
 }
 
 /* Modals for editing  */
@@ -179,7 +180,8 @@ h2, h3 {
 .data-table-wrapper {
     margin: 1em;
     max-height: 15em;
-    overflow-y: auto;
+    overflow: auto;
+    max-width: 100%;
 }
 .data-table {
     table-layout: fixed;
