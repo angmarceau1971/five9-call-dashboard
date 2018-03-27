@@ -99,12 +99,23 @@ router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
 
 // Return ZIP3 JSON
 router.get('/zip3-data', verify.apiMiddleware(), async (req, res) => {
-    await sendPublicFile('zip3-albers.json', req, res);
+    await sendPublicFile('json/zip3-albers.json', req, res);
 });
 
 // Return U.S. states JSON
 router.get('/states', verify.apiMiddleware(), async (req, res) => {
-    await sendPublicFile('states-albers.json', req, res);
+    await sendPublicFile('json/states-albers.json', req, res);
+});
+
+// Return scorecard layout based on user's department
+router.post('/layout', verify.apiMiddleware(), async (req, res) => {
+    if (req.body.agentGroups.includes('Sales') ||
+        req.body.agentGroups.includes('Sales Resellers')) {
+        await sendPublicFile('json/layout-sales.json', req, res);
+    }
+    else {
+        await sendPublicFile('json/layout-main.json', req, res);
+    }
 });
 
 
@@ -300,10 +311,10 @@ async function handleReportRequest(req, res, dataGetter) {
  */
 async function sendPublicFile(fileName, req, res) {
     try {
-        log.message(`${fileName} file request from ${req.connection.remoteAddress}`);
+        log.message(`${fileName} file request from user ${req.user.username}`);
 
         // return JSON zip data
-        let dir = path.join(__dirname + `/../public/${fileName}`);
+        let dir = path.join(__dirname, `/../public/${fileName}`);
         res.sendFile(dir);
     } catch (err) {
         res.set('Content-Type', 'application/text');

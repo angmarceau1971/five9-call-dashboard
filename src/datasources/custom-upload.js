@@ -150,7 +150,7 @@ async function setDatasourceLastUpdated(datasource, updateTime) {
         { $set: { 'lastUpdated': updateTime } }
     );
 }
-
+module.exports.setDatasourceLastUpdated = setDatasourceLastUpdated;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +207,6 @@ function rowParser(datasource) {
     };
     let fieldConverter = datasource.fields.reduce((o, field) => {
         o[field.name] = converters[field.fieldType];
-        if (!o[field.name]) o[field.name] = (x) => x;
         return o;
     }, {});
 

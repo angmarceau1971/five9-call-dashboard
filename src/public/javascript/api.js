@@ -29,12 +29,22 @@ export function getReportResults(params, type) {
 }
 
 /**
- * Pull Looker data from given look
+ * Pull Looker data from given Look
  * @param  {String} lookId
  * @return {Object} JSON data
  */
 export async function getLookerData(lookId) {
     let response = await request({lookId: lookId}, 'looker');
+    return await response.json();
+}
+
+/**
+ * Get scorecard JSON layout.
+ * @param  {Array of Strings} agentGroups user's agent groups
+ * @return {Object}
+ */
+export async function getLayout(agentGroups) {
+    let response = await request({agentGroups: agentGroups}, 'layout');
     return await response.json();
 }
 

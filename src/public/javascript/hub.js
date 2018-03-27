@@ -137,12 +137,17 @@ export const store = new Vuex.Store({
             let goals = await api.getGoalsForAgentGroups(user.agentGroups);
             context.commit('setGoals', goals);
         },
+        // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
+            // load layout
+            let layout = await api.getLayout(context.state.user.agentGroups);
+            context.commit('setDatasources', layout.datasources);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
             context.commit('setLinks', await api.getLinkList());
             // Start updating based on data sources
-            return context.dispatch('nextUpdate', null);
+            context.dispatch('nextUpdate', null);
+            return layout;
         },
 
         // Force a refresh. For testing purposes.
@@ -150,7 +155,7 @@ export const store = new Vuex.Store({
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
             }
-            context.dispatch('startProcess');
+            return await context.dispatch('startProcess');
         },
 
         // Refresh data based on current datasources

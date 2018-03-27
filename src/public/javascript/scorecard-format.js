@@ -24,7 +24,7 @@ export function formatValue(value, field) {
     let style = getStyleFromGoal(value, field);
 
     if (isNumberType(field.format.type)) {
-        if (isNaN(value)) formattedValue = "N/A";
+        if (isNaN(value) || !isFinite(value)) formattedValue = "N/A";
         else formattedValue = d3.format(field.format.string)(value);
     } else if (field.format.type == 'Duration') {
         formattedValue = moment('2018-01-01').startOf('day')

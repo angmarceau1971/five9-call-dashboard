@@ -135,7 +135,10 @@ export default {
             grouped.sort((a, b) =>
                 a[this.fields.x] < b[this.fields.x] ? -1 : 1
             );
-            return grouped;
+            // Remove infinite or NaN values
+            return grouped.filter((d) => {
+                return isFinite(d[this.fields.y]) && !isNaN(d[this.fields.y]);
+            });
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;
