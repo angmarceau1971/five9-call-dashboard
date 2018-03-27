@@ -430,7 +430,7 @@ const layout = {
                 }
             },
             "groupBy": [],
-            "refreshRate": 7200, // update every 2 hours
+            "refreshRate": 3600, // update every hour
             "source": "Attendance Points"
         },
         {

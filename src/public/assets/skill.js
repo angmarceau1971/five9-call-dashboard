@@ -957,35 +957,36 @@ function formatAMPM(date) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["o"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["r"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["s"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["u"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["v"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateSupervisorUser;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["w"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["x"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["v"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["w"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["s"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["t"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["C"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["t"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["u"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["D"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -1014,6 +1015,18 @@ async function queueStats() {
 
 function getReportResults(params, type) {
   return getData(params, `reports/${type}`);
+}
+/**
+ * Pull Looker data from given look
+ * @param  {String} lookId
+ * @return {Object} JSON data
+ */
+
+async function getLookerData(lookId) {
+  let response = await request({
+    lookId: lookId
+  }, 'looker');
+  return await response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Users
 
@@ -1570,10 +1583,10 @@ const vm = new Vue({
   },
   methods: {
     jobUpdater: async function (job) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["z" /* updateSkillJob */](job);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["A" /* updateSkillJob */](job);
     },
     jobLoader: async function () {
-      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getSkillJobs */]();
+      const jobs = await __WEBPACK_IMPORTED_MODULE_0__api_js__["o" /* getSkillJobs */]();
       return jobs.map(job => {
         if (!job.data) {
           job.data = this.jobAdder().data;

@@ -14,7 +14,15 @@ const vm = new Vue({
     data: {
         message: '',
         selectedDatasourceName: '',
-        updateType: ''
+        updateType: '',
+        lookerTestId: '',
+        lookerTestData: {}
+    },
+
+    computed: {
+        lookerTestDataString: function() {
+            return JSON.stringify(this.lookerTestData, null, 2);
+        }
     },
 
     methods: {
@@ -22,11 +30,17 @@ const vm = new Vue({
             this.message = msg;
         },
 
+        pullLookerData: async function(lookId) {
+            let data = await api.getLookerData(lookId);
+            this.lookerTestData = data;
+        },
+
         // Data source manipulation
         datasourceUpdater: async function(datasource) {
             let clean = clone(datasource);
             try {
                 clean.fields = JSON.parse(clean.fields);
+                clean.lookerFieldLookup = JSON.parse(clean.lookerFieldLookup);
             } catch (err) {
                 return `Unable to save: ${err}.`;
             }
@@ -37,6 +51,7 @@ const vm = new Vue({
             const str = (s) => JSON.stringify(s, null, 2);
             const stringin = function(datasource) {
                 datasource.fields = str(datasource.fields);
+                datasource.lookerFieldLookup = str(datasource.lookerFieldLookup);
                 return datasource;
             }
             return datasources.map(stringin);

@@ -3,6 +3,7 @@ const fields = require('../admin/fields');
 const goals = require('../admin/goals');
 const links = require('../admin/links');
 const log = require('../utility/log'); // recording updates
+const looker = require('../utility/looker');
 const admin = require('../admin/admin');
 const users = require('../authentication/users'); // stores usernames to check auth
 const customData = require('../datasources/custom-upload');
@@ -183,5 +184,19 @@ module.exports.addTo = function(router) {
         const message = `Link "${req.body.link.name}" has been deleted.`;
         res.set('Content-Type', 'application/text');
         res.status(200).send(message);
+    });
+
+    //////////////////////////////////////////
+    // Run Looker Look and view data
+    router.post('/looker', verify.apiMiddleware('admin'), async (req, res) => {
+        let lookId = req.body.lookId;
+        if (!lookId) {
+            res.set('Content-Type', 'application/text');
+            res.status(404).send(`No Looker Look ID provided :)`);
+            return;
+        }
+        let data = await looker.getJsonData(await looker.getAuthToken(), lookId);
+        res.set('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(data));
     });
 };

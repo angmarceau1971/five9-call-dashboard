@@ -28,6 +28,16 @@ export function getReportResults(params, type) {
     return getData(params, `reports/${type}`);
 }
 
+/**
+ * Pull Looker data from given look
+ * @param  {String} lookId
+ * @return {Object} JSON data
+ */
+export async function getLookerData(lookId) {
+    let response = await request({lookId: lookId}, 'looker');
+    return await response.json();
+}
+
 
 ///////////////////////////////////////////////////////////////////////
 // Users

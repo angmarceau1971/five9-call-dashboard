@@ -1,13 +1,14 @@
 const moment = require('moment-timezone'); // dates/times
 
 const log = require('../utility/log'); // recording updates
+const looker = require('../utility/looker'); // Looker API
 const report = require('./report'); // data feeds for SL & calls
 const queue  = require('./queue-stats'); // real-time queue feeds
 
 const custom = require('./custom-upload');
 
 /**
- * Get agent statistics from the ACD Queue data source.
+ * Get statistics from a datasource.
  *
  * @param  {Object} filter for MongoDB. Requires date.$gte and date.$lt
  * @param  {Object} fields to include, in format { sum: ['f1', 'f2',...] }
@@ -163,4 +164,28 @@ function createGroup(groupBy, fields) {
             return result;
         }, group);
     return group;
+}
+
+
+async function scheduleLookerUpdates(interval) {
+    let authToken = await looker.getAuthToken();
+    let sources = await custom.CustomDatasource.find({ fromLooker: true })
+                                                .lean().exec();
+    for (let source of sources) {
+        let raw = await looker.getJsonData(authToken, source.lookerLookId);
+        let clean = formatLookerData(raw, source.lookerFieldLookup);
+
+    }
+    return setTimeout(() => scheduleLookerUpdates(interval))
+}
+
+function formatLookerData(data, fieldLookup) {
+    return data.map((d) => {
+        let res = {};
+        for (let lookerField in fieldLookup) {
+            let cleanField = fieldLookup[lookerField];
+            res[cleanField] = d[lookerField];
+        }
+        return res;
+    });
 }

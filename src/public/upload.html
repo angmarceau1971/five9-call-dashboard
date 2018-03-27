@@ -46,13 +46,19 @@
                 :loader=datasourceLoader
                 :updater=datasourceUpdater
                 :adder=datasourceAdder
-                :headers="['Name', 'Fields', 'Default Update Type', 'Last Updated']"
+                :headers="['Name', 'Last Updated', 'Fields', 'Default Update Type',
+                           'From Looker?', 'Look ID', 'Looker Field Lookup']"
                 @message="updateMessage"
             >
                 <template slot="item" slot-scope="props">
                     <td>
                         <input v-model="props.item.name" />
                     </td>
+
+                    <td>
+                        {{ formatDateTime(props.item.lastUpdated) }}
+                    </td>
+
                     <td>
                         <textarea v-model="props.item.fields"></textarea>
                     </td>
@@ -69,7 +75,22 @@
                     </td>
 
                     <td>
-                        {{ formatDateTime(props.item.lastUpdated) }}
+                        <select v-model="props.item.fromLooker">
+                            <option value="true">
+                                True
+                            </option>
+                            <option value="false">
+                                False
+                            </option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input v-model="props.item.lookerLookId" />
+                    </td>
+
+                    <td>
+                        <textarea v-model="props.item.lookerFieldLookup"></textarea>
                     </td>
                 </template>
             </editor-table>
@@ -81,6 +102,15 @@
                     ref="fileInput"
                     @change="uploadSkillGroupFile"
                 />
+        </div>
+
+        <div class="section looker-pull">
+            <h3>Test Looker API</h3>
+            <input v-model="lookerTestId" placeholder="Looker Look ID" />
+            <button @click="pullLookerData(lookerTestId)">Pull Data</button>
+            <div>
+                <textarea v-model="lookerTestDataString"></textarea>
+            </div>
         </div>
     </div>
     </body>

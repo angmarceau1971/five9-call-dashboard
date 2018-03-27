@@ -3,7 +3,7 @@
 **
  */
 const log = require('../utility/log'); // recording updates
-const looker = require('./looker'); // Looker API utilities
+const looker = require('../utility/looker'); // Looker API utilities
 const moment = require('moment-timezone'); // dates/times
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;

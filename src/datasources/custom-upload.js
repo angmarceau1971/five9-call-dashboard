@@ -50,6 +50,19 @@ const customDatasourceSchema = mongoose.Schema({
     // Record when the data was last uploaded
     lastUpdated: {
         type: Date
+    },
+    // Does this pull from a Looker table?
+    fromLooker: {
+        type: Boolean,
+        default: false
+    },
+    // ID of Look used
+    lookerLookId: {
+        type: String
+    },
+    // object to lookup fields, format: { LookerFieldName: DashboardFieldName }
+    lookerFieldLookup: {
+        type: Object
     }
 });
 
