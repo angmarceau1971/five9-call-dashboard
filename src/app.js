@@ -25,9 +25,9 @@ const secure = require('./secure_settings.js'); // local/secure settings
 const database = require('./utility/database'); // connection instance to DB
 const report = require('./datasources/report'); // data feeds for SL & calls
 const queue  = require('./datasources/queue-stats'); // real-time queue feeds
+const customers = require('./datasources/customers'); // customer by zip from Looker
 const users = require('./authentication/users'); // stores usernames to check auth
 const verify = require('./authentication/verify'); // check user permissions
-const customers = require('./customers/customers');
 
 
 ///////////////////////////

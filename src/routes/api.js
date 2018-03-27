@@ -21,9 +21,9 @@ const path = require('path');
 const datasource = require('../datasources/controller');
 const report = require('../datasources/report'); // data feeds for SL & calls
 const queue  = require('../datasources/queue-stats'); // real-time queue feeds
+const customers = require('../datasources/customers'); // customer database
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
-const customers = require('../customers/customers'); // customer database
 
 const uploader = require('../datasources/custom-upload');
 const skillGroup = require('../datasources/skill-group');
