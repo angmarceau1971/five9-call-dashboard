@@ -102,9 +102,9 @@ async function couldBeSensitive(req) {
 
     function onlyForAgent(query, criteria) {
         try {
-            if (!query) return false;
             let filt = query.$in;
             if (filt[0] == criteria && filt.length == 1) return true;
+            return false;
         } catch (err) {
             return false;
         }
@@ -113,11 +113,14 @@ async function couldBeSensitive(req) {
     if (onlyForAgent(req.body.filter.agentUsername, req.user.username)) {
         return false;
     }
-    let fullName = await users.getFullName(req.user.username);
-    if (onlyForAgent(req.body.filter.agentName, fullName)) {
-        return false;
+    try {
+        let fullName = await users.getFullName(req.user.username);
+        if (onlyForAgent(req.body.filter.agentName, fullName)) {
+            return false;
+        }
+    } catch (err) {
+        log.error(`during verify.couldBeSensitive: ${err}`);
     }
-
     return true;
 }
 module.exports.couldBeSensitive = couldBeSensitive;

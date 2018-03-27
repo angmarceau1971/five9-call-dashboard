@@ -12,11 +12,13 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 
+const database = require('../src/utility/database');
+const secure = require('../src/secure_settings');
 const verify = require('../src/authentication/verify');
 
 // Data for tests
-let myName = 'Smith, Bob';
-let myUsername = 'bsmith@bsmith.com';
+let myName = secure.FIVE9_FULLNAME;
+let myUsername = secure.FIVE9_USERNAME;
 let querySensitiveName = {
     body: {
         filter: { agentName: { $in: [myName, 'Another, Name'] } },
@@ -51,15 +53,14 @@ let queryInsensitiveUsername = {
 
 // Test it!
 describe('Verify `couldBeSensitive`', function() {
-    this.timeout(5000); // allow 20 seconds to complete test
-    it('should return true for sensitive queries', async function(done) {
+    database.connect();
+    this.timeout(5000); // allow 5 seconds to complete test
+    it('should return true for sensitive queries', async function() {
         expect(await verify.couldBeSensitive(querySensitiveName)).to.be.true;
         expect(await verify.couldBeSensitive(querySensitiveUsername)).to.be.true;
-        done()
     });
-    it('should return false for insensitive queries', async function(done) {
+    it('should return false for insensitive queries', async function() {
         expect(await verify.couldBeSensitive(queryInsensitiveName)).to.be.false;
         expect(await verify.couldBeSensitive(queryInsensitiveUsername)).to.be.false;
-        done();
     });
 });
