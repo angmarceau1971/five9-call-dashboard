@@ -173,11 +173,13 @@ async function scheduleLookerUpdates(interval) {
                                                 .lean().exec();
     for (let source of sources) {
         let raw = await looker.getJsonData(authToken, source.lookerLookId);
-        let clean = formatLookerData(raw, source.lookerFieldLookup);
-
+        let data = formatLookerData(raw, source.lookerFieldLookup);
+        let clean = data.map(custom.rowParser(source));
+        custom.CustomData.collection.insert(clean);
     }
     return setTimeout(() => scheduleLookerUpdates(interval))
 }
+module.exports.scheduleLookerUpdates = scheduleLookerUpdates;
 
 function formatLookerData(data, fieldLookup) {
     return data.map((d) => {

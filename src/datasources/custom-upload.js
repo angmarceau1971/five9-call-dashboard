@@ -174,7 +174,7 @@ async function upload(datasourceName, csvData, updateType='addTo') {
     }
 
     // Process data from CSV
-    let data = await parseCsv(csvData, getRowParser(datasource));
+    let data = await parseCsv(csvData, rowParser(datasource));
 
     // if data contains headers not defined in datasource, deny!
     let newFields = nonSchemaFields(datasource, data);
@@ -199,7 +199,7 @@ module.exports.upload = upload;
  * @param  {Object} datasource that data will be added to
  * @return {Function} function accepting object representing a raw row / document
  */
-function getRowParser(datasource) {
+function rowParser(datasource) {
     let converters = {
         'Number': (x) => x * 1,
         'String': (x) => String(x),
@@ -207,6 +207,7 @@ function getRowParser(datasource) {
     };
     let fieldConverter = datasource.fields.reduce((o, field) => {
         o[field.name] = converters[field.fieldType];
+        if (!o[field.name]) o[field.name] = (x) => x;
         return o;
     }, {});
 
@@ -218,6 +219,7 @@ function getRowParser(datasource) {
         return row;
     }
 }
+module.exports.rowParser = rowParser;
 
 /**
  * Check that @param datasource includes all the fields in @param data.
