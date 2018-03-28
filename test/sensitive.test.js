@@ -32,7 +32,6 @@ let querySensitiveUsername = {
         source: 'QA'
     },
     user: {username:myUsername}
-
 };
 let queryInsensitiveName = {
     body: {
@@ -40,7 +39,6 @@ let queryInsensitiveName = {
         source: 'QA'
     },
     user: {username:myUsername}
-
 };
 let queryInsensitiveUsername = {
     body: {
@@ -48,7 +46,6 @@ let queryInsensitiveUsername = {
         source: 'QA'
     },
     user: {username:myUsername}
-
 };
 
 // Test it!
