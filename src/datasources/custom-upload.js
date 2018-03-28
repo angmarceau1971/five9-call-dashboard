@@ -203,7 +203,8 @@ function rowParser(datasource) {
     let converters = {
         'Number': (x) => x * 1,
         'String': (x) => String(x),
-        'Date':   (x) => new Date(x)
+        'Date':   (x) => moment.tz(x, null, 'America/Denver')
+                               .toDate()
     };
     let fieldConverter = datasource.fields.reduce((o, field) => {
         o[field.name] = converters[field.fieldType];
