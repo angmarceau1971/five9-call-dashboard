@@ -24,7 +24,7 @@ const secure = require('./secure_settings.js'); // local/secure settings
 // Data management
 const database = require('./utility/database'); // connection instance to DB
 const datasource = require('./datasources/controller'); // datasource mgmt.
-const report = require('./datasources/report'); // data feeds for SL & calls
+const five9Update = require('./datasources/five9-update'); // refreshing five9 data
 const queue  = require('./datasources/queue-stats'); // real-time queue feeds
 const customers = require('./datasources/customers'); // customer by zip from Looker
 const users = require('./authentication/users'); // stores usernames to check auth
@@ -110,7 +110,7 @@ const server = app.listen(port, async () => {
         //      (1 request every 7.2 seconds).
         queue.scheduleUpdate(15 * 1000);
         // Start updating call database every 5 minutes
-        report.scheduleUpdate(5 * 60 * 1000);
+        five9Update.scheduleUpdate(5 * 60 * 1000);
         // Update user list every 12 hours
         users.scheduleUpdate(12 * 3600 * 1000);
         // Schedule Looker tables to update every 3 hours

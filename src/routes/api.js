@@ -19,7 +19,8 @@ const log = require('../utility/log'); // recording updates
 const path = require('path');
 
 const datasource = require('../datasources/controller');
-const report = require('../datasources/report'); // data feeds for SL & calls
+const five9Models = require('../datasources/five9-models'); // five9 data feeds
+const five9Update = require('../datasources/five9-update'); // five9 update process
 const queue  = require('../datasources/queue-stats'); // real-time queue feeds
 const customers = require('../datasources/customers'); // customer database
 const users = require('../authentication/users'); // stores usernames to check auth
@@ -33,7 +34,7 @@ const addAdminRoutes = require('./administrative').addTo(router);
 
 router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
     async (req, res) => {
-        report.onReady(async () => {
+        five9Update.onReady(async () => {
             let data;
             try {
                 data = await datasource.getScorecardStatistics(req.body);
@@ -73,12 +74,12 @@ router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {
 
 // Request data to update service level metrics
 router.post('/reports/service-level', verify.apiMiddleware(), (req, res) => {
-    handleReportRequest(req, res, report.getServiceLevelData);
+    handleReportRequest(req, res, five9Models.getServiceLevelData);
 });
 
 // Request calls by zip code for maps page
 router.post('/reports/maps', verify.apiMiddleware(), (req, res) => {
-    handleReportRequest(req, res, report.getZipCodeData);
+    handleReportRequest(req, res, five9Models.getZipCodeData);
 });
 
 // Request customer counts by zip code for maps page
@@ -267,7 +268,7 @@ async function reloadReports(time) {
         throw new Error(`Start time's gotta be less than end time! Come on, you turkey.`);
 
     // It passed the test... Reload the data!
-    return await report.loadData(time);
+    return await five9Update.loadData(time);
 }
 
 
@@ -293,7 +294,7 @@ async function handleReportRequest(req, res, dataGetter) {
                 res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
             }
         }
-        report.onReady(sendResponse);
+        five9Update.onReady(sendResponse);
 
     } catch (err) {
         log.error(`Error during handleReportRequest(${dataGetter.name}): ${err}`);

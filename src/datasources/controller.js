@@ -2,10 +2,12 @@ const moment = require('moment-timezone'); // dates/times
 
 const log = require('../utility/log'); // recording updates
 const looker = require('../utility/looker'); // Looker API
-const report = require('./report'); // data feeds for SL & calls
 const queue  = require('./queue-stats'); // real-time queue feeds
 
 const custom = require('./custom-upload');
+// Five9 models
+const models = require('./five9-models'); // data feeds for SL & calls
+
 
 /**
  * Get statistics from a datasource.
@@ -94,17 +96,15 @@ function mergeIdToData(data) {
 function getModelFromSourceName(sourceName) {
     switch (sourceName) {
         case 'AcdFeed':
-            return report.AcdFeed;
-            break;
+            return models.AcdFeed;
         case 'AgentLogin':
-            return report.AgentLogin;
-            break;
+            return models.AgentLogin;
         case 'CallLog':
-            return report.CallLog;
-            break;
+            return models.CallLog;
         case 'QueueStats':
             return queue.QueueStats;
-            break;
+        case 'ChatData':
+            return models.ChatData;
         // If it's not one of the above sources, assume it's a custom model
         default:
             return custom.CustomData;
