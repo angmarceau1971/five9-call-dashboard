@@ -352,7 +352,7 @@
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 180,
+            "refreshRate": 290,
             "source": "AcdFeed"
         },
         {
@@ -375,7 +375,7 @@
             "groupBy": [
                 "dateDay"
             ],
-            "refreshRate": 180,
+            "refreshRate": 290,
             "source": "AcdFeed"
         },
         {
@@ -400,7 +400,7 @@
                 "dateDay",
                 "reasonCode"
             ],
-            "refreshRate": 180,
+            "refreshRate": 290,
             "source": "AgentLogin"
         },
         {
