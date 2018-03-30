@@ -100,6 +100,12 @@ export async function updateSupervisorUser(user) {
     return response.text();
 }
 
+// Get list of all users
+export async function getUsers() {
+    let response = await request({}, 'users', 'GET');
+    return response.json();
+}
+
 
 ///////////////////////////////////////////////////////////////////////
 // Fields

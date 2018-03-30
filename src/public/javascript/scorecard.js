@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Dashboard from '../components/dashboard.vue';
 import * as hub from './hub';
+import * as api from './api';
 import { formatValue } from './scorecard-format';
 import EditorTable from '../components/editor-table.vue';
 
@@ -23,7 +24,10 @@ const vm = new Vue({
         showMenu: false, // show main menu
         showMenuThemes: false, // show themes submenu
         showLinks: false, // show helpful links / bookmarks
-        theme: {}
+        theme: {},
+        // list of users for sups to choose from
+        userList: [],
+        selectedUser: {}
     },
 
     components: {
@@ -90,6 +94,10 @@ const vm = new Vue({
                 this.updateThemeStyles(this.theme);
             },
             deep: true
+        },
+        selectedUser: async function(user) {
+            await store.dispatch('updateUser', user.username);
+            this.refresh();
         }
     },
 
@@ -110,6 +118,17 @@ const vm = new Vue({
             store.dispatch('updateTheme', this.theme);
             this.showMenuThemes = false;
             this.showMenu = false;
+        },
+
+        // Simulate a user
+        simulateUser: async function() {
+            let userList = await api.getUsers();
+            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+            this.userList = userList;
+        },
+        selectUser: async function(event) {
+            await store.dispatch('updateUser', event.target.value);
+            this.refresh();
         },
 
         updateThemeStyles: function(theme) {

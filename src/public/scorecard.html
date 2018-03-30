@@ -72,7 +72,6 @@
                     </div>
 
                     <button @click="saveTheme">Save Theme</button>
-
                 </div>
 
                 <button
@@ -117,13 +116,13 @@
                 </a>
 
                 <a target="_blank" href="https://nathanclonts.com/dashboard/queues">
-                    <button class="insidedrop feedback-button">
+                    <button class="insidedrop queues-button">
                         <i class="fas fa-list"></i> Queues
                     </button>
                 </a>
 
                 <a target="_blank" href="https://nathanclonts.com/dashboard/maps">
-                    <button class="insidedrop feedback-button">
+                    <button class="insidedrop map-button">
                         <i class="fas fa-map"></i> Map
                     </button>
                 </a>
@@ -133,6 +132,13 @@
                         <i class="fas fa-comment"></i> Feedback
                     </button>
                 </a>
+
+                <button v-if="user.isSupervisor || user.isAdmin"
+                        class="insidedrop simulate-button"
+                        @click="simulateUser"
+                >
+                    <i class="far fa-user"></i> Simulate
+                </button>
             </div>
 
             <div class="nav">
@@ -176,6 +182,15 @@
                 v-model="username"
                 placeholder="Emulate user"
             />
+
+            <div v-if="userList.length > 0">
+                <select multiple size="20" @change="selectUser">
+                    <option v-for="(userAgent, i) in userList"
+                        :value="userAgent.username">
+                        {{ userAgent.lastName }}, {{ userAgent.firstName }}
+                    </option>
+                </select>
+            </div>
 
             <div v-if="$store.state.editMode">
                 <h2>Data Sources</h2>

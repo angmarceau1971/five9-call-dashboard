@@ -146,15 +146,23 @@ function getAgentGroupsForAgent(username, data) {
         });
 }
 
+
+// Returns Array of users (only username field)
+async function getUsers() {
+    return await Users.find({}, 'username lastName firstName').lean().exec();
+}
+module.exports.getUsers = getUsers;
+
 async function getAdminUsers() {
-    return await Users.find({ isAdmin: true });
+    return await Users.find({ isAdmin: true }).lean().exec();
 }
 module.exports.getAdminUsers = getAdminUsers;
 
 async function getSupervisorUsers() {
-    return await Users.find({ isSupervisor: true });
+    return await Users.find({ isSupervisor: true }).lean().exec();
 }
 module.exports.getSupervisorUsers = getSupervisorUsers;
+
 
 /**
  * @param  {String}  username

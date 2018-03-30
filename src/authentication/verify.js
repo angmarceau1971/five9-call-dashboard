@@ -20,7 +20,7 @@ else {
 
 /**
  * Middleware for page view routes. Redirects to login page if not logged in.
- * @param  {String}  [level='basic'] does this route require `basic` or `admin` rights?
+ * @param  {String}  [level='basic'] does this route require `basic`, `supervisor`, `admin` rights?
  * @return {Function}                middleware function
  */
 function isLoggedIn(level='basic') {
@@ -64,6 +64,12 @@ async function isAllowed(level, req) {
     if (isAuthenticated) {
         if (level == 'basic') {
             return true;
+        }
+        if (level == 'supervisor') {
+            if ((await users.isSupervisor(req.user.username))
+             || (await users.isAdmin(req.user.username))) {
+                 return true;
+            }
         }
         if (level == 'admin' && (await users.isAdmin(req.user.username)) == true) {
             return true;

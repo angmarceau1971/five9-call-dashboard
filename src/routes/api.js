@@ -168,6 +168,20 @@ router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
     }
 });
 
+/**
+ * Retrieve array of all users in system
+ */
+router.get('/users', verify.apiMiddleware('supervisor'), async (req, res) => {
+    try {
+        const userList = await users.getUsers();
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(userList));
+    } catch (err) {
+        res.set('Content-Type', 'application/text');
+        res.status(400).send(`User "${req.params.username}" not found.`);
+    }
+});
+
 
 // Notify server that a 502 has occurred
 router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {

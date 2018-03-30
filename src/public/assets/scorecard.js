@@ -585,36 +585,37 @@ function formatAMPM(date) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["q"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["t"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["u"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["w"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getUsers;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["u"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["v"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["E"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["v"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["w"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["F"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -721,6 +722,11 @@ async function updateSupervisorUser(user) {
     user: user
   }, 'users/supervisor', 'PATCH');
   return response.text();
+} // Get list of all users
+
+async function getUsers() {
+  let response = await request({}, 'users', 'GET');
+  return response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
 
@@ -13205,7 +13211,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Save a new theme to server
     async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["D" /* updateUserTheme */](context.state.currentUser, newTheme);
+      await __WEBPACK_IMPORTED_MODULE_2__api__["E" /* updateUserTheme */](context.state.currentUser, newTheme);
       let updatedUser = clone(context.state.user);
       updatedUser.theme = newTheme;
       context.commit('setUser', updatedUser);
@@ -15133,8 +15139,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__ = __webpack_require__(15);
+
 
 
 
@@ -15161,11 +15169,14 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     // show themes submenu
     showLinks: false,
     // show helpful links / bookmarks
-    theme: {}
+    theme: {},
+    // list of users for sups to choose from
+    userList: [],
+    selectedUser: {}
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
-    'editor-table': __WEBPACK_IMPORTED_MODULE_4__components_editor_table_vue__["a" /* default */]
+    'editor-table': __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__["a" /* default */]
   },
 
   async beforeMount() {
@@ -15227,6 +15238,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         this.updateThemeStyles(this.theme);
       },
       deep: true
+    },
+    selectedUser: async function (user) {
+      await store.dispatch('updateUser', user.username);
+      this.refresh();
     }
   },
   methods: {
@@ -15244,6 +15259,16 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       store.dispatch('updateTheme', this.theme);
       this.showMenuThemes = false;
       this.showMenu = false;
+    },
+    // Simulate a user
+    simulateUser: async function () {
+      let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["t" /* getUsers */]();
+      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+      this.userList = userList;
+    },
+    selectUser: async function (event) {
+      await store.dispatch('updateUser', event.target.value);
+      this.refresh();
     },
     updateThemeStyles: function (theme) {
       document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
