@@ -255,7 +255,7 @@ module.exports = __webpack_require__(104);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_editor_table_vue__ = __webpack_require__(15);
 // TODO: move jQuery to Vue
 
@@ -1004,41 +1004,6 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
-
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
-}
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (immutable) */ __webpack_exports__["q"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["u"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getReportResults;
@@ -1072,7 +1037,7 @@ function formatAMPM(date) {
 /* harmony export (immutable) */ __webpack_exports__["w"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["F"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
 
  ////////////////////////////////////////////////////////////////
@@ -1514,6 +1479,41 @@ function getParameters(requestType) {
   }
 
   return params;
+}
+
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
+
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
 }
 
 /***/ }),

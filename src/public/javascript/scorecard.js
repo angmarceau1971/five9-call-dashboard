@@ -105,7 +105,10 @@ const vm = new Vue({
         ///////////////////////////
         // UI / interactions
         refresh: async function() {
+            this.layout = {};
+            this.isLoading = true;
             this.layout = await store.dispatch('forceRefresh');
+            this.isLoading = false;
         },
 
         changeTheme: function(attribute, value) {

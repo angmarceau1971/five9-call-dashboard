@@ -5,7 +5,7 @@
         {
             "title": "Average Handle Time",
             "id": "card:1",
-            "layoutOrder": 2,
+            "layoutOrder": 7,
             "columns": 1,
             "widgets": [
                 {
@@ -71,7 +71,7 @@
         {
             "title": "Calls Handled",
             "id": "card:2",
-            "layoutOrder": 3,
+            "layoutOrder": 6,
             "columns": 1,
             "widgets": [
                 {
@@ -127,7 +127,7 @@
         {
             "title": "Service Level",
             "id": "card:3",
-            "layoutOrder": 1,
+            "layoutOrder": 3,
             "columns": 1,
             "widgets": [
                 {
@@ -213,7 +213,7 @@
         {
             "title": "QA",
             "id": "card:5",
-            "layoutOrder": 6,
+            "layoutOrder": 2,
             "columns": 1,
             "widgets": [
                 {
@@ -250,7 +250,7 @@
         {
             "title": "Attendance Points",
             "id": "card:6",
-            "layoutOrder": 7,
+            "layoutOrder": 5,
             "columns": 2,
             "widgets": [
                 {
@@ -285,7 +285,7 @@
         {
             "title": "Sales Close Rate",
             "id": "card:7",
-            "layoutOrder": 5,
+            "layoutOrder": 1,
             "columns": 1,
             "widgets": [
                 {

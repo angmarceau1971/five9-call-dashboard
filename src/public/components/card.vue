@@ -108,14 +108,21 @@ export default {
         return {
             highlightedDate: null,
             draggingWidget: true,
-            // CSS Grid positioning
-            gridPositioning: {
+        }
+    },
+
+    computed: {
+        // Make CSS grid position a computed property, so that it will change
+        // when a different layout is loaded
+        gridPositioning: function() {
+            return {
                 'order': this.layoutOrder,
                 // number of columns wide
                 'grid-column': `span ${this.columns}`
             }
         }
     },
+
     methods: {
         // add a new widget to the card
         addWidget: function() {

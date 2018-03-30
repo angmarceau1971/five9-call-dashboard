@@ -550,40 +550,6 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
-
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
-}
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (immutable) */ __webpack_exports__["q"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["u"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getReportResults;
@@ -617,7 +583,7 @@ function formatAMPM(date) {
 /* harmony export (immutable) */ __webpack_exports__["w"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["F"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
 
  ////////////////////////////////////////////////////////////////
@@ -1059,6 +1025,40 @@ function getParameters(requestType) {
   }
 
   return params;
+}
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
+
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
 }
 
 /***/ }),
@@ -12987,7 +12987,7 @@ if (false) {(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(33);
 /**
  * This module controls interaction with the server.
@@ -13720,14 +13720,19 @@ if (false) {(function () {
   data: function () {
     return {
       highlightedDate: null,
-      draggingWidget: true,
-      // CSS Grid positioning
-      gridPositioning: {
+      draggingWidget: true
+    };
+  },
+  computed: {
+    // Make CSS grid position a computed property, so that it will change
+    // when a different layout is loaded
+    gridPositioning: function () {
+      return {
         'order': this.layoutOrder,
         // number of columns wide
         'grid-column': `span ${this.columns}`
-      }
-    };
+      };
+    }
   },
   methods: {
     // add a new widget to the card
@@ -15139,7 +15144,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__ = __webpack_require__(15);
 
@@ -15248,7 +15253,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     ///////////////////////////
     // UI / interactions
     refresh: async function () {
+      this.layout = {};
+      this.isLoading = true;
       this.layout = await store.dispatch('forceRefresh');
+      this.isLoading = false;
     },
     changeTheme: function (attribute, value) {
       this.theme[attribute] = value;
@@ -15635,7 +15643,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue"],"names":[],"mappings":";AAqNA;IACA,cAAA;IACA,2BAAA;IACA,gBAAA;IACA,mBAAA;IACA,6BAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,iBAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <pie-chart class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('pie-chart')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></pie-chart>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n\r\n    <datasource-last-updated class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('datasource-last-updated')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></datasource-last-updated>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport PieChart from './pie-chart.vue';\r\nimport DatasourceLastUpdated from './datasource-last-updated.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph,\r\n        'pie-chart': PieChart,\r\n        'datasource-last-updated': DatasourceLastUpdated\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n            // CSS Grid positioning\r\n            gridPositioning: {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue"],"names":[],"mappings":";AA4NA;IACA,cAAA;IACA,2BAAA;IACA,gBAAA;IACA,mBAAA;IACA,6BAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,iBAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <pie-chart class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('pie-chart')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></pie-chart>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :data=\"data\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n\r\n    <datasource-last-updated class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('datasource-last-updated')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></datasource-last-updated>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport PieChart from './pie-chart.vue';\r\nimport DatasourceLastUpdated from './datasource-last-updated.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph,\r\n        'pie-chart': PieChart,\r\n        'datasource-last-updated': DatasourceLastUpdated\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        // Make CSS grid position a computed property, so that it will change\r\n        // when a different layout is loaded\r\n        gridPositioning: function() {\r\n            return {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 

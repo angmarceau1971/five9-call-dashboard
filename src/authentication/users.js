@@ -147,7 +147,7 @@ function getAgentGroupsForAgent(username, data) {
 }
 
 
-// Returns Array of users (only username field)
+// Returns Array of users (only username & name fields)
 async function getUsers() {
     return await Users.find({}, 'username lastName firstName').lean().exec();
 }
