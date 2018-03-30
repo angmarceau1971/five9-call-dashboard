@@ -1588,7 +1588,7 @@ if (false) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(27);
 
 let comparators = {
   '>=': (value, goal) => value >= goal,
@@ -12983,10 +12983,233 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = getValueForField;
+/* harmony export (immutable) */ __webpack_exports__["c"] = summarize;
+/* unused harmony export fieldNameFromString */
+/* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
+/* unused harmony export fieldsToServer */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(27);
+/**
+ * Handle expression parsing for calculated fields.
+ */
+
+
+const clone = __webpack_require__(4);
+/**
+ * Extract an overall value from a set of data, based on the provided field.
+ * @param  {Array} data   array of data objects
+ * @param  {String} field to extract value for
+ * @return {Number}       value
+ */
+
+
+function getValueForField(data, field) {
+  return process(data, field);
+}
+/**
+ * Extract overall value from a given set of data.
+ * @param  {Array} data
+ * @param  {String} field full field name ("source.field" format)
+ * @return {Number} value
+ */
+
+function process(data, field) {
+  let fieldName = fieldNameFromString(field);
+
+  if (fieldName == 'aht') {
+    return sum(data, 'handleTime') / sum(data, 'calls');
+  } else if (fieldName == 'talk') {
+    return sum(data, 'talkTime') / sum(data, 'calls');
+  } else if (fieldName == 'acw') {
+    return sum(data, 'acwTime') / sum(data, 'calls');
+  } else if (fieldName == 'hold') {
+    return sum(data, 'holdTime') / sum(data, 'calls');
+  } else if (fieldName == 'serviceLevel') {
+    return sum(data, 'serviceLevel') / sum(data, 'calls');
+  } else if (fieldName == 'score') {
+    return average(data, 'score');
+  } else if (fieldName == 'attendancePoints') {
+    return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
+  } else if (fieldName == 'code') {
+    return data[0]['code'];
+  } else if (fieldName == 'closeRate') {
+    return sum(data, 'orders') / sum(data, 'calls');
+  } else return sum(data, fieldName);
+}
+/**
+ * Group and summarize data by a given field.
+ * @param  {Array}  data         original data from server
+ * @param  {String} summaryField field to summarize/group by
+ * @param  {Array}  valueFields  full field names to summarize stats for
+ * @return {Object}              summarized data
+ */
+
+
+function summarize(data, summaryField, valueFields) {
+  // Date keys are coerced to strings by d3.nest, so parse them back if needed
+  let keyParse = key => key;
+
+  if (summaryField == 'dateDay' || summaryField == 'date') {
+    keyParse = key => new Date(key);
+  } // Summarize data
+
+
+  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
+    // Sum up each requested field
+    return valueFields.reduce((result, field) => {
+      result[field] = process(values, field);
+      return result;
+    }, {});
+  }).entries(data); // Flatten the summarized nested data back to original format
+
+  return nested.map(datum => {
+    return Object.assign(datum.value, {
+      [summaryField]: keyParse(datum.key)
+    });
+  });
+}
+/**
+ * Return field name without source.
+ * @param  {String} field in `source.field` or just `field` format
+ * @return {String}       field without `source.`
+ */
+
+function fieldNameFromString(field) {
+  let [source, fieldName] = field.split('.');
+  if (!fieldName) fieldName = field;
+  return fieldName;
+}
+/**
+ *
+ * @param  {Array} includeFields array of string field names to include
+ * @return {Function} accepts a datum and leaves only fields in @param includeFields
+ */
+
+function filterFields(includeFields) {
+  return function (d) {
+    let res = {};
+
+    for (let field of includeFields) {
+      res[field] = d[field] || d[fieldNameFromString(field)];
+    }
+
+    return res;
+  };
+}
+/**
+ * Takes sum of array of objects based on the given key.
+ * @param  {Array} arr of objects
+ * @param  {String} key property to sum
+ * @return {Number}
+ */
+
+function sum(arr, key) {
+  return arr.reduce((total, item) => total + item[key], 0);
+}
+/**
+ * Takes average of array of objects based on the given key.
+ * @param  {Array} arr of objects
+ * @param  {String} key property to average
+ * @return {Number}
+ */
+
+
+function average(arr, key) {
+  return sum(arr, key) / arr.length;
+}
+/**
+ *
+ * @param  {String} exp expression
+ * @return {Array of Strings} names of fields needed to calculate `exp`
+ */
+
+
+function requiredFields(exp) {
+  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
+}
+
+function expressionForField(field) {
+  return field.calculation;
+}
+
+function fieldsToServer(fields) {
+  return fields.reduce((list, field) => {
+    let [source, name] = field.fullName.split('.');
+
+    if (source == 'Calculated') {
+      const f = requiredFields(expressionForField(field));
+      return list.concat(f.map(n => n.split('.')[1]));
+    }
+
+    return list.concat(name);
+  }, []);
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(34);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(69);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(54)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\data-table.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-48d3d2c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* unused harmony export loadData */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(33);
 /**
@@ -13001,11 +13224,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 
 
-const sift = __webpack_require__(54);
+const sift = __webpack_require__(57);
 
 const clone = __webpack_require__(4);
 
-const isEmpty = __webpack_require__(34);
+const isEmpty = __webpack_require__(35);
 /**
  * This Vuex store is the ultimate source of truth. It handles all access to
  * data and interactions with the server.
@@ -13246,236 +13469,13 @@ async function loadData(params) {
 }
 
 /***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = getValueForField;
-/* harmony export (immutable) */ __webpack_exports__["c"] = summarize;
-/* unused harmony export fieldNameFromString */
-/* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
-/* unused harmony export fieldsToServer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
-/**
- * Handle expression parsing for calculated fields.
- */
-
-
-const clone = __webpack_require__(4);
-/**
- * Extract an overall value from a set of data, based on the provided field.
- * @param  {Array} data   array of data objects
- * @param  {String} field to extract value for
- * @return {Number}       value
- */
-
-
-function getValueForField(data, field) {
-  return process(data, field);
-}
-/**
- * Extract overall value from a given set of data.
- * @param  {Array} data
- * @param  {String} field full field name ("source.field" format)
- * @return {Number} value
- */
-
-function process(data, field) {
-  let fieldName = fieldNameFromString(field);
-
-  if (fieldName == 'aht') {
-    return sum(data, 'handleTime') / sum(data, 'calls');
-  } else if (fieldName == 'talk') {
-    return sum(data, 'talkTime') / sum(data, 'calls');
-  } else if (fieldName == 'acw') {
-    return sum(data, 'acwTime') / sum(data, 'calls');
-  } else if (fieldName == 'hold') {
-    return sum(data, 'holdTime') / sum(data, 'calls');
-  } else if (fieldName == 'serviceLevel') {
-    return sum(data, 'serviceLevel') / sum(data, 'calls');
-  } else if (fieldName == 'score') {
-    return average(data, 'score');
-  } else if (fieldName == 'attendancePoints') {
-    return sum(data, 'pointsAdded') - sum(data, 'pointsRolledOff');
-  } else if (fieldName == 'code') {
-    return data[0]['code'];
-  } else if (fieldName == 'closeRate') {
-    return sum(data, 'orders') / sum(data, 'calls');
-  } else return sum(data, fieldName);
-}
-/**
- * Group and summarize data by a given field.
- * @param  {Array}  data         original data from server
- * @param  {String} summaryField field to summarize/group by
- * @param  {Array}  valueFields  full field names to summarize stats for
- * @return {Object}              summarized data
- */
-
-
-function summarize(data, summaryField, valueFields) {
-  // Date keys are coerced to strings by d3.nest, so parse them back if needed
-  let keyParse = key => key;
-
-  if (summaryField == 'dateDay' || summaryField == 'date') {
-    keyParse = key => new Date(key);
-  } // Summarize data
-
-
-  let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
-    // Sum up each requested field
-    return valueFields.reduce((result, field) => {
-      result[field] = process(values, field);
-      return result;
-    }, {});
-  }).entries(data); // Flatten the summarized nested data back to original format
-
-  return nested.map(datum => {
-    return Object.assign(datum.value, {
-      [summaryField]: keyParse(datum.key)
-    });
-  });
-}
-/**
- * Return field name without source.
- * @param  {String} field in `source.field` or just `field` format
- * @return {String}       field without `source.`
- */
-
-function fieldNameFromString(field) {
-  let [source, fieldName] = field.split('.');
-  if (!fieldName) fieldName = field;
-  return fieldName;
-}
-/**
- *
- * @param  {Array} includeFields array of string field names to include
- * @return {Function} accepts a datum and leaves only fields in @param includeFields
- */
-
-function filterFields(includeFields) {
-  return function (d) {
-    let res = {};
-
-    for (let field of includeFields) {
-      res[field] = d[field] || d[fieldNameFromString(field)];
-    }
-
-    return res;
-  };
-}
-/**
- * Takes sum of array of objects based on the given key.
- * @param  {Array} arr of objects
- * @param  {String} key property to sum
- * @return {Number}
- */
-
-function sum(arr, key) {
-  return arr.reduce((total, item) => total + item[key], 0);
-}
-/**
- * Takes average of array of objects based on the given key.
- * @param  {Array} arr of objects
- * @param  {String} key property to average
- * @return {Number}
- */
-
-
-function average(arr, key) {
-  return sum(arr, key) / arr.length;
-}
-/**
- *
- * @param  {String} exp expression
- * @return {Array of Strings} names of fields needed to calculate `exp`
- */
-
-
-function requiredFields(exp) {
-  return exp.match(/{([^}]*)}/g).map(field => field.replace(/[{}]/g, ''));
-}
-
-function expressionForField(field) {
-  return field.calculation;
-}
-
-function fieldsToServer(fields) {
-  return fields.reduce((list, field) => {
-    let [source, name] = field.fullName.split('.');
-
-    if (source == 'Calculated') {
-      const f = requiredFields(expressionForField(field));
-      return list.concat(f.map(n => n.split('.')[1]));
-    }
-
-    return list.concat(name);
-  }, []);
-}
-
-/***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 module.exports = _has;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(37);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(69);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(67)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\data-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
-  } else {
-    hotAPI.reload("data-v-48d3d2c4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
 
 /***/ }),
 /* 29 */
@@ -13607,7 +13607,7 @@ if (false) {(function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(78);
@@ -13983,7 +13983,7 @@ const clone = __webpack_require__(4);
 /* harmony export (immutable) */ __webpack_exports__["a"] = clean;
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(27);
 
 
 const clone = __webpack_require__(4);
@@ -14052,8 +14052,8 @@ function prettifyDateOption(option) {
 
   return option;
 }
-const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
 const dateMatcher = {
+  // Days
   '<today>': function () {
     return {
       $gte: moment().startOf('day').toDate(),
@@ -14066,6 +14066,7 @@ const dateMatcher = {
       $lt: moment().startOf('day').toDate()
     };
   },
+  // Months
   '<month-to-date>': function () {
     return {
       $gte: moment().startOf('month').toDate(),
@@ -14078,114 +14079,63 @@ const dateMatcher = {
       $lt: moment().subtract(1, 'months').endOf('month').toDate()
     };
   },
+  '<last 2 months>': function () {
+    return {
+      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
+      $lt: moment().endOf('month').toDate()
+    };
+  },
   '<last 3 months>': function () {
     return {
       $gte: moment().subtract(3, 'months').startOf('month').toDate(),
       $lt: moment().endOf('month').toDate()
     };
+  },
+  // Pay periods
+  '<this pay period>': function () {
+    let startDate = startOfPayPeriod(moment());
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  },
+  '<last pay period>': function () {
+    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
   }
 };
+/**
+ * @param  {Moment object} date to find pay period of
+ * @return {Moment object}      start of pay period that contains @param date
+ */
+
+function startOfPayPeriod(date) {
+  let startDate;
+  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
+
+  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+  let daysSincePeriodStart = Math.round(hours / 24);
+
+  if (daysSincePeriodStart % 14 == 0) {
+    return sunday;
+  } else {
+    return sunday.subtract(1, 'weeks');
+  }
+}
+
+const payPeriodStart = moment('2018-03-11');
 
 /***/ }),
 /* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var empty = /*#__PURE__*/__webpack_require__(55);
-
-var equals = /*#__PURE__*/__webpack_require__(59);
-
-/**
- * Returns `true` if the given value is its type's empty value; `false`
- * otherwise.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Logic
- * @sig a -> Boolean
- * @param {*} x
- * @return {Boolean}
- * @see R.empty
- * @example
- *
- *      R.isEmpty([1, 2, 3]);   //=> false
- *      R.isEmpty([]);          //=> true
- *      R.isEmpty('');          //=> true
- *      R.isEmpty(null);        //=> false
- *      R.isEmpty({});          //=> true
- *      R.isEmpty({length: 0}); //=> false
- */
-
-
-var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
-  return x != null && equals(x, empty(x));
-});
-module.exports = isEmpty;
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _has = /*#__PURE__*/__webpack_require__(27);
-
-var toString = Object.prototype.toString;
-var _isArguments = function () {
-  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
-    return toString.call(x) === '[object Arguments]';
-  } : function _isArguments(x) {
-    return _has('callee', x);
-  };
-};
-
-module.exports = _isArguments;
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
-
-/**
- * Optimized internal two-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry2(fn) {
-  return function f2(a, b) {
-    switch (arguments.length) {
-      case 0:
-        return f2;
-      case 1:
-        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-          return fn(a, _b);
-        });
-      default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-          return fn(_a, b);
-        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-          return fn(a, _b);
-        }) : fn(a, b);
-    }
-  };
-}
-module.exports = _curry2;
-
-/***/ }),
-/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_parse__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_parse__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__ = __webpack_require__(19);
 //
 //
@@ -14321,13 +14271,106 @@ module.exports = _curry2;
 });
 
 /***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var empty = /*#__PURE__*/__webpack_require__(58);
+
+var equals = /*#__PURE__*/__webpack_require__(62);
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
+
+
+var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
+  return x != null && equals(x, empty(x));
+});
+module.exports = isEmpty;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _has = /*#__PURE__*/__webpack_require__(28);
+
+var toString = Object.prototype.toString;
+var _isArguments = function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+};
+
+module.exports = _isArguments;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
 /* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
@@ -14629,7 +14672,7 @@ const props = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(25);
 //
 //
 //
@@ -14708,9 +14751,9 @@ const props = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
 //
 //
@@ -15143,7 +15186,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__ = __webpack_require__(15);
@@ -15154,7 +15197,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
  // NPM libraries
 
-const isEmpty = __webpack_require__(34);
+const isEmpty = __webpack_require__(35);
 
 const clone = __webpack_require__(4);
 
@@ -15655,7 +15698,7 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(32);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(53);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
@@ -15746,6 +15789,253 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 
 /***/ }),
 /* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-wrapper" }, [
+    _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
+      _vm._v("☰")
+    ]),
+    _vm._v(" "),
+    _vm.editingNow
+      ? _c("div", { staticClass: "edit-form modal" }, [
+          _c("h1", [_vm._v(_vm._s(_vm.newObject.title))]),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Title")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newObject.title,
+                expression: "newObject.title"
+              }
+            ],
+            domProps: { value: _vm.newObject.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newObject, "title", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Data Source")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.datasource,
+                  expression: "newObject.datasource"
+                }
+              ],
+              attrs: { name: "datasource-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject,
+                    "datasource",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.$store.state.datasources, function(source) {
+              return _c("option", { domProps: { value: source.name } }, [
+                _vm._v(_vm._s(source.name))
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Field")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.fieldName,
+                  expression: "newObject.fieldName"
+                }
+              ],
+              attrs: { name: "field-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject,
+                    "fieldName",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.$store.state.fields, function(field) {
+              return _c("option", { domProps: { value: field.fullName } }, [
+                _vm._v(
+                  _vm._s(field.displayName || field.name) +
+                    "\n             " +
+                    _vm._s(field.source == "N/A" ? "" : " - " + field.source)
+                )
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Date")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.filter.dateDay,
+                  expression: "newObject.filter.dateDay"
+                }
+              ],
+              attrs: { name: "date-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject.filter,
+                    "dateDay",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.dateOptions, function(option) {
+              return _c("option", { domProps: { value: option } }, [
+                _vm._v(_vm._s(option))
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "button-wrapper" }, [
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.exit(true)
+                  }
+                }
+              },
+              [_vm._v("Save")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.exit(false)
+                  }
+                }
+              },
+              [_vm._v("Cancel")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "delete", on: { click: _vm.deleteObject } },
+              [_vm._v("Delete")]
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a38dd874", esExports)
+  }
+}
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(55);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("9c7d97ce", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16689,7 +16979,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports) {
 
 /*
@@ -17278,18 +17568,18 @@ var index_esm = {
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(35);
+var _isArguments = /*#__PURE__*/__webpack_require__(36);
 
-var _isArray = /*#__PURE__*/__webpack_require__(56);
+var _isArray = /*#__PURE__*/__webpack_require__(59);
 
-var _isObject = /*#__PURE__*/__webpack_require__(57);
+var _isObject = /*#__PURE__*/__webpack_require__(60);
 
-var _isString = /*#__PURE__*/__webpack_require__(58);
+var _isString = /*#__PURE__*/__webpack_require__(61);
 
 /**
  * Returns the empty value of its argument's type. Ramda defines the empty
@@ -17326,7 +17616,7 @@ var empty = /*#__PURE__*/_curry1(function empty(x) {
 module.exports = empty;
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /**
@@ -17346,7 +17636,7 @@ module.exports = Array.isArray || function _isArray(val) {
 };
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports) {
 
 function _isObject(x) {
@@ -17355,7 +17645,7 @@ function _isObject(x) {
 module.exports = _isObject;
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports) {
 
 function _isString(x) {
@@ -17364,12 +17654,12 @@ function _isString(x) {
 module.exports = _isString;
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(36);
+var _curry2 = /*#__PURE__*/__webpack_require__(37);
 
-var _equals = /*#__PURE__*/__webpack_require__(60);
+var _equals = /*#__PURE__*/__webpack_require__(63);
 
 /**
  * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
@@ -17404,20 +17694,20 @@ var equals = /*#__PURE__*/_curry2(function equals(a, b) {
 module.exports = equals;
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(61);
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(64);
 
-var _containsWith = /*#__PURE__*/__webpack_require__(62);
+var _containsWith = /*#__PURE__*/__webpack_require__(65);
 
-var _functionName = /*#__PURE__*/__webpack_require__(63);
+var _functionName = /*#__PURE__*/__webpack_require__(66);
 
-var _has = /*#__PURE__*/__webpack_require__(27);
+var _has = /*#__PURE__*/__webpack_require__(28);
 
-var identical = /*#__PURE__*/__webpack_require__(64);
+var identical = /*#__PURE__*/__webpack_require__(67);
 
-var keys = /*#__PURE__*/__webpack_require__(65);
+var keys = /*#__PURE__*/__webpack_require__(68);
 
 var type = /*#__PURE__*/__webpack_require__(10);
 
@@ -17565,7 +17855,7 @@ function _equals(a, b, stackA, stackB) {
 module.exports = _equals;
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports) {
 
 function _arrayFromIterator(iter) {
@@ -17579,7 +17869,7 @@ function _arrayFromIterator(iter) {
 module.exports = _arrayFromIterator;
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports) {
 
 function _containsWith(pred, x, list) {
@@ -17597,7 +17887,7 @@ function _containsWith(pred, x, list) {
 module.exports = _containsWith;
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports) {
 
 function _functionName(f) {
@@ -17608,10 +17898,10 @@ function _functionName(f) {
 module.exports = _functionName;
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(36);
+var _curry2 = /*#__PURE__*/__webpack_require__(37);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -17652,14 +17942,14 @@ var identical = /*#__PURE__*/_curry2(function identical(a, b) {
 module.exports = identical;
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(1);
 
-var _has = /*#__PURE__*/__webpack_require__(27);
+var _has = /*#__PURE__*/__webpack_require__(28);
 
-var _isArguments = /*#__PURE__*/__webpack_require__(35);
+var _isArguments = /*#__PURE__*/__webpack_require__(36);
 
 // cover IE < 9 keys issues
 
@@ -17730,253 +18020,6 @@ var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys
 };
 var keys = /*#__PURE__*/_curry1(_keys);
 module.exports = keys;
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal-wrapper" }, [
-    _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
-      _vm._v("☰")
-    ]),
-    _vm._v(" "),
-    _vm.editingNow
-      ? _c("div", { staticClass: "edit-form modal" }, [
-          _c("h1", [_vm._v(_vm._s(_vm.newObject.title))]),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Title")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newObject.title,
-                expression: "newObject.title"
-              }
-            ],
-            domProps: { value: _vm.newObject.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.newObject, "title", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Data Source")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.datasource,
-                  expression: "newObject.datasource"
-                }
-              ],
-              attrs: { name: "datasource-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "datasource",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.datasources, function(source) {
-              return _c("option", { domProps: { value: source.name } }, [
-                _vm._v(_vm._s(source.name))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Field")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.fieldName,
-                  expression: "newObject.fieldName"
-                }
-              ],
-              attrs: { name: "field-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "fieldName",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.fields, function(field) {
-              return _c("option", { domProps: { value: field.fullName } }, [
-                _vm._v(
-                  _vm._s(field.displayName || field.name) +
-                    "\n             " +
-                    _vm._s(field.source == "N/A" ? "" : " - " + field.source)
-                )
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Date")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.filter.dateDay,
-                  expression: "newObject.filter.dateDay"
-                }
-              ],
-              attrs: { name: "date-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject.filter,
-                    "dateDay",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.dateOptions, function(option) {
-              return _c("option", { domProps: { value: option } }, [
-                _vm._v(_vm._s(option))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "button-wrapper" }, [
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(true)
-                  }
-                }
-              },
-              [_vm._v("Save")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(false)
-                  }
-                }
-              },
-              [_vm._v("Cancel")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "delete", on: { click: _vm.deleteObject } },
-              [_vm._v("Delete")]
-            )
-          ])
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a38dd874", esExports)
-  }
-}
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(68);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("9c7d97ce", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
-
-// exports
-
 
 /***/ }),
 /* 69 */

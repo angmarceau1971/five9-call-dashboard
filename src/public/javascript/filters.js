@@ -70,8 +70,9 @@ export function prettifyDateOption(option) {
     return option;
 }
 
-const formatString = 'YYYY-MM-DD[T]hh:mm:ss';
+
 const dateMatcher = {
+    // Days
     '<today>': function() {
         return {
             $gte: moment().startOf('day').toDate(),
@@ -84,6 +85,7 @@ const dateMatcher = {
             $lt:  moment().startOf('day').toDate()
         }
     },
+    // Months
     '<month-to-date>': function() {
         return {
             $gte: moment().startOf('month').toDate(),
@@ -96,10 +98,51 @@ const dateMatcher = {
             $lt:  moment().subtract(1, 'months').endOf('month').toDate()
         }
     },
+    '<last 2 months>': function() {
+        return {
+            $gte: moment().subtract(2, 'months').startOf('month').toDate(),
+            $lt:  moment().endOf('month').toDate()
+        }
+    },
     '<last 3 months>': function() {
         return {
             $gte: moment().subtract(3, 'months').startOf('month').toDate(),
             $lt:  moment().endOf('month').toDate()
         }
+    },
+    // Pay periods
+    '<this pay period>': function() {
+        let startDate = startOfPayPeriod(moment());
+        return {
+            $gte: startDate.toDate(),
+            $lt: startDate.clone().add(2, 'weeks').toDate()
+        };
+    },
+    '<last pay period>': function() {
+        let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+        return {
+            $gte: startDate.toDate(),
+            $lt: startDate.clone().add(2, 'weeks').toDate()
+        };
     }
 };
+
+
+/**
+ * @param  {Moment object} date to find pay period of
+ * @return {Moment object}      start of pay period that contains @param date
+ */
+function startOfPayPeriod(date) {
+    let startDate;
+    let sunday = date.clone().startOf('week');
+    // round to nearest day (avoids DST issues)
+    let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+    let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+    let daysSincePeriodStart = Math.round(hours / 24);
+    if (daysSincePeriodStart % 14 == 0) {
+        return sunday;
+    } else {
+        return sunday.subtract(1, 'weeks');
+    }
+}
+const payPeriodStart = moment('2018-03-11');

@@ -291,10 +291,12 @@
                 {
                     "id": "widget:0",
                     "component": "single-value",
-                    "title": "Sales!",
+                    "title": "Current Pay Period",
                     "fieldName": "Calculated.closeRate",
                     "datasource": "Close Rate",
-                    "filter": {},
+                    "filter": {
+                        "date": "<this pay period>"
+                    },
                     "subFields": [
                         "Close Rate.orders",
                         "Close Rate.calls"
@@ -302,6 +304,20 @@
                 },
                 {
                     "id": "widget:1",
+                    "component": "single-value",
+                    "title": "Previous Pay Period",
+                    "fieldName": "Calculated.closeRate",
+                    "datasource": "Close Rate",
+                    "filter": {
+                        "date": "<last pay period>"
+                    },
+                    "subFields": [
+                        "Close Rate.orders",
+                        "Close Rate.calls"
+                    ]
+                },
+                {
+                    "id": "widget:2",
                     "component": "line-graph",
                     "title": "Sales by Day",
                     "fields": {
@@ -312,11 +328,11 @@
                     },
                     "datasource": "Close Rate",
                     "filter": {
-                        "date": "<month-to-date>"
+                        "date": "<last 2 months>"
                     }
                 },
                 {
-                    "id": "widget:2",
+                    "id": "widget:3",
                     "component": "datasource-last-updated",
                     "datasource": "Close Rate"
                 }
@@ -447,7 +463,8 @@
                 "$or": [
                     { "calls": { "$gt": 0 } },
                     { "orders": { "$gt": 0 } }
-                ]
+                ],
+                "date": "<last 2 months>"
             },
             "groupBy": [],
             "refreshRate": 7200,
