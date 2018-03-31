@@ -252,6 +252,7 @@ function parseRow(model, row) {
         p.agentName = row.agentName;
         p.agentGroup = row.agentGroup;
         p.chats = 1;
+        p.calls = 1;
 
         p.handleTime = seconds(row.handleTime);
         p.speedOfAnswer = seconds(row.speedOfAnswer);

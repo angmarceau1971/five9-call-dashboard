@@ -1,0 +1,380 @@
+{
+    "name": "Chat",
+    "agentGroups": ["Chat"],
+    "cards": [
+        {
+            "title": "Average Handle Time",
+            "id": "card:1",
+            "layoutOrder": 2,
+            "columns": 1,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "single-value",
+                    "title": "Today",
+                    "fieldName": "Calculated.aht",
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<today>"
+                    }
+                },
+                {
+                    "id": "widget:1",
+                    "component": "single-value",
+                    "title": "Month to Date",
+                    "fieldName": "Calculated.aht",
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<month-to-date>"
+                    }
+                },
+                {
+                    "id": "widget:4",
+                    "component": "line-graph",
+                    "title": "Month to Date",
+                    "fields": {
+                        "x": "dateDay",
+                        "y": "Calculated.aht"
+                    },
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<month-to-date>"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Chats Handled",
+            "id": "card:2",
+            "layoutOrder": 3,
+            "columns": 1,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "single-value",
+                    "title": "Today",
+                    "fieldName": "ChatData.calls",
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<today>"
+                    }
+                },
+                {
+                    "id": "widget:1",
+                    "component": "single-value",
+                    "title": "Month to Date",
+                    "fieldName": "ChatData.calls",
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<month-to-date>"
+                    }
+                },
+                {
+                    "id": "widget:2",
+                    "component": "line-graph",
+                    "title": "Chats by Day",
+                    "fields": {
+                        "x": "dateDay",
+                        "y": "ChatData.calls"
+                    },
+                    "datasource": "Agent Chat Data",
+                    "filter": {
+                        "agentUsername": {
+                            "$in": [
+                                "<current user>"
+                            ]
+                        },
+                        "dateDay": "<month-to-date>"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Service Level",
+            "id": "card:3",
+            "layoutOrder": 1,
+            "columns": 1,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "single-value",
+                    "title": "Today",
+                    "fieldName": "Calculated.serviceLevel",
+                    "datasource": "Department Stats",
+                    "filter": {
+                        "dateDay": "<today>"
+                    }
+                },
+                {
+                    "id": "widget:1",
+                    "component": "single-value",
+                    "title": "Month to Date",
+                    "fieldName": "Calculated.serviceLevel",
+                    "datasource": "Department Stats",
+                    "filter": {
+                        "dateDay": "<month-to-date>"
+                    }
+                },
+                {
+                    "id": "widget:2",
+                    "component": "line-graph",
+                    "title": "Calls by Day",
+                    "fields": {
+                        "x": "dateDay",
+                        "y": "Calculated.serviceLevel"
+                    },
+                    "datasource": "Department Stats",
+                    "filter": {
+                        "dateDay": "<month-to-date>"
+                    },
+                    "statsType": "team"
+                }
+            ]
+        },
+        {
+            "title": "Time Summary",
+            "id": "card:4",
+            "layoutOrder": 4,
+            "columns": 1,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "pie-chart",
+                    "title": "Today",
+                    "datasource": "Agent State Data",
+                    "fields": {
+                        "groupBy": "reasonCode",
+                        "sum": [
+                            "notReadyTime"
+                        ],
+                        "display": "notReadyTime",
+                        "total": "loginTime"
+                    },
+                    "filter": {
+                        "dateDay": "<today>"
+                    }
+                },
+                {
+                    "id": "widget:1",
+                    "component": "pie-chart",
+                    "title": "Month to Date",
+                    "datasource": "Agent State Data",
+                    "fields": {
+                        "groupBy": "reasonCode",
+                        "sum": [
+                            "notReadyTime",
+                            "handleTime",
+                            "loginTime"
+                        ],
+                        "display": "notReadyTime",
+                        "total": "loginTime"
+                    },
+                    "filter": {
+                        "dateDay": "<month-to-date>"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "QA",
+            "id": "card:5",
+            "layoutOrder": 6,
+            "columns": 1,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "single-value",
+                    "title": "Month to Date",
+                    "fieldName": "QA.score",
+                    "datasource": "QA",
+                    "filter": {
+                        "date": "<month-to-date>"
+                    }
+                },
+                {
+                    "id": "widget:1",
+                    "component": "line-graph",
+                    "title": "QA by Day",
+                    "fields": {
+                        "x": "date",
+                        "y": "QA.score"
+                    },
+                    "datasource": "QA",
+                    "filter": {
+                        "date": "<last 3 months>"
+                    },
+                    "summarize": false
+                },
+                {
+                    "id": "widget:2",
+                    "component": "datasource-last-updated",
+                    "datasource": "QA"
+                }
+            ]
+        },
+        {
+            "title": "Attendance Points",
+            "id": "card:6",
+            "layoutOrder": 7,
+            "columns": 2,
+            "widgets": [
+                {
+                    "id": "widget:0",
+                    "component": "single-value",
+                    "title": "Current Points",
+                    "fieldName": "Calculated.attendancePoints",
+                    "datasource": "Attendance Points",
+                    "filter": {}
+                },
+                {
+                    "id": "widget:1",
+                    "component": "data-table",
+                    "title": "Points",
+                    "summarize": false,
+                    "filter": {},
+                    "fields": [
+                        "date",
+                        "code",
+                        "pointsAdded",
+                        "pointsRolledOff"
+                    ],
+                    "datasource": "Attendance Points"
+                },
+                {
+                    "id": "widget:2",
+                    "component": "datasource-last-updated",
+                    "datasource": "Attendance Points"
+                }
+            ]
+        }
+    ],
+    "datasources": [
+        {
+            "id": "1",
+            "name": "Agent Chat Data",
+            "fields": {
+                "sum": [
+                    "calls",
+                    "handleTime"
+                ]
+            },
+            "filter": {
+                "agentUsername": {
+                    "$eq": "<current user>"
+                },
+                "date": "<month-to-date>",
+                "mediaType": {
+                    "$eq": "Chat"
+                }
+            },
+            "groupBy": [
+                "dateDay",
+                "agentUsername"
+            ],
+            "refreshRate": 290,
+            "source": "ChatData"
+        },
+        {
+            "id": "2",
+            "name": "Department Stats",
+            "fields": {
+                "sum": [
+                    "calls",
+                    "serviceLevel"
+                ]
+            },
+            "filter": {
+                "date": "<month-to-date>",
+                "mediaType": {
+                    "$eq": "Chat"
+                }
+            },
+            "groupBy": [
+                "dateDay"
+            ],
+            "refreshRate": 290,
+            "source": "ChatData"
+        },
+        {
+            "id": "3",
+            "name": "Agent State Data",
+            "fields": {
+                "sum": [
+                    "notReadyTime",
+                    "handleTime",
+                    "loginTime"
+                ]
+            },
+            "filter": {
+                "date": "<month-to-date>",
+                "agentUsername": {
+                    "$in": [
+                        "<current user>"
+                    ]
+                }
+            },
+            "groupBy": [
+                "dateDay",
+                "reasonCode"
+            ],
+            "refreshRate": 290,
+            "source": "AgentLogin"
+        },
+        {
+            "id": "4",
+            "name": "QA",
+            "fields": {},
+            "filter": {
+                "agentName": {
+                    "$in": [
+                        "<current user's full name>"
+                    ]
+                },
+                "date": "<last 3 months>"
+            },
+            "groupBy": [],
+            "refreshRate": 21600,
+            "source": "QA"
+        },
+        {
+            "id": "5",
+            "name": "Attendance Points",
+            "fields": {},
+            "filter": {
+                "agentName": {
+                    "$in": [
+                        "<current user's full name>"
+                    ]
+                }
+            },
+            "groupBy": [],
+            "refreshRate": 3600,
+            "source": "Attendance Points"
+        }
+    ]
+}

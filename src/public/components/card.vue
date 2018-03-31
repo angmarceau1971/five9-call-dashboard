@@ -61,7 +61,6 @@
     <data-table class="widget"
         v-for="(widget, i) in widgetsOfType('data-table')"
         v-bind="widget"
-        :data="data"
         :highlightedDate="highlightedDate"
         :key="widget.id"
         :ref="widget.id"
@@ -96,7 +95,7 @@ import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
 
 export default {
-    props: ['title', 'widgets', 'data', 'meta', 'layoutOrder', 'id', 'columns'],
+    props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],
     components: {
         'single-value': SingleValue,
         'data-table': DataTable,

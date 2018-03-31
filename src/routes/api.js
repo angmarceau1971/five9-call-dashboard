@@ -114,6 +114,9 @@ router.post('/layout', verify.apiMiddleware(), async (req, res) => {
         req.body.agentGroups.includes('Sales Resellers')) {
         await sendPublicFile('json/layout-sales.json', req, res);
     }
+    else if (req.body.agentGroups.includes('Chat')) {
+        await sendPublicFile('json/layout-chat.json', req, res);
+    }
     else {
         await sendPublicFile('json/layout-main.json', req, res);
     }

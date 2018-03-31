@@ -68,6 +68,7 @@ const chatDataSchema = mongoose.Schema({
     skill: String, // text "campaign" in Five9
     date: Date, // Date and time
     chats: { type: Number, default: 0 }, // chat count
+    calls: { type: Number, default: 0 }, // chat count - named calls for consistency in calculated fields
     // duration-based fields are stored as seconds
     handleTime: Number,
     speedOfAnswer: Number,
