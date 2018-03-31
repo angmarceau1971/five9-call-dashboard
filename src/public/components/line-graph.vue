@@ -20,7 +20,7 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
                 <circle v-for="point in points"
                     class="data-circle"
                     :r="circleRadius"
-                    :cx="point.x+1"
+                    :cx="point.x"
                     :cy="point.y"
                     :style="{ fill: lineColor }"
                 ></circle>
