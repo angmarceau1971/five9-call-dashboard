@@ -12,7 +12,7 @@
     <h3>{{ title }}</h3>
     <p class="metric"
       :class="formatted.styleClass"
-      :title="field.displayName"
+      :title="hoverText"
     >{{ formatted.value }}
     </p>
 
@@ -69,6 +69,13 @@ export default {
                     fieldName: this.$store.getters.field(field).displayName
                 }
             });
+        },
+        hoverText: function() {
+            let field = this.$store.getters.field(this.fieldName);
+            if (!field) return this.title;
+            let goal = this.$store.getters.goalForField(field);
+            if (!goal) return this.title;
+            return `${this.title} - Goal: ${formatValue(goal.thresholds[0], field).value}`;
         }
     },
     methods: {
