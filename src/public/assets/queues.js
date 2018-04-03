@@ -147,7 +147,7 @@ async function runQueueDashboard() {
     // Get the current queue data
     try {
       // Retrieve current queue stats
-      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["u" /* queueStats */](); // Get SL stats
+      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["v" /* queueStats */](); // Get SL stats
       // Only update SL every 3 minutes
 
       let currentTime = new Date();
@@ -158,7 +158,7 @@ async function runQueueDashboard() {
             start: moment().format('YYYY-MM-DD') + 'T00:00:00',
             end: moment().format('YYYY-MM-DD') + 'T23:59:59'
           };
-          slData = await __WEBPACK_IMPORTED_MODULE_1__api__["n" /* getReportResults */](time, 'service-level');
+          slData = await __WEBPACK_IMPORTED_MODULE_1__api__["o" /* getReportResults */](time, 'service-level');
           lastSlUpdate = currentTime;
         } catch (err) {
           Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
@@ -472,7 +472,7 @@ function GizmoManager() {
     let data = localStorage.getItem('user_gizmos');
 
     if (!data) {
-      let skillGroups = await __WEBPACK_IMPORTED_MODULE_0__api__["o" /* getSkillGroups */]();
+      let skillGroups = await __WEBPACK_IMPORTED_MODULE_0__api__["p" /* getSkillGroups */]();
       let i = 0;
       this.gizmos = skillGroups.reduce((res, skillGroup) => {
         res[`gizmo-${i++}`] = {
@@ -510,38 +510,39 @@ function skillStringToArray(skillString) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["q"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["u"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["v"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getUsers;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["v"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["w"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["F"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["w"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["x"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["G"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -595,6 +596,12 @@ async function getLayout(agentGroups, type) {
     agentGroups: agentGroups,
     type: type
   }, 'layout');
+  return await response.json();
+}
+async function getLogs(query) {
+  let response = await request({
+    query: query
+  }, 'logs');
   return await response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Users

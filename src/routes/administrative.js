@@ -199,4 +199,13 @@ module.exports.addTo = function(router) {
         res.set('Content-Type', 'application/json');
         res.status(200).send(JSON.stringify(data));
     });
+
+    //////////////////////////////////////////
+    // Get application logs
+    router.post('/logs', verify.apiMiddleware('admin'), async (req, res) => {
+        let query = req.body.query;
+        let logs = await log.Log.find(query).lean().exec();
+        res.set('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(logs));
+    });
 };

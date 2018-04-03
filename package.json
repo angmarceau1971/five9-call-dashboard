@@ -43,6 +43,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "helmet": "^3.8.1",
+    "json2csv": "^4.0.2",
     "mocha": "^3.5.0",
     "moment": "^2.21.0",
     "moment-timezone": "^0.5.14",

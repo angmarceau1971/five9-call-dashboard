@@ -1,5 +1,6 @@
 // TODO: move jQuery to Vue
 import * as api from './api';
+const json2csv = require('json2csv').parse;
 
 $(document).ready(() => {
     // Listen for server reboot request
@@ -62,6 +63,25 @@ const vm = new Vue({
             return {
                 username: ''
             };
+        },
+        downloadLog: async function() {
+            let logs = await api.getLogs({category:'request'});
+            console.log(logs);
+            download('dashboard-log.csv', json2csv(logs, {flatten: true}));
         }
     }
 });
+
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}

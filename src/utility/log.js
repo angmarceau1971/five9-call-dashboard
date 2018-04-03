@@ -25,7 +25,7 @@ const logSchema = mongoose.Schema({
     timestamp: Date
 });
 const Log = mongoose.model('Log', logSchema);
-
+module.exports.Log = Log;
 
 // Utility functions for logging and recording updates
 function message(text, level='info', category='misc', data={}) {

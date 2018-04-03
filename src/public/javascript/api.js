@@ -49,6 +49,11 @@ export async function getLayout(agentGroups, type) {
     return await response.json();
 }
 
+export async function getLogs(query) {
+    let response = await request({query: query}, 'logs');
+    return await response.json();
+}
+
 ///////////////////////////////////////////////////////////////////////
 // Users
 /**

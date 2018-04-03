@@ -550,38 +550,39 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["q"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["u"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["v"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["x"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["y"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getUsers;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["z"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["v"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["w"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["F"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["w"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["x"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["G"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -635,6 +636,12 @@ async function getLayout(agentGroups, type) {
     agentGroups: agentGroups,
     type: type
   }, 'layout');
+  return await response.json();
+}
+async function getLogs(query) {
+  let response = await request({
+    query: query
+  }, 'logs');
   return await response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Users
@@ -13210,7 +13217,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   actions: {
     // Call when page first loads
     async updateUser(context, username) {
-      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["s" /* getUserInformation */](username);
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["t" /* getUserInformation */](username);
       context.commit('setUser', user);
       let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getGoalsForAgentGroups */](user.agentGroups);
       context.commit('setGoals', goals);
@@ -13223,7 +13230,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       context.commit('setDatasources', layout.datasources); // load fields and helpful links from server
 
       context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["h" /* getFieldList */]()));
-      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getSkillGroups */]()));
+      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["p" /* getSkillGroups */]()));
       context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getLinkList */]())); // Start updating based on data sources
 
       context.dispatch('nextUpdate', null);
@@ -13285,7 +13292,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Save a new theme to server
     async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["E" /* updateUserTheme */](context.state.currentUser, newTheme);
+      await __WEBPACK_IMPORTED_MODULE_2__api__["F" /* updateUserTheme */](context.state.currentUser, newTheme);
       let updatedUser = clone(context.state.user);
       updatedUser.theme = newTheme;
       context.commit('setUser', updatedUser);
@@ -13310,7 +13317,7 @@ function getParams(datasource) {
 }
 
 async function loadData(params) {
-  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["q" /* getStatistics */](params);
+  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["r" /* getStatistics */](params);
   res.data = res.data.map(d => {
     if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
     if (d['date']) d['date'] = moment(d['date']).toDate();
@@ -15597,12 +15604,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.showMenu = false;
     },
     //////////////////////////////////////////////////
-    // Simulate a user
-    simulateUser: async function () {
-      this.loadUsersList();
-    },
+    // Supervisor view controls
     loadUsersList: async function () {
-      let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["t" /* getUsers */]();
+      let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["u" /* getUsers */]();
       userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
       this.userList = userList;
     },
