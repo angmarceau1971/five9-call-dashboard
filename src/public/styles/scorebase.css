@@ -75,6 +75,9 @@ a:visited {
     color: hsl(211, 20%, 55%);
 }
 
+/***************/
+/* Menu styles */
+/***************/
 .dropdown-content .toggle-buttons {
     display: flex;
 }

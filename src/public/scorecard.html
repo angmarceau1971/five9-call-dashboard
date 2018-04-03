@@ -25,7 +25,7 @@
             >&#9776;
             </button>
             <div v-if="showMenu" class="dropdown-content"
-                @mouseleave="mouseleaveMenu" ref="menu"
+                @mouseleave="mouseleaveMenu" ref="menu" v-cloak
             >
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
@@ -135,10 +135,16 @@
 
                 <button v-if="user.isSupervisor || user.isAdmin"
                         class="insidedrop simulate-button"
-                        @click="simulateUser"
-                >
+                        @click="simulateUser">
                     <i class="far fa-user"></i> Simulate
                 </button>
+
+                <button v-if="user.isSupervisor || user.isAdmin"
+                        class="insidedrop supervisor-mode-button"
+                        @click="supervisorMode">
+                    <i class="fas fa-users"></i> Supervisor
+                </button>
+
             </div>
 
             <div class="nav">
@@ -178,69 +184,79 @@
                 @delete-card="deleteCard"
             ></dashboard>
 
-            <input v-if="$store.state.editMode"
-                v-model="username"
-                placeholder="Emulate user"
-            />
+            <div class="control-panel">
+                <div v-if="userList.length > 0" class="section agent-selectors">
+                    <h2>Filters</h2>
+                    <div class="agentgroup-list">
+                        <select multiple size="30" v-model="selectedAgentGroups"
+                                @change="selectAgentGroups(selectedAgentGroups)">
+                            <option v-for="(agentGroup, i) in agentGroups"
+                                :value="agentGroup">
+                                {{ agentGroup }}
+                            </option>
+                        </select>
+                    </div>
 
-            <div v-if="userList.length > 0">
-                <select multiple size="20" @change="selectUser">
-                    <option v-for="(userAgent, i) in userList"
-                        :value="userAgent.username">
-                        {{ userAgent.lastName }}, {{ userAgent.firstName }}
-                    </option>
-                </select>
-            </div>
+                    <div class="user-list">
+                        <select multiple size="30" @change="selectUser">
+                            <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
+                                :value="userAgent.username">
+                                {{ userAgent.lastName }}, {{ userAgent.firstName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
-            <div v-if="$store.state.editMode">
-                <h2>Data Sources</h2>
-                <p>{{ datasourceMessage }}</p>
-                <editor-table
-                    @message="updateDatasourceMessage"
-                    :updater="datasourceUpdater"
-                    :loader="datasourceLoader"
-                    :adder="datasourceAdder"
-                    :remover="datasourceRemover"
-                    :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)', 'Source']"
-                >
-                    <template slot="item" slot-scope="props">
-                        <td>
-                            <input
-                                v-model="props.item.name"
-                                type="text"/>
-                        </td>
-                        <td>
-                            <textarea
-                                v-model="props.item.fields"
-                                type="text"
-                            ></textarea>
-                        </td>
-                        <td>
-                            <textarea
-                                v-model="props.item.filter"
-                                type="text"
-                            ></textarea>
-                        </td>
-                        <td>
-                            <textarea
-                                v-model="props.item.groupBy"
-                                type="text"
-                            ></textarea>
-                        </td>
-                        <td>
-                            <input
-                                v-model="props.item.refreshRate"
-                                type="number"
-                            ></textarea>
-                        </td>
-                        <td>
-                            <input
-                                v-model="props.item.source"
-                                type="text"/>
-                        </td>
-                    </template>
+                <div v-if="$store.state.editMode">
+                    <h2>Data Sources</h2>
+                    <p>{{ datasourceMessage }}</p>
+                    <editor-table
+                        @message="updateDatasourceMessage"
+                        :updater="datasourceUpdater"
+                        :loader="datasourceLoader"
+                        :adder="datasourceAdder"
+                        :remover="datasourceRemover"
+                        :headers="['Name', 'Field Names', 'Filters', 'Group By', 'Refresh Rate (seconds)', 'Source']"
+                    >
+                        <template slot="item" slot-scope="props">
+                            <td>
+                                <input
+                                    v-model="props.item.name"
+                                    type="text"/>
+                            </td>
+                            <td>
+                                <textarea
+                                    v-model="props.item.fields"
+                                    type="text"
+                                ></textarea>
+                            </td>
+                            <td>
+                                <textarea
+                                    v-model="props.item.filter"
+                                    type="text"
+                                ></textarea>
+                            </td>
+                            <td>
+                                <textarea
+                                    v-model="props.item.groupBy"
+                                    type="text"
+                                ></textarea>
+                            </td>
+                            <td>
+                                <input
+                                    v-model="props.item.refreshRate"
+                                    type="number"
+                                ></textarea>
+                            </td>
+                            <td>
+                                <input
+                                    v-model="props.item.source"
+                                    type="text"/>
+                            </td>
+                        </template>
 
-                </editor-table>
+                    </editor-table>
+                </div>
             </div>
         </div>
     </div>

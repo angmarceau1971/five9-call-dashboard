@@ -56,6 +56,13 @@ export function clean(original) {
         delete filter.skillGroup;
     }
 
+    // Add selected agent groups ( in supervisor mode )
+    if (filter.agentGroup == '<selected agents>') {
+        filter.agentGroup = {
+            $in: hub.store.getters.selectedAgents()
+        }
+    }
+
     return filter;
 }
 

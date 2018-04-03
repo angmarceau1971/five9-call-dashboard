@@ -9,6 +9,8 @@ import EditorTable from '../components/editor-table.vue';
 // NPM libraries
 const isEmpty = require('ramda/src/isEmpty');
 const clone = require('ramda/src/clone');
+const uniq = require('ramda/src/uniq');
+const intersection = require('ramda/src/intersection');
 const debounce = require('debounce');
 
 
@@ -27,7 +29,9 @@ const vm = new Vue({
         theme: {},
         // list of users for sups to choose from
         userList: [],
-        selectedUser: {}
+        agentGroups: [],
+        selectedUser: {},
+        selectedAgentGroups: []
     },
 
     components: {
@@ -125,6 +129,9 @@ const vm = new Vue({
 
         // Simulate a user
         simulateUser: async function() {
+            this.loadUsersList()
+        },
+        loadUsersList: async function() {
             let userList = await api.getUsers();
             userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
             this.userList = userList;
@@ -132,6 +139,28 @@ const vm = new Vue({
         selectUser: async function(event) {
             await store.dispatch('updateUser', event.target.value);
             this.refresh();
+        },
+        // Supervisor view
+        supervisorMode: async function() {
+            console.log('sup mode!');
+            await this.loadUsersList();
+            this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+        },
+        selectAgentGroups: async function(agentGroup) {
+            console.log(`Agent Group ${agentGroup} selected.`);
+        },
+        getAgentGroupsFromUsers: function(users) {
+            return uniq(
+                users.reduce((groups, user) => {
+                    return groups.concat(user.agentGroups)
+                }, [])
+            ).sort();
+        },
+        filterUsersInGroup: function(users) {
+            if (this.selectedAgentGroups.length == 0) return users;
+            return users.filter((user) =>
+                intersection(user.agentGroups, this.selectedAgentGroups).length > 0
+            )
         },
 
         updateThemeStyles: function(theme) {

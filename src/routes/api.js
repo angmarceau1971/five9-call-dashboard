@@ -181,10 +181,9 @@ router.get('/users', verify.apiMiddleware('supervisor'), async (req, res) => {
         res.send(JSON.stringify(userList));
     } catch (err) {
         res.set('Content-Type', 'application/text');
-        res.status(400).send(`User "${req.params.username}" not found.`);
+        res.status(500).send(`An error occurred while getting users: ${err}`);
     }
 });
-
 
 // Notify server that a 502 has occurred
 router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {

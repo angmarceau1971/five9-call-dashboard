@@ -14038,6 +14038,13 @@ function clean(original) {
     }
 
     delete filter.skillGroup;
+  } // Add selected agent groups ( in supervisor mode )
+
+
+  if (filter.agentGroup == '<selected agents>') {
+    filter.agentGroup = {
+      $in: __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.selectedAgents()
+    };
   }
 
   return filter;
@@ -15207,6 +15214,10 @@ const isEmpty = __webpack_require__(34);
 
 const clone = __webpack_require__(4);
 
+const uniq = __webpack_require__(107);
+
+const intersection = __webpack_require__(115);
+
 const debounce = __webpack_require__(92);
 
 const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];
@@ -15226,7 +15237,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     theme: {},
     // list of users for sups to choose from
     userList: [],
-    selectedUser: {}
+    agentGroups: [],
+    selectedUser: {},
+    selectedAgentGroups: []
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
@@ -15319,6 +15332,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     // Simulate a user
     simulateUser: async function () {
+      this.loadUsersList();
+    },
+    loadUsersList: async function () {
       let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["t" /* getUsers */]();
       userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
       this.userList = userList;
@@ -15326,6 +15342,24 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     selectUser: async function (event) {
       await store.dispatch('updateUser', event.target.value);
       this.refresh();
+    },
+    // Supervisor view
+    supervisorMode: async function () {
+      console.log('sup mode!');
+      await this.loadUsersList();
+      this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+    },
+    selectAgentGroups: async function (agentGroup) {
+      console.log(`Agent Group ${agentGroup} selected.`);
+    },
+    getAgentGroupsFromUsers: function (users) {
+      return uniq(users.reduce((groups, user) => {
+        return groups.concat(user.agentGroups);
+      }, [])).sort();
+    },
+    filterUsersInGroup: function (users) {
+      if (this.selectedAgentGroups.length == 0) return users;
+      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
     },
     updateThemeStyles: function (theme) {
       document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
@@ -19354,6 +19388,660 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
+
+/***/ }),
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var identity = /*#__PURE__*/__webpack_require__(108);
+
+var uniqBy = /*#__PURE__*/__webpack_require__(110);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list. [`R.equals`](#equals) is used to determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniq([1, 1, 2, 1]); //=> [1, 2]
+ *      R.uniq([1, '1']);     //=> [1, '1']
+ *      R.uniq([[42], [42]]); //=> [[42]]
+ */
+
+
+var uniq = /*#__PURE__*/uniqBy(identity);
+module.exports = uniq;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _identity = /*#__PURE__*/__webpack_require__(109);
+
+/**
+ * A function that does nothing but return the parameter supplied to it. Good
+ * as a default or placeholder function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x The value to return.
+ * @return {*} The input value, `x`.
+ * @example
+ *
+ *      R.identity(1); //=> 1
+ *
+ *      var obj = {};
+ *      R.identity(obj) === obj; //=> true
+ * @symb R.identity(a) = a
+ */
+
+
+var identity = /*#__PURE__*/_curry1(_identity);
+module.exports = identity;
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports) {
+
+function _identity(x) {
+  return x;
+}
+module.exports = _identity;
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Set = /*#__PURE__*/__webpack_require__(111);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(36);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied function to
+ * each list element. Prefers the first item if the supplied function produces
+ * the same value on two items. [`R.equals`](#equals) is used for comparison.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> b) -> [a] -> [a]
+ * @param {Function} fn A function used to produce a value to use during comparisons.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
+ */
+
+
+var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
+  var set = new _Set();
+  var result = [];
+  var idx = 0;
+  var appliedItem, item;
+
+  while (idx < list.length) {
+    item = list[idx];
+    appliedItem = fn(item);
+    if (set.add(appliedItem)) {
+      result.push(item);
+    }
+    idx += 1;
+  }
+  return result;
+});
+module.exports = uniqBy;
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(112);
+
+var _Set = /*#__PURE__*/function () {
+
+  function _Set() {
+    /* globals Set */
+    this._nativeSet = typeof Set === 'function' ? new Set() : null;
+    this._items = {};
+  }
+
+  // until we figure out why jsdoc chokes on this
+  // @param item The item to add to the Set
+  // @returns {boolean} true if the item did not exist prior, otherwise false
+  //
+  _Set.prototype.add = function (item) {
+    return !hasOrAdd(item, true, this);
+  };
+
+  //
+  // @param item The item to check for existence in the Set
+  // @returns {boolean} true if the item exists in the Set, otherwise false
+  //
+  _Set.prototype.has = function (item) {
+    return hasOrAdd(item, false, this);
+  };
+
+  //
+  // Combines the logic for checking whether an item is a member of the set and
+  // for adding a new item to the set.
+  //
+  // @param item       The item to check or add to the Set instance.
+  // @param shouldAdd  If true, the item will be added to the set if it doesn't
+  //                   already exist.
+  // @param set        The set instance to check or add to.
+  // @return {boolean} true if the item already existed, otherwise false.
+  //
+  return _Set;
+}();
+
+function hasOrAdd(item, shouldAdd, set) {
+  var type = typeof item;
+  var prevSize, newSize;
+  switch (type) {
+    case 'string':
+    case 'number':
+      // distinguish between +0 and -0
+      if (item === 0 && 1 / item === -Infinity) {
+        if (set._items['-0']) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items['-0'] = true;
+          }
+          return false;
+        }
+      }
+      // these types can all utilise the native Set
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = {};
+            set._items[type][item] = true;
+          }
+          return false;
+        } else if (item in set._items[type]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][item] = true;
+          }
+          return false;
+        }
+      }
+
+    case 'boolean':
+      // set._items['boolean'] holds a two element array
+      // representing [ falseExists, trueExists ]
+      if (type in set._items) {
+        var bIdx = item ? 1 : 0;
+        if (set._items[type][bIdx]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][bIdx] = true;
+          }
+          return false;
+        }
+      } else {
+        if (shouldAdd) {
+          set._items[type] = item ? [false, true] : [true, false];
+        }
+        return false;
+      }
+
+    case 'function':
+      // compare functions for reference equality
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = [item];
+          }
+          return false;
+        }
+        if (!_contains(item, set._items[type])) {
+          if (shouldAdd) {
+            set._items[type].push(item);
+          }
+          return false;
+        }
+        return true;
+      }
+
+    case 'undefined':
+      if (set._items[type]) {
+        return true;
+      } else {
+        if (shouldAdd) {
+          set._items[type] = true;
+        }
+        return false;
+      }
+
+    case 'object':
+      if (item === null) {
+        if (!set._items['null']) {
+          if (shouldAdd) {
+            set._items['null'] = true;
+          }
+          return false;
+        }
+        return true;
+      }
+    /* falls through */
+    default:
+      // reduce the search size of heterogeneous sets by creating buckets
+      // for each type.
+      type = Object.prototype.toString.call(item);
+      if (!(type in set._items)) {
+        if (shouldAdd) {
+          set._items[type] = [item];
+        }
+        return false;
+      }
+      // scan through all previously applied items
+      if (!_contains(item, set._items[type])) {
+        if (shouldAdd) {
+          set._items[type].push(item);
+        }
+        return false;
+      }
+      return true;
+  }
+}
+
+// A simple Set type that honours R.equals semantics
+module.exports = _Set;
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _indexOf = /*#__PURE__*/__webpack_require__(113);
+
+function _contains(a, list) {
+  return _indexOf(list, a, 0) >= 0;
+}
+module.exports = _contains;
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var equals = /*#__PURE__*/__webpack_require__(59);
+
+function _indexOf(list, a, idx) {
+  var inf, item;
+  // Array.prototype.indexOf doesn't exist below IE9
+  if (typeof list.indexOf === 'function') {
+    switch (typeof a) {
+      case 'number':
+        if (a === 0) {
+          // manually crawl the list to distinguish between +0 and -0
+          inf = 1 / a;
+          while (idx < list.length) {
+            item = list[idx];
+            if (item === 0 && 1 / item === inf) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        } else if (a !== a) {
+          // NaN
+          while (idx < list.length) {
+            item = list[idx];
+            if (typeof item === 'number' && item !== item) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        }
+        // non-zero numbers can utilise Set
+        return list.indexOf(a, idx);
+
+      // all these types can utilise Set
+      case 'string':
+      case 'boolean':
+      case 'function':
+      case 'undefined':
+        return list.indexOf(a, idx);
+
+      case 'object':
+        if (a === null) {
+          // null can utilise Set
+          return list.indexOf(a, idx);
+        }
+    }
+  }
+  // anything else not covered above, defer to R.equals
+  while (idx < list.length) {
+    if (equals(list[idx], a)) {
+      return idx;
+    }
+    idx += 1;
+  }
+  return -1;
+}
+module.exports = _indexOf;
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports) {
+
+function _arity(n, fn) {
+  /* eslint-disable no-unused-vars */
+  switch (n) {
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+module.exports = _arity;
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(112);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(36);
+
+var _filter = /*#__PURE__*/__webpack_require__(116);
+
+var flip = /*#__PURE__*/__webpack_require__(117);
+
+var uniq = /*#__PURE__*/__webpack_require__(107);
+
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of those
+ * elements common to both lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The list of elements found in both `list1` and `list2`.
+ * @see R.innerJoin
+ * @example
+ *
+ *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+ */
+
+
+var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
+  var lookupList, filteredList;
+  if (list1.length > list2.length) {
+    lookupList = list1;
+    filteredList = list2;
+  } else {
+    lookupList = list2;
+    filteredList = list1;
+  }
+  return uniq(_filter(flip(_contains)(lookupList), filteredList));
+});
+module.exports = intersection;
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports) {
+
+function _filter(fn, list) {
+  var idx = 0;
+  var len = list.length;
+  var result = [];
+
+  while (idx < len) {
+    if (fn(list[idx])) {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+module.exports = _filter;
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var curryN = /*#__PURE__*/__webpack_require__(118);
+
+/**
+ * Returns a new function much like the supplied one, except that the first two
+ * arguments' order is reversed.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
+ * @param {Function} fn The function to invoke with its first two parameters reversed.
+ * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+ * @example
+ *
+ *      var mergeThree = (a, b, c) => [].concat(a, b, c);
+ *
+ *      mergeThree(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
+ * @symb R.flip(f)(a, b, c) = f(b, a, c)
+ */
+
+
+var flip = /*#__PURE__*/_curry1(function flip(fn) {
+  return curryN(fn.length, function (a, b) {
+    var args = Array.prototype.slice.call(arguments, 0);
+    args[0] = b;
+    args[1] = a;
+    return fn.apply(this, args);
+  });
+});
+module.exports = flip;
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(114);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(1);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(36);
+
+var _curryN = /*#__PURE__*/__webpack_require__(119);
+
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      var sumArgs = (...args) => R.sum(args);
+ *
+ *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
+
+var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
+  if (length === 1) {
+    return _curry1(fn);
+  }
+  return _arity(length, _curryN(length, [], fn));
+});
+module.exports = curryN;
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(114);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curryN(length, received, fn) {
+  return function () {
+    var combined = [];
+    var argsIdx = 0;
+    var left = length;
+    var combinedIdx = 0;
+    while (combinedIdx < received.length || argsIdx < arguments.length) {
+      var result;
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+        result = received[combinedIdx];
+      } else {
+        result = arguments[argsIdx];
+        argsIdx += 1;
+      }
+      combined[combinedIdx] = result;
+      if (!_isPlaceholder(result)) {
+        left -= 1;
+      }
+      combinedIdx += 1;
+    }
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+  };
+}
+module.exports = _curryN;
 
 /***/ })
 /******/ ]);
