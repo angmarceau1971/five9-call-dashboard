@@ -13122,7 +13122,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     // Returns current user for agent, or selected users in supervisor team
     // mode
     currentUsers: state => {
-      if (state.supMode == 'team') return state.selectedUsers;else return [state.user];
+      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
     },
     currentSkills: (state, getters) => {
       return usersToSkills(state.skillGroups, getters.currentUsers);
@@ -15468,7 +15468,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   store: store,
   data: {
     layout: {},
-    datasourceMessage: '',
     isLoaded: false,
     showMenu: false,
     // show main menu
@@ -15477,11 +15476,13 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     showLinks: false,
     // show helpful links / bookmarks
     theme: {},
-    // list of users for sups to choose from
+    // Supervisor controls
     userList: [],
     agentGroups: [],
     selectedUsernames: [],
-    selectedAgentGroups: []
+    selectedAgentGroups: [],
+    showFilters: true,
+    datasourceMessage: ''
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
@@ -15582,7 +15583,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.selectedUsernames = usernames;
       let users = usernames.map(username => this.userList.find(user => user.username == username));
       store.commit('setSelectedUsers', users);
-      this.refresh();
     },
     // Supervisor view
     supervisorMode: async function () {
@@ -15592,6 +15592,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     selectAgentGroups: async function (agentGroup) {
       console.log(`Agent Group ${agentGroup} selected.`);
+      store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
     },
     getAgentGroupsFromUsers: function (users) {
       return __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* extractArrayValues */](users, 'agentGroups').sort();
@@ -15602,7 +15603,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     changeSupMode: function (newMode) {
       store.commit('setSupMode', newMode);
-      this.refresh();
     },
     //////////////////////////////////////////////////
     updateThemeStyles: function (theme) {

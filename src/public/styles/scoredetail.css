@@ -175,10 +175,50 @@ h2, h3 {
 }
 
 /* Control panel */
-.inline {
+.control-panel {
+    margin-bottom: 1em;
+    background-color: hsl(345, 46%, 18%);
+    border-radius: 2px;
+    padding: 1em;
+}
+.section.agent-selectors {
+    display: grid;
+    grid-gap: 2em;
+    grid-template-columns: repeat(3, 1fr);
+}
+.section.agent-selectors .filters-header-wrapper {
+    grid-column: 1;
+    grid-row: 1;
     display: inline;
 }
-
+.section.agent-selectors .filters-header-wrapper h2 {
+    display: inline;
+    margin-right: 2em;
+}
+.section.agent-selectors .filters-header-wrapper button {
+    background-color: transparent;
+}
+.section.agent-selectors .toggle-buttons {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    margin: 1em;
+}
+.section.agent-selectors .user-list select,
+.section.agent-selectors .agentgroup-list select {
+    width: 100%;
+}
+.section.agent-selectors .refresh-button-wrapper {
+    display: flex;
+}
+.section.agent-selectors .refresh-button {
+    height: 150px;
+    width: 100%;
+    font-size: 2em;
+    align-self: center;
+}
+.section.agent-selectors .refresh-button:hover {
+    background-color: hsl(345, 100%, 42%);
+}
 
 /*  Data table formatting  */
 .data-table-wrapper {
@@ -186,6 +226,7 @@ h2, h3 {
     max-height: 15em;
     overflow: auto;
     max-width: 100%;
+    background: inherit;
 }
 .data-table {
     table-layout: fixed;

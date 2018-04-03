@@ -17,7 +17,7 @@
 
     <body>
     <div id="app" class="body-wrapper">
-
+        <!-- Top bar and drop-down menu -->
         <header class="top-bar">
             <button class="dropdown-button" @mouseover="showMenu=true"
                 @mouseleave="mouseleaveMenu"
@@ -159,6 +159,7 @@
             </div>
         </header>
 
+        <!-- Main content -->
         <div class="content-wrapper"
             :style="backgroundStyles">
             <input type="file" id="file-input"
@@ -175,19 +176,35 @@
                 </h2>
             </div>
 
-            <dashboard
-                v-if="isLoaded"
-                :layout="layout"
-                @update-layout="updateLayout"
-                @update-card="updateCard"
-                @modify-widget="modifyWidget"
-                @delete-card="deleteCard"
-            ></dashboard>
-
-            <div class="control-panel">
+            <!-- Controls for sups/admins over team filters and datasources -->
+            <div class="control-panel" v-if="user.isSupervisor || user.isAdmin">
                 <div v-if="userList.length > 0" class="section agent-selectors">
-                    <h2>Filters</h2>
-                    <div class="toggle-buttons">
+                    <div class="filters-header-wrapper">
+                        <h2>Filters</h2>
+                        <button @click="showFilters = !showFilters"
+                            title="Toggle filter display"
+                        >{{ showFilters ? 'Hide' : 'Show' }}</button>
+                    </div>
+                    <div class="agentgroup-list" v-show="showFilters">
+                        <select multiple size="30" v-model="selectedAgentGroups"
+                                @change="selectAgentGroups(selectedAgentGroups)">
+                            <option v-for="(agentGroup, i) in agentGroups"
+                                :value="agentGroup">
+                                {{ agentGroup }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="user-list" v-show="showFilters">
+                        <select multiple size="30" v-model="selectedUsernames"
+                            @change="selectUsers(selectedUsernames)">
+                            <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
+                                :value="userAgent.username">
+                                {{ userAgent.lastName }}, {{ userAgent.firstName }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="toggle-buttons" v-show="showFilters">
                         <button @click="changeSupMode('team')"
                             :class="{ checked: $store.state.supMode == 'team' }">
                             Team
@@ -197,23 +214,11 @@
                             Individual
                         </button>
                     </div>
-                    <div class="agentgroup-list inline">
-                        <select multiple size="30" v-model="selectedAgentGroups"
-                                @change="selectAgentGroups(selectedAgentGroups)">
-                            <option v-for="(agentGroup, i) in agentGroups"
-                                :value="agentGroup">
-                                {{ agentGroup }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="user-list inline">
-                        <select multiple size="30" v-model="selectedUsernames"
-                            @change="selectUsers(selectedUsernames)">
-                            <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
-                                :value="userAgent.username">
-                                {{ userAgent.lastName }}, {{ userAgent.firstName }}
-                            </option>
-                        </select>
+
+                    <div class="refresh-button-wrapper" v-show="showFilters">
+                        <button class="refresh-button" @click="refresh">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
                     </div>
                 </div>
 
@@ -268,6 +273,17 @@
                     </editor-table>
                 </div>
             </div>
+
+            <!-- The Dashboard itself  -->
+            <dashboard
+                v-if="isLoaded"
+                :layout="layout"
+                @update-layout="updateLayout"
+                @update-card="updateCard"
+                @modify-widget="modifyWidget"
+                @delete-card="deleteCard"
+            ></dashboard>
+
         </div>
     </div>
 

@@ -232,7 +232,8 @@
                     "title": "QA by Day",
                     "fields": {
                         "x": "date",
-                        "y": "QA.score"
+                        "y": "QA.score",
+                        "y2": "agentName"
                     },
                     "datasource": "QA",
                     "filter": {
@@ -269,6 +270,7 @@
                     "filter": {},
                     "fields": [
                         "date",
+                        "agentName",
                         "code",
                         "pointsAdded",
                         "pointsRolledOff"
@@ -368,7 +370,7 @@
                 "agentUsername",
                 "skill"
             ],
-            "refreshRate": 290,
+            "refreshRate": 600,
             "source": "AcdFeed"
         },
         {
@@ -391,7 +393,7 @@
             "groupBy": [
                 "dateDay"
             ],
-            "refreshRate": 290,
+            "refreshRate": 600,
             "source": "AcdFeed"
         },
         {
@@ -417,7 +419,7 @@
                 "reasonCode",
                 "agentUsername"
             ],
-            "refreshRate": 290,
+            "refreshRate": 600,
             "source": "AgentLogin"
         },
         {

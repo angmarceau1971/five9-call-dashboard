@@ -21,17 +21,18 @@ const vm = new Vue({
 
     data: {
         layout: {},
-        datasourceMessage: '',
         isLoaded: false,
         showMenu: false, // show main menu
         showMenuThemes: false, // show themes submenu
         showLinks: false, // show helpful links / bookmarks
         theme: {},
-        // list of users for sups to choose from
+        // Supervisor controls
         userList: [],
         agentGroups: [],
         selectedUsernames: [],
         selectedAgentGroups: [],
+        showFilters: true,
+        datasourceMessage: '',
     },
 
     components: {
@@ -139,7 +140,6 @@ const vm = new Vue({
                 this.userList.find((user) => user.username == username)
             );
             store.commit('setSelectedUsers', users);
-            this.refresh();
         },
         // Supervisor view
         supervisorMode: async function() {
@@ -149,6 +149,7 @@ const vm = new Vue({
         },
         selectAgentGroups: async function(agentGroup) {
             console.log(`Agent Group ${agentGroup} selected.`);
+            store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
         },
         getAgentGroupsFromUsers: function(users) {
             return hub.extractArrayValues(users, 'agentGroups').sort();
@@ -161,7 +162,6 @@ const vm = new Vue({
         },
         changeSupMode: function(newMode) {
             store.commit('setSupMode', newMode);
-            this.refresh();
         },
         //////////////////////////////////////////////////
 

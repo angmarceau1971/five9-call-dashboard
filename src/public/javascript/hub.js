@@ -88,7 +88,7 @@ export const store = new Vuex.Store({
         // Returns current user for agent, or selected users in supervisor team
         // mode
         currentUsers: (state) => {
-            if (state.supMode == 'team') return state.selectedUsers;
+            if (state.selectedUsers.length > 0) return state.selectedUsers;
             else return [state.user];
         },
         currentSkills: (state, getters) => {
