@@ -135,17 +135,11 @@ const vm = new Vue({
         },
         selectUsers: async function(usernames) {
             this.selectedUsernames = usernames;
-            if (store.state.supMode == 'individual') {
-                await store.dispatch('updateUser', usernames[0]);
-                this.refresh();
-            }
-            else {
-                console.log('teams!')
-                let users = usernames.map((username) =>
-                    this.userList.find((user) => user.username == username)
-                );
-                store.commit('setSelectedUsers', users);
-            }
+            let users = usernames.map((username) =>
+                this.userList.find((user) => user.username == username)
+            );
+            store.commit('setSelectedUsers', users);
+            this.refresh();
         },
         // Supervisor view
         supervisorMode: async function() {
@@ -157,11 +151,7 @@ const vm = new Vue({
             console.log(`Agent Group ${agentGroup} selected.`);
         },
         getAgentGroupsFromUsers: function(users) {
-            return uniq(
-                users.reduce((groups, user) => {
-                    return groups.concat(user.agentGroups)
-                }, [])
-            ).sort();
+            return hub.extractArrayValues(users, 'agentGroups').sort();
         },
         filterUsersInGroup: function(users) {
             if (this.selectedAgentGroups.length == 0) return users;
@@ -170,7 +160,8 @@ const vm = new Vue({
             )
         },
         changeSupMode: function(newMode) {
-            store.commit('setSupMode', newMode)
+            store.commit('setSupMode', newMode);
+            this.refresh();
         },
         //////////////////////////////////////////////////
 

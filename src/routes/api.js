@@ -110,7 +110,12 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 
 // Return scorecard layout based on user's department
 router.post('/layout', verify.apiMiddleware(), async (req, res) => {
-    if (req.body.agentGroups.includes('Sales') ||
+    // Supervisor team view layout
+    if (req.body.type == 'team') {
+        await sendPublicFile('json/layout-team.json', req, res);
+    }
+    // Individual layouts
+    else if (req.body.agentGroups.includes('Sales') ||
         req.body.agentGroups.includes('Sales Resellers')) {
         await sendPublicFile('json/layout-sales.json', req, res);
     }

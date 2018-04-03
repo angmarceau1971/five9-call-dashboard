@@ -124,6 +124,9 @@ export const store = new Vuex.Store({
         setTimeoutId(state, { datasourceName, id }) {
             state.timeoutIds[datasourceName] = id;
         },
+        setSupMode(state, newMode) {
+            state.supMode = newMode;
+        },
         setFields(state, fields) {
             state.fields = fields;
         },
@@ -166,7 +169,7 @@ export const store = new Vuex.Store({
         // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
             // load layout
-            let layout = await api.getLayout(context.state.user.agentGroups);
+            let layout = await api.getLayout(context.state.user.agentGroups, context.state.supMode);
             context.commit('setDatasources', layout.datasources);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
@@ -267,7 +270,14 @@ function usersToSkills(skillGroups, users) {
     );
 }
 
-function extractArrayValues(objectArray, prop) {
+/**
+ * This function takes a list of objects, each of which has a property which is
+ * an array, and returns all of the unique values in the given property's arrays.
+ * @param  {Array} objectArray
+ * @param  {String} prop
+ * @return {Array} array of unique values in each object's @param prop
+ */
+export function extractArrayValues(objectArray, prop) {
     return uniq(
         objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
     );

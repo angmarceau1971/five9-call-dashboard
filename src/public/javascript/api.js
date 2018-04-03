@@ -41,10 +41,11 @@ export async function getLookerData(lookId) {
 /**
  * Get scorecard JSON layout.
  * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
  * @return {Object}
  */
-export async function getLayout(agentGroups) {
-    let response = await request({agentGroups: agentGroups}, 'layout');
+export async function getLayout(agentGroups, type) {
+    let response = await request({agentGroups: agentGroups, type: type}, 'layout');
     return await response.json();
 }
 

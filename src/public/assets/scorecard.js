@@ -626,12 +626,14 @@ async function getLookerData(lookId) {
 /**
  * Get scorecard JSON layout.
  * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
  * @return {Object}
  */
 
-async function getLayout(agentGroups) {
+async function getLayout(agentGroups, type) {
   let response = await request({
-    agentGroups: agentGroups
+    agentGroups: agentGroups,
+    type: type
   }, 'layout');
   return await response.json();
 } ///////////////////////////////////////////////////////////////////////
@@ -1601,7 +1603,7 @@ function formatValue(value, field) {
   let formattedValue;
 
   if (typeof field == 'string') {
-    field = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.field(field);
+    field = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.field(field);
   }
 
   if (!field) {
@@ -1631,7 +1633,7 @@ function formatValue(value, field) {
 ;
 
 function getStyleFromGoal(value, field) {
-  let goal = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.goalForField(field);
+  let goal = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.goalForField(field);
 
   if (isNaN(value) && isNumberType(field.format.type)) {
     return 'font-color-secondary';
@@ -13022,6 +13024,7 @@ module.exports = _curry2;
 
 "use strict";
 /* unused harmony export loadData */
+/* harmony export (immutable) */ __webpack_exports__["a"] = extractArrayValues;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(58);
@@ -13164,6 +13167,10 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.timeoutIds[datasourceName] = id;
     },
 
+    setSupMode(state, newMode) {
+      state.supMode = newMode;
+    },
+
     setFields(state, fields) {
       state.fields = fields;
     },
@@ -13212,7 +13219,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     // Load the dashboard up. Assumes `updateUser` has already completed.
     async startProcess(context) {
       // load layout
-      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getLayout */](context.state.user.agentGroups);
+      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getLayout */](context.state.user.agentGroups, context.state.supMode);
       context.commit('setDatasources', layout.datasources); // load fields and helpful links from server
 
       context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["h" /* getFieldList */]()));
@@ -13286,7 +13293,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
   }
 });
-/* harmony export (immutable) */ __webpack_exports__["a"] = store;
+/* harmony export (immutable) */ __webpack_exports__["b"] = store;
 
 const getField = store.getters.field;
 /* unused harmony export getField */
@@ -13316,6 +13323,14 @@ function usersToSkills(skillGroups, users) {
   let agentGroups = extractArrayValues(users, 'agentGroups');
   return extractArrayValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
 }
+/**
+ * This function takes a list of objects, each of which has a property which is
+ * an array, and returns all of the unique values in the given property's arrays.
+ * @param  {Array} objectArray
+ * @param  {String} prop
+ * @return {Array} array of unique values in each object's @param prop
+ */
+
 
 function extractArrayValues(objectArray, prop) {
   return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
@@ -14104,7 +14119,7 @@ const clone = __webpack_require__(4);
 
 function clean(original) {
   let filter = clone(original);
-  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.currentUsers; // Clean up dates
+  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
 
   let dateKey;
 
@@ -14133,7 +14148,7 @@ function clean(original) {
   if (filter.skillGroup) {
     if (filter.skillGroup.$in[0] == '<current skill group>') {
       filter.skill = {
-        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["a" /* store */].getters.currentSkills
+        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
       };
     } else {
       throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
@@ -15447,7 +15462,7 @@ const intersection = __webpack_require__(36);
 
 const debounce = __webpack_require__(105);
 
-const store = __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* store */];
+const store = __WEBPACK_IMPORTED_MODULE_2__hub__["b" /* store */];
 const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app',
   store: store,
@@ -15565,15 +15580,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     selectUsers: async function (usernames) {
       this.selectedUsernames = usernames;
-
-      if (store.state.supMode == 'individual') {
-        await store.dispatch('updateUser', usernames[0]);
-        this.refresh();
-      } else {
-        console.log('teams!');
-        let users = usernames.map(username => this.userList.find(user => user.username == username));
-        store.commit('setSelectedUsers', users);
-      }
+      let users = usernames.map(username => this.userList.find(user => user.username == username));
+      store.commit('setSelectedUsers', users);
+      this.refresh();
     },
     // Supervisor view
     supervisorMode: async function () {
@@ -15585,9 +15594,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       console.log(`Agent Group ${agentGroup} selected.`);
     },
     getAgentGroupsFromUsers: function (users) {
-      return uniq(users.reduce((groups, user) => {
-        return groups.concat(user.agentGroups);
-      }, [])).sort();
+      return __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* extractArrayValues */](users, 'agentGroups').sort();
     },
     filterUsersInGroup: function (users) {
       if (this.selectedAgentGroups.length == 0) return users;
@@ -15595,6 +15602,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     changeSupMode: function (newMode) {
       store.commit('setSupMode', newMode);
+      this.refresh();
     },
     //////////////////////////////////////////////////
     updateThemeStyles: function (theme) {
