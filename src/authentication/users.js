@@ -27,6 +27,7 @@ const usersSchema = mongoose.Schema({
     agentGroups: [String],
     firstName: String,
     lastName: String,
+    fullName: String,
     // Theme options
     theme: {
         color: { // dark or light theme
@@ -257,7 +258,8 @@ async function refreshUserDatabase(usersModel) {
             active: d.active == 'true' ? true : false,
             agentGroups: getAgentGroupsForAgent(d.userName[0], agentGroupData),
             firstName: d.firstName[0],
-            lastName: d.lastName[0]
+            lastName: d.lastName[0],
+            fullName: `${d.lastName[0]}, ${d.firstName[0]}`
         };
 
         // Check if original copy of user had theme object defined -- if not,
