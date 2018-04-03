@@ -9,9 +9,12 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 import * as api from './api';
 import * as filters from './filters';
-const sift = require('sift');
+
 const clone = require('ramda/src/clone');
+const intersection = require('ramda/src/intersection');
 const isEmpty = require('ramda/src/isEmpty');
+const uniq = require('ramda/src/uniq');
+const sift = require('sift');
 
 
 /**
@@ -33,7 +36,10 @@ export const store = new Vuex.Store({
         datasources: {},
         timeoutIds: {},
         goals: [],
-        links: []
+        links: [],
+        selectedUsers: [],
+        skillGroups: [],
+        supMode: 'individual'
     },
 
     // Helper functions to retrieve data
@@ -78,6 +84,15 @@ export const store = new Vuex.Store({
                 return ds.name == datasourceName;
             })[1];
             return ds;
+        },
+        // Returns current user for agent, or selected users in supervisor team
+        // mode
+        currentUsers: (state) => {
+            if (state.supMode == 'team') return state.selectedUsers;
+            else return [state.user];
+        },
+        currentSkills: (state, getters) => {
+            return usersToSkills(state.skillGroups, getters.currentUsers)
         }
     },
 
@@ -88,6 +103,14 @@ export const store = new Vuex.Store({
         },
         updateData(state, { newData, datasource }) {
             Vue.set(state.data, datasource, newData);
+        },
+        /**
+         * Set a group of selected users for supervisor mode
+         * @param {Object} state
+         * @param {Array} usersList array of objects with fields username, firstName, lastName
+         */
+        setSelectedUsers(state, usersList) {
+            state.selectedUsers = usersList;
         },
         /**
          * Set the current username and user information
@@ -103,6 +126,9 @@ export const store = new Vuex.Store({
         },
         setFields(state, fields) {
             state.fields = fields;
+        },
+        setSkillGroups(state, skillGroups) {
+            state.skillGroups = skillGroups;
         },
         setGoals(state, goals) {
             state.goals = goals;
@@ -144,6 +170,7 @@ export const store = new Vuex.Store({
             context.commit('setDatasources', layout.datasources);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
+            context.commit('setSkillGroups', await api.getSkillGroups());
             context.commit('setLinks', await api.getLinkList());
             // Start updating based on data sources
             context.dispatch('nextUpdate', null);
@@ -227,4 +254,21 @@ export async function loadData(params) {
         return d;
     });
     return res;
+}
+
+
+function usersToSkills(skillGroups, users) {
+    let agentGroups = extractArrayValues(users, 'agentGroups');
+    return extractArrayValues(
+        skillGroups.filter((skillGroup) =>
+            intersection(skillGroup.agentGroups, agentGroups).length > 0
+        ),
+        'skills'
+    );
+}
+
+function extractArrayValues(objectArray, prop) {
+    return uniq(
+        objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
+    );
 }

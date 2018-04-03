@@ -11,7 +11,7 @@ const clone = require('ramda/src/clone');
  */
 export function clean(original) {
     let filter = clone(original);
-    const user = hub.store.state.user;
+    const users = hub.store.getters.currentUsers;
 
     // Clean up dates
     let dateKey;
@@ -29,26 +29,20 @@ export function clean(original) {
     // Insert actual username
     if (filter.agentUsername && filter.agentUsername.$in
         && filter.agentUsername.$in.includes('<current user>')) {
-        filter.agentUsername.$in[
-            filter.agentUsername.$in.indexOf('<current user>')
-        ] = user.username;
+        filter.agentUsername.$in = props(users, 'username');
     }
-    if (filter.agentUsername && filter.agentUsername.$eq == '<current user>') {
-        filter.agentUsername.$eq = user.username;
-    }
+
     // Insert actual full name
     if (filter.agentName && filter.agentName.$in
         && filter.agentName.$in.includes("<current user's full name>")) {
-        filter.agentName.$in[
-            filter.agentName.$in.indexOf("<current user's full name>")
-        ] = `${user.lastName}, ${user.firstName}`;
+        filter.agentName.$in = users.map((user) => `${user.lastName}, ${user.firstName}`);
     }
 
 
     // Update appropriate skill groups
     if (filter.skillGroup) {
         if (filter.skillGroup.$in[0] == '<current skill group>') {
-            filter.skill = { $in: user.skills };
+            filter.skill = { $in: hub.store.getters.currentSkills };
         }
         else {
             throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`)
@@ -57,11 +51,11 @@ export function clean(original) {
     }
 
     // Add selected agent groups ( in supervisor mode )
-    if (filter.agentGroup == '<selected agents>') {
-        filter.agentGroup = {
-            $in: hub.store.getters.selectedAgents()
-        }
-    }
+    // if (filter.agentGroup == '<selected agents>') {
+    //     filter.agentGroup = {
+    //         $in: hub.store.getters.selectedAgents()
+    //     }
+    // }
 
     return filter;
 }
@@ -153,3 +147,13 @@ function startOfPayPeriod(date) {
     }
 }
 const payPeriodStart = moment('2018-03-11');
+
+/**
+ *
+ * @param  {Array of Objects} array objects to extract property from
+ * @param  {String} property name of property to extract
+ * @return {Array of values} array of values from given property
+ */
+function props(array, property) {
+    return array.map((element) => element[property]);
+}

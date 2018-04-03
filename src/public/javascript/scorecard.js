@@ -30,8 +30,8 @@ const vm = new Vue({
         // list of users for sups to choose from
         userList: [],
         agentGroups: [],
-        selectedUser: {},
-        selectedAgentGroups: []
+        selectedUsernames: [],
+        selectedAgentGroups: [],
     },
 
     components: {
@@ -99,10 +99,6 @@ const vm = new Vue({
             },
             deep: true
         },
-        selectedUser: async function(user) {
-            await store.dispatch('updateUser', user.username);
-            this.refresh();
-        }
     },
 
     methods: {
@@ -127,6 +123,7 @@ const vm = new Vue({
             this.showMenu = false;
         },
 
+        //////////////////////////////////////////////////
         // Simulate a user
         simulateUser: async function() {
             this.loadUsersList()
@@ -136,9 +133,19 @@ const vm = new Vue({
             userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
             this.userList = userList;
         },
-        selectUser: async function(event) {
-            await store.dispatch('updateUser', event.target.value);
-            this.refresh();
+        selectUsers: async function(usernames) {
+            this.selectedUsernames = usernames;
+            if (store.state.supMode == 'individual') {
+                await store.dispatch('updateUser', usernames[0]);
+                this.refresh();
+            }
+            else {
+                console.log('teams!')
+                let users = usernames.map((username) =>
+                    this.userList.find((user) => user.username == username)
+                );
+                store.commit('setSelectedUsers', users);
+            }
         },
         // Supervisor view
         supervisorMode: async function() {
@@ -162,6 +169,10 @@ const vm = new Vue({
                 intersection(user.agentGroups, this.selectedAgentGroups).length > 0
             )
         },
+        changeSupMode: function(newMode) {
+            store.commit('setSupMode', newMode)
+        },
+        //////////////////////////////////////////////////
 
         updateThemeStyles: function(theme) {
             document.getElementById('theme_css').href =

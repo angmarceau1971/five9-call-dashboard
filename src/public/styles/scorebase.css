@@ -81,21 +81,21 @@ a:visited {
 .dropdown-content .toggle-buttons {
     display: flex;
 }
-.dropdown-content .toggle-buttons button {
+.body-wrapper .toggle-buttons button {
     text-transform: uppercase;
     font-size: 1.5em;
     padding: 0.25em;
     background: #333;
     color: #aaa;
-    width: 100px;
+    min-width: 100px;
 }
-.dropdown-content .toggle-buttons button:hover {
+.body-wrapper .toggle-buttons button:hover {
     background-color: #666;
 }
-.dropdown-content .toggle-buttons .checked {
+.body-wrapper .toggle-buttons .checked {
     background: hsl(120, 53%, 38%);
     color: hsl(120, 100%, 95%);
 }
-.dropdown-content .toggle-buttons .checked:hover {
+.body-wrapper .toggle-buttons .checked:hover {
     background: hsl(120, 96%, 23%);
 }

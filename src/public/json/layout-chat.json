@@ -285,7 +285,7 @@
             },
             "filter": {
                 "agentUsername": {
-                    "$eq": "<current user>"
+                    "$in": ["<current user>"]
                 },
                 "date": "<month-to-date>",
                 "mediaType": {

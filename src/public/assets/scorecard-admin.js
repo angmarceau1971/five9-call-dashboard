@@ -60,12 +60,40 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 106);
 /******/ })
 /************************************************************************/
 /******/ ({
 
 /***/ 0:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+module.exports = _curry1;
+
+/***/ }),
+
+/***/ 1:
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -175,38 +203,167 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 10:
+/***/ (function(module, exports) {
 
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(11);
-
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
+function _isPlaceholder(a) {
+       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
 }
-module.exports = _curry1;
+module.exports = _isPlaceholder;
 
 /***/ }),
 
-/***/ 10:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+module.exports = __webpack_require__(107);
+
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(15);
+
+
+
+
+const clone = __webpack_require__(4);
+
+const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
+  el: '#admin-app',
+  components: {
+    'editor-table': __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__["a" /* default */]
+  },
+  data: {
+    message: ''
+  },
+  methods: {
+    fieldUpdater: async function (field) {
+      let clean = clone(field);
+      clean.name = field.name.trim();
+      clean.displayName = field.displayName.trim();
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["z" /* updateField */](clean);
+    },
+    fieldLoader: async function () {
+      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getFieldList */](); // Sort by source then name
+
+      return fields.sort((a, b) => {
+        if (a.source == b.source) {
+          return a.name < b.name ? -1 : 1;
+        } else {
+          return a.source < b.source ? -1 : 1;
+        }
+      });
+    },
+    updateMessage: function (msg) {
+      this.message = msg;
+    },
+    fieldAdder: function () {
+      return {
+        name: '',
+        displayName: '',
+        defaultRefreshRate: 0,
+        format: {
+          type: '',
+          string: ''
+        },
+        calculatedField: true,
+        calculation: ''
+      };
+    },
+    fieldRemover: function (field) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* deleteField */](field);
+    },
+    // Goal functions
+    goalUpdater: async function (goal) {
+      let clean = clone(goal);
+
+      try {
+        clean.agentGroups = JSON.parse(clean.agentGroups);
+        clean.thresholds = JSON.parse(clean.thresholds);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["A" /* updateGoal */](clean);
+    },
+    goalLoader: async function () {
+      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getGoalList */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (goal) {
+        goal.agentGroups = str(goal.agentGroups);
+        goal.thresholds = str(goal.thresholds);
+        return goal;
+      };
+
+      return goals.map(stringin);
+    },
+    goalAdder: function () {
+      return {
+        name: '',
+        agentGroups: [],
+        comparator: '<',
+        thresholds: [],
+        field: ''
+      };
+    },
+    goalRemover: function (goal) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* deleteGoal */](goal);
+    },
+    // Link functions
+    linkUpdater: async function (link) {
+      let clean = clone(link);
+
+      try {
+        clean.agentGroups = JSON.parse(clean.agentGroups);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["B" /* updateLink */](clean);
+    },
+    linkLoader: async function () {
+      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["l" /* getLinkList */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (link) {
+        link.agentGroups = str(link.agentGroups);
+        return link;
+      };
+
+      return links.map(stringin);
+    },
+    linkAdder: function () {
+      return {
+        name: '',
+        agentGroups: [],
+        comparator: '<',
+        thresholds: [],
+        field: ''
+      };
+    },
+    linkRemover: function (link) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* deleteLink */](link);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
 /**
  * Gives a single-word string description of the (native) type of a value,
@@ -239,16 +396,6 @@ var type = /*#__PURE__*/_curry1(function type(val) {
   return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
 });
 module.exports = type;
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports) {
-
-function _isPlaceholder(a) {
-       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-}
-module.exports = _isPlaceholder;
 
 /***/ }),
 
@@ -291,7 +438,7 @@ module.exports = function listToStyles (parentId, list) {
 
 var _cloneRegExp = /*#__PURE__*/__webpack_require__(14);
 
-var type = /*#__PURE__*/__webpack_require__(10);
+var type = /*#__PURE__*/__webpack_require__(11);
 
 /**
  * Copies an object.
@@ -361,7 +508,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(16)
 }
-var normalizeComponent = __webpack_require__(0)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 
 
@@ -12145,7 +12292,7 @@ function applyToTag (styleElement, obj) {
 
 var _clone = /*#__PURE__*/__webpack_require__(13);
 
-var _curry1 = /*#__PURE__*/__webpack_require__(1);
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
 /**
  * Creates a deep copy of the value which may contain (nested) `Array`s and
@@ -12859,153 +13006,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-
-/***/ 93:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(94);
-
-
-/***/ }),
-
-/***/ 94:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(15);
-
-
-
-
-const clone = __webpack_require__(4);
-
-const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-  el: '#admin-app',
-  components: {
-    'editor-table': __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__["a" /* default */]
-  },
-  data: {
-    message: ''
-  },
-  methods: {
-    fieldUpdater: async function (field) {
-      let clean = clone(field);
-      clean.name = field.name.trim();
-      clean.displayName = field.displayName.trim();
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["z" /* updateField */](clean);
-    },
-    fieldLoader: async function () {
-      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getFieldList */](); // Sort by source then name
-
-      return fields.sort((a, b) => {
-        if (a.source == b.source) {
-          return a.name < b.name ? -1 : 1;
-        } else {
-          return a.source < b.source ? -1 : 1;
-        }
-      });
-    },
-    updateMessage: function (msg) {
-      this.message = msg;
-    },
-    fieldAdder: function () {
-      return {
-        name: '',
-        displayName: '',
-        defaultRefreshRate: 0,
-        format: {
-          type: '',
-          string: ''
-        },
-        calculatedField: true,
-        calculation: ''
-      };
-    },
-    fieldRemover: function (field) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* deleteField */](field);
-    },
-    // Goal functions
-    goalUpdater: async function (goal) {
-      let clean = clone(goal);
-
-      try {
-        clean.agentGroups = JSON.parse(clean.agentGroups);
-        clean.thresholds = JSON.parse(clean.thresholds);
-      } catch (err) {
-        return `Unable to save: ${err}.`;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["A" /* updateGoal */](clean);
-    },
-    goalLoader: async function () {
-      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getGoalList */]();
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (goal) {
-        goal.agentGroups = str(goal.agentGroups);
-        goal.thresholds = str(goal.thresholds);
-        return goal;
-      };
-
-      return goals.map(stringin);
-    },
-    goalAdder: function () {
-      return {
-        name: '',
-        agentGroups: [],
-        comparator: '<',
-        thresholds: [],
-        field: ''
-      };
-    },
-    goalRemover: function (goal) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* deleteGoal */](goal);
-    },
-    // Link functions
-    linkUpdater: async function (link) {
-      let clean = clone(link);
-
-      try {
-        clean.agentGroups = JSON.parse(clean.agentGroups);
-      } catch (err) {
-        return `Unable to save: ${err}.`;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["B" /* updateLink */](clean);
-    },
-    linkLoader: async function () {
-      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["l" /* getLinkList */]();
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (link) {
-        link.agentGroups = str(link.agentGroups);
-        return link;
-      };
-
-      return links.map(stringin);
-    },
-    linkAdder: function () {
-      return {
-        name: '',
-        agentGroups: [],
-        comparator: '<',
-        thresholds: [],
-        field: ''
-      };
-    },
-    linkRemover: function (link) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* deleteLink */](link);
-    }
-  }
-});
 
 /***/ })
 

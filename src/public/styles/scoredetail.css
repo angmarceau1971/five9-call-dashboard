@@ -175,7 +175,7 @@ h2, h3 {
 }
 
 /* Control panel */
-.section.agent-selectors div {
+.inline {
     display: inline;
 }
 

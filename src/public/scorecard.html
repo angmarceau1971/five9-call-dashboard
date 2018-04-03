@@ -187,7 +187,17 @@
             <div class="control-panel">
                 <div v-if="userList.length > 0" class="section agent-selectors">
                     <h2>Filters</h2>
-                    <div class="agentgroup-list">
+                    <div class="toggle-buttons">
+                        <button @click="changeSupMode('team')"
+                            :class="{ checked: $store.state.supMode == 'team' }">
+                            Team
+                        </button>
+                        <button @click="changeSupMode('individual')"
+                            :class="{ checked: $store.state.supMode == 'individual' }">
+                            Individual
+                        </button>
+                    </div>
+                    <div class="agentgroup-list inline">
                         <select multiple size="30" v-model="selectedAgentGroups"
                                 @change="selectAgentGroups(selectedAgentGroups)">
                             <option v-for="(agentGroup, i) in agentGroups"
@@ -196,9 +206,9 @@
                             </option>
                         </select>
                     </div>
-
-                    <div class="user-list">
-                        <select multiple size="30" @change="selectUser">
+                    <div class="user-list inline">
+                        <select multiple size="30" v-model="selectedUsernames"
+                            @change="selectUsers(selectedUsernames)">
                             <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
                                 :value="userAgent.username">
                                 {{ userAgent.lastName }}, {{ userAgent.firstName }}

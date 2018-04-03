@@ -48,7 +48,6 @@ export async function getLayout(agentGroups) {
     return await response.json();
 }
 
-
 ///////////////////////////////////////////////////////////////////////
 // Users
 /**
