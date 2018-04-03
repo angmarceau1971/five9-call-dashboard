@@ -134,12 +134,6 @@
                 </a>
 
                 <button v-if="user.isSupervisor || user.isAdmin"
-                        class="insidedrop simulate-button"
-                        @click="simulateUser">
-                    <i class="far fa-user"></i> Simulate
-                </button>
-
-                <button v-if="user.isSupervisor || user.isAdmin"
                         class="insidedrop supervisor-mode-button"
                         @click="supervisorMode">
                     <i class="fas fa-users"></i> Supervisor
@@ -206,12 +200,14 @@
 
                     <div class="toggle-buttons" v-show="showFilters">
                         <button @click="changeSupMode('team')"
-                            :class="{ checked: $store.state.supMode == 'team' }">
-                            Team
+                            :class="{ checked: $store.state.supMode == 'team' }"
+                            title="Show data for all agents selected"
+                        >Team
                         </button>
                         <button @click="changeSupMode('individual')"
-                            :class="{ checked: $store.state.supMode == 'individual' }">
-                            Individual
+                            :class="{ checked: $store.state.supMode == 'individual' }"
+                            title="Simulate the view of a single agent"
+                        >Individual
                         </button>
                     </div>
 

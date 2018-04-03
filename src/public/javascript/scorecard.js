@@ -125,10 +125,7 @@ const vm = new Vue({
         },
 
         //////////////////////////////////////////////////
-        // Simulate a user
-        simulateUser: async function() {
-            this.loadUsersList()
-        },
+        // Supervisor view controls
         loadUsersList: async function() {
             let userList = await api.getUsers();
             userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);

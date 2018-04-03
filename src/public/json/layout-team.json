@@ -71,7 +71,7 @@
         {
             "title": "Calls Handled",
             "id": "card:2",
-            "layoutOrder": 6,
+            "layoutOrder": 3,
             "columns": 1,
             "widgets": [
                 {
@@ -127,7 +127,7 @@
         {
             "title": "Service Level",
             "id": "card:3",
-            "layoutOrder": 3,
+            "layoutOrder": 1,
             "columns": 1,
             "widgets": [
                 {
@@ -213,8 +213,8 @@
         {
             "title": "QA",
             "id": "card:5",
-            "layoutOrder": 2,
-            "columns": 1,
+            "layoutOrder": 5,
+            "columns": 2,
             "widgets": [
                 {
                     "id": "widget:0",
@@ -251,8 +251,8 @@
         {
             "title": "Attendance Points",
             "id": "card:6",
-            "layoutOrder": 5,
-            "columns": 2,
+            "layoutOrder": 7,
+            "columns": 3,
             "widgets": [
                 {
                     "id": "widget:0",
@@ -287,8 +287,8 @@
         {
             "title": "Sales Close Rate",
             "id": "card:7",
-            "layoutOrder": 1,
-            "columns": 1,
+            "layoutOrder": 6,
+            "columns": 2,
             "widgets": [
                 {
                     "id": "widget:0",
