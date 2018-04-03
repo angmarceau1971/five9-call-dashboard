@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
         links: [],
         selectedUsers: [],
         skillGroups: [],
-        supMode: 'individual'
+        supMode: 'team'
     },
 
     // Helper functions to retrieve data

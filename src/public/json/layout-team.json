@@ -5,7 +5,7 @@
         {
             "title": "Team AHT",
             "id": "card:1",
-            "layoutOrder": 7,
+            "layoutOrder": 2,
             "columns": 1,
             "widgets": [
                 {
@@ -368,6 +368,7 @@
             "groupBy": [
                 "dateDay",
                 "agentUsername",
+                "agentName",
                 "skill"
             ],
             "refreshRate": 600,

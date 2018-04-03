@@ -179,9 +179,9 @@ h2, h3 {
     margin-bottom: 1em;
     background-color: hsl(345, 46%, 18%);
     border-radius: 2px;
-    padding: 1em;
 }
 .section.agent-selectors {
+    padding: 1em;
     display: grid;
     grid-gap: 2em;
     grid-template-columns: repeat(3, 1fr);

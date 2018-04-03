@@ -84,6 +84,34 @@ export function summarize(data, summaryField, valueFields) {
             datum.value,
             { [summaryField]: keyParse(datum.key) });
     });
+    // let summaryFields = [summaryField];
+    // let nested = d3.nest();
+    // for (let f of summaryFields) nested = nested.key((d) => d[f]);
+    // let rolledUp =
+    //     nested.rollup((values) => {
+    //         // Sum up each requested field
+    //         return valueFields.reduce((result, field) => {
+    //             result[field] = process(values, field);
+    //             return result;
+    //         }, {});
+    //     })
+    //     .entries(data);
+    // // Flatten the summarized nested data back to original format
+    // let flat = rolledUp.map((d) => {
+    //     return summaryFields.reduce((result, field) => {
+    //         Object.assign(result, {[field]: d.key});
+    //         if (result.value.value) {
+    //             result.key = result.value.key;
+    //             result.value = result.value.value;
+    //         }
+    //         else {
+    //             Object.assign(result, result.value);
+    //             delete result.key; delete result.value;
+    //         }
+    //         return result;
+    //     }, d);
+    // });
+    // return flat;
 }
 
 
