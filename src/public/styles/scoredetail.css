@@ -128,9 +128,12 @@ h2, h3 {
     display: inline-block;
 }
 .top-bar .logout {
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
+    
+text-align: center;
+    
+vertical-align: middle;
+    
+line-height: 50px;
 }
 
 
@@ -177,7 +180,7 @@ h2, h3 {
 /* Control panel */
 .control-panel {
     margin-bottom: 1em;
-    background-color: hsl(345, 46%, 18%);
+    background-color: hsla(0, 0%, 27%, 0.55);
     border-radius: 2px;
 }
 .section.agent-selectors {
@@ -268,4 +271,5 @@ h2, h3 {
 .drag-area {
     width: 100%;
     min-width: 100%;
-}
+}
+
