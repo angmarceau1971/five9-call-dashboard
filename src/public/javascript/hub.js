@@ -163,8 +163,7 @@ export const store = new Vuex.Store({
         async updateUser(context, username) {
             let user = await api.getUserInformation(username);
             context.commit('setUser', user);
-            let goals = await api.getGoalsForAgentGroups(user.agentGroups);
-            context.commit('setGoals', goals);
+            context.dispatch('updateGoals');
         },
         // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
@@ -175,6 +174,8 @@ export const store = new Vuex.Store({
             context.commit('setFields', await api.getFieldList());
             context.commit('setSkillGroups', await api.getSkillGroups());
             context.commit('setLinks', await api.getLinkList());
+            // load in goals
+            context.dispatch('updateGoals');
             // Start updating based on data sources
             context.dispatch('nextUpdate', null);
             return layout;
@@ -186,6 +187,12 @@ export const store = new Vuex.Store({
                 clearTimeout(id);
             }
             return await context.dispatch('startProcess');
+        },
+
+        async updateGoals(context) {
+            let groups = extractValues(context.getters.currentUsers, 'agentGroups');
+            let goals = await api.getGoalsForAgentGroups(groups);
+            context.commit('setGoals', goals);
         },
 
         // Refresh data based on current datasources
@@ -259,10 +266,9 @@ export async function loadData(params) {
     return res;
 }
 
-
 function usersToSkills(skillGroups, users) {
-    let agentGroups = extractArrayValues(users, 'agentGroups');
-    return extractArrayValues(
+    let agentGroups = extractValues(users, 'agentGroups');
+    return extractValues(
         skillGroups.filter((skillGroup) =>
             intersection(skillGroup.agentGroups, agentGroups).length > 0
         ),
@@ -277,7 +283,7 @@ function usersToSkills(skillGroups, users) {
  * @param  {String} prop
  * @return {Array} array of unique values in each object's @param prop
  */
-export function extractArrayValues(objectArray, prop) {
+export function extractValues(objectArray, prop) {
     return uniq(
         objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
     );

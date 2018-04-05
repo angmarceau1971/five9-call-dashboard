@@ -145,11 +145,10 @@ const vm = new Vue({
             this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
         },
         selectAgentGroups: async function(agentGroup) {
-            console.log(`Agent Group ${agentGroup} selected.`);
             store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
         },
         getAgentGroupsFromUsers: function(users) {
-            return hub.extractArrayValues(users, 'agentGroups').sort();
+            return hub.extractValues(users, 'agentGroups').sort();
         },
         filterUsersInGroup: function(users) {
             if (this.selectedAgentGroups.length == 0) return users;
@@ -160,8 +159,15 @@ const vm = new Vue({
         changeSupMode: function(newMode) {
             store.commit('setSupMode', newMode);
         },
+        getUserSelectionString: function(user) {
+            let groupString = '';
+            if (user.agentGroups.length > 1) {
+                groupString = ` - ${user.agentGroups.join(', ')}`;
+            }
+            return `${user.lastName}, ${user.firstName}${groupString}`;
+        },
         //////////////////////////////////////////////////
-
+        // Handle menus and theme
         updateThemeStyles: function(theme) {
             document.getElementById('theme_css').href =
                                     `styles/theme-${theme.color}.css`;

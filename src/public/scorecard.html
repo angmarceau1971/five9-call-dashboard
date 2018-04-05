@@ -193,7 +193,8 @@
                             @change="selectUsers(selectedUsernames)">
                             <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
                                 :value="userAgent.username">
-                                {{ userAgent.lastName }}, {{ userAgent.firstName }}
+                                {{ getUserSelectionString(userAgent) }}
+                                <!-- {{ userAgent.lastName }}, {{ userAgent.firstName }} -->
                             </option>
                         </select>
                     </div>
