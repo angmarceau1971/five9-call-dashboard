@@ -229,7 +229,6 @@ line-height: 50px;
     max-height: 15em;
     overflow: auto;
     max-width: 100%;
-    background: inherit;
 }
 .data-table {
     table-layout: fixed;

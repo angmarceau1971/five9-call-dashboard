@@ -32,7 +32,8 @@ const vm = new Vue({
     },
 
     data: {
-        message: ''
+        message: '',
+        logCategory: 'request'
     },
 
     methods: {
@@ -64,9 +65,9 @@ const vm = new Vue({
                 username: ''
             };
         },
-        downloadLog: async function() {
-            let logs = await api.getLogs({category:'request'});
-            console.log(logs);
+        downloadLog: async function(category) {
+            let query = category != '' ? {category: category} : {};
+            let logs = await api.getLogs(query);
             download('dashboard-log.csv', json2csv(logs, {flatten: true}));
         }
     }

@@ -92,7 +92,8 @@
 
                     <div class="section downloads">
                         <h3>Logbook</h3>
-                        <button @click="downloadLog">Download Logs</button>
+                        <input v-model="logCategory" />
+                        <button @click="downloadLog(logCategory)">Download Logs</button>
                     </div>
                     <form onsubmit="download(this['name'].value, this['text'].value)">
                         <input type="text" name="name" value="test.txt">
