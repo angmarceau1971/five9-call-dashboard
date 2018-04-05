@@ -69,6 +69,10 @@ const vm = new Vue({
             let query = category != '' ? {category: category} : {};
             let logs = await api.getLogs(query);
             download('dashboard-log.csv', json2csv(logs, {flatten: true}));
+        },
+        downloadUsers: async function() {
+            let users = await api.getUsers();
+            download('dashboard-users.csv', json2csv(users, {flatten: true}));
         }
     }
 });

@@ -94,7 +94,9 @@
                         <h3>Logbook</h3>
                         <input v-model="logCategory" />
                         <button @click="downloadLog(logCategory)">Download Logs</button>
+                        <button @click="downloadUsers">Download Users Table</button>
                     </div>
+
                     <form onsubmit="download(this['name'].value, this['text'].value)">
                         <input type="text" name="name" value="test.txt">
                         <textarea name="text"></textarea>
