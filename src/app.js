@@ -113,8 +113,8 @@ const server = app.listen(port, async () => {
         five9Update.scheduleUpdate(5 * 60 * 1000);
         // Update user list every 12 hours
         users.scheduleUpdate(12 * 3600 * 1000);
-        // Schedule Looker tables to update every 3 hours
-        datasource.scheduleLookerUpdates(3 * 3600 * 1000);
+        // Schedule Looker tables to update every 2 hours
+        datasource.scheduleLookerUpdates(2 * 3600 * 1000);
 
         // Start admin jobs
         admin.start();
