@@ -168,7 +168,8 @@ export const store = new Vuex.Store({
         // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
             // load layout
-            let layout = await api.getLayout(context.state.user.agentGroups, context.state.supMode);
+            let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
+            let layout = await api.getLayout(agentGroups, context.state.supMode);
             context.commit('setDatasources', layout.datasources);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
