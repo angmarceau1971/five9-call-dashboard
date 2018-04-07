@@ -71,6 +71,10 @@ export function prettifyDateOption(option) {
     return option;
 }
 
+export function getDates(datePattern) {
+    return dateMatcher[datePattern]();
+}
+
 
 const dateMatcher = {
     // Days
@@ -90,25 +94,25 @@ const dateMatcher = {
     '<month-to-date>': function() {
         return {
             $gte: moment().startOf('month').toDate(),
-            $lt:  moment().endOf('month').toDate()
+            $lt:  moment().startOf('month').add(1, 'months').toDate()
         }
     },
     '<last month>': function() {
         return {
             $gte: moment().subtract(1, 'months').startOf('month').toDate(),
-            $lt:  moment().subtract(1, 'months').endOf('month').toDate()
+            $lt:  moment().startOf('month').toDate()
         }
     },
     '<last 2 months>': function() {
         return {
             $gte: moment().subtract(2, 'months').startOf('month').toDate(),
-            $lt:  moment().endOf('month').toDate()
+            $lt:  moment().startOf('month').add(1, 'months').toDate()
         }
     },
     '<last 3 months>': function() {
         return {
             $gte: moment().subtract(3, 'months').startOf('month').toDate(),
-            $lt:  moment().endOf('month').toDate()
+            $lt:  moment().startOf('month').add(1, 'months').toDate()
         }
     },
     // Pay periods

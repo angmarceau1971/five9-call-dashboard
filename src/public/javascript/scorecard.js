@@ -140,7 +140,6 @@ const vm = new Vue({
         },
         // Supervisor view
         supervisorMode: async function() {
-            console.log('sup mode!');
             await this.loadUsersList();
             this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
         },

@@ -38,6 +38,7 @@ import WidgetBase from './widget-base.vue';
 
 import { formatValue } from '../javascript/scorecard-format';
 import * as parse from '../javascript/parse';
+import { getDates } from '../javascript/filters';
 
 
 export default {
@@ -70,12 +71,24 @@ export default {
                 }
             });
         },
+        // Return title showing goal and dates in value
         hoverText: function() {
+            let dateStr = ``;
+            if (this.filter.date || this.filter.dateDay) {
+                let dates = getDates(this.filter.date || this.filter.dateDay);
+                let start = dates.$gte || dates.$gt;
+                let interval = dates.$lt ? 'up to' : 'through';
+                let end   = dates.$lte || dates.$lt;
+                let format = (d) => moment(d).format('M/D');
+                dateStr = `Includes ${format(start)} ${interval} ${format(end)}`;
+            }
             let field = this.$store.getters.field(this.fieldName);
-            if (!field) return this.title;
             let goal = this.$store.getters.goalForField(field);
-            if (!goal) return this.title;
-            return `${this.title} - Goal: ${formatValue(goal.thresholds[0], field).value}`;
+            let goalStr = this.title;
+            if (goal) {
+                goalStr = `${this.title} - Goal: ${formatValue(goal.thresholds[0], field).value}`;
+            }
+            return `${goalStr}\n${dateStr}`;
         }
     },
     methods: {
