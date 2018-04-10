@@ -46,16 +46,17 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
 
     <data-table
         v-if="showTable"
-        :datasource="datasource"
-        :filter="filter"
-        :fields="tableFields"
-        :isChild="true"
-        :summarize="summarize"
+        v-bind="tableProps"
     ></data-table>
 </div>
 </template>
 
 <script>
+// :datasource="datasource"
+// :filter="filter"
+// :fields="tableFields"
+// :isChild="true"
+// :summarize="summarize"
 
 import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
@@ -83,6 +84,11 @@ const props = {
     summarize: { // whether to summarize data in table
         type: Boolean,
         default: true
+    },
+    // options to pass to child data-table
+    tableOptions: {
+        type: Object,
+        default: () => ({}) // default to empty object
     }
 };
 
@@ -157,10 +163,22 @@ export default {
         },
         // Return array of fields to be displayed by data-table
         tableFields() {
+            if (this.tableOptions.fields) return this.tableOptions.fields;
+            // if no specific field given, default to those displayed in graph
             let fields = [this.fields.x, this.fields.y];
             if (this.fields.y2) fields.push(this.fields.y2);
             if (this.fields.y3) fields.push(this.fields.y3);
             return fields;
+        },
+        tableProps() {
+            let initialOptions = {
+                datasource: this.datasource,
+                filter: this.filter,
+                fields: this.tableFields,
+                summarize: this.summarize,
+                isChild: true,
+            }
+            return Object.assign(initialOptions, this.tableOptions);
         }
     },
 

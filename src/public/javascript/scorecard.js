@@ -344,7 +344,7 @@ window.vm = vm;
   Convert vue object
 */
 const getVueObject = obj => {
-  return JSON.parse(JSON.stringify( obj ));
+  return JSON.parse(JSON.stringify(obj));
 };
 
 function download(text, name, type) {
@@ -373,18 +373,6 @@ function objectMap(object, fun) {
         return newObj;
     }, {})
 }
-
-let buffer = function(func, wait, scope) {
-    var timer = null;
-    return function() {
-        if (timer) clearTimeout(timer);
-        var args = arguments;
-        timer = setTimeout(function() {
-            timer = null;
-            func.apply(scope, args);
-        }, wait);
-    };
-};
 
 function isDescendant(parent, child) {
     var node = child.parentNode;

@@ -64,6 +64,10 @@
                             ]
                         },
                         "dateDay": "<month-to-date>"
+                    },
+                    "tableOptions": {
+                        "fields": ["agentUsername", "Calculated.aht"],
+                        "sortByField": "Calculated.aht"
                     }
                 }
             ]
@@ -120,6 +124,10 @@
                             ]
                         },
                         "dateDay": "<month-to-date>"
+                    },
+                    "tableOptions": {
+                        "fields": ["agentUsername", "AcdFeed.calls"],
+                        "sortByField": "AcdFeed.calls"
                     }
                 }
             ]
@@ -331,6 +339,10 @@
                     "datasource": "Close Rate",
                     "filter": {
                         "date": "<last 2 months>"
+                    },
+                    "tableOptions": {
+                        "fields": ["agentUsername", "Calculated.closeRate", "Close Rate.orders", "Close Rate.calls"],
+                        "sortByField": "Calculated.closeRate"
                     }
                 },
                 {

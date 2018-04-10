@@ -40,7 +40,7 @@ import { formatValue } from '../javascript/scorecard-format.js';
 
 /**
  *
- * @prop {Array} fields to display
+ * @prop {Array} fields to display. The first field will be the one that data is summarized by.
  * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
  * @prop {String} datasource - name of datasource being used
  * @prop {Object} filter to apply to data
@@ -60,7 +60,8 @@ export default {
         isChild: {
             type: Boolean,
             default: false
-        }
+        },
+        sortByField: String
     },
 
     data () {
@@ -88,9 +89,10 @@ export default {
                         this.fields.slice(1),
                     );
             }
-            // Sort by first field
+            // Sort by sortByField, or first field if none given
+            let sortField = this.sortByField || this.fields[0];
             data.sort((a, b) =>
-                a[this.fields[0]] < b[this.fields[0]] ? -1 : 1
+                a[sortField] < b[sortField] ? -1 : 1
             );
             // Leave only fields that are defined in widget
             return data.map(parse.filterFields(this.fields));
