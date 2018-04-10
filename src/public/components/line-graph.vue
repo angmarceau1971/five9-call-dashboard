@@ -52,12 +52,6 @@ Line graph widget. Uses D3 to render an SVG based on data and fields props.
 </template>
 
 <script>
-// :datasource="datasource"
-// :filter="filter"
-// :fields="tableFields"
-// :isChild="true"
-// :summarize="summarize"
-
 import DataTable from './data-table.vue';
 import WidgetBase from './widget-base.vue';
 
