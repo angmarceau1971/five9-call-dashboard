@@ -12941,7 +12941,7 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(34);
 /* unused harmony namespace reexport */
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
@@ -13036,7 +13036,7 @@ module.exports = _curry2;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(28);
 /**
  * This module controls interaction with the server.
  *
@@ -13055,7 +13055,7 @@ const intersection = __webpack_require__(36);
 
 const isEmpty = __webpack_require__(41);
 
-const uniq = __webpack_require__(29);
+const uniq = __webpack_require__(30);
 
 const sift = __webpack_require__(78);
 /**
@@ -13547,6 +13547,176 @@ function fieldsToServer(fields) {
 
 /***/ }),
 /* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
+/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
+/* unused harmony export prettifyDateOption */
+/* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
+
+
+const clone = __webpack_require__(4);
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server or
+ * apply to data.
+ *
+ * @param  {Object} original    filter from widget; can include generic properties
+ *                              like `<current user>` and `<month-to-date>`
+ * @return {Object}             cleaned up filter for server
+ */
+
+
+function clean(original) {
+  let filter = clone(original);
+  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
+
+  let dateKey;
+
+  if (filter.date) {
+    dateKey = 'date';
+  } else if (filter.dateDay) {
+    dateKey = 'dateDay';
+  }
+
+  if (dateKey) {
+    let dateFn = dateMatcher[filter[dateKey]];
+    filter[dateKey] = dateFn();
+  } // Insert actual username
+
+
+  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
+    filter.agentUsername.$in = props(users, 'username');
+  } // Insert actual full name
+
+
+  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
+    filter.agentName.$in = users.map(user => `${user.lastName}, ${user.firstName}`);
+  } // Update appropriate skill groups
+
+
+  if (filter.skillGroup) {
+    if (filter.skillGroup.$in[0] == '<current skill group>') {
+      filter.skill = {
+        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
+      };
+    } else {
+      throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
+    }
+
+    delete filter.skillGroup;
+  } // Add selected agent groups ( in supervisor mode )
+  // if (filter.agentGroup == '<selected agents>') {
+  //     filter.agentGroup = {
+  //         $in: hub.store.getters.selectedAgents()
+  //     }
+  // }
+
+
+  return filter;
+}
+function dateOptions() {
+  return Object.keys(dateMatcher);
+}
+function prettifyDateOption(option) {
+  // remove brackets
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
+}
+function getDates(datePattern) {
+  return dateMatcher[datePattern]();
+}
+const dateMatcher = {
+  // Days
+  '<today>': function () {
+    return {
+      $gte: moment().startOf('day').toDate(),
+      $lt: moment().endOf('day').toDate()
+    };
+  },
+  '<yesterday>': function () {
+    return {
+      $gte: moment().add(-1, 'days').startOf('day').toDate(),
+      $lt: moment().startOf('day').toDate()
+    };
+  },
+  // Months
+  '<month-to-date>': function () {
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last month>': function () {
+    return {
+      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').toDate()
+    };
+  },
+  '<last 2 months>': function () {
+    return {
+      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last 3 months>': function () {
+    return {
+      $gte: moment().subtract(3, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  // Pay periods
+  '<this pay period>': function () {
+    let startDate = startOfPayPeriod(moment());
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  },
+  '<last pay period>': function () {
+    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  }
+};
+/**
+ * @param  {Moment object} date to find pay period of
+ * @return {Moment object}      start of pay period that contains @param date
+ */
+
+function startOfPayPeriod(date) {
+  let startDate;
+  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
+
+  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+  let daysSincePeriodStart = Math.round(hours / 24);
+
+  if (daysSincePeriodStart % 14 == 0) {
+    return sunday;
+  } else {
+    return sunday.subtract(1, 'weeks');
+  }
+}
+
+const payPeriodStart = moment('2018-03-11');
+/**
+ *
+ * @param  {Array of Objects} array objects to extract property from
+ * @param  {String} property name of property to extract
+ * @return {Array of values} array of values from given property
+ */
+
+function props(array, property) {
+  return array.map(element => element[property]);
+}
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
@@ -13555,7 +13725,7 @@ function _has(prop, obj) {
 module.exports = _has;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = /*#__PURE__*/__webpack_require__(70);
@@ -13585,7 +13755,7 @@ var uniq = /*#__PURE__*/uniqBy(identity);
 module.exports = uniq;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13641,7 +13811,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13765,12 +13935,12 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(91);
@@ -13983,7 +14153,7 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14024,11 +14194,11 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(28);
 //
 //
 //
@@ -14138,176 +14308,6 @@ const clone = __webpack_require__(4);
 });
 
 /***/ }),
-/* 35 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
-/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
-/* unused harmony export prettifyDateOption */
-/* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
-
-
-const clone = __webpack_require__(4);
-/**
- * Returns a cleaned / formatted copy of widget filter to pass to server or
- * apply to data.
- *
- * @param  {Object} original    filter from widget; can include generic properties
- *                              like `<current user>` and `<month-to-date>`
- * @return {Object}             cleaned up filter for server
- */
-
-
-function clean(original) {
-  let filter = clone(original);
-  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
-
-  let dateKey;
-
-  if (filter.date) {
-    dateKey = 'date';
-  } else if (filter.dateDay) {
-    dateKey = 'dateDay';
-  }
-
-  if (dateKey) {
-    let dateFn = dateMatcher[filter[dateKey]];
-    filter[dateKey] = dateFn();
-  } // Insert actual username
-
-
-  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
-    filter.agentUsername.$in = props(users, 'username');
-  } // Insert actual full name
-
-
-  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
-    filter.agentName.$in = users.map(user => `${user.lastName}, ${user.firstName}`);
-  } // Update appropriate skill groups
-
-
-  if (filter.skillGroup) {
-    if (filter.skillGroup.$in[0] == '<current skill group>') {
-      filter.skill = {
-        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
-      };
-    } else {
-      throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
-    }
-
-    delete filter.skillGroup;
-  } // Add selected agent groups ( in supervisor mode )
-  // if (filter.agentGroup == '<selected agents>') {
-  //     filter.agentGroup = {
-  //         $in: hub.store.getters.selectedAgents()
-  //     }
-  // }
-
-
-  return filter;
-}
-function dateOptions() {
-  return Object.keys(dateMatcher);
-}
-function prettifyDateOption(option) {
-  // remove brackets
-  option.replace(/[<|>]/, ''); // TODO: capitalize properly
-
-  return option;
-}
-function getDates(datePattern) {
-  return dateMatcher[datePattern]();
-}
-const dateMatcher = {
-  // Days
-  '<today>': function () {
-    return {
-      $gte: moment().startOf('day').toDate(),
-      $lt: moment().endOf('day').toDate()
-    };
-  },
-  '<yesterday>': function () {
-    return {
-      $gte: moment().add(-1, 'days').startOf('day').toDate(),
-      $lt: moment().startOf('day').toDate()
-    };
-  },
-  // Months
-  '<month-to-date>': function () {
-    return {
-      $gte: moment().startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  '<last month>': function () {
-    return {
-      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').toDate()
-    };
-  },
-  '<last 2 months>': function () {
-    return {
-      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  '<last 3 months>': function () {
-    return {
-      $gte: moment().subtract(3, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  // Pay periods
-  '<this pay period>': function () {
-    let startDate = startOfPayPeriod(moment());
-    return {
-      $gte: startDate.toDate(),
-      $lt: startDate.clone().add(2, 'weeks').toDate()
-    };
-  },
-  '<last pay period>': function () {
-    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
-    return {
-      $gte: startDate.toDate(),
-      $lt: startDate.clone().add(2, 'weeks').toDate()
-    };
-  }
-};
-/**
- * @param  {Moment object} date to find pay period of
- * @return {Moment object}      start of pay period that contains @param date
- */
-
-function startOfPayPeriod(date) {
-  let startDate;
-  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
-
-  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
-  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
-  let daysSincePeriodStart = Math.round(hours / 24);
-
-  if (daysSincePeriodStart % 14 == 0) {
-    return sunday;
-  } else {
-    return sunday.subtract(1, 'weeks');
-  }
-}
-
-const payPeriodStart = moment('2018-03-11');
-/**
- *
- * @param  {Array of Objects} array objects to extract property from
- * @param  {String} property name of property to extract
- * @return {Array of values} array of values from given property
- */
-
-function props(array, property) {
-  return array.map(element => element[property]);
-}
-
-/***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14319,7 +14319,7 @@ var _filter = /*#__PURE__*/__webpack_require__(66);
 
 var flip = /*#__PURE__*/__webpack_require__(67);
 
-var uniq = /*#__PURE__*/__webpack_require__(29);
+var uniq = /*#__PURE__*/__webpack_require__(30);
 
 /**
  * Combines two lists into a set (i.e. no duplicates) composed of those
@@ -14408,7 +14408,7 @@ module.exports = equals;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(28);
+var _has = /*#__PURE__*/__webpack_require__(29);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -14662,7 +14662,7 @@ module.exports = isEmpty;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
@@ -14967,7 +14967,7 @@ const props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_filters__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_filters__ = __webpack_require__(28);
 //
 //
 //
@@ -15072,7 +15072,7 @@ const props = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
@@ -15522,7 +15522,7 @@ const isEmpty = __webpack_require__(41);
 
 const clone = __webpack_require__(4);
 
-const uniq = __webpack_require__(29);
+const uniq = __webpack_require__(30);
 
 const intersection = __webpack_require__(36);
 
@@ -15637,34 +15637,41 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     //////////////////////////////////////////////////
     // Supervisor view controls
+    // Initiate supervisor mode
+    supervisorMode: async function () {
+      await this.loadUsersList();
+      this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+    },
+    // Load list of users when sup mode is selected
     loadUsersList: async function () {
       let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["u" /* getUsers */]();
       userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
       this.userList = userList;
     },
+    // Select users to filter data for
     selectUsers: async function (usernames) {
       this.selectedUsernames = usernames;
       let users = usernames.map(username => this.userList.find(user => user.username == username));
       store.commit('setSelectedUsers', users);
     },
-    // Supervisor view
-    supervisorMode: async function () {
-      await this.loadUsersList();
-      this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-    },
+    // Filter for agents within an agent group
     selectAgentGroups: async function (agentGroup) {
       store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
     },
+    // From the passed-in users, return array of agent groups
     getAgentGroupsFromUsers: function (users) {
       return __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* extractValues */](users, 'agentGroups').sort();
     },
+    // Return users who are within the selectedAgentGroups
     filterUsersInGroup: function (users) {
       if (this.selectedAgentGroups.length == 0) return users;
       return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
     },
+    // Turn sup mode on or off
     changeSupMode: function (newMode) {
       store.commit('setSupMode', newMode);
     },
+    // If a user is part of multiple groups, list them next to user's name
     getUserSelectionString: function (user) {
       let groupString = '';
 
@@ -15903,7 +15910,7 @@ function isDescendant(parent, child) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(32);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(104);
 var disposed = false
@@ -15955,7 +15962,7 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(33);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(99);
 var disposed = false
@@ -16051,7 +16058,7 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(79);
 var disposed = false
@@ -17158,7 +17165,7 @@ var _containsWith = /*#__PURE__*/__webpack_require__(62);
 
 var _functionName = /*#__PURE__*/__webpack_require__(63);
 
-var _has = /*#__PURE__*/__webpack_require__(28);
+var _has = /*#__PURE__*/__webpack_require__(29);
 
 var identical = /*#__PURE__*/__webpack_require__(64);
 
@@ -17402,7 +17409,7 @@ module.exports = identical;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var _has = /*#__PURE__*/__webpack_require__(28);
+var _has = /*#__PURE__*/__webpack_require__(29);
 
 var _isArguments = /*#__PURE__*/__webpack_require__(39);
 

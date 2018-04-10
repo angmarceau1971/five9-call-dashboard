@@ -126,11 +126,18 @@ const vm = new Vue({
 
         //////////////////////////////////////////////////
         // Supervisor view controls
+        // Initiate supervisor mode
+        supervisorMode: async function() {
+            await this.loadUsersList();
+            this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+        },
+        // Load list of users when sup mode is selected
         loadUsersList: async function() {
             let userList = await api.getUsers();
             userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
             this.userList = userList;
         },
+        // Select users to filter data for
         selectUsers: async function(usernames) {
             this.selectedUsernames = usernames;
             let users = usernames.map((username) =>
@@ -138,26 +145,26 @@ const vm = new Vue({
             );
             store.commit('setSelectedUsers', users);
         },
-        // Supervisor view
-        supervisorMode: async function() {
-            await this.loadUsersList();
-            this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-        },
+        // Filter for agents within an agent group
         selectAgentGroups: async function(agentGroup) {
             store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
         },
+        // From the passed-in users, return array of agent groups
         getAgentGroupsFromUsers: function(users) {
             return hub.extractValues(users, 'agentGroups').sort();
         },
+        // Return users who are within the selectedAgentGroups
         filterUsersInGroup: function(users) {
             if (this.selectedAgentGroups.length == 0) return users;
             return users.filter((user) =>
                 intersection(user.agentGroups, this.selectedAgentGroups).length > 0
             )
         },
+        // Turn sup mode on or off
         changeSupMode: function(newMode) {
             store.commit('setSupMode', newMode);
         },
+        // If a user is part of multiple groups, list them next to user's name
         getUserSelectionString: function(user) {
             let groupString = '';
             if (user.agentGroups.length > 1) {
@@ -165,6 +172,7 @@ const vm = new Vue({
             }
             return `${user.lastName}, ${user.firstName}${groupString}`;
         },
+
         //////////////////////////////////////////////////
         // Handle menus and theme
         updateThemeStyles: function(theme) {
