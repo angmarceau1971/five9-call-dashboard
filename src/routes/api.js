@@ -21,6 +21,7 @@ const path = require('path');
 const datasource = require('../datasources/controller');
 const five9Models = require('../datasources/five9-models'); // five9 data feeds
 const five9Update = require('../datasources/five9-update'); // five9 update process
+const layouts = require('../layouts/layouts'); // dashboard layouts
 const queue  = require('../datasources/queue-stats'); // real-time queue feeds
 const customers = require('../datasources/customers'); // customer database
 const users = require('../authentication/users'); // stores usernames to check auth
@@ -110,20 +111,16 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 
 // Return scorecard layout based on user's department
 router.post('/layout', verify.apiMiddleware(), async (req, res) => {
-    // Supervisor team view layout
-    if (req.body.type == 'team') {
-        await sendPublicFile('json/layout-team.json', req, res);
-    }
-    // Individual layouts
-    else if (req.body.agentGroups.includes('Sales') ||
-        req.body.agentGroups.includes('Sales Resellers')) {
-        await sendPublicFile('json/layout-sales.json', req, res);
-    }
-    else if (req.body.agentGroups.includes('Chat')) {
-        await sendPublicFile('json/layout-chat.json', req, res);
-    }
-    else {
-        await sendPublicFile('json/layout-main.json', req, res);
+    try {
+        let groups = req.body.agentGroups;
+        let type = req.body.type;
+        let layoutList = await layouts.getLayoutsForAgentGroups(groups, type);
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(layoutList[0] || {}));
+    } catch (err) {
+        log.error(`Error while retrieving layouts: ${err}`);
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving layouts: ${err}`);
     }
 });
 

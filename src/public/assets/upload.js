@@ -331,7 +331,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.message = msg;
     },
     pullLookerData: async function (lookId) {
-      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["n" /* getLookerData */](lookId);
+      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["p" /* getLookerData */](lookId);
       this.lookerTestData = data;
     },
     // Data source manipulation
@@ -345,10 +345,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_1__api__["z" /* updateDatasource */](clean);
+      return __WEBPACK_IMPORTED_MODULE_1__api__["B" /* updateDatasource */](clean);
     },
     datasourceLoader: async function () {
-      let datasources = await __WEBPACK_IMPORTED_MODULE_1__api__["g" /* getDatasources */]();
+      let datasources = await __WEBPACK_IMPORTED_MODULE_1__api__["h" /* getDatasources */]();
 
       const str = s => JSON.stringify(s, null, 2);
 
@@ -394,7 +394,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
           datasourceName: datasourceName,
           updateType: updateType
         };
-        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["G" /* uploadData */](params);
+        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["J" /* uploadData */](params);
         this.updateMessage(response); // clear input file
 
         this.$refs['fileInput'].value = '';
@@ -12306,39 +12306,42 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["r"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["v"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLookerData;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["u"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["x"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateLink;
-/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["w"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["x"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["G"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -12378,20 +12381,6 @@ async function getLookerData(lookId) {
   let response = await request({
     lookId: lookId
   }, 'looker');
-  return await response.json();
-}
-/**
- * Get scorecard JSON layout.
- * @param  {Array of Strings} agentGroups user's agent groups
- * @param  {String} type either team or individual layout
- * @return {Object}
- */
-
-async function getLayout(agentGroups, type) {
-  let response = await request({
-    agentGroups: agentGroups,
-    type: type
-  }, 'layout');
   return await response.json();
 }
 async function getLogs(query) {
@@ -12539,6 +12528,55 @@ async function deleteGoal(goal) {
   let response = await request({
     goal: goal
   }, 'goals', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Layouts
+
+/**
+ * Get scorecard JSON layout for given agent group(s) and type.
+ * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
+ * @return {Object}
+ */
+
+async function getLayout(agentGroups, type) {
+  let response = await request({
+    agentGroups: agentGroups,
+    type: type
+  }, 'layout');
+  return await response.json();
+}
+/**
+ * List of all layouts.
+ * @return {Promise} resolves to array of layout objects
+ */
+
+async function getLayoutList() {
+  let response = await request({}, 'layouts', 'POST');
+  return response.json();
+}
+/**
+ * Updates a layout on server.
+ * @param  {Object}  layout new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a layout from server.
+ * @param  {Object}  layout object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'DELETE');
   return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Datasources' settings

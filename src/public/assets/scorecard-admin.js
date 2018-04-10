@@ -245,14 +245,136 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     message: ''
   },
   methods: {
+    ///////////////////////////////////////////////////////
+    // Goal functions
+    layoutUpdater: async function (layout) {
+      let clean = clone(layout);
+
+      try {
+        clean.defaultForAgentGroups = JSON.parse(clean.defaultForAgentGroups);
+        clean.optionalForAgentGroups = JSON.parse(clean.optionalForAgentGroups);
+        clean.cards = JSON.parse(clean.cards);
+        clean.datasources = JSON.parse(clean.datasources);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["E" /* updateLayout */](clean);
+    },
+    layoutLoader: async function () {
+      let layouts = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* getLayoutList */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (layout) {
+        layout.defaultForAgentGroups = str(layout.defaultForAgentGroups);
+        layout.optionalForAgentGroups = str(layout.optionalForAgentGroups);
+        layout.cards = str(layout.cards);
+        layout.datasources = str(layout.datasources);
+        return layout;
+      };
+
+      return layouts.map(stringin);
+    },
+    layoutAdder: function () {
+      return {
+        name: '',
+        layoutType: 'individual',
+        defaultForAgentGroups: [],
+        optionalForAgentGroups: [],
+        cards: [],
+        datasources: []
+      };
+    },
+    layoutRemover: function (layout) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* deleteLayout */](layout);
+    },
+    ///////////////////////////////////////////////////////
+    // Goal functions
+    goalUpdater: async function (goal) {
+      let clean = clone(goal);
+
+      try {
+        clean.agentGroups = JSON.parse(clean.agentGroups);
+        clean.thresholds = JSON.parse(clean.thresholds);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["D" /* updateGoal */](clean);
+    },
+    goalLoader: async function () {
+      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getGoalList */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (goal) {
+        goal.agentGroups = str(goal.agentGroups);
+        goal.thresholds = str(goal.thresholds);
+        return goal;
+      };
+
+      return goals.map(stringin);
+    },
+    goalAdder: function () {
+      return {
+        name: '',
+        agentGroups: [],
+        comparator: '<',
+        thresholds: [],
+        field: ''
+      };
+    },
+    goalRemover: function (goal) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* deleteGoal */](goal);
+    },
+    ///////////////////////////////////////////////////////
+    // Link functions
+    linkUpdater: async function (link) {
+      let clean = clone(link);
+
+      try {
+        clean.agentGroups = JSON.parse(clean.agentGroups);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["F" /* updateLink */](clean);
+    },
+    linkLoader: async function () {
+      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getLinkList */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (link) {
+        link.agentGroups = str(link.agentGroups);
+        return link;
+      };
+
+      return links.map(stringin);
+    },
+    linkAdder: function () {
+      return {
+        name: '',
+        agentGroups: [],
+        comparator: '<',
+        thresholds: [],
+        field: ''
+      };
+    },
+    linkRemover: function (link) {
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["e" /* deleteLink */](link);
+    },
+    ///////////////////////////////////////////////////////
+    // Field functions
     fieldUpdater: async function (field) {
       let clean = clone(field);
       clean.name = field.name.trim();
       clean.displayName = field.displayName.trim();
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["A" /* updateField */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["C" /* updateField */](clean);
     },
     fieldLoader: async function () {
-      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["h" /* getFieldList */](); // Sort by source then name
+      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getFieldList */](); // Sort by source then name
 
       return fields.sort((a, b) => {
         if (a.source == b.source) {
@@ -280,80 +402,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     },
     fieldRemover: function (field) {
       return __WEBPACK_IMPORTED_MODULE_0__api_js__["b" /* deleteField */](field);
-    },
-    // Goal functions
-    goalUpdater: async function (goal) {
-      let clean = clone(goal);
-
-      try {
-        clean.agentGroups = JSON.parse(clean.agentGroups);
-        clean.thresholds = JSON.parse(clean.thresholds);
-      } catch (err) {
-        return `Unable to save: ${err}.`;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["B" /* updateGoal */](clean);
-    },
-    goalLoader: async function () {
-      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getGoalList */]();
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (goal) {
-        goal.agentGroups = str(goal.agentGroups);
-        goal.thresholds = str(goal.thresholds);
-        return goal;
-      };
-
-      return goals.map(stringin);
-    },
-    goalAdder: function () {
-      return {
-        name: '',
-        agentGroups: [],
-        comparator: '<',
-        thresholds: [],
-        field: ''
-      };
-    },
-    goalRemover: function (goal) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["c" /* deleteGoal */](goal);
-    },
-    // Link functions
-    linkUpdater: async function (link) {
-      let clean = clone(link);
-
-      try {
-        clean.agentGroups = JSON.parse(clean.agentGroups);
-      } catch (err) {
-        return `Unable to save: ${err}.`;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["C" /* updateLink */](clean);
-    },
-    linkLoader: async function () {
-      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["l" /* getLinkList */]();
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (link) {
-        link.agentGroups = str(link.agentGroups);
-        return link;
-      };
-
-      return links.map(stringin);
-    },
-    linkAdder: function () {
-      return {
-        name: '',
-        agentGroups: [],
-        comparator: '<',
-        thresholds: [],
-        field: ''
-      };
-    },
-    linkRemover: function (link) {
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["d" /* deleteLink */](link);
     }
   }
 });
@@ -12328,39 +12376,42 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["r"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["v"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLookerData;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["y"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["u"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["x"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["z"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateLink;
-/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["e"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["w"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["x"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["G"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -12400,20 +12451,6 @@ async function getLookerData(lookId) {
   let response = await request({
     lookId: lookId
   }, 'looker');
-  return await response.json();
-}
-/**
- * Get scorecard JSON layout.
- * @param  {Array of Strings} agentGroups user's agent groups
- * @param  {String} type either team or individual layout
- * @return {Object}
- */
-
-async function getLayout(agentGroups, type) {
-  let response = await request({
-    agentGroups: agentGroups,
-    type: type
-  }, 'layout');
   return await response.json();
 }
 async function getLogs(query) {
@@ -12561,6 +12598,55 @@ async function deleteGoal(goal) {
   let response = await request({
     goal: goal
   }, 'goals', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Layouts
+
+/**
+ * Get scorecard JSON layout for given agent group(s) and type.
+ * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
+ * @return {Object}
+ */
+
+async function getLayout(agentGroups, type) {
+  let response = await request({
+    agentGroups: agentGroups,
+    type: type
+  }, 'layout');
+  return await response.json();
+}
+/**
+ * List of all layouts.
+ * @return {Promise} resolves to array of layout objects
+ */
+
+async function getLayoutList() {
+  let response = await request({}, 'layouts', 'POST');
+  return response.json();
+}
+/**
+ * Updates a layout on server.
+ * @param  {Object}  layout new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a layout from server.
+ * @param  {Object}  layout object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'DELETE');
   return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Datasources' settings

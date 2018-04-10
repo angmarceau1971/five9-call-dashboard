@@ -5,8 +5,8 @@
         {
             "title": "Team AHT",
             "id": "card:1",
-            "layoutOrder": 2,
-            "columns": 1,
+            "layoutOrder": 3,
+            "columns": 2,
             "widgets": [
                 {
                     "id": "widget:0",
@@ -76,7 +76,7 @@
         {
             "title": "Calls Handled",
             "id": "card:2",
-            "layoutOrder": 3,
+            "layoutOrder": 8,
             "columns": 1,
             "widgets": [
                 {
@@ -179,7 +179,7 @@
         {
             "title": "Time Summary",
             "id": "card:4",
-            "layoutOrder": 4,
+            "layoutOrder": 2,
             "columns": 1,
             "widgets": [
                 {

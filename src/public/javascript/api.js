@@ -38,17 +38,6 @@ export async function getLookerData(lookId) {
     return await response.json();
 }
 
-/**
- * Get scorecard JSON layout.
- * @param  {Array of Strings} agentGroups user's agent groups
- * @param  {String} type either team or individual layout
- * @return {Object}
- */
-export async function getLayout(agentGroups, type) {
-    let response = await request({agentGroups: agentGroups, type: type}, 'layout');
-    return await response.json();
-}
-
 export async function getLogs(query) {
     let response = await request({query: query}, 'logs');
     return await response.json();
@@ -180,6 +169,47 @@ export async function deleteGoal(goal) {
     let response = await request({goal: goal}, 'goals', 'DELETE');
     return response.text();
 }
+
+
+///////////////////////////////////////////////////////////////////////
+// Layouts
+/**
+ * Get scorecard JSON layout for given agent group(s) and type.
+ * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
+ * @return {Object}
+ */
+export async function getLayout(agentGroups, type) {
+    let response = await request({agentGroups: agentGroups, type: type}, 'layout');
+    return await response.json();
+}
+/**
+ * List of all layouts.
+ * @return {Promise} resolves to array of layout objects
+ */
+export async function getLayoutList() {
+    let response = await request({}, 'layouts', 'POST');
+    return response.json();
+}
+/**
+ * Updates a layout on server.
+ * @param  {Object}  layout new object
+ * @return {Promise} resolves to response message
+ */
+export async function updateLayout(layout) {
+    let response = await request({layout: layout}, 'layouts', 'PUT');
+    return response.text();
+}
+/**
+ * Delete a layout from server.
+ * @param  {Object}  layout object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteLayout(layout) {
+    let response = await request({layout: layout}, 'layouts', 'DELETE');
+    return response.text();
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////

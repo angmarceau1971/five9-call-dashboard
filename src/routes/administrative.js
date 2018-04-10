@@ -1,6 +1,7 @@
 const verify = require('../authentication/verify'); // check user permissions
 const fields = require('../admin/fields');
 const goals = require('../admin/goals');
+const layouts = require('../layouts/layouts'); // dashboard layouts
 const links = require('../admin/links');
 const log = require('../utility/log'); // recording updates
 const looker = require('../utility/looker');
@@ -93,7 +94,7 @@ module.exports.addTo = function(router) {
         }
     });
 
-    // Delete a scheduled goalsing job
+    // Delete a goal
     router.delete('/goals', verify.apiMiddleware('admin'), async (req, res) => {
         const numRemoved = await goals.remove(req.body.goal);
         const message = `Goal "${req.body.goal.name}" has been deleted.`;
@@ -155,6 +156,36 @@ module.exports.addTo = function(router) {
         const message = numRemoved > 0
                         ? `Job "${req.body.job.data.title}" has been deleted.`
                         : `No job found matching "${req.body.job.data.title}".`;
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(message);
+    });
+
+
+    //////////////////////////////////////////
+    // Layout endpoints
+    // Get list of all layouts
+    router.post('/layouts', verify.apiMiddleware('admin'), async (req, res) => {
+        let layoutList = await layouts.getAll();
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(layoutList));
+    });
+
+    // Modify a layout
+    router.put('/layouts', verify.apiMiddleware('admin'), async (req, res) => {
+        res.set('Content-Type', 'application/text');
+        let layout = req.body.layout;
+        try {
+            let response = await layouts.update(layout);
+            res.status(200).send(`Layouts "${layout.name}" has been updated.`);
+        } catch (err) {
+            res.status(500).send(`Error while updating ${layout.name}: ${err}.`);
+        }
+    });
+
+    // Delete a layout
+    router.delete('/layouts', verify.apiMiddleware('admin'), async (req, res) => {
+        const numRemoved = await layouts.remove(req.body.layout);
+        const message = `Layouts "${req.body.layout.name}" has been deleted.`;
         res.set('Content-Type', 'application/text');
         res.status(200).send(message);
     });
