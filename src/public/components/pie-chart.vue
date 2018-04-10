@@ -20,7 +20,7 @@ Accepts data prop with structure:
         </svg>
 
         <div v-if="chartData.length == 0"
-            :style="{transform: `translate(0, ${height /2}px)`}"
+            :style="{transform: `translate(0, ${height / 2}px)`}"
             class="text-overlay font-color-secondary">
             N/A
         </div>
@@ -141,6 +141,7 @@ export default {
             // Get data from hub
             let raw = this.$store.getters.getData(this.filter, this.datasource);
             // Summarize by displayed field(s)
+            let s = parse.summarize;
             let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);
             return grouped;
         },
@@ -155,22 +156,6 @@ export default {
                 })
                 .filter((d) => d[this.fields.groupBy].trim() != '');
         },
-        // Clean up data for data table
-        tableData() {
-            if (this.fields.groupBy != 'reasonCode') return this.data;
-            let additionalRows = [];
-            return this.data
-                .map((d) => {
-                    return {
-                        'reasonCode': d.reasonCode,
-                        'notReadyTime': d.notReadyTime
-                    }
-                })
-                // Remove blank reason code
-                .filter((d) => d.reasonCode.trim() != '')
-                // Add in Login and Handle Time rows
-                .concat(additionalRows);
-        },
         tableHeaders() {
             if (this.fields.groupBy != 'reasonCode') return this.data;
             return ['Reason Code', 'Time'];
@@ -178,16 +163,10 @@ export default {
         tableFields() {
             if (this.fields.groupBy != 'reasonCode')
                 return Object.keys(this.data[0]);
-            return ['reasonCode', 'notReadyTime'];
+            return ['reasonCode', 'notReadyTime', 'loginTime'];
         },
         tableFilter() {
-            if (this.fields.groupBy != 'reasonCode') return {};
-            // Filter out blank reason codes, in addition to the filters applied
-            // to this pie chart
-            let filt = Object.assign({
-                'reasonCode': { $ne: '' }
-            }, this.filter);
-            return filt;
+            return this.filter;
         },
         padded() {
             const width = this.width - this.margin.left - this.margin.right;

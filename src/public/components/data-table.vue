@@ -85,10 +85,11 @@ export default {
         data: function() {
             let data = this.$store.getters.getData(this.filter, this.datasource);
             if (this.summarize) {
-                data = parse.summarize(data, this.fields[0],
-                        this.fields.slice(1),
-                    );
+                data = parse.summarize(data, this.fields[0], this.fields.slice(1));
             }
+            // TODO: take care of this case in the parse module
+            if (this.fields[0] == 'reasonCode')
+                return getNotReadyPercentage(data).sort((a,b) => a['reasonCode'] < b['reasonCode'] ? -1 : 1);
             // Sort by sortByField, or first field if none given
             let sortField = this.sortByField || this.fields[0];
             data.sort((a, b) =>
@@ -138,6 +139,21 @@ export default {
         }
     }
 }
+
+
+function getNotReadyPercentage(data) {
+    let loginTimeTotal = parse.sum(data, 'loginTime');
+    return data
+        .map((d) => {
+            return {
+                'reasonCode': d.reasonCode,
+                'notReadyPercentage': d.notReadyTime / loginTimeTotal
+            }
+        })
+        // Remove blank reason code
+        .filter((d) => d.reasonCode.trim() != '');
+}
+
 </script>
 
 <style>

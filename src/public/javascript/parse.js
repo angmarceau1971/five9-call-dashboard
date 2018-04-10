@@ -50,6 +50,9 @@ function process(data, field) {
     else if (fieldName == 'closeRate') {
         return sum(data, 'orders') / sum(data, 'calls');
     }
+    else if (fieldName == 'notReadyPercentage') {
+        return sum(data, 'notReadyTime') / sum(data, 'loginTime');
+    }
     else return sum(data, fieldName);
 }
 
@@ -148,7 +151,7 @@ export function filterFields(includeFields) {
  * @param  {String} key property to sum
  * @return {Number}
  */
-function sum(arr, key) {
+export function sum(arr, key) {
     return arr.reduce((total, item) => total + item[key], 0);
 }
 
