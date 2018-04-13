@@ -276,7 +276,7 @@ $(document).ready(() => {
   // Listen for server reboot request
   $('.reboot-server').click(async event => {
     $('.message').text(`Computing....`);
-    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["B" /* rebootServer */]();
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["A" /* rebootServer */]();
     $('.message').text(msg);
   }); // Listen for data reload requests
 
@@ -289,7 +289,7 @@ $(document).ready(() => {
     const body = {
       time: time
     };
-    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["C" /* reloadData */](body);
+    const msg = await __WEBPACK_IMPORTED_MODULE_0__api__["B" /* reloadData */](body);
     $('.message').text(msg);
   });
 }); // Handle Vue form
@@ -311,10 +311,10 @@ const vm = new Vue({
     },
     // Supervisor users
     supervisorUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["L" /* updateSupervisorUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["K" /* updateSupervisorUser */](user);
     },
     supervisorLoader: async function () {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["v" /* getSupervisorUsers */]();
+      return __WEBPACK_IMPORTED_MODULE_0__api__["u" /* getSupervisorUsers */]();
     },
     supervisorAdder: function () {
       return {
@@ -323,7 +323,7 @@ const vm = new Vue({
     },
     // Administrator users
     adminUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["E" /* updateAdminUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["D" /* updateAdminUser */](user);
     },
     adminLoader: async function () {
       return __WEBPACK_IMPORTED_MODULE_0__api__["g" /* getAdminUsers */]();
@@ -343,7 +343,7 @@ const vm = new Vue({
       }));
     },
     downloadUsers: async function () {
-      let users = await __WEBPACK_IMPORTED_MODULE_0__api__["y" /* getUsers */]();
+      let users = await __WEBPACK_IMPORTED_MODULE_0__api__["x" /* getUsers */]();
       download('dashboard-users.csv', json2csv(users, {
         flatten: true
       }));
@@ -10939,46 +10939,46 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["z"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getMessages;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
-/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["C"] = sendMessage;
+/* unused harmony export getMessages */
+/* harmony export (immutable) */ __webpack_exports__["v"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["y"] = markMessageRead;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["A"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["B"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["M"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);

@@ -49,7 +49,6 @@ const vm = new Vue({
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
         setTimeout(this.refresh.bind(this), 5000);
-        this.messages = await api.getMessages();
     },
 
     computed: {
@@ -112,6 +111,7 @@ const vm = new Vue({
             this.isLoading = true;
             this.layout = await store.dispatch('forceRefresh');
             this.isLoading = false;
+            this.messages = await api.getUnreadMessages();
         },
 
         changeTheme: function(attribute, value) {

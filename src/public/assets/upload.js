@@ -345,7 +345,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_1__api__["F" /* updateDatasource */](clean);
+      return __WEBPACK_IMPORTED_MODULE_1__api__["E" /* updateDatasource */](clean);
     },
     datasourceLoader: async function () {
       let datasources = await __WEBPACK_IMPORTED_MODULE_1__api__["h" /* getDatasources */]();
@@ -394,7 +394,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
           datasourceName: datasourceName,
           updateType: updateType
         };
-        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["N" /* uploadData */](params);
+        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["M" /* uploadData */](params);
         this.updateMessage(response); // clear input file
 
         this.$refs['fileInput'].value = '';
@@ -12297,46 +12297,46 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["z"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getMessages;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
-/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["C"] = sendMessage;
+/* unused harmony export getMessages */
+/* harmony export (immutable) */ __webpack_exports__["v"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["y"] = markMessageRead;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["A"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["B"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["M"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);

@@ -64,7 +64,7 @@ module.exports.get = get;
  */
 async function getUnread(username) {
     return Messages
-        .find({ to: { $elemMatch: { username: username, isRead: false } } })
+        .find({ to: { $elemMatch: { username: username, hasRead: false } } })
         .lean().exec();
 }
 module.exports.getUnread = getUnread;
