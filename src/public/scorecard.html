@@ -153,6 +153,27 @@
             </div>
         </header>
 
+        <!-- Message banner -->
+        <div class="message-wrapper">
+            <template v-for="(message, i) in messages">
+                <div class="icon-wrapper">
+                    <i class="far fa-smile message-icon" ></i>
+                    <div class="background-words">
+                        <p>New</p>
+                        <p>Message</p>
+                    </div>
+                </div>
+                <p class="message-text">
+                    {{ message.subject || message.body }}
+                </p>
+                <p class="message-from">
+                    From: {{ message.from }}
+                </p>
+                <button title="Close message" class="message-close"><i class="fas fa-times"></i></button>
+            </template>
+        </div>
+
+
         <!-- Main content -->
         <div class="content-wrapper"
             :style="backgroundStyles">
@@ -162,17 +183,6 @@
                     <br /><br />
                     <i class="fas fa-circle-notch fa-pulse" style="font-size:2em;"></i>
                 </h2>
-            </div>
-
-            <div class="message-wrapper">
-                <div v-for="(message, i) in messages">
-                    <p>
-                        {{ message.subject }}
-                    </p>
-                    <p>
-                        {{ message.body }}
-                    </p>
-                </div>
             </div>
 
             <!-- Controls for sups/admins over team filters and datasources -->
@@ -199,7 +209,6 @@
                             <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
                                 :value="userAgent.username">
                                 {{ getUserSelectionString(userAgent) }}
-                                <!-- {{ userAgent.lastName }}, {{ userAgent.firstName }} -->
                             </option>
                         </select>
                     </div>
