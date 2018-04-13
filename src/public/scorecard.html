@@ -154,7 +154,7 @@
         </header>
 
         <!-- Message banner -->
-        <div class="message-wrapper">
+        <div class="message-wrapper" v-if="messages.length > 0">
             <template v-for="(message, i) in messages">
                 <div class="icon-wrapper">
                     <i class="far fa-smile message-icon" ></i>

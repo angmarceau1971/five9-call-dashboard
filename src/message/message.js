@@ -77,14 +77,22 @@ module.exports.getUnread = getUnread;
  */
 async function markRead(id, username, hasRead) {
     let oid = new mongoose.Types.ObjectId(id);
-    return Messages
-        .findOneAndUpdate(
-            { _id: oid, "to.username": username },
-            { "to.$.hasRead": true },
-            (err, docs) => {
-                if (err) log.error(`Error while marking message as read: ${err}`);
-                log.message(docs);
-            }
-        ).exec();
+    return new Promise((resolve, reject) => {
+        Messages
+            .findOneAndUpdate(
+                { _id: oid, "to.username": username },
+                { "to.$.hasRead": true },
+                (err, docs) => {
+                    if (err) {
+                        log.error(`Error while marking message as read: ${err}`);
+                        reject(err);
+                    }
+                    else {
+                        resolve(docs);
+                    }
+                }
+            );
+        }
+    );
 }
 module.exports.markRead = markRead;

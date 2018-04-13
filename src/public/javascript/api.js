@@ -115,15 +115,12 @@ export async function sendMessage(message) {
     );
     return response.text();
 }
-
-///////////////////////////////////////////////////////////////////////
-// Messages
 /**
  * Return current user's messages
  * @return {[Object]} array of message objects
  */
 export async function getMessages() {
-    let response = await request({}, 'message', 'GET');
+    let response = await request({}, 'message', 'POST');
     return response.json();
 }
 /**
@@ -131,7 +128,7 @@ export async function getMessages() {
  * @return {[Object]} array of message objects
  */
 export async function getUnreadMessages() {
-    let response = await request({hasRead: false}, 'message', 'GET');
+    let response = await request({hasRead: false}, 'message', 'POST');
     return response.json();
 }
 /**

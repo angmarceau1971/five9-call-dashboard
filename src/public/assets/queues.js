@@ -669,16 +669,14 @@ async function sendMessage(message) {
     message: message
   }, 'message/send', 'POST');
   return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Messages
-
+}
 /**
  * Return current user's messages
  * @return {[Object]} array of message objects
  */
 
 async function getMessages() {
-  let response = await request({}, 'message', 'GET');
+  let response = await request({}, 'message', 'POST');
   return response.json();
 }
 /**
@@ -689,7 +687,7 @@ async function getMessages() {
 async function getUnreadMessages() {
   let response = await request({
     hasRead: false
-  }, 'message', 'GET');
+  }, 'message', 'POST');
   return response.json();
 }
 /**

@@ -115,7 +115,7 @@ router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res
 });
 
 // Return messages for current user
-router.get('/message', verify.apiMiddleware(), async (req, res) => {
+router.post('/message', verify.apiMiddleware(), async (req, res) => {
     try {
         let msgs;
         if (req.body.hasRead == false) {
