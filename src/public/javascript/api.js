@@ -116,13 +116,33 @@ export async function sendMessage(message) {
     return response.text();
 }
 
+///////////////////////////////////////////////////////////////////////
+// Messages
 /**
  * Return current user's messages
- * @return {[Object]} array of message objects 
+ * @return {[Object]} array of message objects
  */
 export async function getMessages() {
     let response = await request({}, 'message', 'GET');
     return response.json();
+}
+/**
+ * Return current user's unread messages
+ * @return {[Object]} array of message objects
+ */
+export async function getUnreadMessages() {
+    let response = await request({hasRead: false}, 'message', 'GET');
+    return response.json();
+}
+/**
+ * Flag a message as "read"
+ * @return {String} success message
+ */
+export async function markMessageRead(message, hasRead=true) {
+    let response = await request(
+        {id: message._id, hasRead: true},
+        'message/mark-read', 'PATCH');
+    return response.text();
 }
 
 ///////////////////////////////////////////////////////////////////////

@@ -259,7 +259,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["G" /* updateLayout */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["I" /* updateLayout */](clean);
     },
     layoutLoader: async function () {
       let layouts = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* getLayoutList */]();
@@ -301,7 +301,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["F" /* updateGoal */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["H" /* updateGoal */](clean);
     },
     goalLoader: async function () {
       let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getGoalList */]();
@@ -339,7 +339,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["H" /* updateLink */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["J" /* updateLink */](clean);
     },
     linkLoader: async function () {
       let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getLinkList */]();
@@ -371,7 +371,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
       let clean = clone(field);
       clean.name = field.name.trim();
       clean.displayName = field.displayName.trim();
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["E" /* updateField */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["G" /* updateField */](clean);
     },
     fieldLoader: async function () {
       let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getFieldList */](); // Sort by source then name
@@ -12368,43 +12368,45 @@ function applyToTag (styleElement, obj) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["y"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["B"] = sendMessage;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
 /* harmony export (immutable) */ __webpack_exports__["q"] = getMessages;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["z"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["A"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["L"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
@@ -12524,15 +12526,40 @@ async function sendMessage(message) {
     message: message
   }, 'message/send', 'POST');
   return response.text();
-}
+} ///////////////////////////////////////////////////////////////////////
+// Messages
+
 /**
  * Return current user's messages
- * @return {[Object]} array of message objects 
+ * @return {[Object]} array of message objects
  */
 
 async function getMessages() {
   let response = await request({}, 'message', 'GET');
   return response.json();
+}
+/**
+ * Return current user's unread messages
+ * @return {[Object]} array of message objects
+ */
+
+async function getUnreadMessages() {
+  let response = await request({
+    hasRead: false
+  }, 'message', 'GET');
+  return response.json();
+}
+/**
+ * Flag a message as "read"
+ * @return {String} success message
+ */
+
+async function markMessageRead(message, hasRead = true) {
+  let response = await request({
+    id: message._id,
+    hasRead: true
+  }, 'message/mark-read', 'PATCH');
+  return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
 

@@ -117,11 +117,29 @@ router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res
 // Return messages for current user
 router.get('/message', verify.apiMiddleware(), async (req, res) => {
     try {
-        let msgs = await message.get(req.user.username);
+        let msgs;
+        if (req.body.hasRead == false) {
+            msgs = await message.getUnread(req.user.username);
+        } else {
+            msgs = await message.get(req.user.username);
+        }
         res.send(JSON.stringify(msgs));
     } catch (err) {
         log.error(`Error during message get: ` + JSON.stringify(err));
         res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
+    }
+});
+
+// Mark a message as `read`
+// Parameters: `id` of message and new `hasRead` value
+router.patch('/message/mark-read', verify.apiMiddleware(), async (req, res) => {
+    res.set('Content-Type', 'application/text');
+    try {
+        await message.markRead(req.body.id, req.user.username, req.body.hasRead);
+        res.status(200).send(`Message 'hasRead' attribute set to ${req.body.hasRead}`);
+    } catch (err) {
+        log.error(`Error while marking message as read: ` + JSON.stringify(err));
         res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
     }
 });

@@ -68,3 +68,23 @@ async function getUnread(username) {
         .lean().exec();
 }
 module.exports.getUnread = getUnread;
+
+/**
+ * Mark a message as read
+ * @param  {String} id message object ID
+ * @param  {String} username
+ * @param  {Boolean} hasRead new `hasRead` value
+ */
+async function markRead(id, username, hasRead) {
+    let oid = new mongoose.Types.ObjectId(id);
+    return Messages
+        .findOneAndUpdate(
+            { _id: oid, "to.username": username },
+            { "to.$.hasRead": true },
+            (err, docs) => {
+                if (err) log.error(`Error while marking message as read: ${err}`);
+                log.message(docs);
+            }
+        ).exec();
+}
+module.exports.markRead = markRead;

@@ -169,7 +169,10 @@
                 <p class="message-from">
                     From: {{ message.from }}
                 </p>
-                <button title="Close message" class="message-close"><i class="fas fa-times"></i></button>
+                <button @click="closeMessage(message)"
+                    title="Close message" class="message-close"
+                    ><i class="fas fa-times"></i>
+                </button>
             </template>
         </div>
 

@@ -126,6 +126,11 @@ const vm = new Vue({
             this.showMenu = false;
         },
 
+        closeMessage: async function(message) {
+            await api.markMessageRead(message, true);
+            this.messages = await api.getUnreadMessages();
+        },
+
         //////////////////////////////////////////////////
         // Supervisor view controls
         // Initiate supervisor mode
