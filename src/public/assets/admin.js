@@ -311,7 +311,7 @@ const vm = new Vue({
     },
     // Supervisor users
     supervisorUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["H" /* updateSupervisorUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["I" /* updateSupervisorUser */](user);
     },
     supervisorLoader: async function () {
       return __WEBPACK_IMPORTED_MODULE_0__api__["u" /* getSupervisorUsers */]();
@@ -323,7 +323,7 @@ const vm = new Vue({
     },
     // Administrator users
     adminUpdater: async function (user) {
-      return __WEBPACK_IMPORTED_MODULE_0__api__["A" /* updateAdminUser */](user);
+      return __WEBPACK_IMPORTED_MODULE_0__api__["B" /* updateAdminUser */](user);
     },
     adminLoader: async function () {
       return __WEBPACK_IMPORTED_MODULE_0__api__["g" /* getAdminUsers */]();
@@ -10274,7 +10274,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
 
@@ -10379,7 +10379,7 @@ module.exports = _cloneRegExp;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(9);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(18);
 var disposed = false
@@ -10442,7 +10442,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("571a7959", content, false, {});
+var update = __webpack_require__(4)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -10462,7 +10462,7 @@ if(false) {
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -10598,6 +10598,34 @@ if (false) {
 /***/ 2:
 /***/ (function(module, exports) {
 
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -10678,7 +10706,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10907,43 +10935,6 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-
 /***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -10954,39 +10945,40 @@ module.exports = clone;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
 /* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
 /* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = sendMessage;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract data from Five9.
@@ -11089,6 +11081,20 @@ async function updateSupervisorUser(user) {
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
   return response.json();
+} ///////////////////////////////////////////////////////////////////////
+// Messages
+
+/**
+ * Send a message
+ * @param  {Object} message with fields to, subject, and body
+ * @return {String} response from server
+ */
+
+async function sendMessage(message) {
+  let response = await request({
+    message: message
+  }, 'message/send', 'POST');
+  return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
 
@@ -11510,6 +11516,43 @@ function formatAMPM(date) {
 /***/ }),
 
 /***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(13);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
+
+/***/ }),
+
+/***/ 8:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11519,7 +11562,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11586,7 +11629,7 @@ const API_URL = 'http://localhost:3000/api/';
 //
 //
 //
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -11645,34 +11688,6 @@ const clone = __webpack_require__(4);
     }
   }
 });
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
 
 /***/ })
 

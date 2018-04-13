@@ -203,6 +203,33 @@ module.exports = function normalizeComponent (
 /* 2 */
 /***/ (function(module, exports) {
 
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -282,7 +309,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -510,42 +537,6 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -556,39 +547,40 @@ module.exports = clone;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
 /* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
 /* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = sendMessage;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract data from Five9.
@@ -691,6 +683,20 @@ async function updateSupervisorUser(user) {
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
   return response.json();
+} ///////////////////////////////////////////////////////////////////////
+// Messages
+
+/**
+ * Send a message
+ * @param  {Object} message with fields to, subject, and body
+ * @return {String} response from server
+ */
+
+async function sendMessage(message) {
+  let response = await request({
+    message: message
+  }, 'message/send', 'POST');
+  return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
 
@@ -1110,6 +1116,42 @@ function formatAMPM(date) {
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(13);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1118,7 +1160,7 @@ const API_URL = 'http://localhost:3000/api/';
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1185,7 +1227,7 @@ const API_URL = 'http://localhost:3000/api/';
 //
 //
 //
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -1244,33 +1286,6 @@ const clone = __webpack_require__(4);
     }
   }
 });
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
 
 /***/ }),
 /* 10 */
@@ -1418,7 +1433,7 @@ module.exports = _cloneRegExp;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(9);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(18);
 var disposed = false
@@ -1480,7 +1495,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("571a7959", content, false, {});
+var update = __webpack_require__(4)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1499,7 +1514,7 @@ if(false) {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -1631,96 +1646,6 @@ if (false) {
 
 /***/ }),
 /* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
-
-let comparators = {
-  '>=': (value, goal) => value >= goal,
-  '<=': (value, goal) => value <= goal,
-  '<': (value, goal) => value < goal,
-  '>': (value, goal) => value > goal,
-  '==': (value, goal) => value == goal
-};
-function formatValue(value, field) {
-  let formattedValue;
-
-  if (typeof field == 'string') {
-    field = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.field(field);
-  }
-
-  if (!field) {
-    return {
-      value: value,
-      styleClass: ''
-    };
-  }
-
-  let style = getStyleFromGoal(value, field);
-
-  if (isNumberType(field.format.type)) {
-    if (isNaN(value) || !isFinite(value)) formattedValue = "N/A";else formattedValue = d3.format(field.format.string)(value);
-  } else if (field.format.type == 'Duration') {
-    formattedValue = moment('2018-01-01').startOf('day').seconds(value).format(field.format.string);
-  } else if (field.format.type == 'Time') {
-    formattedValue = moment(value).format(field.format.string);
-  } else {
-    formattedValue = value;
-  }
-
-  return {
-    value: formattedValue,
-    styleClass: style
-  };
-}
-;
-
-function getStyleFromGoal(value, field) {
-  let goal = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.goalForField(field);
-
-  if (isNaN(value) && isNumberType(field.format.type)) {
-    return 'font-color-secondary';
-  }
-
-  if (!goal) return '';
-  let meetsGoal = getGoalComparer(goal.comparator);
-
-  if (meetsGoal === undefined) {
-    console.log(`Undefined comparator ${goal.comparator} for ${goal.name}, with field ${field.name}.`);
-    return '';
-  } // 2 goal levels: return green, yellow, or red
-
-
-  if (goal.thresholds.length == 2) {
-    if (meetsGoal(value, goal.thresholds[0])) {
-      return 'green';
-    } else if (meetsGoal(value, goal.thresholds[1])) {
-      return 'yellow';
-    } else {
-      return 'red';
-    }
-  } // Goal.thresholds.length != 2: return green or ready
-
-
-  if (meetsGoal(value, goal.thresholds[0])) {
-    return 'green';
-  } else {
-    return 'red';
-  }
-}
-
-function getGoalComparer(comparator) {
-  return comparators[comparator];
-}
-
-function isNumberType(fieldType) {
-  return fieldType == 'Number' || fieldType == 'Percentage';
-}
-
-/***/ }),
-/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -12522,10 +12447,10 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(21).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(20).setImmediate))
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -12578,7 +12503,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(22);
+__webpack_require__(21);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -12589,10 +12514,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -12782,10 +12707,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(23)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(22)))
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -12975,6 +12900,96 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
+
+let comparators = {
+  '>=': (value, goal) => value >= goal,
+  '<=': (value, goal) => value <= goal,
+  '<': (value, goal) => value < goal,
+  '>': (value, goal) => value > goal,
+  '==': (value, goal) => value == goal
+};
+function formatValue(value, field) {
+  let formattedValue;
+
+  if (typeof field == 'string') {
+    field = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.field(field);
+  }
+
+  if (!field) {
+    return {
+      value: value,
+      styleClass: ''
+    };
+  }
+
+  let style = getStyleFromGoal(value, field);
+
+  if (isNumberType(field.format.type)) {
+    if (isNaN(value) || !isFinite(value)) formattedValue = "N/A";else formattedValue = d3.format(field.format.string)(value);
+  } else if (field.format.type == 'Duration') {
+    formattedValue = moment('2018-01-01').startOf('day').seconds(value).format(field.format.string);
+  } else if (field.format.type == 'Time') {
+    formattedValue = moment(value).format(field.format.string);
+  } else {
+    formattedValue = value;
+  }
+
+  return {
+    value: formattedValue,
+    styleClass: style
+  };
+}
+;
+
+function getStyleFromGoal(value, field) {
+  let goal = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.goalForField(field);
+
+  if (isNaN(value) && isNumberType(field.format.type)) {
+    return 'font-color-secondary';
+  }
+
+  if (!goal) return '';
+  let meetsGoal = getGoalComparer(goal.comparator);
+
+  if (meetsGoal === undefined) {
+    console.log(`Undefined comparator ${goal.comparator} for ${goal.name}, with field ${field.name}.`);
+    return '';
+  } // 2 goal levels: return green, yellow, or red
+
+
+  if (goal.thresholds.length == 2) {
+    if (meetsGoal(value, goal.thresholds[0])) {
+      return 'green';
+    } else if (meetsGoal(value, goal.thresholds[1])) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  } // Goal.thresholds.length != 2: return green or ready
+
+
+  if (meetsGoal(value, goal.thresholds[0])) {
+    return 'green';
+  } else {
+    return 'red';
+  }
+}
+
+function getGoalComparer(comparator) {
+  return comparators[comparator];
+}
+
+function isNumberType(fieldType) {
+  return fieldType == 'Number' || fieldType == 'Percentage';
+}
+
+/***/ }),
 /* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13070,7 +13085,7 @@ module.exports = _curry2;
 "use strict";
 /* unused harmony export loadData */
 /* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(5);
@@ -13087,7 +13102,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 const intersection = __webpack_require__(36);
 
@@ -13338,7 +13353,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Save a new theme to server
     async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["I" /* updateUserTheme */](context.state.currentUser, newTheme);
+      await __WEBPACK_IMPORTED_MODULE_2__api__["J" /* updateUserTheme */](context.state.currentUser, newTheme);
       let updatedUser = clone(context.state.user);
       updatedUser.theme = newTheme;
       context.commit('setUser', updatedUser);
@@ -13406,7 +13421,7 @@ function extractValues(objectArray, prop) {
  */
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 /**
  * Extract an overall value from a set of data, based on the provided field.
  * @param  {Array} data   array of data objects
@@ -13597,7 +13612,7 @@ function fieldsToServer(fields) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server or
  * apply to data.
@@ -13985,7 +14000,7 @@ if (false) {(function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(47);
 //
 //
@@ -14307,7 +14322,7 @@ function uuidv4() {
 //
  // TODO: dropdown for date types
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['initialObject'],
@@ -14563,7 +14578,7 @@ module.exports = isEmpty;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_parse__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__ = __webpack_require__(23);
 //
 //
 //
@@ -14720,7 +14735,7 @@ function getNotReadyPercentage(data) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(23);
 //
 //
 //
@@ -15035,7 +15050,7 @@ const props = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_filters__ = __webpack_require__(28);
 //
@@ -15145,7 +15160,7 @@ const props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(23);
 //
 //
 //
@@ -15205,7 +15220,7 @@ const props = {
 
 
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 const reasonCodeColors = {
   'Lunch': 'hsl(204, 54%, 52%)',
@@ -15392,7 +15407,7 @@ const props = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(23);
 //
 //
 //
@@ -15553,12 +15568,12 @@ module.exports = __webpack_require__(50);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__ = __webpack_require__(15);
 
 
@@ -15569,7 +15584,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const isEmpty = __webpack_require__(41);
 
-const clone = __webpack_require__(4);
+const clone = __webpack_require__(7);
 
 const uniq = __webpack_require__(30);
 
@@ -16061,7 +16076,7 @@ var content = __webpack_require__(54);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("1e5068c2", content, false, {});
+var update = __webpack_require__(4)("1e5068c2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -16080,7 +16095,7 @@ if(false) {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -16157,7 +16172,7 @@ var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("208c43bc", content, false, {});
+var update = __webpack_require__(4)("208c43bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -16176,7 +16191,7 @@ if(false) {
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -18847,7 +18862,7 @@ var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("9c7d97ce", content, false, {});
+var update = __webpack_require__(4)("9c7d97ce", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -18866,7 +18881,7 @@ if(false) {
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -19024,7 +19039,7 @@ var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("3a8ea719", content, false, {});
+var update = __webpack_require__(4)("3a8ea719", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19043,7 +19058,7 @@ if(false) {
 /* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -19287,7 +19302,7 @@ var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("69ee75ae", content, false, {});
+var update = __webpack_require__(4)("69ee75ae", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19306,7 +19321,7 @@ if(false) {
 /* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -19451,7 +19466,7 @@ var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("07cfff32", content, false, {});
+var update = __webpack_require__(4)("07cfff32", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19470,7 +19485,7 @@ if(false) {
 /* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -19652,7 +19667,7 @@ var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("0b9ae522", content, false, {});
+var update = __webpack_require__(4)("0b9ae522", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19671,7 +19686,7 @@ if(false) {
 /* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 
@@ -19945,7 +19960,7 @@ var content = __webpack_require__(102);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("fff1ea5c", content, false, {});
+var update = __webpack_require__(4)("fff1ea5c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19964,7 +19979,7 @@ if(false) {
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(true);
+exports = module.exports = __webpack_require__(3)(true);
 // imports
 
 

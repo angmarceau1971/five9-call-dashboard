@@ -6,6 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport'); // user authentication
+
 const path = require('path');
 const log = require('../utility/log');
 const verify = require('../authentication/verify'); // check user permissions
@@ -41,7 +42,15 @@ router.get('/scorecard', verify.isLoggedIn(), async (req, res) => {
     res.sendFile(dir);
 });
 
-// scorecard fields
+// messenger
+router.get('/message', verify.isLoggedIn('supervisor'), async (req, res) => {
+    let dir = path.join(__dirname + '/../public/message.html');
+    log.info(`page request from ${req.user.username}`, 'request',
+                { username: req.user.username, route: 'message' });
+    res.sendFile(dir);
+});
+
+// scorecard field management
 router.get('/scorecard-admin', verify.isLoggedIn('admin'), async (req, res) => {
     let dir = path.join(__dirname + '/../public/scorecard-admin.html');
     log.info(`page request from ${req.user.username}`, 'request',

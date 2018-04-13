@@ -516,39 +516,40 @@ function skillStringToArray(skillString) {
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
 /* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
 /* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["A"] = sendMessage;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
  ////////////////////////////////////////////////////////////////
 // Functions to retrieve and extract data from Five9.
@@ -651,6 +652,20 @@ async function updateSupervisorUser(user) {
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
   return response.json();
+} ///////////////////////////////////////////////////////////////////////
+// Messages
+
+/**
+ * Send a message
+ * @param  {Object} message with fields to, subject, and body
+ * @return {String} response from server
+ */
+
+async function sendMessage(message) {
+  let response = await request({
+    message: message
+  }, 'message/send', 'POST');
+  return response.text();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
 
@@ -1071,7 +1086,7 @@ function formatAMPM(date) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

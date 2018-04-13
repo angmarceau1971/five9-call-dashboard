@@ -27,6 +27,7 @@ const customers = require('../datasources/customers'); // customer database
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
 
+const message = require('../message/message');
 const uploader = require('../datasources/custom-upload');
 const skillGroup = require('../datasources/skill-group');
 
@@ -98,7 +99,23 @@ router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
     }
 });
 
+//////////////////////////////////////
+// Messaging
+router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res) => {
+    try {
+        let msg = req.body.message;
+        msg.from = req.user.username;
+        await message.send(msg);
+        res.status(200).send(`Message sent successfully.`);
+    } catch (err) {
+        log.error(`Error during message send: ` + JSON.stringify(err));
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
+    }
+});
 
+
+//////////////////////////////////////
 // Return ZIP3 JSON
 router.get('/zip3-data', verify.apiMiddleware(), async (req, res) => {
     await sendPublicFile('json/zip3-albers.json', req, res);

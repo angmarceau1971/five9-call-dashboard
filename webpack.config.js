@@ -12,7 +12,8 @@ module.exports = {
         queues: ['./src/public/javascript/queue-dashboard.js'],
         map: ['./src/public/javascript/maps-dashboard.js'],
         admin: ['./src/public/javascript/admin.js'],
-        upload: ['./src/public/javascript/upload.js']
+        upload: ['./src/public/javascript/upload.js'],
+        'message-panel': ['./src/public/javascript/message-panel.js']
     },
 
     output: {

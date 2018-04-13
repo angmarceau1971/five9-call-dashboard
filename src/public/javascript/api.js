@@ -101,6 +101,20 @@ export async function getUsers() {
 }
 
 
+///////////////////////////////////////////////////////////////////////
+// Messages
+/**
+ * Send a message
+ * @param  {Object} message with fields to, subject, and body
+ * @return {String} response from server
+ */
+export async function sendMessage(message) {
+    let response = await request(
+        { message: message },
+        'message/send', 'POST'
+    );
+    return response.text();
+}
 
 ///////////////////////////////////////////////////////////////////////
 // Fields
