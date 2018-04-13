@@ -116,6 +116,15 @@ export async function sendMessage(message) {
     return response.text();
 }
 
+/**
+ * Return current user's messages
+ * @return {[Object]} array of message objects 
+ */
+export async function getMessages() {
+    let response = await request({}, 'message', 'GET');
+    return response.json();
+}
+
 ///////////////////////////////////////////////////////////////////////
 // Fields
 /**

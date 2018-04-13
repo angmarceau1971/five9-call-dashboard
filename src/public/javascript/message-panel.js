@@ -12,8 +12,10 @@ const vm = new Vue({
     },
 
     methods: {
-        send: async function (to, subject, body) {
-            let users = to.split(',').map(user => user.trim());
+        send: async function (toString, subject, body) {
+            let users = toString.split(',').map(username => {
+                return { username: username }
+            });
             let message = {
                 to: users,
                 subject: subject,

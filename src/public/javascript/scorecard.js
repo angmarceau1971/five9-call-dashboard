@@ -33,6 +33,7 @@ const vm = new Vue({
         selectedAgentGroups: [],
         showFilters: true,
         datasourceMessage: '',
+        messages: []
     },
 
     components: {
@@ -48,6 +49,7 @@ const vm = new Vue({
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
         setTimeout(this.refresh.bind(this), 5000);
+        this.messages = await api.getMessages();
     },
 
     computed: {

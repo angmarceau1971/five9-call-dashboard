@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const messageSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     subject: {
         type: String,
         default: ''
@@ -19,13 +18,14 @@ const messageSchema = mongoose.Schema({
     from: {
         type: String
     },
-    // array of recipients' usernames, and if they've been read
+    // array of recipients' usernames, and if they've read the message
     to: [{
         username: { type: String, required: true },
-        isRead:   { type: Boolean, default: false }
+        hasRead:  { type: Boolean, default: false }
     }],
     timestamp: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     // For messages that are replies, store the parent message's ID
     parentId: {
@@ -42,8 +42,8 @@ const Messages = mongoose.model('Messages', messageSchema);
  * @return {[type]}         [description]
  */
 async function send(message) {
-    message.timestamp = moment().toDate();
-    return Messages.collection.insert(message);
+    let newMessage = new Messages(message);
+    return Messages.create(newMessage);
 }
 module.exports.send = send;
 

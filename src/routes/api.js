@@ -110,7 +110,19 @@ router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res
     } catch (err) {
         log.error(`Error during message send: ` + JSON.stringify(err));
         res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
+        res.status(500).send(`An error occurred on the server when sending message: ${err}`);
+    }
+});
+
+// Return messages for current user
+router.get('/message', verify.apiMiddleware(), async (req, res) => {
+    try {
+        let msgs = await message.get(req.user.username);
+        res.send(JSON.stringify(msgs));
+    } catch (err) {
+        log.error(`Error during message get: ` + JSON.stringify(err));
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
     }
 });
 
