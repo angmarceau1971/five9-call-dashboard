@@ -285,7 +285,7 @@ line-height: 50px;
     padding: 0 1em;
     min-height: 3em;
     color: hsl(122, 2%, 17%);
-    box-shadow: 0 2px 5px hsla(120, 100%, 71%, 0.8), 0 2px 5px hsla(119, 100%, 18%, 0.7);
+    box-shadow: 0 2px 5px hsla(120, 100%, 71%, 0.8), 0 2px 5px hsla(119, 100%, 18%, 0.7), 0 30px 60px 20px hsla(120, 100%, 73%, 0.15);
 }
 
 .message-wrapper .icon-wrapper {
