@@ -179,48 +179,22 @@ line-height: 50px;
 
 /* Control panel */
 .control-panel {
+    padding: 1em;
     margin-bottom: 1em;
     background-color: hsla(0, 0%, 27%, 0.55);
     border-radius: 2px;
 }
-.section.agent-selectors {
-    padding: 1em;
-    display: grid;
-    grid-gap: 2em;
-    grid-template-columns: repeat(3, 1fr);
-}
-.section.agent-selectors .filters-header-wrapper {
+.control-panel .filters-header-wrapper {
     grid-column: 1;
     grid-row: 1;
     display: inline;
 }
-.section.agent-selectors .filters-header-wrapper h2 {
+.control-panel .filters-header-wrapper h2 {
     display: inline;
     margin-right: 2em;
 }
-.section.agent-selectors .filters-header-wrapper button {
+.control-panel .filters-header-wrapper button {
     background-color: transparent;
-}
-.section.agent-selectors .toggle-buttons {
-    grid-column: 2 / 4;
-    grid-row: 1;
-    margin: 1em;
-}
-.section.agent-selectors .user-list select,
-.section.agent-selectors .agentgroup-list select {
-    width: 100%;
-}
-.section.agent-selectors .refresh-button-wrapper {
-    display: flex;
-}
-.section.agent-selectors .refresh-button {
-    height: 150px;
-    width: 100%;
-    font-size: 2em;
-    align-self: center;
-}
-.section.agent-selectors .refresh-button:hover {
-    background-color: hsl(345, 100%, 42%);
 }
 
 /*  Data table formatting  */

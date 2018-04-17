@@ -190,7 +190,31 @@
 
             <!-- Controls for sups/admins over team filters and datasources -->
             <div class="control-panel" v-if="user.isSupervisor || user.isAdmin">
-                <div v-if="userList.length > 0" class="section agent-selectors">
+                <div>
+                    <div class="filters-header-wrapper">
+                        <h2>Filters</h2>
+                        <button @click="showFilters = !showFilters"
+                            title="Toggle filter display"
+                        >{{ showFilters ? 'Hide' : 'Show' }}</button>
+                    </div>
+                    <div class="toggle-buttons" v-show="showFilters">
+                        <button @click="changeSupMode('team')"
+                            :class="{ checked: $store.state.supMode == 'team' }"
+                            title="Show data for all agents selected"
+                        >Team
+                        </button>
+                        <button @click="changeSupMode('individual')"
+                            :class="{ checked: $store.state.supMode == 'individual' }"
+                            title="Simulate the view of a single agent"
+                        >Individual
+                        </button>
+                    </div>
+                    <users-selector v-show="showFilters"
+                        @select-users="selectUsers"
+                        @refresh="refresh"
+                    ></users-selector>
+                </div>
+                <!-- <div v-if="userList.length > 0" class="section agent-selectors">
                     <div class="filters-header-wrapper">
                         <h2>Filters</h2>
                         <button @click="showFilters = !showFilters"
@@ -234,7 +258,7 @@
                             <i class="fas fa-sync-alt"></i> Refresh
                         </button>
                     </div>
-                </div>
+                </div> -->
 
                 <div v-if="$store.state.editMode">
                     <h2>Data Sources</h2>

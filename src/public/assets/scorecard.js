@@ -541,86 +541,47 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-<<<<<<< HEAD
-/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["z"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["L"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["C"] = sendMessage;
-/* unused harmony export getMessages */
-/* harmony export (immutable) */ __webpack_exports__["v"] = getUnreadMessages;
-/* harmony export (immutable) */ __webpack_exports__["y"] = markMessageRead;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateGoal;
-/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateLayout;
-/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateDatasource;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateLink;
-/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["A"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["B"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["M"] = uploadData;
-=======
 /* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["y"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
 /* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
+/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
+/* unused harmony export getMessages */
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
 /* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
 /* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["z"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["A"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
->>>>>>> master
+/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
@@ -13355,7 +13316,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   actions: {
     // Call when page first loads
     async updateUser(context, username) {
-      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["w" /* getUserInformation */](username);
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["x" /* getUserInformation */](username);
       context.commit('setUser', user);
       context.dispatch('updateGoals');
     },
@@ -13438,11 +13399,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Save a new theme to server
     async updateTheme(context, newTheme) {
-<<<<<<< HEAD
-      await __WEBPACK_IMPORTED_MODULE_2__api__["L" /* updateUserTheme */](context.state.currentUser, newTheme);
-=======
-      await __WEBPACK_IMPORTED_MODULE_2__api__["J" /* updateUserTheme */](context.state.currentUser, newTheme);
->>>>>>> master
+      await __WEBPACK_IMPORTED_MODULE_2__api__["M" /* updateUserTheme */](context.state.currentUser, newTheme);
       let updatedUser = clone(context.state.user);
       updatedUser.theme = newTheme;
       context.commit('setUser', updatedUser);
@@ -15660,10 +15617,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hub__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scorecard_format__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_selector_vue__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hub__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__scorecard_format__ = __webpack_require__(23);
+
 
 
 
@@ -15681,7 +15640,7 @@ const intersection = __webpack_require__(36);
 
 const debounce = __webpack_require__(105);
 
-const store = __WEBPACK_IMPORTED_MODULE_2__hub__["b" /* store */];
+const store = __WEBPACK_IMPORTED_MODULE_4__hub__["b" /* store */];
 const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app',
   store: store,
@@ -15696,17 +15655,14 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     // show helpful links / bookmarks
     theme: {},
     // Supervisor controls
-    userList: [],
-    agentGroups: [],
-    selectedUsernames: [],
-    selectedAgentGroups: [],
     showFilters: true,
     datasourceMessage: '',
     messages: []
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
-    'editor-table': __WEBPACK_IMPORTED_MODULE_5__components_editor_table_vue__["a" /* default */]
+    'editor-table': __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__["a" /* default */],
+    'users-selector': __WEBPACK_IMPORTED_MODULE_3__components_users_selector_vue__["a" /* default */]
   },
 
   async beforeMount() {
@@ -15778,7 +15734,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.isLoading = true;
       this.layout = await store.dispatch('forceRefresh');
       this.isLoading = false;
-      this.messages = await __WEBPACK_IMPORTED_MODULE_3__api__["v" /* getUnreadMessages */]();
+      this.messages = await __WEBPACK_IMPORTED_MODULE_5__api__["w" /* getUnreadMessages */]();
     },
     changeTheme: function (attribute, value) {
       this.theme[attribute] = value;
@@ -15791,54 +15747,18 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.showMenu = false;
     },
     closeMessage: async function (message) {
-      await __WEBPACK_IMPORTED_MODULE_3__api__["y" /* markMessageRead */](message, true);
-      this.messages = await __WEBPACK_IMPORTED_MODULE_3__api__["v" /* getUnreadMessages */]();
+      await __WEBPACK_IMPORTED_MODULE_5__api__["z" /* markMessageRead */](message, true);
+      this.messages = await __WEBPACK_IMPORTED_MODULE_5__api__["w" /* getUnreadMessages */]();
     },
     //////////////////////////////////////////////////
     // Supervisor view controls
-    // Initiate supervisor mode
-    supervisorMode: async function () {
-      await this.loadUsersList();
-      this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-    },
-    // Load list of users when sup mode is selected
-    loadUsersList: async function () {
-      let userList = await __WEBPACK_IMPORTED_MODULE_3__api__["x" /* getUsers */]();
-      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
-      this.userList = userList;
-    },
     // Select users to filter data for
-    selectUsers: async function (usernames) {
-      this.selectedUsernames = usernames;
-      let users = usernames.map(username => this.userList.find(user => user.username == username));
+    selectUsers: async function (users) {
       store.commit('setSelectedUsers', users);
-    },
-    // Filter for agents within an agent group
-    selectAgentGroups: async function (agentGroup) {
-      store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
-    },
-    // From the passed-in users, return array of agent groups
-    getAgentGroupsFromUsers: function (users) {
-      return __WEBPACK_IMPORTED_MODULE_2__hub__["a" /* extractValues */](users, 'agentGroups').sort();
-    },
-    // Return users who are within the selectedAgentGroups
-    filterUsersInGroup: function (users) {
-      if (this.selectedAgentGroups.length == 0) return users;
-      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
     },
     // Turn sup mode on or off
     changeSupMode: function (newMode) {
       store.commit('setSupMode', newMode);
-    },
-    // If a user is part of multiple groups, list them next to user's name
-    getUserSelectionString: function (user) {
-      let groupString = '';
-
-      if (user.agentGroups.length > 1) {
-        groupString = ` - ${user.agentGroups.join(', ')}`;
-      }
-
-      return `${user.lastName}, ${user.firstName}${groupString}`;
     },
     //////////////////////////////////////////////////
     // Handle menus and theme
@@ -20305,6 +20225,381 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
+
+/***/ }),
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(26);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+const intersection = __webpack_require__(36);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  name: 'users-selector',
+
+  data() {
+    return {
+      userList: [],
+      selectedUsernames: [],
+      selectedAgentGroups: [],
+      agentGroups: [],
+      message: ''
+    };
+  },
+
+  mounted: async function () {
+    this.userList = await this.loadUsersList();
+    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+  },
+  methods: {
+    clickRefresh: function () {
+      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
+        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
+      } else {
+        this.message = '';
+        this.$emit('refresh');
+      }
+    },
+    // Load list of users
+    loadUsersList: async function () {
+      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["y" /* getUsers */]();
+      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+      return userList;
+    },
+    // Return users who are within the selectedAgentGroups
+    filterUsersInGroup: function (users) {
+      if (this.selectedAgentGroups.length == 0) return users;
+      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
+    },
+    // If a user is part of multiple groups, list them next to user's name
+    getUserSelectionString: function (user) {
+      let groupString = '';
+
+      if (user.agentGroups.length > 1) {
+        groupString = ` - ${user.agentGroups.join(', ')}`;
+      }
+
+      return `${user.lastName}, ${user.firstName}${groupString}`;
+    },
+    // From the passed-in users, return array of agent groups
+    getAgentGroupsFromUsers: function (users) {
+      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
+    },
+    // Filter for agents within an agent group
+    selectAgentGroups: async function (agentGroups) {
+      // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
+      this.selectedAgentGroups = agentGroups;
+    },
+    // Get users from usernames
+    getUsers: function (usernames) {
+      return usernames.map(username => this.userList.find(user => user.username == username));
+    }
+  }
+});
+
+/***/ }),
+/* 124 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(123);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(127);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(125)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\users-selector.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a22da046", Component.options)
+  } else {
+    hotAPI.reload("data-v-a22da046", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(126);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("d19f9c92", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\n}\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AA4GA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "message" }, [
+          _c("p", [
+            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.userList.length > 0
+      ? _c("div", { staticClass: "section agent-selectors" }, [
+          _c("div", { staticClass: "agentgroup-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAgentGroups,
+                    expression: "selectedAgentGroups"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedAgentGroups = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.agentGroups, function(agentGroup, i) {
+                return _c("option", { domProps: { value: agentGroup } }, [
+                  _vm._v(
+                    "\r\n                    " +
+                      _vm._s(agentGroup) +
+                      "\r\n                "
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedUsernames,
+                    expression: "selectedUsernames"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedUsernames = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.$emit(
+                        "select-users",
+                        _vm.getUsers(_vm.selectedUsernames)
+                      )
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
+                userAgent,
+                i
+              ) {
+                return _c(
+                  "option",
+                  { domProps: { value: userAgent.username } },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.getUserSelectionString(userAgent)) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "refresh-button-wrapper" }, [
+            _c(
+              "button",
+              {
+                staticClass: "refresh-button",
+                on: { click: _vm.clickRefresh }
+              },
+              [
+                _c("i", { staticClass: "fas fa-sync-alt" }),
+                _vm._v(" Refresh\r\n            ")
+              ]
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
+  }
+}
 
 /***/ })
 /******/ ]);
