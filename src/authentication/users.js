@@ -322,11 +322,13 @@ async function refreshUserDatabase(usersModel) {
     // Remove users who aren't in the new data
     originalUsers.forEach((user) => {
         if (!cleanData.find((newUser) => newUser.username == user.username)) {
-            usersModel.remove(
+            usersModel.findOneAndUpdate(
                 { username: user.username },
+                { $set: { active: false } },
+                { }, // options
                 function(err, doc) {
-                    if (err) log.error(`Error when removing user: ${err}`, 'user status');
-                    log.info(`Removing user ${user.username} from Users table.`, 'user status');
+                    if (err) log.error(`Error when removing no-longer-existent user ${user.username}: ${err}`, 'user status');
+                    log.info(`Marking no-longer-existent user ${user.username} as inactive in Users table.`, 'user status');
                 }
             );
         }
