@@ -90,6 +90,13 @@ const vm = new Vue({
             else {
                 return {};
             }
+        },
+        unreadMessages: function() {
+            return this.messages.filter((message) => {
+                return message.to.filter((to) =>
+                    to.username == this.username && to.hasRead == false
+                ).length > 0
+            });
         }
     },
 
@@ -112,7 +119,7 @@ const vm = new Vue({
             this.isLoading = true;
             this.layout = await store.dispatch('forceRefresh');
             this.isLoading = false;
-            this.messages = await api.getUnreadMessages();
+            this.messages = await this.updateMessages();
         },
 
         changeTheme: function(attribute, value) {
@@ -127,14 +134,21 @@ const vm = new Vue({
             this.showMenu = false;
         },
 
+        openInbox: async function() {
+            this.showInbox = true;
+            this.messages = await this.updateMessages(this.showInbox);
+        },
+        closeInbox: function() {
+            this.showInbox = false;
+        },
+        updateMessages: async function(includeAll=null) {
+            if (includeAll === null) includeAll = this.showInbox;
+            if (includeAll) return api.getMessages();
+            else return api.getUnreadMessages();
+        },
         closeMessage: async function(message) {
             await api.markMessageRead(message, true);
-            this.messages = await api.getUnreadMessages();
-        },
-
-
-        closeInbox: function() {
-
+            this.messages = await this.updateMessages(this.showInbox);
         },
 
         //////////////////////////////////////////////////

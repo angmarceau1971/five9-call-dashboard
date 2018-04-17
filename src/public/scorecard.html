@@ -7,6 +7,7 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
         <link href="styles/scorebase.css" rel="stylesheet" type="text/css">
         <link href="styles/scoredetail.css" rel="stylesheet" type="text/css">
         <!-- Default to dark theme -->
@@ -128,8 +129,7 @@
                 </a>
 
                 <button class="insidedrop"
-                    @click="showInbox = true"
-                    @close="showInbox = false">
+                    @click="openInbox">
                     <i class="far fa-envelope"></i> Inbox
                 </button>
 
@@ -153,9 +153,12 @@
         </header>
 
         <!-- Message banner -->
-        <div class="message-wrapper" v-if="messages.length > 0">
-            <template v-for="(message, i) in messages">
-                <div class="icon-wrapper">
+        <div class="message-wrapper" v-if="unreadMessages.length > 0 && !showInbox">
+            <template v-for="(message, i) in unreadMessages">
+                <div class="icon-wrapper"
+                    @click="closeMessage(message); openInbox();"
+                    title="Open Inbox"
+                >
                     <i class="far fa-smile message-icon" ></i>
                     <div class="background-words">
                         <p>New</p>
@@ -177,6 +180,8 @@
 
         <!-- Inbox -->
         <inbox v-if="showInbox"
+            :messages="messages"
+            @close="closeInbox"
         ></inbox>
 
         <!-- Main content -->

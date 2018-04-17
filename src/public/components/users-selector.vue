@@ -110,7 +110,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .message {
     background-color: #333;
     border-radius: 2px;

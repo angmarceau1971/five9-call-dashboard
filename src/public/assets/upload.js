@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 124);
+/******/ 	return __webpack_require__(__webpack_require__.s = 129);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -405,128 +405,11 @@ module.exports = function listToStyles (parentId, list) {
 
 /***/ }),
 
-/***/ 124:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(125);
+module.exports = __webpack_require__(130);
 
-
-/***/ }),
-
-/***/ 125:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(17);
-
-
-
-
-const clone = __webpack_require__(5);
-
-const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#upload-app',
-  components: {
-    'editor-table': __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__["a" /* default */]
-  },
-  data: {
-    message: '',
-    selectedDatasourceName: '',
-    updateType: '',
-    lookerTestId: '',
-    lookerTestData: {}
-  },
-  computed: {
-    lookerTestDataString: function () {
-      return JSON.stringify(this.lookerTestData, null, 2);
-    }
-  },
-  methods: {
-    updateMessage: function (msg) {
-      this.message = msg;
-    },
-    pullLookerData: async function (lookId) {
-      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["q" /* getLookerData */](lookId);
-      this.lookerTestData = data;
-    },
-    // Data source manipulation
-    datasourceUpdater: async function (datasource) {
-      let clean = clone(datasource);
-
-      try {
-        clean.fields = JSON.parse(clean.fields);
-        clean.lookerFieldLookup = JSON.parse(clean.lookerFieldLookup);
-      } catch (err) {
-        return `Unable to save: ${err}.`;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_1__api__["F" /* updateDatasource */](clean);
-    },
-    datasourceLoader: async function () {
-      let datasources = await __WEBPACK_IMPORTED_MODULE_1__api__["i" /* getDatasources */]();
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (datasource) {
-        datasource.fields = str(datasource.fields);
-        datasource.lookerFieldLookup = str(datasource.lookerFieldLookup);
-        return datasource;
-      };
-
-      return datasources.map(stringin);
-    },
-    datasourceAdder: function () {
-      return {
-        name: '',
-        fields: [],
-        defaultUpdateType: 'addTo',
-        lastUpdated: ''
-      };
-    },
-    datasourceRemover: function (datasource) {
-      return __WEBPACK_IMPORTED_MODULE_1__api__["a" /* deleteDatasource */](datasource);
-    },
-    // Utility functions
-    uploadFile: async function (event) {
-      return this.handleFileUpload(event, this.selectedDatasourceName, this.updateType);
-    },
-    uploadSkillGroupFile: async function (event) {
-      return this.handleFileUpload(event, 'SkillGroup', 'overwrite');
-    },
-    handleFileUpload: async function (event, datasourceName, updateType) {
-      const file = event.target.files[0];
-
-      if (!file) {
-        this.updateMessage('No file selected.');
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = async function (e) {
-        const params = {
-          csv: e.target.result,
-          datasourceName: datasourceName,
-          updateType: updateType
-        };
-        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["N" /* uploadData */](params);
-        this.updateMessage(response); // clear input file
-
-        this.$refs['fileInput'].value = '';
-      }.bind(this);
-
-      reader.readAsText(file);
-    },
-    formatDateTime: function (d) {
-      if (!d) return 'N/A';
-      return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
-    }
-  }
-});
 
 /***/ }),
 
@@ -580,6 +463,123 @@ function _clone(value, refFrom, refTo, deep) {
   }
 }
 module.exports = _clone;
+
+/***/ }),
+
+/***/ 130:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(17);
+
+
+
+
+const clone = __webpack_require__(5);
+
+const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#upload-app',
+  components: {
+    'editor-table': __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__["a" /* default */]
+  },
+  data: {
+    message: '',
+    selectedDatasourceName: '',
+    updateType: '',
+    lookerTestId: '',
+    lookerTestData: {}
+  },
+  computed: {
+    lookerTestDataString: function () {
+      return JSON.stringify(this.lookerTestData, null, 2);
+    }
+  },
+  methods: {
+    updateMessage: function (msg) {
+      this.message = msg;
+    },
+    pullLookerData: async function (lookId) {
+      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["q" /* getLookerData */](lookId);
+      this.lookerTestData = data;
+    },
+    // Data source manipulation
+    datasourceUpdater: async function (datasource) {
+      let clean = clone(datasource);
+
+      try {
+        clean.fields = JSON.parse(clean.fields);
+        clean.lookerFieldLookup = JSON.parse(clean.lookerFieldLookup);
+      } catch (err) {
+        return `Unable to save: ${err}.`;
+      }
+
+      return __WEBPACK_IMPORTED_MODULE_1__api__["G" /* updateDatasource */](clean);
+    },
+    datasourceLoader: async function () {
+      let datasources = await __WEBPACK_IMPORTED_MODULE_1__api__["i" /* getDatasources */]();
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (datasource) {
+        datasource.fields = str(datasource.fields);
+        datasource.lookerFieldLookup = str(datasource.lookerFieldLookup);
+        return datasource;
+      };
+
+      return datasources.map(stringin);
+    },
+    datasourceAdder: function () {
+      return {
+        name: '',
+        fields: [],
+        defaultUpdateType: 'addTo',
+        lastUpdated: ''
+      };
+    },
+    datasourceRemover: function (datasource) {
+      return __WEBPACK_IMPORTED_MODULE_1__api__["a" /* deleteDatasource */](datasource);
+    },
+    // Utility functions
+    uploadFile: async function (event) {
+      return this.handleFileUpload(event, this.selectedDatasourceName, this.updateType);
+    },
+    uploadSkillGroupFile: async function (event) {
+      return this.handleFileUpload(event, 'SkillGroup', 'overwrite');
+    },
+    handleFileUpload: async function (event, datasourceName, updateType) {
+      const file = event.target.files[0];
+
+      if (!file) {
+        this.updateMessage('No file selected.');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = async function (e) {
+        const params = {
+          csv: e.target.result,
+          datasourceName: datasourceName,
+          updateType: updateType
+        };
+        const response = await __WEBPACK_IMPORTED_MODULE_1__api__["O" /* uploadData */](params);
+        this.updateMessage(response); // clear input file
+
+        this.$refs['fileInput'].value = '';
+      }.bind(this);
+
+      reader.readAsText(file);
+    },
+    formatDateTime: function (d) {
+      if (!d) return 'N/A';
+      return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
+    }
+  }
+});
 
 /***/ }),
 
@@ -12388,47 +12388,47 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["B"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getReportResults;
 /* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
 /* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["y"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["N"] = updateUserTheme;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["M"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["z"] = getUsers;
 /* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
-/* unused harmony export getMessages */
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
-/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
+/* harmony export (immutable) */ __webpack_exports__["E"] = sendMessage;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getMessages;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["A"] = markMessageRead;
 /* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
 /* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
 /* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
 /* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillGroups;
 /* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["C"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["D"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["O"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
