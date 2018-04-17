@@ -18198,7 +18198,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
     // TODO: fix bug causing data to be blank after first `startProcess`
 
-    setTimeout(this.refresh.bind(this), 2500);
+    setTimeout(this.refresh.bind(this), 2500); // start checking messages every 2 minutes
+
+    setTimeout(this.messageRefreshLoop.bind(this), 120000);
   },
 
   computed: {
@@ -18294,6 +18296,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     messageDate: function (message) {
       return moment(message.timestamp).format('M/D h:mm A');
+    },
+    messageRefreshLoop: async function () {
+      this.messages = await this.updateMessages(this.showInbox);
+      setTimeout(this.messageRefreshLoop.bind(this), 120000);
     },
     //////////////////////////////////////////////////
     // Supervisor view controls

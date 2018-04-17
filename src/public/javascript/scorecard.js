@@ -50,6 +50,8 @@ const vm = new Vue({
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
         setTimeout(this.refresh.bind(this), 2500);
+        // start checking messages every 2 minutes
+        setTimeout(this.messageRefreshLoop.bind(this), 120000);
     },
 
     computed: {
@@ -152,6 +154,10 @@ const vm = new Vue({
         },
         messageDate: function(message) {
             return moment(message.timestamp).format('M/D h:mm A');
+        },
+        messageRefreshLoop: async function() {
+            this.messages = await this.updateMessages(this.showInbox);
+            setTimeout(this.messageRefreshLoop.bind(this), 120000);
         },
 
         //////////////////////////////////////////////////
