@@ -150,6 +150,9 @@ const vm = new Vue({
             await api.markMessageRead(message, true);
             this.messages = await this.updateMessages(this.showInbox);
         },
+        messageDate: function(message) {
+            return moment(message.timestamp).format('M/D h:mm A');
+        },
 
         //////////////////////////////////////////////////
         // Supervisor view controls

@@ -253,14 +253,19 @@ line-height: 50px;
 .message-wrapper {
     display: flex;
     font-family: 'Slabo 27px', serif;
+    font-size: 1.05em;
     align-items: center;
     justify-content: space-between;
     background-color: white;
     width: 100%;
     padding: 0 1em;
     min-height: 3em;
-    color: hsl(0, 0%, 4%);
+    color: hsl(207, 28%, 5%);
     box-shadow: 0 2px 5px hsla(207, 100%, 98%, 0.8), 0 2px 5px hsla(207, 13%, 44%, 0.7), 0 30px 60px 20px hsla(207, 5%, 85%, 0.15);
+}
+
+.message-wrapper > * {
+    margin: 0.2em;
 }
 
 .message-wrapper .icon-wrapper {
@@ -280,6 +285,7 @@ line-height: 50px;
 }
 .message-wrapper .icon-wrapper .background-words {
     text-transform: uppercase;
+    font-family: Ubuntu;
     text-align: center;
     margin: 0.25em;
 }

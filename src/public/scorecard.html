@@ -166,10 +166,13 @@
                     </div>
                 </div>
                 <p class="message-text">
-                    {{ message.subject || message.body }}
+                    {{ message.body }}
                 </p>
                 <p class="message-from">
-                    From:<br />{{ message.fromName }}
+                    From: {{ message.fromName }}
+                </p>
+                <p class="message-date">
+                    {{ messageDate(message) }}
                 </p>
                 <button @click="closeMessage(message)"
                     title="Close message" class="message-close"

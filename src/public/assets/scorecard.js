@@ -16687,11 +16687,11 @@ if (false) {(function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(63);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(133)
+  __webpack_require__(61)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -16737,9 +16737,198 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 61 */,
-/* 62 */,
-/* 63 */,
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(62);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("fb81eb78", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAiHA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "message" }, [
+          _c("p", [
+            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.userList.length > 0
+      ? _c("div", { staticClass: "section agent-selectors" }, [
+          _c("div", { staticClass: "agentgroup-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAgentGroups,
+                    expression: "selectedAgentGroups"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedAgentGroups = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.agentGroups, function(agentGroup, i) {
+                return _c("option", { domProps: { value: agentGroup } }, [
+                  _vm._v(
+                    "\r\n                    " +
+                      _vm._s(agentGroup) +
+                      "\r\n                "
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedUsernames,
+                    expression: "selectedUsernames"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedUsernames = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.$emit(
+                        "select-users",
+                        _vm.getUsers(_vm.selectedUsernames)
+                      )
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
+                userAgent,
+                i
+              ) {
+                return _c(
+                  "option",
+                  { domProps: { value: userAgent.username } },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.getUserSelectionString(userAgent)) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _vm.showRefresh
+            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "refresh-button",
+                    on: { click: _vm.clickRefresh }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                    _vm._v(" Refresh\r\n            ")
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
+  }
+}
+
+/***/ }),
 /* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18279,7 +18468,7 @@ function sortOrder(a, b, event, dropId, el) {
     // 24 hours
     dateText: function (message) {
       if (Math.abs(new Date(message.timestamp).getDate() - new Date().getDate()) < 1) {
-        return moment(message.timestamp).format('M/D h A');
+        return moment(message.timestamp).format('M/D h:mm A');
       }
 
       return moment(message.timestamp).format('M/D');
@@ -18455,6 +18644,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     closeMessage: async function (message) {
       await __WEBPACK_IMPORTED_MODULE_6__api__["A" /* markMessageRead */](message, true);
       this.messages = await this.updateMessages(this.showInbox);
+    },
+    messageDate: function (message) {
+      return moment(message.timestamp).format('M/D h:mm A');
     },
     //////////////////////////////////////////////////
     // Supervisor view controls
@@ -20508,7 +20700,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.inbox-wrapper[data-v-6bfdd086] {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsl(207, 100%, 50%);\r\n    z-index: 100;\n}\n.header-wrapper[data-v-6bfdd086] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\n}\nh1[data-v-6bfdd086] {\r\n    color: white;\r\n    margin: 0;\n}\n.messages-wrapper[data-v-6bfdd086] {\r\n    overflow-y: scroll;\n}\n.close-button[data-v-6bfdd086] {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\n}\n.close-button[data-v-6bfdd086]:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\n}\n.date[data-v-6bfdd086] {\r\n    width: 15%;\n}\n.from[data-v-6bfdd086] {\r\n    width: 23%;\n}\n.body[data-v-6bfdd086] {\r\n    width: 62%;\n}\n.message-wrapper-column-headers[data-v-6bfdd086] {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/inbox.vue"],"names":[],"mappings":";AAmEA;IACA,gBAAA;IACA,cAAA;IACA,uBAAA;IACA,4BAAA;IACA,yBAAA;IACA,kBAAA;IACA,aAAA;IACA,oBAAA;IACA,sCAAA;IACA,aAAA;CACA;AACA;IACA,cAAA;IACA,+BAAA;IACA,kBAAA;CACA;AACA;IACA,aAAA;IACA,UAAA;CACA;AACA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,gBAAA;IACA,aAAA;IACA,0BAAA;CACA;AACA;IACA,gBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;CACA","file":"inbox.vue","sourcesContent":["<template>\r\n<div class=\"inbox-wrapper\">\r\n    <div class=\"header-wrapper\">\r\n        <h1><i class=\"far fa-envelope\"></i> Inbox</h1>\r\n        <button @click=\"$emit('close')\"\r\n            title=\"Close inbox\" class=\"close-button\"\r\n            ><i class=\"fas fa-times\"></i>\r\n        </button>\r\n    </div>\r\n    <div class=\"message-wrapper-column-headers\">\r\n        <p class=\"date\">\r\n            Date\r\n        </p>\r\n        <p class=\"from\">\r\n            From\r\n        </p>\r\n        <p class=\"body\">\r\n            Message\r\n        </p>\r\n    </div>\r\n    <div class=\"messages-wrapper\">\r\n        <div class=\"message-wrapper\"\r\n            v-for=\"(message, i) in messageList\">\r\n            <p class=\"date\">\r\n                {{ dateText(message) }}\r\n            </p>\r\n            <p class=\"from\">\r\n                {{ message.fromName }}\r\n            </p>\r\n            <p class=\"body\">\r\n                {{ message.body }}\r\n            </p>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: {\r\n        messages: {\r\n            type: Array\r\n        }\r\n    },\r\n    computed: {\r\n        // messages sorted by time\r\n        messageList: function() {\r\n            return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);\r\n        }\r\n    },\r\n    methods: {\r\n        // Returns text for date next to message. Includes hour if within the last\r\n        // 24 hours\r\n        dateText: function(message) {\r\n            if (Math.abs(\r\n                    new Date(message.timestamp).getDate() - new Date().getDate()\r\n                ) < 1) {\r\n                return moment(message.timestamp).format('M/D h A');\r\n            }\r\n            return moment(message.timestamp).format('M/D');\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.inbox-wrapper {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsl(207, 100%, 50%);\r\n    z-index: 100;\r\n}\r\n.header-wrapper {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\r\n}\r\nh1 {\r\n    color: white;\r\n    margin: 0;\r\n}\r\n.messages-wrapper {\r\n    overflow-y: scroll;\r\n}\r\n.close-button {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\r\n}\r\n.close-button:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\r\n}\r\n.date {\r\n    width: 15%;\r\n}\r\n.from {\r\n    width: 23%;\r\n}\r\n.body {\r\n    width: 62%;\r\n}\r\n.message-wrapper-column-headers {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.inbox-wrapper[data-v-6bfdd086] {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\n}\n.header-wrapper[data-v-6bfdd086] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\n}\nh1[data-v-6bfdd086] {\r\n    color: white;\r\n    margin: 0;\n}\n.messages-wrapper[data-v-6bfdd086] {\r\n    overflow-y: scroll;\n}\n.close-button[data-v-6bfdd086] {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\n}\n.close-button[data-v-6bfdd086]:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\n}\n.date[data-v-6bfdd086] {\r\n    width: 15%;\n}\n.from[data-v-6bfdd086] {\r\n    width: 23%;\n}\n.body[data-v-6bfdd086] {\r\n    width: 62%;\n}\n.message-wrapper-column-headers[data-v-6bfdd086] {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/inbox.vue"],"names":[],"mappings":";AAmEA;IACA,gBAAA;IACA,cAAA;IACA,uBAAA;IACA,4BAAA;IACA,yBAAA;IACA,kBAAA;IACA,aAAA;IACA,oBAAA;IACA,6CAAA;IACA,aAAA;CACA;AACA;IACA,cAAA;IACA,+BAAA;IACA,kBAAA;CACA;AACA;IACA,aAAA;IACA,UAAA;CACA;AACA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,gBAAA;IACA,aAAA;IACA,0BAAA;CACA;AACA;IACA,gBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,eAAA;CACA","file":"inbox.vue","sourcesContent":["<template>\r\n<div class=\"inbox-wrapper\">\r\n    <div class=\"header-wrapper\">\r\n        <h1><i class=\"far fa-envelope\"></i> Inbox</h1>\r\n        <button @click=\"$emit('close')\"\r\n            title=\"Close inbox\" class=\"close-button\"\r\n            ><i class=\"fas fa-times\"></i>\r\n        </button>\r\n    </div>\r\n    <div class=\"message-wrapper-column-headers\">\r\n        <p class=\"date\">\r\n            Date\r\n        </p>\r\n        <p class=\"from\">\r\n            From\r\n        </p>\r\n        <p class=\"body\">\r\n            Message\r\n        </p>\r\n    </div>\r\n    <div class=\"messages-wrapper\">\r\n        <div class=\"message-wrapper\"\r\n            v-for=\"(message, i) in messageList\">\r\n            <p class=\"date\">\r\n                {{ dateText(message) }}\r\n            </p>\r\n            <p class=\"from\">\r\n                {{ message.fromName }}\r\n            </p>\r\n            <p class=\"body\">\r\n                {{ message.body }}\r\n            </p>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: {\r\n        messages: {\r\n            type: Array\r\n        }\r\n    },\r\n    computed: {\r\n        // messages sorted by time\r\n        messageList: function() {\r\n            return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);\r\n        }\r\n    },\r\n    methods: {\r\n        // Returns text for date next to message. Includes hour if within the last\r\n        // 24 hours\r\n        dateText: function(message) {\r\n            if (Math.abs(\r\n                    new Date(message.timestamp).getDate() - new Date().getDate()\r\n                ) < 1) {\r\n                return moment(message.timestamp).format('M/D h:mm A');\r\n            }\r\n            return moment(message.timestamp).format('M/D');\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.inbox-wrapper {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\r\n}\r\n.header-wrapper {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\r\n}\r\nh1 {\r\n    color: white;\r\n    margin: 0;\r\n}\r\n.messages-wrapper {\r\n    overflow-y: scroll;\r\n}\r\n.close-button {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\r\n}\r\n.close-button:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\r\n}\r\n.date {\r\n    width: 15%;\r\n}\r\n.from {\r\n    width: 23%;\r\n}\r\n.body {\r\n    width: 62%;\r\n}\r\n.message-wrapper-column-headers {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -20684,215 +20876,6 @@ module.exports = function debounce(func, wait, immediate){
   return debounced;
 };
 
-
-/***/ }),
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(134);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("fb81eb78", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 134 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAiHA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 135 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.message
-      ? _c("div", { staticClass: "message" }, [
-          _c("p", [
-            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.userList.length > 0
-      ? _c("div", { staticClass: "section agent-selectors" }, [
-          _c("div", { staticClass: "agentgroup-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedAgentGroups,
-                    expression: "selectedAgentGroups"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedAgentGroups = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.agentGroups, function(agentGroup, i) {
-                return _c("option", { domProps: { value: agentGroup } }, [
-                  _vm._v(
-                    "\r\n                    " +
-                      _vm._s(agentGroup) +
-                      "\r\n                "
-                  )
-                ])
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "user-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedUsernames,
-                    expression: "selectedUsernames"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedUsernames = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.$emit(
-                        "select-users",
-                        _vm.getUsers(_vm.selectedUsernames)
-                      )
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
-                userAgent,
-                i
-              ) {
-                return _c(
-                  "option",
-                  { domProps: { value: userAgent.username } },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(_vm.getUserSelectionString(userAgent)) +
-                        "\r\n                "
-                    )
-                  ]
-                )
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _vm.showRefresh
-            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "refresh-button",
-                    on: { click: _vm.clickRefresh }
-                  },
-                  [
-                    _c("i", { staticClass: "fas fa-sync-alt" }),
-                    _vm._v(" Refresh\r\n            ")
-                  ]
-                )
-              ])
-            : _vm._e()
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
-  }
-}
 
 /***/ })
 /******/ ]);

@@ -56,7 +56,7 @@ export default {
             if (Math.abs(
                     new Date(message.timestamp).getDate() - new Date().getDate()
                 ) < 1) {
-                return moment(message.timestamp).format('M/D h A');
+                return moment(message.timestamp).format('M/D h:mm A');
             }
             return moment(message.timestamp).format('M/D');
         }
@@ -74,7 +74,7 @@ export default {
     margin: 0.5em 1em;
     padding: 1em;
     border-radius: 12px;
-    background-color: hsl(207, 100%, 50%);
+    background-color: hsla(207, 100%, 50%, 0.92);
     z-index: 100;
 }
 .header-wrapper {
@@ -113,5 +113,6 @@ h1 {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    color: #eaeaea;
 }
 </style>

@@ -15959,11 +15959,11 @@ module.exports = _isString;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(63);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(133)
+  __webpack_require__(61)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -16009,148 +16009,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(132);
-
-
-/***/ }),
-/* 132 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_js__ = __webpack_require__(4);
-
-
-
-const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#app',
-  components: {
-    'users-selector': __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__["a" /* default */]
-  },
-  data: {
-    statusMessage: '',
-    to: '',
-    subject: '',
-    body: '',
-    usersTo: []
-  },
-  computed: {
-    toNameList: function () {
-      return this.usersTo.reduce((str, user) => `${str ? str + ', ' : ''}${user.firstName} ${user.lastName}`, '');
-    }
-  },
-  methods: {
-    selectUsers: function (users) {
-      this.usersTo = users;
-    },
-    send: async function (toString, subject, body) {
-      let users = this.usersTo.map(user => {
-        return {
-          username: user.username
-        };
-      });
-      let message = {
-        to: users,
-        subject: subject,
-        body: body
-      };
-      let response = await __WEBPACK_IMPORTED_MODULE_2__api_js__["E" /* sendMessage */](message);
-      this.statusMessage = response;
-      setTimeout(() => this.statusMessage = '', 5000);
-      this.clearMessage();
-    },
-    clearMessage: function () {
-      this.to = '';
-      this.subject = '';
-      this.body = '';
-    }
-  }
-});
-
-/***/ }),
-/* 133 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(134);
+var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -16170,7 +16035,7 @@ if(false) {
 }
 
 /***/ }),
-/* 134 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(true);
@@ -16184,7 +16049,7 @@ exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: 
 
 
 /***/ }),
-/* 135 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16334,6 +16199,138 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
   }
 }
+
+/***/ }),
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(132);
+
+
+/***/ }),
+/* 132 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_js__ = __webpack_require__(4);
+
+
+
+const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#app',
+  components: {
+    'users-selector': __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__["a" /* default */]
+  },
+  data: {
+    statusMessage: '',
+    to: '',
+    subject: '',
+    body: '',
+    usersTo: []
+  },
+  computed: {
+    toNameList: function () {
+      return this.usersTo.reduce((str, user) => `${str ? str + ', ' : ''}${user.firstName} ${user.lastName}`, '');
+    }
+  },
+  methods: {
+    selectUsers: function (users) {
+      this.usersTo = users;
+    },
+    send: async function (toString, subject, body) {
+      let users = this.usersTo.map(user => {
+        return {
+          username: user.username
+        };
+      });
+      let message = {
+        to: users,
+        subject: subject,
+        body: body
+      };
+      let response = await __WEBPACK_IMPORTED_MODULE_2__api_js__["E" /* sendMessage */](message);
+      this.statusMessage = response;
+      setTimeout(() => this.statusMessage = '', 5000);
+      this.clearMessage();
+    },
+    clearMessage: function () {
+      this.to = '';
+      this.subject = '';
+      this.body = '';
+    }
+  }
+});
 
 /***/ })
 /******/ ]);
