@@ -120,7 +120,7 @@ module.exports.getFullName = getFullName;
  * @param  {String} username
  * @return {Object}
  */
-async function getUserInformation(username) {
+async function getUser(username) {
     const user = await Users.findOne({ username: username }).lean().exec();
     const skillGroups = skillGroup.getFromAgentGroup(user.agentGroups[0]);
     const skills = uniq(flatten(skillGroups.map((group) => group.skills)));
@@ -131,7 +131,8 @@ async function getUserInformation(username) {
         skillGroups: skillGroupNames
     });
 }
-module.exports.getUserInformation = getUserInformation;
+module.exports.getUserInformation = getUser;
+module.exports.getUser = getUser;
 
 /**
  * Returns array of all Agent Groups user is assigned to

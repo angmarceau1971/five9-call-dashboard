@@ -60,27 +60,27 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 113);
+/******/ 	return __webpack_require__(__webpack_require__.s = 118);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 113:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(114);
+module.exports = __webpack_require__(119);
 
 
 /***/ }),
 
-/***/ 114:
+/***/ 119:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maps__ = __webpack_require__(120);
 
 
  // General functions to initiate the call map dashboard.
@@ -304,7 +304,7 @@ function reportTimeRange() {
 
 /***/ }),
 
-/***/ 115:
+/***/ 120:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -438,7 +438,7 @@ class CallMap {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

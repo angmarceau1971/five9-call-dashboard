@@ -3,6 +3,9 @@
     width: 400px;
     margin: 2em;
 }
+.message-form p {
+    width: calc(100% - 4em);
+}
 .message-form .body {
     height: 5em;
 }

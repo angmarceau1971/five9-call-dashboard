@@ -25,7 +25,7 @@
             </select>
         </div>
 
-        <div class="refresh-button-wrapper">
+        <div class="refresh-button-wrapper" v-if="showRefresh">
             <button class="refresh-button" @click="clickRefresh">
                 <i class="fas fa-sync-alt"></i> Refresh
             </button>
@@ -42,6 +42,11 @@ const intersection = require('ramda/src/intersection');
 
 export default {
     name: 'users-selector',
+    props: {
+        showRefresh: {
+            default: true
+        }
+    },
     data () {
         return {
             userList: [],

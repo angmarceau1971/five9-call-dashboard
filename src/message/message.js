@@ -1,6 +1,7 @@
 const clone = require('ramda/src/clone');
 const intersection = require('ramda/src/intersection');
 const log = require('../utility/log');
+const users = require('../authentication/users');
 const moment = require('moment');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -16,6 +17,9 @@ const messageSchema = mongoose.Schema({
     },
     // username of sender
     from: {
+        type: String
+    },
+    fromName: {
         type: String
     },
     // array of recipients' usernames, and if they've read the message
@@ -42,6 +46,8 @@ const Messages = mongoose.model('Messages', messageSchema);
  * @return {[type]}         [description]
  */
 async function send(message) {
+    let from = await users.getUser(message.from);
+    message.fromName = `${from.firstName} ${from.lastName}`;
     let newMessage = new Messages(message);
     return Messages.create(newMessage);
 }

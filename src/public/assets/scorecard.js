@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 50);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -203,33 +203,6 @@ module.exports = function normalizeComponent (
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -309,7 +282,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -537,7 +510,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1127,6 +1100,33 @@ function getParameters(requestType) {
 }
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1541,7 +1541,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("571a7959", content, false, {});
+var update = __webpack_require__(3)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1560,7 +1560,7 @@ if(false) {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -12493,7 +12493,7 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(20).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(20).setImmediate))
 
 /***/ }),
 /* 20 */
@@ -12560,7 +12560,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 21 */
@@ -12753,7 +12753,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(22)))
 
 /***/ }),
 /* 22 */
@@ -12951,7 +12951,7 @@ process.umask = function() { return 0; };
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 
 let comparators = {
   '>=': (value, goal) => value >= goal,
@@ -13040,7 +13040,7 @@ function isNumberType(fieldType) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(35);
 /* unused harmony namespace reexport */
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
@@ -13088,44 +13088,6 @@ if (false) {(function () {
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
-
-/**
- * Optimized internal two-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry2(fn) {
-  return function f2(a, b) {
-    switch (arguments.length) {
-      case 0:
-        return f2;
-      case 1:
-        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-          return fn(a, _b);
-        });
-      default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-          return fn(_a, b);
-        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-          return fn(a, _b);
-        }) : fn(a, b);
-    }
-  };
-}
-module.exports = _curry2;
-
-/***/ }),
-/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13133,8 +13095,8 @@ module.exports = _curry2;
 /* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(28);
 /**
  * This module controls interaction with the server.
@@ -13150,13 +13112,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 const clone = __webpack_require__(7);
 
-const intersection = __webpack_require__(36);
+const intersection = __webpack_require__(29);
 
 const isEmpty = __webpack_require__(41);
 
-const uniq = __webpack_require__(30);
+const uniq = __webpack_require__(31);
 
-const sift = __webpack_require__(78);
+const sift = __webpack_require__(79);
 /**
  * This Vuex store is the ultimate source of truth. It handles all access to
  * data and interactions with the server.
@@ -13451,6 +13413,44 @@ function extractValues(objectArray, prop) {
 }
 
 /***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
 /* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13461,7 +13461,7 @@ function extractValues(objectArray, prop) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
 /* harmony export (immutable) */ __webpack_exports__["c"] = sum;
 /* unused harmony export fieldsToServer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 /**
  * Handle expression parsing for calculated fields.
  */
@@ -13655,7 +13655,7 @@ function fieldsToServer(fields) {
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
 /* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 
 
 const clone = __webpack_require__(7);
@@ -13818,6 +13818,52 @@ function props(array, property) {
 
 /***/ }),
 /* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(37);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+var _filter = /*#__PURE__*/__webpack_require__(67);
+
+var flip = /*#__PURE__*/__webpack_require__(68);
+
+var uniq = /*#__PURE__*/__webpack_require__(31);
+
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of those
+ * elements common to both lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The list of elements found in both `list1` and `list2`.
+ * @see R.innerJoin
+ * @example
+ *
+ *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+ */
+
+
+var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
+  var lookupList, filteredList;
+  if (list1.length > list2.length) {
+    lookupList = list1;
+    filteredList = list2;
+  } else {
+    lookupList = list2;
+    filteredList = list1;
+  }
+  return uniq(_filter(flip(_contains)(lookupList), filteredList));
+});
+module.exports = intersection;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
@@ -13826,12 +13872,12 @@ function _has(prop, obj) {
 module.exports = _has;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = /*#__PURE__*/__webpack_require__(70);
+var identity = /*#__PURE__*/__webpack_require__(71);
 
-var uniqBy = /*#__PURE__*/__webpack_require__(72);
+var uniqBy = /*#__PURE__*/__webpack_require__(73);
 
 /**
  * Returns a new list containing only one copy of each element in the original
@@ -13856,17 +13902,17 @@ var uniq = /*#__PURE__*/uniqBy(identity);
 module.exports = uniq;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(42);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(83);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(80)
+  __webpack_require__(81)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -13912,12 +13958,12 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(47);
 //
 //
@@ -14036,16 +14082,16 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(47);
 //
@@ -14254,11 +14300,11 @@ if (false) {(function () {
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(56);
 //
 //
 //
@@ -14295,7 +14341,7 @@ function uuidv4() {
 }
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14409,56 +14455,10 @@ const clone = __webpack_require__(7);
 });
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _contains = /*#__PURE__*/__webpack_require__(37);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
-
-var _filter = /*#__PURE__*/__webpack_require__(66);
-
-var flip = /*#__PURE__*/__webpack_require__(67);
-
-var uniq = /*#__PURE__*/__webpack_require__(30);
-
-/**
- * Combines two lists into a set (i.e. no duplicates) composed of those
- * elements common to both lists.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Relation
- * @sig [*] -> [*] -> [*]
- * @param {Array} list1 The first list.
- * @param {Array} list2 The second list.
- * @return {Array} The list of elements found in both `list1` and `list2`.
- * @see R.innerJoin
- * @example
- *
- *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
- */
-
-
-var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
-  var lookupList, filteredList;
-  if (list1.length > list2.length) {
-    lookupList = list1;
-    filteredList = list2;
-  } else {
-    lookupList = list2;
-    filteredList = list1;
-  }
-  return uniq(_filter(flip(_contains)(lookupList), filteredList));
-});
-module.exports = intersection;
-
-/***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _indexOf = /*#__PURE__*/__webpack_require__(59);
+var _indexOf = /*#__PURE__*/__webpack_require__(60);
 
 function _contains(a, list) {
   return _indexOf(list, a, 0) >= 0;
@@ -14469,9 +14469,9 @@ module.exports = _contains;
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
-var _equals = /*#__PURE__*/__webpack_require__(60);
+var _equals = /*#__PURE__*/__webpack_require__(61);
 
 /**
  * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
@@ -14509,7 +14509,7 @@ module.exports = equals;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _has = /*#__PURE__*/__webpack_require__(29);
+var _has = /*#__PURE__*/__webpack_require__(30);
 
 var toString = Object.prototype.toString;
 var _isArguments = function () {
@@ -14585,7 +14585,7 @@ module.exports = _arity;
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var empty = /*#__PURE__*/__webpack_require__(74);
+var empty = /*#__PURE__*/__webpack_require__(75);
 
 var equals = /*#__PURE__*/__webpack_require__(38);
 
@@ -14778,7 +14778,7 @@ function getNotReadyPercentage(data) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(23);
@@ -15203,7 +15203,7 @@ const props = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(23);
@@ -15603,24 +15603,141 @@ function sortOrder(a, b, event, dropId, el) {
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __webpack_require__(50);
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
+
+
+const intersection = __webpack_require__(29);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  name: 'users-selector',
+  props: {
+    showRefresh: {
+      default: true
+    }
+  },
+
+  data() {
+    return {
+      userList: [],
+      selectedUsernames: [],
+      selectedAgentGroups: [],
+      agentGroups: [],
+      message: ''
+    };
+  },
+
+  mounted: async function () {
+    this.userList = await this.loadUsersList();
+    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+  },
+  methods: {
+    clickRefresh: function () {
+      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
+        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
+      } else {
+        this.message = '';
+        this.$emit('refresh');
+      }
+    },
+    // Load list of users
+    loadUsersList: async function () {
+      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["y" /* getUsers */]();
+      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+      return userList;
+    },
+    // Return users who are within the selectedAgentGroups
+    filterUsersInGroup: function (users) {
+      if (this.selectedAgentGroups.length == 0) return users;
+      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
+    },
+    // If a user is part of multiple groups, list them next to user's name
+    getUserSelectionString: function (user) {
+      let groupString = '';
+
+      if (user.agentGroups.length > 1) {
+        groupString = ` - ${user.agentGroups.join(', ')}`;
+      }
+
+      return `${user.lastName}, ${user.firstName}${groupString}`;
+    },
+    // From the passed-in users, return array of agent groups
+    getAgentGroupsFromUsers: function (users) {
+      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
+    },
+    // Filter for agents within an agent group
+    selectAgentGroups: async function (agentGroups) {
+      // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
+      this.selectedAgentGroups = agentGroups;
+    },
+    // Get users from usernames
+    getUsers: function (usernames) {
+      return usernames.map(username => this.userList.find(user => user.username == username));
+    }
+  }
+});
 
 /***/ }),
 /* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(51);
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_editor_table_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_selector_vue__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hub__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__api__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_selector_vue__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hub__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__api__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__scorecard_format__ = __webpack_require__(23);
 
 
@@ -15634,11 +15751,11 @@ const isEmpty = __webpack_require__(41);
 
 const clone = __webpack_require__(7);
 
-const uniq = __webpack_require__(30);
+const uniq = __webpack_require__(31);
 
-const intersection = __webpack_require__(36);
+const intersection = __webpack_require__(29);
 
-const debounce = __webpack_require__(105);
+const debounce = __webpack_require__(110);
 
 const store = __WEBPACK_IMPORTED_MODULE_4__hub__["b" /* store */];
 const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -15973,13 +16090,13 @@ function isDescendant(parent, child) {
 }
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(33);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(105);
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -16025,17 +16142,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(34);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(100);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(53)
+  __webpack_require__(54)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -16081,17 +16198,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(54);
+var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("1e5068c2", content, false, {});
+var update = __webpack_require__(3)("1e5068c2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -16107,10 +16224,10 @@ if(false) {
 }
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -16121,17 +16238,17 @@ exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-co
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(36);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(80);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(56)
+  __webpack_require__(57)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -16177,17 +16294,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(57);
+var content = __webpack_require__(58);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("208c43bc", content, false, {});
+var update = __webpack_require__(3)("208c43bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -16203,10 +16320,10 @@ if(false) {
 }
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -16217,7 +16334,7 @@ exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    to
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17161,7 +17278,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var equals = /*#__PURE__*/__webpack_require__(38);
@@ -17223,20 +17340,20 @@ function _indexOf(list, a, idx) {
 module.exports = _indexOf;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(61);
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(62);
 
-var _containsWith = /*#__PURE__*/__webpack_require__(62);
+var _containsWith = /*#__PURE__*/__webpack_require__(63);
 
-var _functionName = /*#__PURE__*/__webpack_require__(63);
+var _functionName = /*#__PURE__*/__webpack_require__(64);
 
-var _has = /*#__PURE__*/__webpack_require__(29);
+var _has = /*#__PURE__*/__webpack_require__(30);
 
-var identical = /*#__PURE__*/__webpack_require__(64);
+var identical = /*#__PURE__*/__webpack_require__(65);
 
-var keys = /*#__PURE__*/__webpack_require__(65);
+var keys = /*#__PURE__*/__webpack_require__(66);
 
 var type = /*#__PURE__*/__webpack_require__(11);
 
@@ -17384,7 +17501,7 @@ function _equals(a, b, stackA, stackB) {
 module.exports = _equals;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 function _arrayFromIterator(iter) {
@@ -17398,7 +17515,7 @@ function _arrayFromIterator(iter) {
 module.exports = _arrayFromIterator;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 function _containsWith(pred, x, list) {
@@ -17416,7 +17533,7 @@ function _containsWith(pred, x, list) {
 module.exports = _containsWith;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 function _functionName(f) {
@@ -17427,10 +17544,10 @@ function _functionName(f) {
 module.exports = _functionName;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
 /**
  * Returns true if its arguments are identical, false otherwise. Values are
@@ -17471,12 +17588,12 @@ var identical = /*#__PURE__*/_curry2(function identical(a, b) {
 module.exports = identical;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var _has = /*#__PURE__*/__webpack_require__(29);
+var _has = /*#__PURE__*/__webpack_require__(30);
 
 var _isArguments = /*#__PURE__*/__webpack_require__(39);
 
@@ -17551,7 +17668,7 @@ var keys = /*#__PURE__*/_curry1(_keys);
 module.exports = keys;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 function _filter(fn, list) {
@@ -17570,12 +17687,12 @@ function _filter(fn, list) {
 module.exports = _filter;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var curryN = /*#__PURE__*/__webpack_require__(68);
+var curryN = /*#__PURE__*/__webpack_require__(69);
 
 /**
  * Returns a new function much like the supplied one, except that the first two
@@ -17610,16 +17727,16 @@ var flip = /*#__PURE__*/_curry1(function flip(fn) {
 module.exports = flip;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _arity = /*#__PURE__*/__webpack_require__(40);
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
-var _curryN = /*#__PURE__*/__webpack_require__(69);
+var _curryN = /*#__PURE__*/__webpack_require__(70);
 
 /**
  * Returns a curried equivalent of the provided function, with the specified
@@ -17674,7 +17791,7 @@ var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
 module.exports = curryN;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _arity = /*#__PURE__*/__webpack_require__(40);
@@ -17719,12 +17836,12 @@ function _curryN(length, received, fn) {
 module.exports = _curryN;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var _identity = /*#__PURE__*/__webpack_require__(71);
+var _identity = /*#__PURE__*/__webpack_require__(72);
 
 /**
  * A function that does nothing but return the parameter supplied to it. Good
@@ -17751,7 +17868,7 @@ var identity = /*#__PURE__*/_curry1(_identity);
 module.exports = identity;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
 function _identity(x) {
@@ -17760,12 +17877,12 @@ function _identity(x) {
 module.exports = _identity;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _Set = /*#__PURE__*/__webpack_require__(73);
+var _Set = /*#__PURE__*/__webpack_require__(74);
 
-var _curry2 = /*#__PURE__*/__webpack_require__(25);
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
 
 /**
  * Returns a new list containing only one copy of each element in the original
@@ -17806,7 +17923,7 @@ var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
 module.exports = uniqBy;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _contains = /*#__PURE__*/__webpack_require__(37);
@@ -17985,18 +18102,18 @@ function hasOrAdd(item, shouldAdd, set) {
 module.exports = _Set;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
 var _isArguments = /*#__PURE__*/__webpack_require__(39);
 
-var _isArray = /*#__PURE__*/__webpack_require__(75);
+var _isArray = /*#__PURE__*/__webpack_require__(76);
 
-var _isObject = /*#__PURE__*/__webpack_require__(76);
+var _isObject = /*#__PURE__*/__webpack_require__(77);
 
-var _isString = /*#__PURE__*/__webpack_require__(77);
+var _isString = /*#__PURE__*/__webpack_require__(78);
 
 /**
  * Returns the empty value of its argument's type. Ramda defines the empty
@@ -18033,7 +18150,7 @@ var empty = /*#__PURE__*/_curry1(function empty(x) {
 module.exports = empty;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports) {
 
 /**
@@ -18053,7 +18170,7 @@ module.exports = Array.isArray || function _isArray(val) {
 };
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 function _isObject(x) {
@@ -18062,7 +18179,7 @@ function _isObject(x) {
 module.exports = _isObject;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 function _isString(x) {
@@ -18071,7 +18188,7 @@ function _isString(x) {
 module.exports = _isString;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports) {
 
 /*
@@ -18660,7 +18777,7 @@ module.exports = _isString;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18867,17 +18984,17 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("9c7d97ce", content, false, {});
+var update = __webpack_require__(3)("9c7d97ce", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -18893,10 +19010,10 @@ if(false) {
 }
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -18907,7 +19024,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18988,17 +19105,17 @@ if (false) {
 }
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(43);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(87);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(84)
+  __webpack_require__(85)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -19044,17 +19161,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("3a8ea719", content, false, {});
+var update = __webpack_require__(3)("3a8ea719", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19070,10 +19187,10 @@ if(false) {
 }
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -19084,7 +19201,7 @@ exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19251,17 +19368,17 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(44);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(91);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(88)
+  __webpack_require__(89)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -19307,17 +19424,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(89);
+var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("69ee75ae", content, false, {});
+var update = __webpack_require__(3)("69ee75ae", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19333,10 +19450,10 @@ if(false) {
 }
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -19347,7 +19464,7 @@ exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 1
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19415,17 +19532,17 @@ if (false) {
 }
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(45);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(95);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(92)
+  __webpack_require__(93)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -19471,17 +19588,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(93);
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("07cfff32", content, false, {});
+var update = __webpack_require__(3)("07cfff32", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19497,10 +19614,10 @@ if(false) {
 }
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -19511,7 +19628,7 @@ exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19616,17 +19733,17 @@ if (false) {
 }
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__ = __webpack_require__(46);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(99);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(96)
+  __webpack_require__(97)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -19672,17 +19789,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(97);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("0b9ae522", content, false, {});
+var update = __webpack_require__(3)("0b9ae522", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19698,10 +19815,10 @@ if(false) {
 }
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -19712,7 +19829,7 @@ exports.push([module.i, "\ndiv[data-v-27782583] {\r\n    text-align: center;\n}\
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19738,7 +19855,7 @@ if (false) {
 }
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19909,17 +20026,17 @@ if (false) {
 }
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(48);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(104);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(101)
+  __webpack_require__(102)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -19965,17 +20082,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(102);
+var content = __webpack_require__(103);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("fff1ea5c", content, false, {});
+var update = __webpack_require__(3)("fff1ea5c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -19991,10 +20108,10 @@ if(false) {
 }
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -20005,7 +20122,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20090,7 +20207,7 @@ if (false) {
 }
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20155,218 +20272,17 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
-/***/ (function(module, exports) {
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-
-module.exports = function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
-};
-
-
-/***/ }),
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(26);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-const intersection = __webpack_require__(36);
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  name: 'users-selector',
-
-  data() {
-    return {
-      userList: [],
-      selectedUsernames: [],
-      selectedAgentGroups: [],
-      agentGroups: [],
-      message: ''
-    };
-  },
-
-  mounted: async function () {
-    this.userList = await this.loadUsersList();
-    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-  },
-  methods: {
-    clickRefresh: function () {
-      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
-        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
-      } else {
-        this.message = '';
-        this.$emit('refresh');
-      }
-    },
-    // Load list of users
-    loadUsersList: async function () {
-      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["y" /* getUsers */]();
-      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
-      return userList;
-    },
-    // Return users who are within the selectedAgentGroups
-    filterUsersInGroup: function (users) {
-      if (this.selectedAgentGroups.length == 0) return users;
-      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
-    },
-    // If a user is part of multiple groups, list them next to user's name
-    getUserSelectionString: function (user) {
-      let groupString = '';
-
-      if (user.agentGroups.length > 1) {
-        groupString = ` - ${user.agentGroups.join(', ')}`;
-      }
-
-      return `${user.lastName}, ${user.firstName}${groupString}`;
-    },
-    // From the passed-in users, return array of agent groups
-    getAgentGroupsFromUsers: function (users) {
-      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
-    },
-    // Filter for agents within an agent group
-    selectAgentGroups: async function (agentGroups) {
-      // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
-      this.selectedAgentGroups = agentGroups;
-    },
-    // Get users from usernames
-    getUsers: function (usernames) {
-      return usernames.map(username => this.userList.find(user => user.username == username));
-    }
-  }
-});
-
-/***/ }),
-/* 124 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(49);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(109);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(125)
+  __webpack_require__(107)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
@@ -20412,17 +20328,17 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 125 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(126);
+var content = __webpack_require__(108);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("d19f9c92", content, false, {});
+var update = __webpack_require__(3)("d19f9c92", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -20438,21 +20354,21 @@ if(false) {
 }
 
 /***/ }),
-/* 126 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
 // module
-exports.push([module.i, "\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\n}\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AA4GA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\n}\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAiHA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 127 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20573,19 +20489,21 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "refresh-button-wrapper" }, [
-            _c(
-              "button",
-              {
-                staticClass: "refresh-button",
-                on: { click: _vm.clickRefresh }
-              },
-              [
-                _c("i", { staticClass: "fas fa-sync-alt" }),
-                _vm._v(" Refresh\r\n            ")
-              ]
-            )
-          ])
+          _vm.showRefresh
+            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "refresh-button",
+                    on: { click: _vm.clickRefresh }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                    _vm._v(" Refresh\r\n            ")
+                  ]
+                )
+              ])
+            : _vm._e()
         ])
       : _vm._e()
   ])
@@ -20600,6 +20518,78 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
   }
 }
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
 
 /***/ })
 /******/ ]);

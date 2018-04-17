@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 108);
+/******/ 	return __webpack_require__(__webpack_require__.s = 113);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -213,20 +213,59 @@ module.exports = _isPlaceholder;
 
 /***/ }),
 
-/***/ 108:
+/***/ 11:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(109);
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      R.type({}); //=> "Object"
+ *      R.type(1); //=> "Number"
+ *      R.type(false); //=> "Boolean"
+ *      R.type('s'); //=> "String"
+ *      R.type(null); //=> "Null"
+ *      R.type([]); //=> "Array"
+ *      R.type(/[A-z]/); //=> "RegExp"
+ *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
+ */
+
+
+var type = /*#__PURE__*/_curry1(function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+});
+module.exports = type;
+
+/***/ }),
+
+/***/ 113:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(114);
 
 
 /***/ }),
 
-/***/ 109:
+/***/ 114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_editor_table_vue__ = __webpack_require__(15);
 
 
@@ -278,45 +317,6 @@ const vm = new Vue({
     }
   }
 });
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-/**
- * Gives a single-word string description of the (native) type of a value,
- * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
- * attempt to distinguish user Object types any further, reporting them all as
- * 'Object'.
- *
- * @func
- * @memberOf R
- * @since v0.8.0
- * @category Type
- * @sig (* -> {*}) -> String
- * @param {*} val The value to test
- * @return {String}
- * @example
- *
- *      R.type({}); //=> "Object"
- *      R.type(1); //=> "Number"
- *      R.type(false); //=> "Boolean"
- *      R.type('s'); //=> "String"
- *      R.type(null); //=> "Null"
- *      R.type([]); //=> "Array"
- *      R.type(/[A-z]/); //=> "RegExp"
- *      R.type(() => {}); //=> "Function"
- *      R.type(undefined); //=> "Undefined"
- */
-
-
-var type = /*#__PURE__*/_curry1(function type(val) {
-  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
-});
-module.exports = type;
 
 /***/ }),
 
@@ -484,7 +484,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("571a7959", content, false, {});
+var update = __webpack_require__(3)("571a7959", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -504,7 +504,7 @@ if(false) {
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(true);
+exports = module.exports = __webpack_require__(2)(true);
 // imports
 
 
@@ -637,7 +637,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 3:
+/***/ 2:
 /***/ (function(module, exports) {
 
 /*
@@ -720,7 +720,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -949,7 +949,7 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

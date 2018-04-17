@@ -15,9 +15,13 @@
     </head>
 
     <body>
-
     <div id="app" class="content-wrapper">
         <h1>Messenger</h1>
+        <users-selector
+            :show-refresh="false"
+            @select-users="selectUsers"
+        ></users-selector>
+
         <div class="section statusMessage"
             v-show="statusMessage"
         >
@@ -25,8 +29,8 @@
         </div>
 
         <div class="section message-form">
-            <input v-model="to" placeholder="To: usernames separated by commas" />
-            <input v-model="subject" placeholder="Optional subject" />
+            <p>To: {{ toNameList }}</p>
+            <!-- <input v-model="subject" placeholder="Optional subject" /> -->
             <textarea class="body" v-model="body" placeholder="Message body"></textarea>
             <button @click="send(to, subject, body)">Send</button>
         </div>

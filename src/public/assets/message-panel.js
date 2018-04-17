@@ -60,65 +60,1299 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 121);
+/******/ 	return __webpack_require__(__webpack_require__.s = 126);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 121:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(122);
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+module.exports = _curry1;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports) {
 
-/***/ 122:
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(12)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
+/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
+/* unused harmony export getMessages */
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
+/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
+/* unused harmony export getParameters */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
+ ////////////////////////////////////////////////////////////////
+// Functions to retrieve and extract data from Five9.
+// These functions interact with our server, which houses data
+// and formats data originating in Five9 reports.
+////////////////////////////////////////////////////////////////
+// Get agent/ACD statistics
 
-const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#app',
-  data: {
-    statusMessage: '',
-    to: '',
-    subject: '',
-    body: ''
-  },
-  methods: {
-    send: async function (toString, subject, body) {
-      let users = toString.split(',').map(username => {
-        return {
-          username: username
-        };
-      });
-      let message = {
-        to: users,
-        subject: subject,
-        body: body
-      };
-      let response = await __WEBPACK_IMPORTED_MODULE_1__api_js__["D" /* sendMessage */](message);
-      this.statusMessage = response;
-      setTimeout(() => this.statusMessage = '', 5000);
-      this.clearMessage();
-    },
-    clearMessage: function () {
-      this.to = '';
-      this.subject = '';
-      this.body = '';
+async function getStatistics(filter) {
+  const response = await request(filter, 'statistics');
+  return response.json();
+} // Get real-time stats
+
+async function queueStats() {
+  return getData({}, 'queue-stats');
+}
+/**
+ * Get CSV string of report results from Five9
+ * @param  {Object} params
+ * @param  {String} type   endpoint: `maps` or `service-level`
+ * @return {Promise -> Object}        JSON data
+ */
+
+function getReportResults(params, type) {
+  return getData(params, `reports/${type}`);
+}
+/**
+ * Pull Looker data from given Look
+ * @param  {String} lookId
+ * @return {Object} JSON data
+ */
+
+async function getLookerData(lookId) {
+  let response = await request({
+    lookId: lookId
+  }, 'looker');
+  return await response.json();
+}
+async function getLogs(query) {
+  let response = await request({
+    query: query
+  }, 'logs');
+  return await response.json();
+} ///////////////////////////////////////////////////////////////////////
+// Users
+
+/**
+ * Return user information from username.
+ * @param  {String} username if blank, will return currently logged-in user's
+ *                           data
+ * @return {Promise -> Object} User's object
+ */
+
+async function getUserInformation(username = '') {
+  let path = username ? `users/data/${username}` : `users/data`;
+  const response = await request({}, path, 'GET');
+  return response.json();
+}
+/**
+ * Set a user's theme preferences.
+ * @param  {String} username
+ * @param  {Object} newTheme with theme fields
+ * @return {Promise -> String} response message
+ */
+
+async function updateUserTheme(username, newTheme) {
+  const response = await request({
+    username: username,
+    newTheme: newTheme
+  }, `users/theme`, 'PATCH');
+  return response.text();
+} // Admin users
+
+async function getAdminUsers() {
+  let response = await request({}, 'users/admin', 'GET');
+  let users = await response.json();
+  console.log(users);
+  return users;
+}
+async function updateAdminUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/admin', 'PATCH');
+  return response.text();
+} // Supervisor users
+
+async function getSupervisorUsers() {
+  let response = await request({}, 'users/supervisor', 'GET');
+  let users = await response.json();
+  console.log(users);
+  return users;
+}
+async function updateSupervisorUser(user) {
+  let response = await request({
+    user: user
+  }, 'users/supervisor', 'PATCH');
+  return response.text();
+} // Get list of all users
+
+async function getUsers() {
+  let response = await request({}, 'users', 'GET');
+  return response.json();
+}
+/**
+ * Get list of users who have been active within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Object]} promise resolving to array of user objects
+ */
+
+async function getActiveUsers(interval) {
+  let response = await request({}, `users/active/${interval}`, 'GET');
+  return response.json();
+} ///////////////////////////////////////////////////////////////////////
+// Messages
+
+/**
+ * Send a message
+ * @param  {Object} message with fields to, subject, and body
+ * @return {String} response from server
+ */
+
+async function sendMessage(message) {
+  let response = await request({
+    message: message
+  }, 'message/send', 'POST');
+  return response.text();
+}
+/**
+ * Return current user's messages
+ * @return {[Object]} array of message objects
+ */
+
+async function getMessages() {
+  let response = await request({}, 'message', 'POST');
+  return response.json();
+}
+/**
+ * Return current user's unread messages
+ * @return {[Object]} array of message objects
+ */
+
+async function getUnreadMessages() {
+  let response = await request({
+    hasRead: false
+  }, 'message', 'POST');
+  return response.json();
+}
+/**
+ * Flag a message as "read"
+ * @return {String} success message
+ */
+
+async function markMessageRead(message, hasRead = true) {
+  let response = await request({
+    id: message._id,
+    hasRead: true
+  }, 'message/mark-read', 'PATCH');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Fields
+
+/**
+ * List of available fields for widgets.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getFieldList() {
+  let response = await request({}, 'fields', 'GET');
+  return response.json();
+}
+/**
+ * Updates a field on server.
+ * @param  {Object}  field new object
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function updateField(field) {
+  let response = await request({
+    field: field
+  }, 'fields', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a field from server.
+ * @param  {Object}  field object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteField(field) {
+  let response = await request({
+    field: field
+  }, 'fields', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Goals
+
+/**
+ * List of all goals.
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalList() {
+  let response = await request({}, 'goals', 'POST');
+  return response.json();
+}
+/**
+ * List of goals that apply to the given agent group(s).
+ * @param  {Array of Strings}   agentGroups
+ * @return {Promise} resolves to array of goal objects
+ */
+
+async function getGoalsForAgentGroups(agentGroups) {
+  let response = await request({
+    agentGroups: agentGroups
+  }, 'goals', 'POST');
+  return response.json();
+}
+/**
+ * Updates a goal on server.
+ * @param  {Object}  goal new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a goal from server.
+ * @param  {Object}  goal object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteGoal(goal) {
+  let response = await request({
+    goal: goal
+  }, 'goals', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Layouts
+
+/**
+ * Get scorecard JSON layout for given agent group(s) and type.
+ * @param  {Array of Strings} agentGroups user's agent groups
+ * @param  {String} type either team or individual layout
+ * @return {Object}
+ */
+
+async function getLayout(agentGroups, type) {
+  let response = await request({
+    agentGroups: agentGroups,
+    type: type
+  }, 'layout');
+  return await response.json();
+}
+/**
+ * List of all layouts.
+ * @return {Promise} resolves to array of layout objects
+ */
+
+async function getLayoutList() {
+  let response = await request({}, 'layouts', 'POST');
+  return response.json();
+}
+/**
+ * Updates a layout on server.
+ * @param  {Object}  layout new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a layout from server.
+ * @param  {Object}  layout object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteLayout(layout) {
+  let response = await request({
+    layout: layout
+  }, 'layouts', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Datasources' settings
+
+/**
+ * List of all datasources.
+ * @return {Promise} resolves to array of datasource objects
+ */
+
+async function getDatasources() {
+  let response = await request({}, 'datasources', 'GET');
+  return response.json();
+}
+/**
+ * Updates a datasource on server.
+ * @param  {Object}  datasource new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateDatasource(datasource) {
+  let response = await request({
+    datasource: datasource
+  }, 'datasources', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a datasource from server.
+ * @param  {Object}  datasource object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteDatasource(datasource) {
+  let response = await request({
+    datasource: datasource
+  }, 'datasources', 'DELETE');
+  return response.text();
+}
+/**
+ * Get skill groups with associated names, agentGroups and skills
+ * @return {Promise -> [Object]} array of objects from SkillGroup table
+ */
+
+async function getSkillGroups() {
+  let response = await request({}, 'skill-group', 'GET');
+  return response.json();
+} ///////////////////////////////////////////////////////////////////////
+// 'Helpful Links'
+
+/**
+ * List of all links.
+ * @return {Promise} resolves to array of link objects
+ */
+
+async function getLinkList() {
+  let response = await request({}, 'links', 'POST');
+  return response.json();
+}
+/**
+ * Updates a link on server.
+ * @param  {Object}  link new object
+ * @return {Promise} resolves to response message
+ */
+
+async function updateLink(link) {
+  let response = await request({
+    link: link
+  }, 'links', 'PUT');
+  return response.text();
+}
+/**
+ * Delete a link from server.
+ * @param  {Object}  link object to remove
+ * @return {Promise} resolves to response message
+ */
+
+async function deleteLink(link) {
+  let response = await request({
+    link: link
+  }, 'links', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Skilling jobs
+
+/**
+ * List of available scheduled skilling jobs.
+ * @return {Promise} resolves to array of field objects
+ */
+
+async function getSkillJobs() {
+  let response = await request({}, 'skill', 'GET');
+  return response.json();
+}
+/**
+ * Updates a scheduled skilling job on server.
+ * @param  {Object}  job new object
+ * @return {Promise} resolves to server's response
+ */
+
+async function updateSkillJob(job) {
+  // format data
+  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
+
+  ['addSkills', 'removeSkills'].map(prop => {
+    let skills = job.data[prop];
+
+    if (typeof skills == 'string') {
+      job.data[prop] = format(skills);
     }
+  });
+  let response = await request({
+    job: job,
+    data: job.data
+  }, 'skill', 'PUT');
+  return response.text();
+}
+/**
+ * Delete the given skilling job object.
+ * @param  {Object} job
+ * @return {Promise} resolves to response from server
+ */
+
+async function deleteSkillJob(job) {
+  let response = await request({
+    job: job
+  }, 'skill', 'DELETE');
+  return response.text();
+} ///////////////////////////////////////////////////////////////////////
+// Server utilities
+
+async function rebootServer() {
+  const response = await request({}, 'reboot-server', 'POST');
+  return response.text();
+}
+async function reloadData(params) {
+  const response = await request(params, 'reload-data', 'POST');
+  return response.text();
+}
+/**
+ * Upload CSV file to custom data source.
+ * @param  {Object} params including fields datasourceName and csv
+ * @return {Promise}       resolves to string (server response message)
+ */
+
+async function uploadData(params) {
+  try {
+    const response = await request(params, 'upload-data', 'POST');
+    return await response.text();
+  } catch (err) {
+    return err.message;
   }
-});
+} ///////////////////////////////////////////////////////////////////////
+// Request helpers
+///////////////////////////////////////////////////////////////////////
+
+/**
+ *  Helper function that pulls credentials from DOM, then makes request to server.
+ * @param  {Object} parameters POSTed to server
+ * @param  {String} endpoint   at server's API
+ * @return {Object}            JSON data
+ */
+
+async function getData(parameters, endpoint) {
+  const response = await request(parameters, endpoint);
+  return await response.json();
+}
+/**
+ * Make a request to server with given parameters.
+ * @param  {Object} parameters passed as body of request
+ * @param  {String} [url='statistics'] endpoint on server
+ * @param  {String} [method='POST'] HTTP action
+ * @return {Promise} response from server
+ */
+
+
+async function request(parameters, url = 'statistics', method = 'POST') {
+  const apiURL = __WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + url; // defined in api_url.js
+
+  const requestOptions = {
+    method: method,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  };
+
+  if (method != 'GET') {
+    requestOptions.body = JSON.stringify(parameters);
+  }
+
+  return fetch(apiURL, requestOptions).then(async response => {
+    if (response.status == 504) notifyServer504(parameters, url); // debugging
+
+    if (!response.ok) {
+      let bodyText = await response.text();
+      throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
+    }
+
+    return response;
+  });
+}
+
+async function notifyServer504() {
+  return fetch(__WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + 'notify-504');
+} // Gets the actual returned value/data out of JSON from the server.
+
+
+function jsonToReturnValue(json, type) {
+  return json['env:Envelope']['env:Body'][0]['ns2:' + type + 'Response'][0]['return'][0];
+} // takes JSON from server and returns text within 'faultstring' tag (if existant)
+
+
+function getFaultStringFromData(data) {
+  try {
+    return data['env:Envelope']['env:Body'][0]['env:Fault'][0]['faultstring'];
+  } catch (err) {
+    return '';
+  }
+} // Given a requestType, returns JSON to submit to server in POST request.
+// requestType should match Five9 API command.
+
+
+function getParameters(requestType) {
+  let params = {}; // Initiate session
+
+  if (requestType == 'setSessionParameters') {
+    params = {
+      'service': 'setSessionParameters',
+      'settings': [{
+        'viewSettings': [{
+          'idleTimeOut': 1800
+        }, {
+          'statisticsRange': 'CurrentDay'
+        }, {
+          'rollingPeriod': 'Minutes10'
+        }]
+      }]
+    };
+  } // Get real-time call stats
+
+
+  if (requestType == 'getStatistics') {
+    params = {
+      'service': 'getStatistics',
+      'settings': [{
+        'statisticType': 'ACDStatus'
+      }]
+    };
+  }
+
+  return params;
+}
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports) {
 
-/***/ 19:
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = error;
+/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
+// Send out an error alert in console and on the page.
+function error(err, message = '') {
+  // timestamp
+  let newDate = new Date();
+  newDate.setTime(Date.now());
+  let dateString = newDate.toTimeString();
+  console.log(dateString); // Post to page
+
+  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
+  console.log('Error log:');
+  console.error(err);
+} // Nicely formatted time
+
+function formatAMPM(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+  return strTime;
+}
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(13);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const API_URL = 'http://localhost:3000/api/';
+/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+
+
+/***/ }),
+/* 9 */,
+/* 10 */
+/***/ (function(module, exports) {
+
+function _isPlaceholder(a) {
+       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+}
+module.exports = _isPlaceholder;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      R.type({}); //=> "Object"
+ *      R.type(1); //=> "Number"
+ *      R.type(false); //=> "Boolean"
+ *      R.type('s'); //=> "String"
+ *      R.type(null); //=> "Null"
+ *      R.type([]); //=> "Array"
+ *      R.type(/[A-z]/); //=> "RegExp"
+ *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
+ */
+
+
+var type = /*#__PURE__*/_curry1(function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+});
+module.exports = type;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(14);
+
+var type = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * Copies an object.
+ *
+ * @private
+ * @param {*} value The value to be copied
+ * @param {Array} refFrom Array containing the source references
+ * @param {Array} refTo Array containing the copied source references
+ * @param {Boolean} deep Whether or not to perform deep cloning.
+ * @return {*} The copied value.
+ */
+
+
+function _clone(value, refFrom, refTo, deep) {
+  var copy = function copy(copiedValue) {
+    var len = refFrom.length;
+    var idx = 0;
+    while (idx < len) {
+      if (value === refFrom[idx]) {
+        return refTo[idx];
+      }
+      idx += 1;
+    }
+    refFrom[idx + 1] = value;
+    refTo[idx + 1] = copiedValue;
+    for (var key in value) {
+      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+    }
+    return copiedValue;
+  };
+  switch (type(value)) {
+    case 'Object':
+      return copy({});
+    case 'Array':
+      return copy([]);
+    case 'Date':
+      return new Date(value.valueOf());
+    case 'RegExp':
+      return _cloneRegExp(value);
+    default:
+      return value;
+  }
+}
+module.exports = _clone;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+function _cloneRegExp(pattern) {
+                                  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
+}
+module.exports = _cloneRegExp;
+
+/***/ }),
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -10920,39 +12154,10 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(20).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(20).setImmediate))
 
 /***/ }),
-
-/***/ 2:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 20:
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -11016,11 +12221,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-
-/***/ 21:
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -11210,11 +12414,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(22)))
 
 /***/ }),
-
-/***/ 22:
+/* 22 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -11404,642 +12607,3726 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-
-/***/ 5:
+/* 23 */,
+/* 24 */,
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["A"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["x"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["M"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["L"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["y"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
-/* harmony export (immutable) */ __webpack_exports__["D"] = sendMessage;
-/* unused harmony export getMessages */
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUnreadMessages;
-/* harmony export (immutable) */ __webpack_exports__["z"] = markMessageRead;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateField;
-/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateGoal;
-/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateLayout;
-/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateDatasource;
-/* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["J"] = updateLink;
-/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["K"] = updateSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["B"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["C"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["N"] = uploadData;
-/* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
-
- ////////////////////////////////////////////////////////////////
-// Functions to retrieve and extract data from Five9.
-// These functions interact with our server, which houses data
-// and formats data originating in Five9 reports.
-////////////////////////////////////////////////////////////////
-// Get agent/ACD statistics
-
-async function getStatistics(filter) {
-  const response = await request(filter, 'statistics');
-  return response.json();
-} // Get real-time stats
-
-async function queueStats() {
-  return getData({}, 'queue-stats');
-}
+/* unused harmony export loadData */
+/* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(28);
 /**
- * Get CSV string of report results from Five9
- * @param  {Object} params
- * @param  {String} type   endpoint: `maps` or `service-level`
- * @return {Promise -> Object}        JSON data
- */
-
-function getReportResults(params, type) {
-  return getData(params, `reports/${type}`);
-}
-/**
- * Pull Looker data from given Look
- * @param  {String} lookId
- * @return {Object} JSON data
- */
-
-async function getLookerData(lookId) {
-  let response = await request({
-    lookId: lookId
-  }, 'looker');
-  return await response.json();
-}
-async function getLogs(query) {
-  let response = await request({
-    query: query
-  }, 'logs');
-  return await response.json();
-} ///////////////////////////////////////////////////////////////////////
-// Users
-
-/**
- * Return user information from username.
- * @param  {String} username if blank, will return currently logged-in user's
- *                           data
- * @return {Promise -> Object} User's object
- */
-
-async function getUserInformation(username = '') {
-  let path = username ? `users/data/${username}` : `users/data`;
-  const response = await request({}, path, 'GET');
-  return response.json();
-}
-/**
- * Set a user's theme preferences.
- * @param  {String} username
- * @param  {Object} newTheme with theme fields
- * @return {Promise -> String} response message
- */
-
-async function updateUserTheme(username, newTheme) {
-  const response = await request({
-    username: username,
-    newTheme: newTheme
-  }, `users/theme`, 'PATCH');
-  return response.text();
-} // Admin users
-
-async function getAdminUsers() {
-  let response = await request({}, 'users/admin', 'GET');
-  let users = await response.json();
-  console.log(users);
-  return users;
-}
-async function updateAdminUser(user) {
-  let response = await request({
-    user: user
-  }, 'users/admin', 'PATCH');
-  return response.text();
-} // Supervisor users
-
-async function getSupervisorUsers() {
-  let response = await request({}, 'users/supervisor', 'GET');
-  let users = await response.json();
-  console.log(users);
-  return users;
-}
-async function updateSupervisorUser(user) {
-  let response = await request({
-    user: user
-  }, 'users/supervisor', 'PATCH');
-  return response.text();
-} // Get list of all users
-
-async function getUsers() {
-  let response = await request({}, 'users', 'GET');
-  return response.json();
-}
-/**
- * Get list of users who have been active within last @param interval seconds
- * @param  {Number} interval in seconds
- * @return {[Object]} promise resolving to array of user objects
- */
-
-async function getActiveUsers(interval) {
-  let response = await request({}, `users/active/${interval}`, 'GET');
-  return response.json();
-} ///////////////////////////////////////////////////////////////////////
-// Messages
-
-/**
- * Send a message
- * @param  {Object} message with fields to, subject, and body
- * @return {String} response from server
- */
-
-async function sendMessage(message) {
-  let response = await request({
-    message: message
-  }, 'message/send', 'POST');
-  return response.text();
-}
-/**
- * Return current user's messages
- * @return {[Object]} array of message objects
- */
-
-async function getMessages() {
-  let response = await request({}, 'message', 'POST');
-  return response.json();
-}
-/**
- * Return current user's unread messages
- * @return {[Object]} array of message objects
- */
-
-async function getUnreadMessages() {
-  let response = await request({
-    hasRead: false
-  }, 'message', 'POST');
-  return response.json();
-}
-/**
- * Flag a message as "read"
- * @return {String} success message
- */
-
-async function markMessageRead(message, hasRead = true) {
-  let response = await request({
-    id: message._id,
-    hasRead: true
-  }, 'message/mark-read', 'PATCH');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Fields
-
-/**
- * List of available fields for widgets.
- * @return {Promise} resolves to array of field objects
- */
-
-async function getFieldList() {
-  let response = await request({}, 'fields', 'GET');
-  return response.json();
-}
-/**
- * Updates a field on server.
- * @param  {Object}  field new object
- * @return {Promise} resolves to array of field objects
- */
-
-async function updateField(field) {
-  let response = await request({
-    field: field
-  }, 'fields', 'PUT');
-  return response.text();
-}
-/**
- * Delete a field from server.
- * @param  {Object}  field object to remove
- * @return {Promise} resolves to response message
- */
-
-async function deleteField(field) {
-  let response = await request({
-    field: field
-  }, 'fields', 'DELETE');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Goals
-
-/**
- * List of all goals.
- * @return {Promise} resolves to array of goal objects
- */
-
-async function getGoalList() {
-  let response = await request({}, 'goals', 'POST');
-  return response.json();
-}
-/**
- * List of goals that apply to the given agent group(s).
- * @param  {Array of Strings}   agentGroups
- * @return {Promise} resolves to array of goal objects
- */
-
-async function getGoalsForAgentGroups(agentGroups) {
-  let response = await request({
-    agentGroups: agentGroups
-  }, 'goals', 'POST');
-  return response.json();
-}
-/**
- * Updates a goal on server.
- * @param  {Object}  goal new object
- * @return {Promise} resolves to response message
- */
-
-async function updateGoal(goal) {
-  let response = await request({
-    goal: goal
-  }, 'goals', 'PUT');
-  return response.text();
-}
-/**
- * Delete a goal from server.
- * @param  {Object}  goal object to remove
- * @return {Promise} resolves to response message
- */
-
-async function deleteGoal(goal) {
-  let response = await request({
-    goal: goal
-  }, 'goals', 'DELETE');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Layouts
-
-/**
- * Get scorecard JSON layout for given agent group(s) and type.
- * @param  {Array of Strings} agentGroups user's agent groups
- * @param  {String} type either team or individual layout
- * @return {Object}
- */
-
-async function getLayout(agentGroups, type) {
-  let response = await request({
-    agentGroups: agentGroups,
-    type: type
-  }, 'layout');
-  return await response.json();
-}
-/**
- * List of all layouts.
- * @return {Promise} resolves to array of layout objects
- */
-
-async function getLayoutList() {
-  let response = await request({}, 'layouts', 'POST');
-  return response.json();
-}
-/**
- * Updates a layout on server.
- * @param  {Object}  layout new object
- * @return {Promise} resolves to response message
- */
-
-async function updateLayout(layout) {
-  let response = await request({
-    layout: layout
-  }, 'layouts', 'PUT');
-  return response.text();
-}
-/**
- * Delete a layout from server.
- * @param  {Object}  layout object to remove
- * @return {Promise} resolves to response message
- */
-
-async function deleteLayout(layout) {
-  let response = await request({
-    layout: layout
-  }, 'layouts', 'DELETE');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Datasources' settings
-
-/**
- * List of all datasources.
- * @return {Promise} resolves to array of datasource objects
- */
-
-async function getDatasources() {
-  let response = await request({}, 'datasources', 'GET');
-  return response.json();
-}
-/**
- * Updates a datasource on server.
- * @param  {Object}  datasource new object
- * @return {Promise} resolves to response message
- */
-
-async function updateDatasource(datasource) {
-  let response = await request({
-    datasource: datasource
-  }, 'datasources', 'PUT');
-  return response.text();
-}
-/**
- * Delete a datasource from server.
- * @param  {Object}  datasource object to remove
- * @return {Promise} resolves to response message
- */
-
-async function deleteDatasource(datasource) {
-  let response = await request({
-    datasource: datasource
-  }, 'datasources', 'DELETE');
-  return response.text();
-}
-/**
- * Get skill groups with associated names, agentGroups and skills
- * @return {Promise -> [Object]} array of objects from SkillGroup table
- */
-
-async function getSkillGroups() {
-  let response = await request({}, 'skill-group', 'GET');
-  return response.json();
-} ///////////////////////////////////////////////////////////////////////
-// 'Helpful Links'
-
-/**
- * List of all links.
- * @return {Promise} resolves to array of link objects
- */
-
-async function getLinkList() {
-  let response = await request({}, 'links', 'POST');
-  return response.json();
-}
-/**
- * Updates a link on server.
- * @param  {Object}  link new object
- * @return {Promise} resolves to response message
- */
-
-async function updateLink(link) {
-  let response = await request({
-    link: link
-  }, 'links', 'PUT');
-  return response.text();
-}
-/**
- * Delete a link from server.
- * @param  {Object}  link object to remove
- * @return {Promise} resolves to response message
- */
-
-async function deleteLink(link) {
-  let response = await request({
-    link: link
-  }, 'links', 'DELETE');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Skilling jobs
-
-/**
- * List of available scheduled skilling jobs.
- * @return {Promise} resolves to array of field objects
- */
-
-async function getSkillJobs() {
-  let response = await request({}, 'skill', 'GET');
-  return response.json();
-}
-/**
- * Updates a scheduled skilling job on server.
- * @param  {Object}  job new object
- * @return {Promise} resolves to server's response
- */
-
-async function updateSkillJob(job) {
-  // format data
-  const format = skillStr => skillStr.split(',').map(sk => sk.trim());
-
-  ['addSkills', 'removeSkills'].map(prop => {
-    let skills = job.data[prop];
-
-    if (typeof skills == 'string') {
-      job.data[prop] = format(skills);
-    }
-  });
-  let response = await request({
-    job: job,
-    data: job.data
-  }, 'skill', 'PUT');
-  return response.text();
-}
-/**
- * Delete the given skilling job object.
- * @param  {Object} job
- * @return {Promise} resolves to response from server
- */
-
-async function deleteSkillJob(job) {
-  let response = await request({
-    job: job
-  }, 'skill', 'DELETE');
-  return response.text();
-} ///////////////////////////////////////////////////////////////////////
-// Server utilities
-
-async function rebootServer() {
-  const response = await request({}, 'reboot-server', 'POST');
-  return response.text();
-}
-async function reloadData(params) {
-  const response = await request(params, 'reload-data', 'POST');
-  return response.text();
-}
-/**
- * Upload CSV file to custom data source.
- * @param  {Object} params including fields datasourceName and csv
- * @return {Promise}       resolves to string (server response message)
- */
-
-async function uploadData(params) {
-  try {
-    const response = await request(params, 'upload-data', 'POST');
-    return await response.text();
-  } catch (err) {
-    return err.message;
-  }
-} ///////////////////////////////////////////////////////////////////////
-// Request helpers
-///////////////////////////////////////////////////////////////////////
-
-/**
- *  Helper function that pulls credentials from DOM, then makes request to server.
- * @param  {Object} parameters POSTed to server
- * @param  {String} endpoint   at server's API
- * @return {Object}            JSON data
- */
-
-async function getData(parameters, endpoint) {
-  const response = await request(parameters, endpoint);
-  return await response.json();
-}
-/**
- * Make a request to server with given parameters.
- * @param  {Object} parameters passed as body of request
- * @param  {String} [url='statistics'] endpoint on server
- * @param  {String} [method='POST'] HTTP action
- * @return {Promise} response from server
+ * This module controls interaction with the server.
+ *
+ * Data is made accessible through the `store` Vuex object, which all Vue
+ * components can access.
  */
 
 
-async function request(parameters, url = 'statistics', method = 'POST') {
-  const apiURL = __WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + url; // defined in api_url.js
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
-  const requestOptions = {
-    method: method,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+
+
+const clone = __webpack_require__(7);
+
+const intersection = __webpack_require__(29);
+
+const isEmpty = __webpack_require__(41);
+
+const uniq = __webpack_require__(31);
+
+const sift = __webpack_require__(79);
+/**
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
+ * @type {Vuex}
+ */
+
+
+const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    fields: [],
+    editMode: false,
+    currentUser: '',
+    user: {},
+    data: {},
+    datasources: {},
+    timeoutIds: {},
+    goals: [],
+    links: [],
+    selectedUsers: [],
+    skillGroups: [],
+    supMode: 'individual'
+  },
+  // Helper functions to retrieve data
+  getters: {
+    /**
+     * Return field object matching the field name.
+     * @param  {String} fieldName name in `source.name` or just `name` format
+     * @return {Object}  field object
+     */
+    field: state => fieldName => {
+      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
     },
-    credentials: 'include'
-  };
+    rawFieldName: state => fullFieldName => {
+      let [source, field] = fullFieldName.split('.');
+      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
+      return field;
+    },
+    getData: state => (filter, datasource) => {
+      if (!state.data[datasource]) {
+        console.log(`getData: datasource ${datasource} doesn't exist.`);
+        return [];
+      }
 
-  if (method != 'GET') {
-    requestOptions.body = JSON.stringify(parameters);
-  }
+      if (!filter) {
+        console.log(`getData: filter not defined.`);
+        return [];
+      }
 
-  return fetch(apiURL, requestOptions).then(async response => {
-    if (response.status == 504) notifyServer504(parameters, url); // debugging
+      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
+      let data = sift(filt, state.data[datasource]);
+      return data.map(datum => {
+        delete datum._id;
+        return datum;
+      });
+    },
+    goalForField: state => field => {
+      return state.goals.filter(goal => goal.field == field.name)[0];
+    },
+    getDatasource: state => datasourceName => {
+      let ds = Object.entries(state.datasources).find(([id, ds]) => {
+        return ds.name == datasourceName;
+      })[1];
+      return ds;
+    },
+    // Returns current user for agent, or selected users in supervisor team
+    // mode
+    currentUsers: state => {
+      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
+    },
+    currentSkills: (state, getters) => {
+      return usersToSkills(state.skillGroups, getters.currentUsers);
+    }
+  },
+  // Functions to modify the store's state (all synchronous)
+  mutations: {
+    toggleEditMode(state) {
+      state.editMode = !state.editMode;
+    },
 
-    if (!response.ok) {
-      let bodyText = await response.text();
-      throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
+    updateData(state, {
+      newData,
+      datasource
+    }) {
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, datasource, newData);
+    },
+
+    /**
+     * Set a group of selected users for supervisor mode
+     * @param {Object} state
+     * @param {Array} usersList array of objects with fields username, firstName, lastName
+     */
+    setSelectedUsers(state, usersList) {
+      state.selectedUsers = usersList;
+    },
+
+    /**
+     * Set the current username and user information
+     * @param  {Object} state
+     * @param  {String} user new user object
+     */
+    setUser(state, user) {
+      state.currentUser = user.username;
+      state.user = clone(user);
+    },
+
+    setTimeoutId(state, {
+      datasourceName,
+      id
+    }) {
+      state.timeoutIds[datasourceName] = id;
+    },
+
+    setSupMode(state, newMode) {
+      state.supMode = newMode;
+    },
+
+    setFields(state, fields) {
+      state.fields = fields;
+    },
+
+    setSkillGroups(state, skillGroups) {
+      state.skillGroups = skillGroups;
+    },
+
+    setGoals(state, goals) {
+      state.goals = goals;
+    },
+
+    setLinks(state, links) {
+      state.links = links.sort((a, b) => a.name > b.name);
+    },
+
+    changeDatasource(state, datasource) {
+      const ds = clone(datasource);
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
+    },
+
+    /**
+     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+     * datasource objects stored in database.
+     * @param {Object} state
+     * @param {Array}  datasources array of datasource objects from server
+     */
+    setDatasources(state, datasources) {
+      state.datasources = clone(datasources).reduce((newObj, source) => {
+        newObj[source.id] = source;
+        return newObj;
+      }, {});
     }
 
-    return response;
-  });
-}
+  },
+  // Asynchronous actions
+  actions: {
+    // Call when page first loads
+    async updateUser(context, username) {
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["x" /* getUserInformation */](username);
+      context.commit('setUser', user);
+      context.dispatch('updateGoals');
+    },
 
-async function notifyServer504() {
-  return fetch(__WEBPACK_IMPORTED_MODULE_1__local_settings_js__["a" /* API_URL */] + 'notify-504');
-} // Gets the actual returned value/data out of JSON from the server.
+    // Load the dashboard up. Assumes `updateUser` has already completed.
+    async startProcess(context) {
+      // load layout
+      let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["m" /* getLayout */](agentGroups, context.state.supMode);
+      context.commit('setDatasources', layout.datasources); // load fields and helpful links from server
+
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
+      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["s" /* getSkillGroups */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
+
+      context.dispatch('updateGoals'); // Start updating based on data sources
+
+      context.dispatch('nextUpdate', null);
+      return layout;
+    },
+
+    // Force a refresh. For testing purposes.
+    async forceRefresh(context) {
+      for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
+        clearTimeout(id);
+      }
+
+      return await context.dispatch('startProcess');
+    },
+
+    async updateGoals(context) {
+      let groups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
+      context.commit('setGoals', goals);
+    },
+
+    // Refresh data based on current datasources
+    async nextUpdate(context, ms) {
+      console.log(`Refresh at ${moment()}`);
+
+      if (!context.state.currentUser) {
+        console.log('No current user assigned. Skipping update.');
+        return;
+      }
+
+      for (const [id, source] of Object.entries(context.state.datasources)) {
+        // Load data from server
+        try {
+          let res = await loadData(getParams(source));
+          let data = res.data;
+          let meta = res.meta;
+          context.commit('updateData', {
+            newData: data,
+            datasource: source.name
+          });
+
+          if (!isEmpty(meta)) {
+            let ds = clone(source);
+            ds.lastUpdated = meta.lastUpdated;
+            context.commit('changeDatasource', ds);
+          }
+        } catch (err) {
+          console.log(`Error while loading data: ${err}`);
+        } // and schedule the next update
 
 
-function jsonToReturnValue(json, type) {
-  return json['env:Envelope']['env:Body'][0]['ns2:' + type + 'Response'][0]['return'][0];
-} // takes JSON from server and returns text within 'faultstring' tag (if existant)
+        clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
 
+        let timeout = setTimeout(function next() {
+          context.dispatch('nextUpdate', source.refreshRate * 1000);
+        }, source.refreshRate * 1000);
+        context.commit('setTimeoutId', {
+          datasourceName: source.name,
+          id: timeout
+        });
+      }
 
-function getFaultStringFromData(data) {
-  try {
-    return data['env:Envelope']['env:Body'][0]['env:Fault'][0]['faultstring'];
-  } catch (err) {
-    return '';
+      ;
+    },
+
+    // Save a new theme to server
+    async updateTheme(context, newTheme) {
+      await __WEBPACK_IMPORTED_MODULE_2__api__["M" /* updateUserTheme */](context.state.currentUser, newTheme);
+      let updatedUser = clone(context.state.user);
+      updatedUser.theme = newTheme;
+      context.commit('setUser', updatedUser);
+    }
+
   }
-} // Given a requestType, returns JSON to submit to server in POST request.
-// requestType should match Five9 API command.
+});
+/* harmony export (immutable) */ __webpack_exports__["b"] = store;
+
+const getField = store.getters.field;
+/* unused harmony export getField */
 
 
-function getParameters(requestType) {
-  let params = {}; // Initiate session
-
-  if (requestType == 'setSessionParameters') {
-    params = {
-      'service': 'setSessionParameters',
-      'settings': [{
-        'viewSettings': [{
-          'idleTimeOut': 1800
-        }, {
-          'statisticsRange': 'CurrentDay'
-        }, {
-          'rollingPeriod': 'Minutes10'
-        }]
-      }]
-    };
-  } // Get real-time call stats
-
-
-  if (requestType == 'getStatistics') {
-    params = {
-      'service': 'getStatistics',
-      'settings': [{
-        'statisticType': 'ACDStatus'
-      }]
-    };
-  }
-
+function getParams(datasource) {
+  const params = {
+    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
+    fields: datasource.fields,
+    groupBy: datasource.groupBy,
+    source: datasource.source
+  };
   return params;
 }
 
-/***/ }),
+async function loadData(params) {
+  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getStatistics */](params);
+  res.data = res.data.map(d => {
+    if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
+    if (d['date']) d['date'] = moment(d['date']).toDate();
+    return d;
+  });
+  return res;
+}
 
-/***/ 6:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+function usersToSkills(skillGroups, users) {
+  let agentGroups = extractValues(users, 'agentGroups');
+  return extractValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
+}
+/**
+ * This function takes a list of objects, each of which has a property which is
+ * an array, and returns all of the unique values in the given property's arrays.
+ * @param  {Array} objectArray
+ * @param  {String} prop
+ * @return {Array} array of unique values in each object's @param prop
+ */
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = error;
-/* harmony export (immutable) */ __webpack_exports__["b"] = formatAMPM;
-// Send out an error alert in console and on the page.
-function error(err, message = '') {
-  // timestamp
-  let newDate = new Date();
-  newDate.setTime(Date.now());
-  let dateString = newDate.toTimeString();
-  console.log(dateString); // Post to page
 
-  $('#message').text(`Whoops! An error occurred. ${err.message} ${message}`);
-  console.log('Error log:');
-  console.error(err);
-} // Nicely formatted time
-
-function formatAMPM(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-  let ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-  return strTime;
+function extractValues(objectArray, prop) {
+  return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
 }
 
 /***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 8:
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
+/* 27 */,
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const API_URL = 'http://localhost:3000/api/';
-/* harmony export (immutable) */ __webpack_exports__["a"] = API_URL;
+/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
+/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
+/* unused harmony export prettifyDateOption */
+/* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(25);
 
+
+const clone = __webpack_require__(7);
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server or
+ * apply to data.
+ *
+ * @param  {Object} original    filter from widget; can include generic properties
+ *                              like `<current user>` and `<month-to-date>`
+ * @return {Object}             cleaned up filter for server
+ */
+
+
+function clean(original) {
+  let filter = clone(original);
+  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
+
+  let dateKey;
+
+  if (filter.date) {
+    dateKey = 'date';
+  } else if (filter.dateDay) {
+    dateKey = 'dateDay';
+  }
+
+  if (dateKey) {
+    let dateFn = dateMatcher[filter[dateKey]];
+    filter[dateKey] = dateFn();
+  } // Insert actual username
+
+
+  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
+    filter.agentUsername.$in = props(users, 'username');
+  } // Insert actual full name
+
+
+  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
+    filter.agentName.$in = users.map(user => `${user.lastName}, ${user.firstName}`);
+  } // Update appropriate skill groups
+
+
+  if (filter.skillGroup) {
+    if (filter.skillGroup.$in[0] == '<current skill group>') {
+      filter.skill = {
+        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
+      };
+    } else {
+      throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
+    }
+
+    delete filter.skillGroup;
+  } // Add selected agent groups ( in supervisor mode )
+  // if (filter.agentGroup == '<selected agents>') {
+  //     filter.agentGroup = {
+  //         $in: hub.store.getters.selectedAgents()
+  //     }
+  // }
+
+
+  return filter;
+}
+function dateOptions() {
+  return Object.keys(dateMatcher);
+}
+function prettifyDateOption(option) {
+  // remove brackets
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
+}
+function getDates(datePattern) {
+  return dateMatcher[datePattern]();
+}
+const dateMatcher = {
+  // Days
+  '<today>': function () {
+    return {
+      $gte: moment().startOf('day').toDate(),
+      $lt: moment().endOf('day').toDate()
+    };
+  },
+  '<yesterday>': function () {
+    return {
+      $gte: moment().add(-1, 'days').startOf('day').toDate(),
+      $lt: moment().startOf('day').toDate()
+    };
+  },
+  // Months
+  '<month-to-date>': function () {
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last month>': function () {
+    return {
+      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').toDate()
+    };
+  },
+  '<last 2 months>': function () {
+    return {
+      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last 3 months>': function () {
+    return {
+      $gte: moment().subtract(3, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  // Pay periods
+  '<this pay period>': function () {
+    let startDate = startOfPayPeriod(moment());
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  },
+  '<last pay period>': function () {
+    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  }
+};
+/**
+ * @param  {Moment object} date to find pay period of
+ * @return {Moment object}      start of pay period that contains @param date
+ */
+
+function startOfPayPeriod(date) {
+  let startDate;
+  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
+
+  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+  let daysSincePeriodStart = Math.round(hours / 24);
+
+  if (daysSincePeriodStart % 14 == 0) {
+    return sunday;
+  } else {
+    return sunday.subtract(1, 'weeks');
+  }
+}
+
+const payPeriodStart = moment('2018-03-11');
+/**
+ *
+ * @param  {Array of Objects} array objects to extract property from
+ * @param  {String} property name of property to extract
+ * @return {Array of values} array of values from given property
+ */
+
+function props(array, property) {
+  return array.map(element => element[property]);
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(37);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+var _filter = /*#__PURE__*/__webpack_require__(67);
+
+var flip = /*#__PURE__*/__webpack_require__(68);
+
+var uniq = /*#__PURE__*/__webpack_require__(31);
+
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of those
+ * elements common to both lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The list of elements found in both `list1` and `list2`.
+ * @see R.innerJoin
+ * @example
+ *
+ *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+ */
+
+
+var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
+  var lookupList, filteredList;
+  if (list1.length > list2.length) {
+    lookupList = list1;
+    filteredList = list2;
+  } else {
+    lookupList = list2;
+    filteredList = list1;
+  }
+  return uniq(_filter(flip(_contains)(lookupList), filteredList));
+});
+module.exports = intersection;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+module.exports = _has;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var identity = /*#__PURE__*/__webpack_require__(71);
+
+var uniqBy = /*#__PURE__*/__webpack_require__(73);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list. [`R.equals`](#equals) is used to determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniq([1, 1, 2, 1]); //=> [1, 2]
+ *      R.uniq([1, '1']);     //=> [1, '1']
+ *      R.uniq([[42], [42]]); //=> [[42]]
+ */
+
+
+var uniq = /*#__PURE__*/uniqBy(identity);
+module.exports = uniq;
+
+/***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _indexOf = /*#__PURE__*/__webpack_require__(60);
+
+function _contains(a, list) {
+  return _indexOf(list, a, 0) >= 0;
+}
+module.exports = _contains;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+var _equals = /*#__PURE__*/__webpack_require__(61);
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
+
+
+var equals = /*#__PURE__*/_curry2(function equals(a, b) {
+  return _equals(a, b, [], []);
+});
+module.exports = equals;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _has = /*#__PURE__*/__webpack_require__(30);
+
+var toString = Object.prototype.toString;
+var _isArguments = function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+};
+
+module.exports = _isArguments;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+function _arity(n, fn) {
+  /* eslint-disable no-unused-vars */
+  switch (n) {
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+module.exports = _arity;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var empty = /*#__PURE__*/__webpack_require__(75);
+
+var equals = /*#__PURE__*/__webpack_require__(38);
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
+
+
+var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
+  return x != null && equals(x, empty(x));
+});
+module.exports = isEmpty;
+
+/***/ }),
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+const intersection = __webpack_require__(29);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  name: 'users-selector',
+  props: {
+    showRefresh: {
+      default: true
+    }
+  },
+
+  data() {
+    return {
+      userList: [],
+      selectedUsernames: [],
+      selectedAgentGroups: [],
+      agentGroups: [],
+      message: ''
+    };
+  },
+
+  mounted: async function () {
+    this.userList = await this.loadUsersList();
+    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+  },
+  methods: {
+    clickRefresh: function () {
+      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
+        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
+      } else {
+        this.message = '';
+        this.$emit('refresh');
+      }
+    },
+    // Load list of users
+    loadUsersList: async function () {
+      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["y" /* getUsers */]();
+      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+      return userList;
+    },
+    // Return users who are within the selectedAgentGroups
+    filterUsersInGroup: function (users) {
+      if (this.selectedAgentGroups.length == 0) return users;
+      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
+    },
+    // If a user is part of multiple groups, list them next to user's name
+    getUserSelectionString: function (user) {
+      let groupString = '';
+
+      if (user.agentGroups.length > 1) {
+        groupString = ` - ${user.agentGroups.join(', ')}`;
+      }
+
+      return `${user.lastName}, ${user.firstName}${groupString}`;
+    },
+    // From the passed-in users, return array of agent groups
+    getAgentGroupsFromUsers: function (users) {
+      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
+    },
+    // Filter for agents within an agent group
+    selectAgentGroups: async function (agentGroups) {
+      // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
+      this.selectedAgentGroups = agentGroups;
+    },
+    // Get users from usernames
+    getUsers: function (usernames) {
+      return usernames.map(username => this.userList.find(user => user.username == username));
+    }
+  }
+});
+
+/***/ }),
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export Store */
+/* unused harmony export install */
+/* unused harmony export mapState */
+/* unused harmony export mapMutations */
+/* unused harmony export mapGetters */
+/* unused harmony export mapActions */
+/* unused harmony export createNamespacedHelpers */
+/**
+ * vuex v3.0.1
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: { configurable: true } };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (false) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (false) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (false) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (false) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "Store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  if (typeof state === 'function') {
+    state = state() || {};
+  }
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  if (Vue.config.devtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors = { state: { configurable: true } };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  if (false) {
+    assert(false, "Use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (false) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    false
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (false) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
+
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  return genericSubscribe(fn, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (false) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (false) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (false) {
+      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (false) {
+    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (false) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (false) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (false) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.0.1',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var equals = /*#__PURE__*/__webpack_require__(38);
+
+function _indexOf(list, a, idx) {
+  var inf, item;
+  // Array.prototype.indexOf doesn't exist below IE9
+  if (typeof list.indexOf === 'function') {
+    switch (typeof a) {
+      case 'number':
+        if (a === 0) {
+          // manually crawl the list to distinguish between +0 and -0
+          inf = 1 / a;
+          while (idx < list.length) {
+            item = list[idx];
+            if (item === 0 && 1 / item === inf) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        } else if (a !== a) {
+          // NaN
+          while (idx < list.length) {
+            item = list[idx];
+            if (typeof item === 'number' && item !== item) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        }
+        // non-zero numbers can utilise Set
+        return list.indexOf(a, idx);
+
+      // all these types can utilise Set
+      case 'string':
+      case 'boolean':
+      case 'function':
+      case 'undefined':
+        return list.indexOf(a, idx);
+
+      case 'object':
+        if (a === null) {
+          // null can utilise Set
+          return list.indexOf(a, idx);
+        }
+    }
+  }
+  // anything else not covered above, defer to R.equals
+  while (idx < list.length) {
+    if (equals(list[idx], a)) {
+      return idx;
+    }
+    idx += 1;
+  }
+  return -1;
+}
+module.exports = _indexOf;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(62);
+
+var _containsWith = /*#__PURE__*/__webpack_require__(63);
+
+var _functionName = /*#__PURE__*/__webpack_require__(64);
+
+var _has = /*#__PURE__*/__webpack_require__(30);
+
+var identical = /*#__PURE__*/__webpack_require__(65);
+
+var keys = /*#__PURE__*/__webpack_require__(66);
+
+var type = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
+
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  }
+
+  // if *a* array contains any element that is not included in *b*
+  return !_containsWith(function (b, aItem) {
+    return !_containsWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (identical(a, b)) {
+    return true;
+  }
+
+  var typeA = type(a);
+
+  if (typeA !== type(b)) {
+    return false;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+  }
+
+  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
+  }
+
+  switch (typeA) {
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
+        return a === b;
+      }
+      break;
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+        return false;
+      }
+      break;
+    case 'Date':
+      if (!identical(a.valueOf(), b.valueOf())) {
+        return false;
+      }
+      break;
+    case 'Error':
+      return a.name === b.name && a.message === b.message;
+    case 'RegExp':
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
+        return false;
+      }
+      break;
+  }
+
+  var idx = stackA.length - 1;
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+    idx -= 1;
+  }
+
+  switch (typeA) {
+    case 'Map':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'ArrayBuffer':
+      break;
+    default:
+      // Values of other types are only equal if identical.
+      return false;
+  }
+
+  var keysA = keys(a);
+  if (keysA.length !== keys(b).length) {
+    return false;
+  }
+
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
+
+  idx = keysA.length - 1;
+  while (idx >= 0) {
+    var key = keysA[idx];
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+      return false;
+    }
+    idx -= 1;
+  }
+  return true;
+}
+module.exports = _equals;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+function _arrayFromIterator(iter) {
+  var list = [];
+  var next;
+  while (!(next = iter.next()).done) {
+    list.push(next.value);
+  }
+  return list;
+}
+module.exports = _arrayFromIterator;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+function _containsWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+}
+module.exports = _containsWith;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports) {
+
+function _functionName(f) {
+  // String(x => x) evaluates to "x => x", so the pattern may not match.
+  var match = String(f).match(/^function (\w*)/);
+  return match == null ? '' : match[1];
+}
+module.exports = _functionName;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
+
+var identical = /*#__PURE__*/_curry2(function identical(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+});
+module.exports = identical;
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _has = /*#__PURE__*/__webpack_require__(30);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(39);
+
+// cover IE < 9 keys issues
+
+
+var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// Safari bug
+var hasArgsEnumBug = /*#__PURE__*/function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+};
+
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+} : function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+  var prop, nIdx;
+  var ks = [];
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+      nIdx -= 1;
+    }
+  }
+  return ks;
+};
+var keys = /*#__PURE__*/_curry1(_keys);
+module.exports = keys;
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+function _filter(fn, list) {
+  var idx = 0;
+  var len = list.length;
+  var result = [];
+
+  while (idx < len) {
+    if (fn(list[idx])) {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+module.exports = _filter;
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var curryN = /*#__PURE__*/__webpack_require__(69);
+
+/**
+ * Returns a new function much like the supplied one, except that the first two
+ * arguments' order is reversed.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
+ * @param {Function} fn The function to invoke with its first two parameters reversed.
+ * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+ * @example
+ *
+ *      var mergeThree = (a, b, c) => [].concat(a, b, c);
+ *
+ *      mergeThree(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
+ * @symb R.flip(f)(a, b, c) = f(b, a, c)
+ */
+
+
+var flip = /*#__PURE__*/_curry1(function flip(fn) {
+  return curryN(fn.length, function (a, b) {
+    var args = Array.prototype.slice.call(arguments, 0);
+    args[0] = b;
+    args[1] = a;
+    return fn.apply(this, args);
+  });
+});
+module.exports = flip;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(40);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+var _curryN = /*#__PURE__*/__webpack_require__(70);
+
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      var sumArgs = (...args) => R.sum(args);
+ *
+ *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
+
+var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
+  if (length === 1) {
+    return _curry1(fn);
+  }
+  return _arity(length, _curryN(length, [], fn));
+});
+module.exports = curryN;
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(40);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(10);
+
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curryN(length, received, fn) {
+  return function () {
+    var combined = [];
+    var argsIdx = 0;
+    var left = length;
+    var combinedIdx = 0;
+    while (combinedIdx < received.length || argsIdx < arguments.length) {
+      var result;
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+        result = received[combinedIdx];
+      } else {
+        result = arguments[argsIdx];
+        argsIdx += 1;
+      }
+      combined[combinedIdx] = result;
+      if (!_isPlaceholder(result)) {
+        left -= 1;
+      }
+      combinedIdx += 1;
+    }
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+  };
+}
+module.exports = _curryN;
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _identity = /*#__PURE__*/__webpack_require__(72);
+
+/**
+ * A function that does nothing but return the parameter supplied to it. Good
+ * as a default or placeholder function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x The value to return.
+ * @return {*} The input value, `x`.
+ * @example
+ *
+ *      R.identity(1); //=> 1
+ *
+ *      var obj = {};
+ *      R.identity(obj) === obj; //=> true
+ * @symb R.identity(a) = a
+ */
+
+
+var identity = /*#__PURE__*/_curry1(_identity);
+module.exports = identity;
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+function _identity(x) {
+  return x;
+}
+module.exports = _identity;
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Set = /*#__PURE__*/__webpack_require__(74);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(26);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied function to
+ * each list element. Prefers the first item if the supplied function produces
+ * the same value on two items. [`R.equals`](#equals) is used for comparison.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> b) -> [a] -> [a]
+ * @param {Function} fn A function used to produce a value to use during comparisons.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
+ */
+
+
+var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
+  var set = new _Set();
+  var result = [];
+  var idx = 0;
+  var appliedItem, item;
+
+  while (idx < list.length) {
+    item = list[idx];
+    appliedItem = fn(item);
+    if (set.add(appliedItem)) {
+      result.push(item);
+    }
+    idx += 1;
+  }
+  return result;
+});
+module.exports = uniqBy;
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(37);
+
+var _Set = /*#__PURE__*/function () {
+
+  function _Set() {
+    /* globals Set */
+    this._nativeSet = typeof Set === 'function' ? new Set() : null;
+    this._items = {};
+  }
+
+  // until we figure out why jsdoc chokes on this
+  // @param item The item to add to the Set
+  // @returns {boolean} true if the item did not exist prior, otherwise false
+  //
+  _Set.prototype.add = function (item) {
+    return !hasOrAdd(item, true, this);
+  };
+
+  //
+  // @param item The item to check for existence in the Set
+  // @returns {boolean} true if the item exists in the Set, otherwise false
+  //
+  _Set.prototype.has = function (item) {
+    return hasOrAdd(item, false, this);
+  };
+
+  //
+  // Combines the logic for checking whether an item is a member of the set and
+  // for adding a new item to the set.
+  //
+  // @param item       The item to check or add to the Set instance.
+  // @param shouldAdd  If true, the item will be added to the set if it doesn't
+  //                   already exist.
+  // @param set        The set instance to check or add to.
+  // @return {boolean} true if the item already existed, otherwise false.
+  //
+  return _Set;
+}();
+
+function hasOrAdd(item, shouldAdd, set) {
+  var type = typeof item;
+  var prevSize, newSize;
+  switch (type) {
+    case 'string':
+    case 'number':
+      // distinguish between +0 and -0
+      if (item === 0 && 1 / item === -Infinity) {
+        if (set._items['-0']) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items['-0'] = true;
+          }
+          return false;
+        }
+      }
+      // these types can all utilise the native Set
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = {};
+            set._items[type][item] = true;
+          }
+          return false;
+        } else if (item in set._items[type]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][item] = true;
+          }
+          return false;
+        }
+      }
+
+    case 'boolean':
+      // set._items['boolean'] holds a two element array
+      // representing [ falseExists, trueExists ]
+      if (type in set._items) {
+        var bIdx = item ? 1 : 0;
+        if (set._items[type][bIdx]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][bIdx] = true;
+          }
+          return false;
+        }
+      } else {
+        if (shouldAdd) {
+          set._items[type] = item ? [false, true] : [true, false];
+        }
+        return false;
+      }
+
+    case 'function':
+      // compare functions for reference equality
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = [item];
+          }
+          return false;
+        }
+        if (!_contains(item, set._items[type])) {
+          if (shouldAdd) {
+            set._items[type].push(item);
+          }
+          return false;
+        }
+        return true;
+      }
+
+    case 'undefined':
+      if (set._items[type]) {
+        return true;
+      } else {
+        if (shouldAdd) {
+          set._items[type] = true;
+        }
+        return false;
+      }
+
+    case 'object':
+      if (item === null) {
+        if (!set._items['null']) {
+          if (shouldAdd) {
+            set._items['null'] = true;
+          }
+          return false;
+        }
+        return true;
+      }
+    /* falls through */
+    default:
+      // reduce the search size of heterogeneous sets by creating buckets
+      // for each type.
+      type = Object.prototype.toString.call(item);
+      if (!(type in set._items)) {
+        if (shouldAdd) {
+          set._items[type] = [item];
+        }
+        return false;
+      }
+      // scan through all previously applied items
+      if (!_contains(item, set._items[type])) {
+        if (shouldAdd) {
+          set._items[type].push(item);
+        }
+        return false;
+      }
+      return true;
+  }
+}
+
+// A simple Set type that honours R.equals semantics
+module.exports = _Set;
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(39);
+
+var _isArray = /*#__PURE__*/__webpack_require__(76);
+
+var _isObject = /*#__PURE__*/__webpack_require__(77);
+
+var _isString = /*#__PURE__*/__webpack_require__(78);
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
+
+
+var empty = /*#__PURE__*/_curry1(function empty(x) {
+  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
+    return arguments;
+  }() :
+  // else
+  void 0;
+});
+module.exports = empty;
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports) {
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+module.exports = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports) {
+
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === '[object Object]';
+}
+module.exports = _isObject;
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports) {
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+module.exports = _isString;
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports) {
+
+/*
+ * Sift 3.x
+ *
+ * Copryright 2015, Craig Condon
+ * Licensed under MIT
+ *
+ * Filter JavaScript objects with mongodb queries
+ */
+
+(function() {
+
+  'use strict';
+
+  /**
+   */
+
+  function isFunction(value) {
+    return typeof value === 'function';
+  }
+
+  /**
+   */
+
+  function isArray(value) {
+    return Object.prototype.toString.call(value) === '[object Array]';
+  }
+
+  /**
+   */
+
+  function comparable(value) {
+    if (value instanceof Date) {
+      return value.getTime();
+    } else if (isArray(value)) {
+      return value.map(comparable);
+    } else if (value && typeof value.toJSON === 'function') {
+      return value.toJSON();
+    } else {
+      return value;
+    }
+  }
+
+  function get(obj, key) {
+    return isFunction(obj.get) ? obj.get(key) : obj[key];
+  }
+
+  /**
+   */
+
+  function or(validator) {
+    return function(a, b) {
+      if (!isArray(b) || !b.length) {
+        return validator(a, b);
+      }
+      for (var i = 0, n = b.length; i < n; i++) {
+        if (validator(a, get(b,i))) return true;
+      }
+      return false;
+    }
+  }
+
+  /**
+   */
+
+  function and(validator) {
+    return function(a, b) {
+      if (!isArray(b) || !b.length) {
+        return validator(a, b);
+      }
+      for (var i = 0, n = b.length; i < n; i++) {
+        if (!validator(a, get(b, i))) return false;
+      }
+      return true;
+    };
+  }
+
+  function validate(validator, b, k, o) {
+    return validator.v(validator.a, b, k, o);
+  }
+
+  var OPERATORS = {
+
+    /**
+     */
+
+    $eq: or(function(a, b) {
+      return a(b);
+    }),
+
+    /**
+     */
+
+    $ne: and(function(a, b) {
+      return !a(b);
+    }),
+
+    /**
+     */
+
+    $gt: or(function(a, b) {
+      return sift.compare(comparable(b), a) > 0;
+    }),
+
+    /**
+     */
+
+    $gte: or(function(a, b) {
+      return sift.compare(comparable(b), a) >= 0;
+    }),
+
+    /**
+     */
+
+    $lt: or(function(a, b) {
+      return sift.compare(comparable(b), a) < 0;
+    }),
+
+    /**
+     */
+
+    $lte: or(function(a, b) {
+      return sift.compare(comparable(b), a) <= 0;
+    }),
+
+    /**
+     */
+
+    $mod: or(function(a, b) {
+      return b % a[0] == a[1];
+    }),
+
+    /**
+     */
+
+    $in: function(a, b) {
+
+      if (b instanceof Array) {
+        for (var i = b.length; i--;) {
+          if (~a.indexOf(comparable(get(b, i)))) {
+            return true;
+          }
+        }
+      } else {
+        var comparableB = comparable(b);
+        if (comparableB === b && typeof b === 'object') {
+          for (var i = a.length; i--;) {
+            if (String(a[i]) === String(b) && String(b) !== '[object Object]') {
+              return true;
+            }
+          }
+        }
+
+        /*
+          Handles documents that are undefined, whilst also
+          having a 'null' element in the parameters to $in.
+        */
+        if (typeof comparableB == 'undefined') {
+          for (var i = a.length; i--;) {
+            if (a[i] == null) {
+              return true;
+            }
+          }
+        }
+
+        /*
+          Handles the case of {'field': {$in: [/regexp1/, /regexp2/, ...]}}
+        */
+        for (var i = a.length; i--;) {
+          var validator = createRootValidator(get(a, i), undefined);
+          var result = validate(validator, b, i, a);
+          if ((result) && (String(result) !== '[object Object]') && (String(b) !== '[object Object]')) {
+            return true;
+          }
+        }
+
+        return !!~a.indexOf(comparableB);
+      }
+
+      return false;
+    },
+
+    /**
+     */
+
+    $nin: function(a, b, k, o) {
+      return !OPERATORS.$in(a, b, k, o);
+    },
+
+    /**
+     */
+
+    $not: function(a, b, k, o) {
+      return !validate(a, b, k, o);
+    },
+
+    /**
+     */
+
+    $type: function(a, b) {
+      return b != void 0 ? b instanceof a || b.constructor == a : false;
+     },
+
+    /**
+     */
+
+    $all: function(a, b, k, o) {
+      return OPERATORS.$and(a, b, k, o);
+    },
+
+    /**
+     */
+
+    $size: function(a, b) {
+      return b ? a === b.length : false;
+    },
+
+    /**
+     */
+
+    $or: function(a, b, k, o) {
+      for (var i = 0, n = a.length; i < n; i++) if (validate(get(a, i), b, k, o)) return true;
+      return false;
+    },
+
+    /**
+     */
+
+    $nor: function(a, b, k, o) {
+      return !OPERATORS.$or(a, b, k, o);
+    },
+
+    /**
+     */
+
+    $and: function(a, b, k, o) {
+      for (var i = 0, n = a.length; i < n; i++) {
+        if (!validate(get(a, i), b, k, o)) {
+          return false;
+        }
+      }
+      return true;
+    },
+
+    /**
+     */
+
+    $regex: or(function(a, b) {
+      return typeof b === 'string' && a.test(b);
+    }),
+
+    /**
+     */
+
+    $where: function(a, b, k, o) {
+      return a.call(b, b, k, o);
+    },
+
+    /**
+     */
+
+    $elemMatch: function(a, b, k, o) {
+      if (isArray(b)) {
+        return !!~search(b, a);
+      }
+      return validate(a, b, k, o);
+    },
+
+    /**
+     */
+
+    $exists: function(a, b, k, o) {
+      return o.hasOwnProperty(k) === a;
+    }
+  };
+
+  /**
+   */
+
+  var prepare = {
+
+    /**
+     */
+
+    $eq: function(a) {
+
+      if (a instanceof RegExp) {
+        return function(b) {
+          return typeof b === 'string' && a.test(b);
+        };
+      } else if (a instanceof Function) {
+        return a;
+      } else if (isArray(a) && !a.length) {
+        // Special case of a == []
+        return function(b) {
+          return (isArray(b) && !b.length);
+        };
+      } else if (a === null){
+        return function(b){
+          //will match both null and undefined
+          return b == null;
+        }
+      }
+
+      return function(b) {
+        return sift.compare(comparable(b), a) === 0;
+      };
+    },
+
+    /**
+     */
+
+    $ne: function(a) {
+      return prepare.$eq(a);
+    },
+
+    /**
+     */
+
+    $and: function(a) {
+      return a.map(parse);
+    },
+
+    /**
+     */
+
+    $all: function(a) {
+      return prepare.$and(a);
+    },
+
+    /**
+     */
+
+    $or: function(a) {
+      return a.map(parse);
+    },
+
+    /**
+     */
+
+    $nor: function(a) {
+      return a.map(parse);
+    },
+
+    /**
+     */
+
+    $not: function(a) {
+      return parse(a);
+    },
+
+    /**
+     */
+
+    $regex: function(a, query) {
+      return new RegExp(a, query.$options);
+    },
+
+    /**
+     */
+
+    $where: function(a) {
+      return typeof a === 'string' ? new Function('obj', 'return ' + a) : a;
+    },
+
+    /**
+     */
+
+    $elemMatch: function(a) {
+      return parse(a);
+    },
+
+    /**
+     */
+
+    $exists: function(a) {
+      return !!a;
+    }
+  };
+
+  /**
+   */
+
+  function search(array, validator) {
+
+    for (var i = 0; i < array.length; i++) {
+      var result = get(array, i);
+      if (validate(validator, get(array, i))) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  /**
+   */
+
+  function createValidator(a, validate) {
+    return { a: a, v: validate };
+  }
+
+  /**
+   */
+
+  function nestedValidator(a, b) {
+    var values  = [];
+    findValues(b, a.k, 0, b, values);
+
+    if (values.length === 1) {
+      var first = values[0];
+      return validate(a.nv, first[0], first[1], first[2]);
+    }
+
+    for (var i = 0; i < values.length; i++) {
+      var result = values[i];
+      if (validate(a.nv, result[0], result[1], result[2])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   */
+
+  function findValues(current, keypath, index, object, values) {
+
+    if (index === keypath.length || current == void 0) {
+      values.push([current, keypath[index - 1], object]);
+      return;
+    }
+
+    var k = get(keypath, index);
+
+    // ensure that if current is an array, that the current key
+    // is NOT an array index. This sort of thing needs to work:
+    // sift({'foo.0':42}, [{foo: [42]}]);
+    if (isArray(current) && isNaN(Number(k))) {
+      for (var i = 0, n = current.length; i < n; i++) {
+        findValues(get(current, i), keypath, index, current, values);
+      }
+    } else {
+      findValues(get(current, k), keypath, index + 1, current, values);
+    }
+  }
+
+  /**
+   */
+
+  function createNestedValidator(keypath, a) {
+    return { a: { k: keypath, nv: a }, v: nestedValidator };
+  }
+
+  /**
+   * flatten the query
+   */
+
+  function isVanillaObject(value) {
+    return value && value.constructor === Object;
+  }
+
+  function parse(query) {
+    query = comparable(query);
+
+    if (!query || !isVanillaObject(query)) { // cross browser support
+      query = { $eq: query };
+    }
+
+    var validators = [];
+
+    for (var key in query) {
+      var a = query[key];
+
+      if (key === '$options') {
+        continue;
+      }
+
+      if (OPERATORS[key]) {
+        if (prepare[key]) a = prepare[key](a, query);
+        validators.push(createValidator(comparable(a), OPERATORS[key]));
+      } else {
+
+        if (key.charCodeAt(0) === 36) {
+          throw new Error('Unknown operation ' + key);
+        }
+
+        validators.push(createNestedValidator(key.split('.'), parse(a)));
+      }
+    }
+
+    return validators.length === 1 ? validators[0] : createValidator(validators, OPERATORS.$and);
+  }
+
+  /**
+   */
+
+  function createRootValidator(query, getter) {
+    var validator = parse(query);
+    if (getter) {
+      validator = {
+        a: validator,
+        v: function(a, b, k, o) {
+          return validate(a, getter(b), k, o);
+        }
+      };
+    }
+    return validator;
+  }
+
+  /**
+   */
+
+  function sift(query, array, getter) {
+
+    if (isFunction(array)) {
+      getter = array;
+      array  = void 0;
+    }
+
+    var validator = createRootValidator(query, getter);
+
+    function filter(b, k, o) {
+      return validate(validator, b, k, o);
+    }
+
+    if (array) {
+      return array.filter(filter);
+    }
+
+    return filter;
+  }
+
+  /**
+   */
+
+  sift.use = function(plugin) {
+    if (isFunction(plugin)) return plugin(sift);
+    for (var key in plugin) {
+      /* istanbul ignore else */
+      if (key.charCodeAt(0) === 36) {
+        OPERATORS[key] = plugin[key];
+      }
+    }
+  };
+
+  /**
+   */
+
+  sift.indexOf = function(query, array, getter) {
+    return search(array, createRootValidator(query, getter));
+  };
+
+  /**
+   */
+
+  sift.compare = function(a, b) {
+    if(a===b) return 0;
+    if(typeof a === typeof b) {
+      if (a > b) {
+        return 1;
+      }
+      if (a < b) {
+        return -1;
+      }
+    }
+  };
+
+  /* istanbul ignore next */
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+
+    module.exports = sift;
+    exports['default'] = module.exports.default = sift;
+  }
+
+  /* istanbul ignore next */
+  if (typeof window !== 'undefined') {
+    window.sift = sift;
+  }
+})();
+
+
+/***/ }),
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(49);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(109);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(107)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\users-selector.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a22da046", Component.options)
+  } else {
+    hotAPI.reload("data-v-a22da046", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(108);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("d19f9c92", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\n}\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAiHA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"$emit('select-users', getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n    },\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));\r\n            this.selectedAgentGroups = agentGroups;\r\n        },\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "message" }, [
+          _c("p", [
+            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.userList.length > 0
+      ? _c("div", { staticClass: "section agent-selectors" }, [
+          _c("div", { staticClass: "agentgroup-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAgentGroups,
+                    expression: "selectedAgentGroups"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedAgentGroups = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.agentGroups, function(agentGroup, i) {
+                return _c("option", { domProps: { value: agentGroup } }, [
+                  _vm._v(
+                    "\r\n                    " +
+                      _vm._s(agentGroup) +
+                      "\r\n                "
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedUsernames,
+                    expression: "selectedUsernames"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedUsernames = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.$emit(
+                        "select-users",
+                        _vm.getUsers(_vm.selectedUsernames)
+                      )
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
+                userAgent,
+                i
+              ) {
+                return _c(
+                  "option",
+                  { domProps: { value: userAgent.username } },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.getUserSelectionString(userAgent)) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _vm.showRefresh
+            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "refresh-button",
+                    on: { click: _vm.clickRefresh }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                    _vm._v(" Refresh\r\n            ")
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
+  }
+}
+
+/***/ }),
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(127);
+
+
+/***/ }),
+/* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_js__ = __webpack_require__(4);
+
+
+
+const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#app',
+  components: {
+    'users-selector': __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__["a" /* default */]
+  },
+  data: {
+    statusMessage: '',
+    to: '',
+    subject: '',
+    body: '',
+    usersTo: []
+  },
+  computed: {
+    toNameList: function () {
+      return this.usersTo.reduce((str, user) => `${str ? str + ', ' : ''}${user.firstName} ${user.lastName}`, '');
+    }
+  },
+  methods: {
+    selectUsers: function (users) {
+      this.usersTo = users;
+    },
+    send: async function (toString, subject, body) {
+      let users = this.usersTo.map(user => {
+        return {
+          username: user.username
+        };
+      });
+      let message = {
+        to: users,
+        subject: subject,
+        body: body
+      };
+      let response = await __WEBPACK_IMPORTED_MODULE_2__api_js__["D" /* sendMessage */](message);
+      this.statusMessage = response;
+      setTimeout(() => this.statusMessage = '', 5000);
+      this.clearMessage();
+    },
+    clearMessage: function () {
+      this.to = '';
+      this.subject = '';
+      this.body = '';
+    }
+  }
+});
 
 /***/ })
-
-/******/ });
+/******/ ]);
 //# sourceMappingURL=message-panel.js.map

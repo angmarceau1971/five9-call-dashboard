@@ -132,13 +132,6 @@
                         <i class="fas fa-comment"></i> Feedback
                     </button>
                 </a>
-
-                <button v-if="user.isSupervisor || user.isAdmin"
-                        class="insidedrop supervisor-mode-button"
-                        @click="supervisorMode">
-                    <i class="fas fa-users"></i> Supervisor
-                </button>
-
             </div>
 
             <div class="nav">
@@ -167,7 +160,7 @@
                     {{ message.subject || message.body }}
                 </p>
                 <p class="message-from">
-                    From: {{ message.from }}
+                    From:<br />{{ message.fromName }}
                 </p>
                 <button @click="closeMessage(message)"
                     title="Close message" class="message-close"
@@ -214,51 +207,6 @@
                         @refresh="refresh"
                     ></users-selector>
                 </div>
-                <!-- <div v-if="userList.length > 0" class="section agent-selectors">
-                    <div class="filters-header-wrapper">
-                        <h2>Filters</h2>
-                        <button @click="showFilters = !showFilters"
-                            title="Toggle filter display"
-                        >{{ showFilters ? 'Hide' : 'Show' }}</button>
-                    </div>
-                    <div class="agentgroup-list" v-show="showFilters">
-                        <select multiple size="30" v-model="selectedAgentGroups"
-                                @change="selectAgentGroups(selectedAgentGroups)">
-                            <option v-for="(agentGroup, i) in agentGroups"
-                                :value="agentGroup">
-                                {{ agentGroup }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="user-list" v-show="showFilters">
-                        <select multiple size="30" v-model="selectedUsernames"
-                            @change="selectUsers(selectedUsernames)">
-                            <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
-                                :value="userAgent.username">
-                                {{ getUserSelectionString(userAgent) }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="toggle-buttons" v-show="showFilters">
-                        <button @click="changeSupMode('team')"
-                            :class="{ checked: $store.state.supMode == 'team' }"
-                            title="Show data for all agents selected"
-                        >Team
-                        </button>
-                        <button @click="changeSupMode('individual')"
-                            :class="{ checked: $store.state.supMode == 'individual' }"
-                            title="Simulate the view of a single agent"
-                        >Individual
-                        </button>
-                    </div>
-
-                    <div class="refresh-button-wrapper" v-show="showFilters">
-                        <button class="refresh-button" @click="refresh">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                    </div>
-                </div> -->
 
                 <div v-if="$store.state.editMode">
                     <h2>Data Sources</h2>
