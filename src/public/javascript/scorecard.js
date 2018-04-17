@@ -46,7 +46,7 @@ const vm = new Vue({
         this.isLoaded = true;
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
-        setTimeout(this.refresh.bind(this), 5000);
+        setTimeout(this.refresh.bind(this), 2500);
     },
 
     computed: {
