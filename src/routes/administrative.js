@@ -40,6 +40,12 @@ module.exports.addTo = function(router) {
         res.set('Content-Type', 'application/text');
         res.status(200).send(`User "${req.body.user.username}" has been updated.`);
     });
+    /** Get list of users active within the last @param interval seconds */
+    router.get('/users/active/:interval', verify.apiMiddleware(), async (req, res) => {
+        let u = await users.getActive(Number(req.params.interval));
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(u));
+    });
 
     //////////////////////////////////////////
     // Field endpoints

@@ -25,6 +25,7 @@ else {
  */
 function isLoggedIn(level='basic') {
     return async function(req, res, next) {
+        users.updateLastActive(req.user.username);
         if (await isAllowed(level, req)) {
             return next();
         }
@@ -44,6 +45,7 @@ module.exports.isLoggedIn = isLoggedIn;
  */
 function apiMiddleware(level='basic') {
     return async function (req, res, next) {
+        users.updateLastActive(req.user.username);
         if (await isAllowed(level, req)) {
             return next();
         }

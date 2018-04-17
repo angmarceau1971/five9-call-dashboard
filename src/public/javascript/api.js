@@ -100,6 +100,15 @@ export async function getUsers() {
     return response.json();
 }
 
+/**
+ * Get list of users who have been active within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Object]} promise resolving to array of user objects
+ */
+export async function getActiveUsers(interval) {
+    let response = await request({}, `users/active/${interval}`, 'GET');
+    return response.json();
+}
 
 
 ///////////////////////////////////////////////////////////////////////

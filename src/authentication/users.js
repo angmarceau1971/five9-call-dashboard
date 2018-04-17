@@ -46,6 +46,10 @@ const usersSchema = mongoose.Schema({
             type: Boolean,
             default: false
         }
+    },
+    // Last time that user accessed page or API
+    lastActive: {
+        type: Date
     }
 });
 
@@ -208,6 +212,33 @@ async function updateTheme(username, newTheme) {
 }
 module.exports.updateTheme = updateTheme;
 
+/**
+ * Set user's lastActive attribute to now
+ * @param  {String} username
+ * @return {Promise}
+ */
+async function updateLastActive(username) {
+    return await Users.updateOne(
+        { username: username },
+        { $set: { 'lastActive': Date.now() } }
+    );
+}
+module.exports.updateLastActive = updateLastActive;
+
+/**
+ * Returns array of Users who have logged in within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Users]}
+ */
+async function getActive(interval) {
+    let start = new Date();
+    start.setSeconds(start.getSeconds() - interval);
+    return await Users.find(
+        { lastActive: { $gte: start } }
+    ).lean().exec();
+}
+module.exports.getActive = getActive;
+
 
 ////////////////////////////////////////////////
 // Database updating
@@ -300,6 +331,5 @@ async function refreshUserDatabase(usersModel) {
             );
         }
     });
-
 }
 module.exports.refreshUserDatabase = refreshUserDatabase;

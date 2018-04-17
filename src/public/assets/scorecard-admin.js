@@ -259,10 +259,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["E" /* updateLayout */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["F" /* updateLayout */](clean);
     },
     layoutLoader: async function () {
-      let layouts = await __WEBPACK_IMPORTED_MODULE_0__api_js__["m" /* getLayoutList */]();
+      let layouts = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getLayoutList */]();
 
       const str = s => JSON.stringify(s, null, 2);
 
@@ -301,10 +301,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["D" /* updateGoal */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["E" /* updateGoal */](clean);
     },
     goalLoader: async function () {
-      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getGoalList */]();
+      let goals = await __WEBPACK_IMPORTED_MODULE_0__api_js__["k" /* getGoalList */]();
 
       const str = s => JSON.stringify(s, null, 2);
 
@@ -339,10 +339,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         return `Unable to save: ${err}.`;
       }
 
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["F" /* updateLink */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["G" /* updateLink */](clean);
     },
     linkLoader: async function () {
-      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["n" /* getLinkList */]();
+      let links = await __WEBPACK_IMPORTED_MODULE_0__api_js__["o" /* getLinkList */]();
 
       const str = s => JSON.stringify(s, null, 2);
 
@@ -371,10 +371,10 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
       let clean = clone(field);
       clean.name = field.name.trim();
       clean.displayName = field.displayName.trim();
-      return __WEBPACK_IMPORTED_MODULE_0__api_js__["C" /* updateField */](clean);
+      return __WEBPACK_IMPORTED_MODULE_0__api_js__["D" /* updateField */](clean);
     },
     fieldLoader: async function () {
-      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["i" /* getFieldList */](); // Sort by source then name
+      let fields = await __WEBPACK_IMPORTED_MODULE_0__api_js__["j" /* getFieldList */](); // Sort by source then name
 
       return fields.sort((a, b) => {
         if (a.source == b.source) {
@@ -12376,42 +12376,43 @@ module.exports = clone;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
-/* harmony export (immutable) */ __webpack_exports__["x"] = queueStats;
-/* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
-/* harmony export (immutable) */ __webpack_exports__["p"] = getLookerData;
-/* harmony export (immutable) */ __webpack_exports__["o"] = getLogs;
-/* harmony export (immutable) */ __webpack_exports__["v"] = getUserInformation;
-/* harmony export (immutable) */ __webpack_exports__["I"] = updateUserTheme;
-/* harmony export (immutable) */ __webpack_exports__["g"] = getAdminUsers;
-/* harmony export (immutable) */ __webpack_exports__["A"] = updateAdminUser;
-/* harmony export (immutable) */ __webpack_exports__["u"] = getSupervisorUsers;
-/* harmony export (immutable) */ __webpack_exports__["H"] = updateSupervisorUser;
-/* harmony export (immutable) */ __webpack_exports__["w"] = getUsers;
-/* harmony export (immutable) */ __webpack_exports__["i"] = getFieldList;
-/* harmony export (immutable) */ __webpack_exports__["C"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["y"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
 /* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getGoalList;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalsForAgentGroups;
-/* harmony export (immutable) */ __webpack_exports__["D"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["l"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
-/* harmony export (immutable) */ __webpack_exports__["E"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
-/* harmony export (immutable) */ __webpack_exports__["h"] = getDatasources;
-/* harmony export (immutable) */ __webpack_exports__["B"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
 /* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
-/* harmony export (immutable) */ __webpack_exports__["r"] = getSkillGroups;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLinkList;
-/* harmony export (immutable) */ __webpack_exports__["F"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
 /* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
-/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillJobs;
-/* harmony export (immutable) */ __webpack_exports__["G"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
 /* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
-/* harmony export (immutable) */ __webpack_exports__["y"] = rebootServer;
-/* harmony export (immutable) */ __webpack_exports__["z"] = reloadData;
-/* harmony export (immutable) */ __webpack_exports__["J"] = uploadData;
+/* harmony export (immutable) */ __webpack_exports__["z"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["A"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(7);
@@ -12516,6 +12517,16 @@ async function updateSupervisorUser(user) {
 
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
+  return response.json();
+}
+/**
+ * Get list of users who have been active within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Object]} promise resolving to array of user objects
+ */
+
+async function getActiveUsers(interval) {
+  let response = await request({}, `users/active/${interval}`, 'GET');
   return response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Fields
