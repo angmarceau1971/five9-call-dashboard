@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Dashboard from '../components/dashboard.vue';
+import Inbox from '../components/inbox.vue';
 import EditorTable from '../components/editor-table.vue';
 import UsersSelector from '../components/users-selector.vue';
 import * as hub from './hub';
@@ -30,11 +31,13 @@ const vm = new Vue({
         // Supervisor controls
         showFilters: true,
         datasourceMessage: '',
-        messages: []
+        messages: [],
+        showInbox: false
     },
 
     components: {
         'dashboard': Dashboard,
+        'inbox': Inbox,
         'editor-table': EditorTable,
         'users-selector': UsersSelector
     },
@@ -127,6 +130,11 @@ const vm = new Vue({
         closeMessage: async function(message) {
             await api.markMessageRead(message, true);
             this.messages = await api.getUnreadMessages();
+        },
+
+
+        closeInbox: function() {
+
         },
 
         //////////////////////////////////////////////////

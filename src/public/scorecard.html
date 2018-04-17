@@ -127,6 +127,12 @@
                     </button>
                 </a>
 
+                <button class="insidedrop"
+                    @click="showInbox = true"
+                    @close="showInbox = false">
+                    <i class="far fa-envelope"></i> Inbox
+                </button>
+
                 <a target="_blank" href="https://jabbroadband.sharepoint.com/sites/Corporate/ContactCenterOperations/Lists/Dashboard Feedback/overview.aspx">
                     <button class="insidedrop feedback-button">
                         <i class="fas fa-comment"></i> Feedback
@@ -169,6 +175,9 @@
             </template>
         </div>
 
+        <!-- Inbox -->
+        <inbox v-if="showInbox"
+        ></inbox>
 
         <!-- Main content -->
         <div class="content-wrapper"
