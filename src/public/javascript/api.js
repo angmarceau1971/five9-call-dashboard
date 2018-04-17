@@ -133,6 +133,14 @@ export async function getMessages() {
     return response.json();
 }
 /**
+* Return messages sent by current user
+* @return {[Object]} array of message objects
+ */
+export async function getSentMessages() {
+    let response = await request({}, 'message/sent', 'GET');
+    return response.json();
+}
+/**
  * Return current user's unread messages
  * @return {[Object]} array of message objects
  */

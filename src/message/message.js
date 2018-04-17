@@ -64,6 +64,16 @@ async function get(username) {
 module.exports.get = get;
 
 /**
+ * Get messages sent from user
+ * @param  {String} username
+ * @return {[Messages]} array of message objects
+ */
+async function getSent(username) {
+    return Messages.find({ 'from': username }).lean().exec();
+}
+module.exports.getSent = getSent;
+
+/**
  * Get messages sent to user that have not yet been read
  * @param  {String} username
  * @return {[Messages]} array of unread messages

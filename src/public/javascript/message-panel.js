@@ -14,7 +14,12 @@ const vm = new Vue({
         to: '',
         subject: '',
         body: '',
-        usersTo: []
+        usersTo: [],
+        sentMessages: []
+    },
+
+    mounted: async function() {
+        this.loadSentMessages();
     },
 
     computed: {
@@ -42,11 +47,19 @@ const vm = new Vue({
             this.statusMessage = response;
             setTimeout(() => this.statusMessage = '', 5000);
             this.clearMessage();
+            this.loadSentMessages();
         },
         clearMessage: function() {
             this.to = '';
             this.subject = '';
             this.body = '';
+        },
+        loadSentMessages: async function() {
+            this.sentMessages = (await api.getSentMessages())
+                                .sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);
+        },
+        getDate: function(message) {
+            return moment(message.timestamp).format('M/D h:mm A');
         }
     }
 });

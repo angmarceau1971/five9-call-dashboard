@@ -114,7 +114,9 @@ router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res
     }
 });
 
-// Return messages for current user
+// Return messages sent to current user
+// Optionally include @param hasRead; if false, will only return messages that
+// haven't been read.
 router.post('/message', verify.apiMiddleware(), async (req, res) => {
     try {
         let msgs;
@@ -143,6 +145,18 @@ router.patch('/message/mark-read', verify.apiMiddleware(), async (req, res) => {
         res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
     }
 });
+
+// Returns messages sent by current user
+router.get('/message/sent', verify.apiMiddleware(), async (req, res) => {
+    try {
+        let msgs = await message.getSent(req.user.username);
+        res.send(JSON.stringify(msgs));
+    } catch (err) {
+        log.error(`Error during message get: ` + JSON.stringify(err));
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
+    }
+})
 
 
 //////////////////////////////////////

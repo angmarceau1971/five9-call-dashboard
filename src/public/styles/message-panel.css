@@ -9,3 +9,17 @@
 .message-form .body {
     height: 5em;
 }
+.outbox .sent-message-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.outbox .timestamp {
+    width: 10%;
+}
+.outbox .to {
+    width: 40%;
+}
+.outbox .body {
+    width: 50%;
+}

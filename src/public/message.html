@@ -34,6 +34,31 @@
             <textarea class="body" v-model="body" placeholder="Message body"></textarea>
             <button @click="send(to, subject, body)">Send</button>
         </div>
+
+        <div class="section outbox">
+            <h3>Outbox</h3>
+            <p>
+                Below are all of the messages that you've sent out.
+            </p>
+            <div class="sent-message-wrapper">
+                <h4 class="timestamp">Date</h4>
+                <h4 class="to">To</h4>
+                <h4 class="body">Message</h4>
+            </div>
+            <div v-for="(message, i) in sentMessages"
+                class="sent-message-wrapper"
+            >
+                <p class="timestamp">
+                    {{ getDate(message) }}
+                </p>
+                <p class="to">
+                    {{ message.to.map((u) => u.username) }}
+                </p>
+                <p class="body">
+                    {{ message.body }}
+                </p>
+            </div>
+        </div>
     </div>
     </body>
 
