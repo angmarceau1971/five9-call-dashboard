@@ -20,6 +20,15 @@
                     <p id="message" class="message">
                         Welcome to the Administrator's panel.
                     </p>
+
+                    <div class="section active-users">
+                        <h3>Active Users</h3>
+                        <p>
+                            Users with activity within last <input v-model="activeUserInterval" class="inline-input" /> minutes.
+                        </p>
+                        <h4>{{ activeUsers.length }}</h4>
+                    </div>
+
                     <div class="section reload-data-wrapper">
                         <h3>Reload report data</h3>
                         <p>

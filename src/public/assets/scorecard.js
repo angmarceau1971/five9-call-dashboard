@@ -541,6 +541,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["z"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
@@ -581,6 +582,45 @@ function applyToTag (styleElement, obj) {
 /* harmony export (immutable) */ __webpack_exports__["A"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["B"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["M"] = uploadData;
+=======
+/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["y"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["z"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["A"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
+>>>>>>> master
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
@@ -685,6 +725,16 @@ async function updateSupervisorUser(user) {
 
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
+  return response.json();
+}
+/**
+ * Get list of users who have been active within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Object]} promise resolving to array of user objects
+ */
+
+async function getActiveUsers(interval) {
+  let response = await request({}, `users/active/${interval}`, 'GET');
   return response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Messages
@@ -13314,12 +13364,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     async startProcess(context) {
       // load layout
       let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getLayout */](agentGroups, context.state.supMode);
+      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["m" /* getLayout */](agentGroups, context.state.supMode);
       context.commit('setDatasources', layout.datasources); // load fields and helpful links from server
 
-      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["i" /* getFieldList */]()));
-      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["r" /* getSkillGroups */]()));
-      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLinkList */]())); // load in goals
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
+      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["s" /* getSkillGroups */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
 
       context.dispatch('updateGoals'); // Start updating based on data sources
 
@@ -13338,7 +13388,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     async updateGoals(context) {
       let groups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["k" /* getGoalsForAgentGroups */](groups);
+      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
       context.commit('setGoals', goals);
     },
 
@@ -13388,7 +13438,11 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Save a new theme to server
     async updateTheme(context, newTheme) {
+<<<<<<< HEAD
       await __WEBPACK_IMPORTED_MODULE_2__api__["L" /* updateUserTheme */](context.state.currentUser, newTheme);
+=======
+      await __WEBPACK_IMPORTED_MODULE_2__api__["J" /* updateUserTheme */](context.state.currentUser, newTheme);
+>>>>>>> master
       let updatedUser = clone(context.state.user);
       updatedUser.theme = newTheme;
       context.commit('setUser', updatedUser);
@@ -13413,7 +13467,7 @@ function getParams(datasource) {
 }
 
 async function loadData(params) {
-  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["t" /* getStatistics */](params);
+  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getStatistics */](params);
   res.data = res.data.map(d => {
     if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
     if (d['date']) d['date'] = moment(d['date']).toDate();

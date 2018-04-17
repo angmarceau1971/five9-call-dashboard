@@ -33,10 +33,21 @@ const vm = new Vue({
 
     data: {
         message: '',
-        logCategory: 'request'
+        logCategory: 'request',
+        activeUsers: [],
+        activeUserInterval: 30 // in minutes
+    },
+
+    mounted: async function() {
+        this.updateActiveUsers();
     },
 
     methods: {
+        updateActiveUsers: async function(interval) {
+            console.log('hi')
+            this.activeUsers = await api.getActiveUsers(this.activeUserInterval * 60);
+            setTimeout(this.updateActiveUsers.bind(this), 1000*10);
+        },
         updateMessage: function(msg) {
             $('.message').text(msg);
             this.message = msg;

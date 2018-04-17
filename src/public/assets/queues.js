@@ -147,7 +147,11 @@ async function runQueueDashboard() {
     // Get the current queue data
     try {
       // Retrieve current queue stats
+<<<<<<< HEAD
       let data = await __WEBPACK_IMPORTED_MODULE_1__api__["z" /* queueStats */](); // Get SL stats
+=======
+      let data = await __WEBPACK_IMPORTED_MODULE_1__api__["y" /* queueStats */](); // Get SL stats
+>>>>>>> master
       // Only update SL every 3 minutes
 
       let currentTime = new Date();
@@ -158,7 +162,7 @@ async function runQueueDashboard() {
             start: moment().format('YYYY-MM-DD') + 'T00:00:00',
             end: moment().format('YYYY-MM-DD') + 'T23:59:59'
           };
-          slData = await __WEBPACK_IMPORTED_MODULE_1__api__["q" /* getReportResults */](time, 'service-level');
+          slData = await __WEBPACK_IMPORTED_MODULE_1__api__["r" /* getReportResults */](time, 'service-level');
           lastSlUpdate = currentTime;
         } catch (err) {
           Object(__WEBPACK_IMPORTED_MODULE_0__utility__["a" /* error */])(err, `An error occurred when getting service level data: ${err}`);
@@ -472,7 +476,7 @@ function GizmoManager() {
     let data = localStorage.getItem('user_gizmos');
 
     if (!data) {
-      let skillGroups = await __WEBPACK_IMPORTED_MODULE_0__api__["r" /* getSkillGroups */]();
+      let skillGroups = await __WEBPACK_IMPORTED_MODULE_0__api__["s" /* getSkillGroups */]();
       let i = 0;
       this.gizmos = skillGroups.reduce((res, skillGroup) => {
         res[`gizmo-${i++}`] = {
@@ -510,6 +514,7 @@ function skillStringToArray(skillString) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony export (immutable) */ __webpack_exports__["t"] = getStatistics;
 /* harmony export (immutable) */ __webpack_exports__["z"] = queueStats;
 /* harmony export (immutable) */ __webpack_exports__["q"] = getReportResults;
@@ -550,6 +555,45 @@ function skillStringToArray(skillString) {
 /* harmony export (immutable) */ __webpack_exports__["A"] = rebootServer;
 /* harmony export (immutable) */ __webpack_exports__["B"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["M"] = uploadData;
+=======
+/* harmony export (immutable) */ __webpack_exports__["u"] = getStatistics;
+/* harmony export (immutable) */ __webpack_exports__["y"] = queueStats;
+/* harmony export (immutable) */ __webpack_exports__["r"] = getReportResults;
+/* harmony export (immutable) */ __webpack_exports__["q"] = getLookerData;
+/* harmony export (immutable) */ __webpack_exports__["p"] = getLogs;
+/* harmony export (immutable) */ __webpack_exports__["w"] = getUserInformation;
+/* harmony export (immutable) */ __webpack_exports__["J"] = updateUserTheme;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getAdminUsers;
+/* harmony export (immutable) */ __webpack_exports__["B"] = updateAdminUser;
+/* harmony export (immutable) */ __webpack_exports__["v"] = getSupervisorUsers;
+/* harmony export (immutable) */ __webpack_exports__["I"] = updateSupervisorUser;
+/* harmony export (immutable) */ __webpack_exports__["x"] = getUsers;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getActiveUsers;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getFieldList;
+/* harmony export (immutable) */ __webpack_exports__["D"] = updateField;
+/* harmony export (immutable) */ __webpack_exports__["b"] = deleteField;
+/* harmony export (immutable) */ __webpack_exports__["k"] = getGoalList;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
+/* harmony export (immutable) */ __webpack_exports__["E"] = updateGoal;
+/* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["F"] = updateLayout;
+/* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
+/* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
+/* harmony export (immutable) */ __webpack_exports__["C"] = updateDatasource;
+/* harmony export (immutable) */ __webpack_exports__["a"] = deleteDatasource;
+/* harmony export (immutable) */ __webpack_exports__["s"] = getSkillGroups;
+/* harmony export (immutable) */ __webpack_exports__["o"] = getLinkList;
+/* harmony export (immutable) */ __webpack_exports__["G"] = updateLink;
+/* harmony export (immutable) */ __webpack_exports__["e"] = deleteLink;
+/* harmony export (immutable) */ __webpack_exports__["t"] = getSkillJobs;
+/* harmony export (immutable) */ __webpack_exports__["H"] = updateSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["f"] = deleteSkillJob;
+/* harmony export (immutable) */ __webpack_exports__["z"] = rebootServer;
+/* harmony export (immutable) */ __webpack_exports__["A"] = reloadData;
+/* harmony export (immutable) */ __webpack_exports__["K"] = uploadData;
+>>>>>>> master
 /* unused harmony export getParameters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
@@ -654,6 +698,16 @@ async function updateSupervisorUser(user) {
 
 async function getUsers() {
   let response = await request({}, 'users', 'GET');
+  return response.json();
+}
+/**
+ * Get list of users who have been active within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Object]} promise resolving to array of user objects
+ */
+
+async function getActiveUsers(interval) {
+  let response = await request({}, `users/active/${interval}`, 'GET');
   return response.json();
 } ///////////////////////////////////////////////////////////////////////
 // Messages

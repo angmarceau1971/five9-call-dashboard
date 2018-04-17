@@ -46,6 +46,10 @@ const usersSchema = mongoose.Schema({
             type: Boolean,
             default: false
         }
+    },
+    // Last time that user accessed page or API
+    lastActive: {
+        type: Date
     }
 });
 
@@ -208,6 +212,33 @@ async function updateTheme(username, newTheme) {
 }
 module.exports.updateTheme = updateTheme;
 
+/**
+ * Set user's lastActive attribute to now
+ * @param  {String} username
+ * @return {Promise}
+ */
+async function updateLastActive(username) {
+    return await Users.updateOne(
+        { username: username },
+        { $set: { 'lastActive': Date.now() } }
+    );
+}
+module.exports.updateLastActive = updateLastActive;
+
+/**
+ * Returns array of Users who have logged in within last @param interval seconds
+ * @param  {Number} interval in seconds
+ * @return {[Users]}
+ */
+async function getActive(interval) {
+    let start = new Date();
+    start.setSeconds(start.getSeconds() - interval);
+    return await Users.find(
+        { lastActive: { $gte: start } }
+    ).lean().exec();
+}
+module.exports.getActive = getActive;
+
 
 ////////////////////////////////////////////////
 // Database updating
@@ -291,15 +322,16 @@ async function refreshUserDatabase(usersModel) {
     // Remove users who aren't in the new data
     originalUsers.forEach((user) => {
         if (!cleanData.find((newUser) => newUser.username == user.username)) {
-            usersModel.remove(
+            usersModel.findOneAndUpdate(
                 { username: user.username },
+                { $set: { active: false } },
+                { }, // options
                 function(err, doc) {
-                    if (err) log.error(`Error when removing user: ${err}`, 'user status');
-                    log.info(`Removing user ${user.username} from Users table.`, 'user status');
+                    if (err) log.error(`Error when removing no-longer-existent user ${user.username}: ${err}`, 'user status');
+                    log.info(`Marking no-longer-existent user ${user.username} as inactive in Users table.`, 'user status');
                 }
             );
         }
     });
-
 }
 module.exports.refreshUserDatabase = refreshUserDatabase;
