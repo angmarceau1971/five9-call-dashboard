@@ -35,7 +35,7 @@ const vm = new Vue({
         message: '',
         logCategory: 'request',
         activeUsers: [],
-        activeUserInterval: 30 // in minutes
+        activeUserInterval: 60*24*7 // in minutes
     },
 
     mounted: async function() {
