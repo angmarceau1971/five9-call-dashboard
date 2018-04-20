@@ -85,9 +85,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-// URL Routes
+// Add in the routes
 app.use('/api', apiRoutes);
 app.use('/', viewRoutes);
+require('./routes/catchers').addTo(app);
 
 
 ///////////////////////////
