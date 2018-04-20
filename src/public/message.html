@@ -17,10 +17,12 @@
     <body>
     <div id="app" class="content-wrapper">
         <h1>Messenger</h1>
-        <users-selector
-            :show-refresh="false"
-            @select-users="selectUsers"
-        ></users-selector>
+        <div class="section">
+            <users-selector
+                :show-refresh="false"
+                @select-users="selectUsers"
+            ></users-selector>
+        </div>
 
         <div class="section statusMessage"
             v-show="statusMessage"
@@ -36,7 +38,7 @@
         </div>
 
         <div class="section outbox">
-            <h3>Outbox</h3>
+            <h2>Outbox</h2>
             <p>
                 Below are all of the messages that you've sent out.
             </p>
