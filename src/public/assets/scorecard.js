@@ -14002,6 +14002,7 @@ module.exports = isEmpty;
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = getValueForField;
 /* harmony export (immutable) */ __webpack_exports__["d"] = summarize;
+/* harmony export (immutable) */ __webpack_exports__["e"] = summarizeByMultiple;
 /* unused harmony export fieldNameFromString */
 /* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
 /* harmony export (immutable) */ __webpack_exports__["c"] = sum;
@@ -14066,54 +14067,50 @@ function process(data, field) {
 
 
 function summarize(data, summaryField, valueFields) {
-  // Date keys are coerced to strings by d3.nest, so parse them back if needed
-  let keyParse = key => key;
-
-  if (summaryField == 'dateDay' || summaryField == 'date') {
-    keyParse = key => new Date(key);
-  } // Summarize data
-
-
+  // Summarize data
   let nested = d3.nest().key(d => d[summaryField]).rollup(values => {
     // Sum up each requested field
     return valueFields.reduce((result, field) => {
       result[field] = process(values, field);
       return result;
     }, {});
-  }).entries(data); // Flatten the summarized nested data back to original format
+  }).entries(data); // Date keys are coerced to strings by d3.nest, so parse them back if needed
+
+  let parseKey = key => key;
+
+  if (summaryField == 'dateDay' || summaryField == 'date') {
+    parseKey = key => new Date(key);
+  } // Flatten the summarized nested data back to original format
+
 
   return nested.map(datum => {
     return Object.assign(datum.value, {
-      [summaryField]: keyParse(datum.key)
+      [summaryField]: parseKey(datum.key)
     });
-  }); // let summaryFields = [summaryField];
-  // let nested = d3.nest();
-  // for (let f of summaryFields) nested = nested.key((d) => d[f]);
-  // let rolledUp =
-  //     nested.rollup((values) => {
-  //         // Sum up each requested field
-  //         return valueFields.reduce((result, field) => {
-  //             result[field] = process(values, field);
-  //             return result;
-  //         }, {});
-  //     })
-  //     .entries(data);
-  // // Flatten the summarized nested data back to original format
-  // let flat = rolledUp.map((d) => {
-  //     return summaryFields.reduce((result, field) => {
-  //         Object.assign(result, {[field]: d.key});
-  //         if (result.value.value) {
-  //             result.key = result.value.key;
-  //             result.value = result.value.value;
-  //         }
-  //         else {
-  //             Object.assign(result, result.value);
-  //             delete result.key; delete result.value;
-  //         }
-  //         return result;
-  //     }, d);
-  // });
-  // return flat;
+  });
+}
+function summarizeByMultiple(datas, summaryFields, valueFields) {
+  let data = clone(datas); // Empty base object with given valueFields
+
+  let baseDatum = valueFields.reduce((r, field) => {
+    r[field] = 0;
+    return r;
+  }, {}); // Get key string for an object, based on @param summaryFields
+
+  function getKey(datum) {
+    return summaryFields.map(field => datum[field]).join('-');
+  }
+
+  let grouped = data.reduce((r, o) => {
+    let key = getKey(o);
+    let keyedData = r.get(key) || [];
+    keyedData.push(o);
+    return r.set(key, keyedData);
+  }, new Map()); // TODO: spread back to proper format
+
+  throw new Error(`summarizeByMultiple() called but not implemented`);
+  let result = grouped;
+  return result;
 }
 /**
  * Return field name without source.
@@ -17477,12 +17474,15 @@ const clone = __webpack_require__(5);
 //
 //
 //
+//
 
 
 
 /**
  *
- * @prop {Array} fields to display. The first field will be the one that data is summarized by.
+ * @prop {Array} fields to display. The first field will be the one that data
+ *               is summarized by if the `summarizeBy` prop isn't given.
+ * @prop {Array} summarizeBy - which fields to summarize data by
  * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
  * @prop {String} datasource - name of datasource being used
  * @prop {Object} filter to apply to data
@@ -17493,6 +17493,10 @@ const clone = __webpack_require__(5);
   extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
   props: {
     fields: Array,
+    summarizeBy: {
+      type: Array,
+      default: null
+    },
     headers: Array,
     datasource: String,
     filter: Object,
@@ -17503,6 +17507,10 @@ const clone = __webpack_require__(5);
     isChild: {
       type: Boolean,
       default: false
+    },
+    title: {
+      type: String,
+      default: ''
     },
     sortByField: String
   },
@@ -17530,7 +17538,12 @@ const clone = __webpack_require__(5);
       let data = this.$store.getters.getData(this.filter, this.datasource);
 
       if (this.summarize) {
-        data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["d" /* summarize */](data, this.fields[0], this.fields.slice(1));
+        if (this.summarizeBy) {
+          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["e" /* summarizeByMultiple */](data, this.summarizeBy, this.fields);
+        } else {
+          // default to summarizing by first field
+          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["d" /* summarize */](data, this.fields[0], this.fields.slice(1));
+        }
       } // TODO: take care of this case in the parse module
 
 
@@ -19372,7 +19385,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
 
 // exports
 
@@ -19394,6 +19407,10 @@ var render = function() {
       on: { dragstart: _vm.dragstartHandler }
     },
     [
+      !_vm.isChild && _vm.title
+        ? _c("h3", [_vm._v(_vm._s(_vm.title))])
+        : _vm._e(),
+      _vm._v(" "),
       _c("table", { staticClass: "data-table" }, [
         _c("thead", [
           _c(

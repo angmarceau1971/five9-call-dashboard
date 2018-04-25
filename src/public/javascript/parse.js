@@ -65,11 +65,6 @@ function process(data, field) {
  * @return {Object}              summarized data
  */
 export function summarize(data, summaryField, valueFields) {
-    // Date keys are coerced to strings by d3.nest, so parse them back if needed
-    let keyParse = (key) => key;
-    if (summaryField == 'dateDay' || summaryField == 'date') {
-        keyParse = (key) => new Date(key);
-    }
     // Summarize data
     let nested = d3.nest()
         .key((d) => d[summaryField])
@@ -81,42 +76,50 @@ export function summarize(data, summaryField, valueFields) {
             }, {});
         })
         .entries(data);
+
+    // Date keys are coerced to strings by d3.nest, so parse them back if needed
+    let parseKey = (key) => key;
+    if (summaryField == 'dateDay' || summaryField == 'date') {
+        parseKey = (key) => new Date(key);
+    }
+
     // Flatten the summarized nested data back to original format
     return nested.map((datum) => {
         return Object.assign(
             datum.value,
-            { [summaryField]: keyParse(datum.key) });
+            { [summaryField]: parseKey(datum.key) });
     });
-    // let summaryFields = [summaryField];
-    // let nested = d3.nest();
-    // for (let f of summaryFields) nested = nested.key((d) => d[f]);
-    // let rolledUp =
-    //     nested.rollup((values) => {
-    //         // Sum up each requested field
-    //         return valueFields.reduce((result, field) => {
-    //             result[field] = process(values, field);
-    //             return result;
-    //         }, {});
-    //     })
-    //     .entries(data);
-    // // Flatten the summarized nested data back to original format
-    // let flat = rolledUp.map((d) => {
-    //     return summaryFields.reduce((result, field) => {
-    //         Object.assign(result, {[field]: d.key});
-    //         if (result.value.value) {
-    //             result.key = result.value.key;
-    //             result.value = result.value.value;
-    //         }
-    //         else {
-    //             Object.assign(result, result.value);
-    //             delete result.key; delete result.value;
-    //         }
-    //         return result;
-    //     }, d);
-    // });
-    // return flat;
 }
 
+
+
+export function summarizeByMultiple(datas, summaryFields, valueFields) {
+    let data = clone(datas);
+
+    // Empty base object with given valueFields
+    let baseDatum = valueFields.reduce((r, field) => {
+        r[field] = 0;
+        return r;
+    }, {});
+
+    // Get key string for an object, based on @param summaryFields
+    function getKey(datum) {
+        return summaryFields.map((field) => datum[field]).join('-')
+    }
+
+    let grouped = data.reduce((r, o) => {
+        let key = getKey(o);
+        let keyedData = r.get(key) || [];
+        keyedData.push(o);
+        return r.set(key, keyedData);
+    }, new Map);
+
+    // TODO: spread back to proper format
+    throw new Error(`summarizeByMultiple() called but not implemented`)
+    let result = grouped;
+
+    return result;
+}
 
 /**
  * Return field name without source.

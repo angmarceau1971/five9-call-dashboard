@@ -5,6 +5,7 @@
 <div class="data-table-wrapper"
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler">
+    <h3 v-if="!isChild && title">{{ title }}</h3>
     <table class="data-table">
         <thead>
             <tr>
@@ -40,7 +41,9 @@ import { formatValue } from '../javascript/scorecard-format.js';
 
 /**
  *
- * @prop {Array} fields to display. The first field will be the one that data is summarized by.
+ * @prop {Array} fields to display. The first field will be the one that data
+ *               is summarized by if the `summarizeBy` prop isn't given.
+ * @prop {Array} summarizeBy - which fields to summarize data by
  * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
  * @prop {String} datasource - name of datasource being used
  * @prop {Object} filter to apply to data
@@ -50,6 +53,10 @@ export default {
     extends: WidgetBase,
     props: {
         fields: Array,
+        summarizeBy: {
+            type: Array,
+            default: null
+        },
         headers: Array,
         datasource: String,
         filter: Object,
@@ -60,6 +67,10 @@ export default {
         isChild: {
             type: Boolean,
             default: false
+        },
+        title: {
+            type: String,
+            default: ''
         },
         sortByField: String
     },
@@ -85,7 +96,11 @@ export default {
         data: function() {
             let data = this.$store.getters.getData(this.filter, this.datasource);
             if (this.summarize) {
-                data = parse.summarize(data, this.fields[0], this.fields.slice(1));
+                if (this.summarizeBy) {
+                    data = parse.summarizeByMultiple(data, this.summarizeBy, this.fields);
+                } else { // default to summarizing by first field
+                    data = parse.summarize(data, this.fields[0], this.fields.slice(1));
+                }
             }
             // TODO: take care of this case in the parse module
             if (this.fields[0] == 'reasonCode')
