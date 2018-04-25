@@ -25,15 +25,9 @@
                 ref="menuButton"
             >&#9776;
             </button>
-            <div v-if="showMenu" class="dropdown-content"
+            <div v-if="showMenu && !isLoading" class="dropdown-content"
                 @mouseleave="mouseleaveMenu" ref="menu" v-cloak
             >
-                <button class="insidedrop"
-                    v-if="$store.state.editMode"
-                    @click="refresh">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-
                 <button class="insidedrop submenu-button"
                     @mouseover="showMenuThemes=true"
                     @mouseleave="mouseleaveThemeSubMenu"
@@ -85,13 +79,6 @@
 
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
-                    @click="clickImport"
-                    id="import-layout">
-                    Import
-                </button>
-
-                <button class="insidedrop"
-                    v-if="$store.state.editMode"
                     @click="exportLayout"
                     id="export-layout">
                     Export
@@ -99,8 +86,7 @@
 
                 <button class="insidedrop"
                     v-if="$store.state.editMode"
-                    @click="addCard"
-                    id="export-layout">
+                    @click="addCard">
                     <i class="far fa-plus-square"></i> Add Card
                 </button>
 
@@ -141,8 +127,14 @@
             </div>
 
             <div class="nav">
-                <div v-if="user.isSupervisor" class="view">
-                    <h3>Super-View</h3>
+                <div v-if="user.isSupervisor || user.isAdmin" class="layouts" title="Choose a layout">
+                    <select v-model="chosenLayoutName"
+                        @change="changeLayout(chosenLayoutName)">
+                        <option v-for="(layout, i) in $store.state.layouts"
+                        >
+                            {{ layout.name }}
+                        </option>
+                    </select>
                 </div>
                 <div class="user-greeting">
                     <p>

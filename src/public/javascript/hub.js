@@ -28,18 +28,20 @@ const sift = require('sift');
  */
 export const store = new Vuex.Store({
     state: {
-        fields: [],
-        editMode: false,
-        currentUser: '',
-        user: {},
         data: {},
         datasources: {},
-        timeoutIds: {},
+        editMode: false,
+        fields: [],
         goals: [],
         links: [],
-        selectedUsers: [],
         skillGroups: [],
-        supMode: 'individual'
+        supMode: 'team', // team or individual
+        timeoutIds: {},
+        currentUser: '', // username. TODO: is this used?
+        selectedUsers: [],
+        user: {},
+        layouts: [], // list of available layouts
+        layout: {}, // currently selected layout
     },
 
     // Helper functions to retrieve data
@@ -52,6 +54,9 @@ export const store = new Vuex.Store({
         field: (state) => (fieldName) => {
             return state.fields.find((f) => f.fullName == fieldName)
                 || state.fields.find((f) => f.name == fieldName);
+        },
+        layout: (state) => (layoutName) => {
+            return state.layouts.find((l) => l.name == layoutName);
         },
         rawFieldName: (state) => (fullFieldName) => {
             let [source, field] = fullFieldName.split('.');
@@ -139,6 +144,14 @@ export const store = new Vuex.Store({
         setLinks(state, links) {
             state.links = links.sort((a, b) => a.name > b.name);
         },
+        // Update list of available layouts
+        setLayouts(state, layouts) {
+            state.layouts = layouts;
+        },
+        // Update currently chosen layout
+        setLayout(state, layout) {
+            state.layout = layout;
+        },
         changeDatasource(state, datasource) {
             const ds = clone(datasource);
             Vue.set(state.datasources, ds.id, ds);
@@ -167,19 +180,25 @@ export const store = new Vuex.Store({
         },
         // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
+            // Load configuration and set layout
+            await context.dispatch('loadAssets');
+            let layout = context.state.layouts[0];
+            context.dispatch('updateLayout', layout);
+            // Start updating based on data sources
+            context.dispatch('nextUpdate', null);
+        },
+
+        async loadAssets(context) {
             // load layout
             let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
-            let layout = await api.getLayout(agentGroups, context.state.supMode);
-            context.commit('setDatasources', layout.datasources);
+            let layouts = await api.getLayouts(agentGroups, context.state.supMode);
+            context.commit('setLayouts', layouts);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
             context.commit('setSkillGroups', await api.getSkillGroups());
             context.commit('setLinks', await api.getLinkList());
             // load in goals
             context.dispatch('updateGoals');
-            // Start updating based on data sources
-            context.dispatch('nextUpdate', null);
-            return layout;
         },
 
         // Force a refresh. For testing purposes.
@@ -187,13 +206,19 @@ export const store = new Vuex.Store({
             for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
                 clearTimeout(id);
             }
-            return await context.dispatch('startProcess');
+            await context.dispatch('loadAssets');
+            context.dispatch('nextUpdate', null);
         },
 
         async updateGoals(context) {
             let groups = extractValues(context.getters.currentUsers, 'agentGroups');
             let goals = await api.getGoalsForAgentGroups(groups);
             context.commit('setGoals', goals);
+        },
+
+        updateLayout(context, layout) {
+            context.commit('setLayout', layout);
+            context.commit('setDatasources', layout.datasources);
         },
 
         // Refresh data based on current datasources

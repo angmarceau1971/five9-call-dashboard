@@ -177,7 +177,7 @@ router.post('/layout', verify.apiMiddleware(), async (req, res) => {
         let type = req.body.type;
         let layoutList = await layouts.getLayoutsForAgentGroups(groups, type);
         res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(layoutList[0] || {}));
+        res.send(JSON.stringify(layoutList || {}));
     } catch (err) {
         log.error(`Error while retrieving layouts: ${err}`);
         res.set('Content-Type', 'application/text');

@@ -539,8 +539,8 @@ function applyToTag (styleElement, obj) {
 /* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
 /* harmony export (immutable) */ __webpack_exports__["J"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayouts;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
 /* harmony export (immutable) */ __webpack_exports__["K"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
@@ -818,7 +818,7 @@ async function deleteGoal(goal) {
  * @return {Object}
  */
 
-async function getLayout(agentGroups, type) {
+async function getLayouts(agentGroups, type) {
   let response = await request({
     agentGroups: agentGroups,
     type: type
@@ -12589,18 +12589,24 @@ const sift = __webpack_require__(58);
 
 const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   state: {
-    fields: [],
-    editMode: false,
-    currentUser: '',
-    user: {},
     data: {},
     datasources: {},
-    timeoutIds: {},
+    editMode: false,
+    fields: [],
     goals: [],
     links: [],
-    selectedUsers: [],
     skillGroups: [],
-    supMode: 'individual'
+    supMode: 'team',
+    // team or individual
+    timeoutIds: {},
+    currentUser: '',
+    // username. TODO: is this used?
+    selectedUsers: [],
+    user: {},
+    layouts: [],
+    // list of available layouts
+    layout: {} // currently selected layout
+
   },
   // Helper functions to retrieve data
   getters: {
@@ -12611,6 +12617,9 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
      */
     field: state => fieldName => {
       return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
+    },
+    layout: state => layoutName => {
+      return state.layouts.find(l => l.name == layoutName);
     },
     rawFieldName: state => fullFieldName => {
       let [source, field] = fullFieldName.split('.');
@@ -12712,6 +12721,16 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.links = links.sort((a, b) => a.name > b.name);
     },
 
+    // Update list of available layouts
+    setLayouts(state, layouts) {
+      state.layouts = layouts;
+    },
+
+    // Update currently chosen layout
+    setLayout(state, layout) {
+      state.layout = layout;
+    },
+
     changeDatasource(state, datasource) {
       const ds = clone(datasource);
       __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
@@ -12742,19 +12761,25 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Load the dashboard up. Assumes `updateUser` has already completed.
     async startProcess(context) {
+      // Load configuration and set layout
+      await context.dispatch('loadAssets');
+      let layout = context.state.layouts[0];
+      context.dispatch('updateLayout', layout); // Start updating based on data sources
+
+      context.dispatch('nextUpdate', null);
+    },
+
+    async loadAssets(context) {
       // load layout
       let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let layout = await __WEBPACK_IMPORTED_MODULE_2__api__["m" /* getLayout */](agentGroups, context.state.supMode);
-      context.commit('setDatasources', layout.datasources); // load fields and helpful links from server
+      let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
+      context.commit('setLayouts', layouts); // load fields and helpful links from server
 
       context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
       context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
       context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
 
-      context.dispatch('updateGoals'); // Start updating based on data sources
-
-      context.dispatch('nextUpdate', null);
-      return layout;
+      context.dispatch('updateGoals');
     },
 
     // Force a refresh. For testing purposes.
@@ -12763,13 +12788,19 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         clearTimeout(id);
       }
 
-      return await context.dispatch('startProcess');
+      await context.dispatch('loadAssets');
+      context.dispatch('nextUpdate', null);
     },
 
     async updateGoals(context) {
       let groups = extractValues(context.getters.currentUsers, 'agentGroups');
       let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
       context.commit('setGoals', goals);
+    },
+
+    updateLayout(context, layout) {
+      context.commit('setLayout', layout);
+      context.commit('setDatasources', layout.datasources);
     },
 
     // Refresh data based on current datasources
@@ -18547,7 +18578,6 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app',
   store: store,
   data: {
-    layout: {},
     isLoaded: false,
     showMenu: false,
     // show main menu
@@ -18560,7 +18590,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     showFilters: true,
     datasourceMessage: '',
     messages: [],
-    showInbox: false
+    showInbox: false,
+    chosenLayoutName: ''
   },
   components: {
     'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
@@ -18572,7 +18603,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   async beforeMount() {
     // load user's data
     await store.dispatch('updateUser', '');
-    this.layout = await store.dispatch('startProcess');
+    await store.dispatch('startProcess');
+    this.chosenLayoutName = this.layout.name;
     this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
     // TODO: fix bug causing data to be blank after first `startProcess`
 
@@ -18582,6 +18614,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   },
 
   computed: {
+    layout: function () {
+      return store.state.layout;
+    },
     username: {
       get() {
         return store.state.currentUser;
@@ -18641,9 +18676,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     ///////////////////////////
     // UI / interactions
     refresh: async function () {
-      this.layout = {};
       this.isLoading = true;
-      this.layout = await store.dispatch('forceRefresh');
+      await store.dispatch('forceRefresh');
       this.isLoading = false;
       this.messages = await this.updateMessages();
     },
@@ -18689,6 +18723,11 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     changeSupMode: function (newMode) {
       store.commit('setSupMode', newMode);
     },
+    changeLayout: function (name) {
+      let newLayout = store.getters.layout(name);
+      store.dispatch('updateLayout', newLayout);
+      this.refresh();
+    },
     //////////////////////////////////////////////////
     // Handle menus and theme
     updateThemeStyles: function (theme) {
@@ -18716,26 +18755,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       }
     },
     ///////////////////////////
-    // Handle import & export of layouts
-    clickImport: function () {
-      this.$refs.fileInput.click();
-    },
-    importLayout: function (event) {
-      const file = event.target.files[0];
-
-      if (!file) {
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const contents = JSON.parse(e.target.result);
-        this.layout = Object.assign({}, contents);
-      }.bind(this);
-
-      reader.readAsText(file);
-    },
+    // Handle export of layout to JSON
     exportLayout: function () {
       download(layout, 'test.json', 'text/plain');
     },

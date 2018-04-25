@@ -236,7 +236,7 @@ export async function deleteGoal(goal) {
  * @param  {String} type either team or individual layout
  * @return {Object}
  */
-export async function getLayout(agentGroups, type) {
+export async function getLayouts(agentGroups, type) {
     let response = await request({agentGroups: agentGroups, type: type}, 'layout');
     return await response.json();
 }

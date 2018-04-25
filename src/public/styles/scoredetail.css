@@ -134,18 +134,46 @@ h2, h3 {
 .top-bar .nav div.user-greeting {
     display: inline-block;
 }
-.top-bar .nav div.view {
+.top-bar .nav div.layouts {
     margin: auto auto auto 1.5em;
-    color: hsl(240, 7%, 1%);
-    text-shadow: 0px 1px 1px hsl(208, 39%, 71%);
     text-align: center;
     justify-content: center;
     display: flex;
 }
-.top-bar .nav div.view h3 {
+.top-bar .nav div.layouts select {
     margin: 0 auto;
+    font-size: 1.25em;
     text-transform: uppercase;
+    background: transparent;
+    color: hsl(240, 7%, 1%);
+    text-shadow: 0px 1px 1px hsl(208, 39%, 71%), 0px 1px 5px hsla(208, 33%, 69%, 0.57);
+    border: none;
+    -webkit-appearance: none;
+    appearance: none;
 }
+.top-bar .nav div.layouts select:hover {
+    cursor: pointer;
+}
+.top-bar .nav div.layouts:after {
+  content: '<>';
+  font: 17px "Consolas", monospace;
+  color: #333;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  right: 11px;
+  /*Adjust for position however you want*/
+
+  top: 18px;
+  padding: 0 0 2px;
+  border-bottom: 1px solid #999;
+  /*left line */
+
+  position: absolute;
+  pointer-events: none;
+}
+
 
 /***********************/
 /* Dashboard
@@ -311,4 +339,5 @@ h2, h3 {
     background-color: transparent;
     color: black;
     cursor: pointer;
+}
 }

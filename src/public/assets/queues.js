@@ -535,8 +535,8 @@ function skillStringToArray(skillString) {
 /* harmony export (immutable) */ __webpack_exports__["l"] = getGoalsForAgentGroups;
 /* harmony export (immutable) */ __webpack_exports__["J"] = updateGoal;
 /* harmony export (immutable) */ __webpack_exports__["c"] = deleteGoal;
-/* harmony export (immutable) */ __webpack_exports__["m"] = getLayout;
-/* harmony export (immutable) */ __webpack_exports__["n"] = getLayoutList;
+/* harmony export (immutable) */ __webpack_exports__["n"] = getLayouts;
+/* harmony export (immutable) */ __webpack_exports__["m"] = getLayoutList;
 /* harmony export (immutable) */ __webpack_exports__["K"] = updateLayout;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteLayout;
 /* harmony export (immutable) */ __webpack_exports__["i"] = getDatasources;
@@ -814,7 +814,7 @@ async function deleteGoal(goal) {
  * @return {Object}
  */
 
-async function getLayout(agentGroups, type) {
+async function getLayouts(agentGroups, type) {
   let response = await request({
     agentGroups: agentGroups,
     type: type

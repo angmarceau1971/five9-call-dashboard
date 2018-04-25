@@ -22,7 +22,6 @@ const vm = new Vue({
     store: store,
 
     data: {
-        layout: {},
         isLoaded: false,
         showMenu: false, // show main menu
         showMenuThemes: false, // show themes submenu
@@ -32,7 +31,8 @@ const vm = new Vue({
         showFilters: true,
         datasourceMessage: '',
         messages: [],
-        showInbox: false
+        showInbox: false,
+        chosenLayoutName: ''
     },
 
     components: {
@@ -45,7 +45,8 @@ const vm = new Vue({
     async beforeMount() {
         // load user's data
         await store.dispatch('updateUser', '');
-        this.layout = await store.dispatch('startProcess');
+        await store.dispatch('startProcess');
+        this.chosenLayoutName = this.layout.name;
         this.isLoaded = true;
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
@@ -55,6 +56,9 @@ const vm = new Vue({
     },
 
     computed: {
+        layout: function() {
+            return store.state.layout;
+        },
         username: {
             get() {
                 return store.state.currentUser;
@@ -117,9 +121,8 @@ const vm = new Vue({
         ///////////////////////////
         // UI / interactions
         refresh: async function() {
-            this.layout = {};
             this.isLoading = true;
-            this.layout = await store.dispatch('forceRefresh');
+            await store.dispatch('forceRefresh');
             this.isLoading = false;
             this.messages = await this.updateMessages();
         },
@@ -170,7 +173,11 @@ const vm = new Vue({
         changeSupMode: function(newMode) {
             store.commit('setSupMode', newMode);
         },
-
+        changeLayout: function(name) {
+            let newLayout = store.getters.layout(name);
+            store.dispatch('updateLayout', newLayout);
+            this.refresh();
+        },
 
         //////////////////////////////////////////////////
         // Handle menus and theme
@@ -205,22 +212,7 @@ const vm = new Vue({
         },
 
         ///////////////////////////
-        // Handle import & export of layouts
-        clickImport: function() {
-            this.$refs.fileInput.click();
-        },
-        importLayout: function(event) {
-            const file = event.target.files[0];
-            if (!file) {
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const contents = JSON.parse(e.target.result);
-                this.layout = Object.assign({}, contents);
-            }.bind(this);
-            reader.readAsText(file);
-        },
+        // Handle export of layout to JSON
         exportLayout: function() {
             download(layout, 'test.json', 'text/plain');
         },
