@@ -141,6 +141,9 @@
             </div>
 
             <div class="nav">
+                <div v-if="user.isSupervisor" class="view">
+                    <h3>Super-View</h3>
+                </div>
                 <div class="user-greeting">
                     <p>
                         {{ userGreeting }}
