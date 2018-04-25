@@ -51,6 +51,10 @@ const layoutSchema = mongoose.Schema({
     datasources: {
         type: String,
         default: '[]'
+    },
+    sortOrder: {
+        type: Number,
+        default: Infinity
     }
 });
 
@@ -75,6 +79,11 @@ async function getLayoutsForAgentGroups(agentGroups, type='') {
     if (type) query = { layoutType: type };
     let layouts = await Layouts.find(query).lean().exec();
 
+    // if team layouts are requested, return all of 'em sorted by relevance
+    if (type == 'team') {
+        return sort(layouts);
+    }
+
     let defaults = layouts.filter((layout) =>
         intersection(layout.defaultForAgentGroups, agentGroups).length > 0
     );
@@ -83,15 +92,15 @@ async function getLayoutsForAgentGroups(agentGroups, type='') {
     );
 
     let all = [...defaults, ...optionals];
-    if (all.length > 0) return all;
-    // return team layouts if no agent groups were matched
-    if (type == 'team' && layouts.length > 0) return layouts;
+    if (all.length > 0) return sort(all);
     // default to "Main" layout
-    return await Layouts.find({name: "Main"}).lean().exec();
+    return sort(await Layouts.find({name: "Main"}).lean().exec());
 }
 module.exports.getLayoutsForAgentGroups = getLayoutsForAgentGroups;
 
-
+function sort(layouts) {
+    return layouts.sort((a, b) => a.sortOrder < b.sortOrder ? -1 : 1);
+}
 
 async function update(layoutObject) {
     let layout = clone(layoutObject);

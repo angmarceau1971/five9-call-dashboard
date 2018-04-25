@@ -35,7 +35,7 @@ export const store = new Vuex.Store({
         goals: [],
         links: [],
         skillGroups: [],
-        supMode: 'team', // team or individual
+        supMode: 'individual', // team or individual - start w/ indi. for agent users
         timeoutIds: {},
         currentUser: '', // username. TODO: is this used?
         selectedUsers: [],

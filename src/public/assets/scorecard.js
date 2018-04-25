@@ -12596,8 +12596,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     goals: [],
     links: [],
     skillGroups: [],
-    supMode: 'team',
-    // team or individual
+    supMode: 'individual',
+    // team or individual - start w/ indi. for agent users
     timeoutIds: {},
     currentUser: '',
     // username. TODO: is this used?
@@ -18603,6 +18603,12 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   async beforeMount() {
     // load user's data
     await store.dispatch('updateUser', '');
+
+    if (this.user.isAdmin || this.user.isSupervisor) {
+      this.changeSupMode('team');
+    } // Start the data rolling
+
+
     await store.dispatch('startProcess');
     this.chosenLayoutName = this.layout.name;
     this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank

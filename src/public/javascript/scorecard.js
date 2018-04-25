@@ -45,9 +45,14 @@ const vm = new Vue({
     async beforeMount() {
         // load user's data
         await store.dispatch('updateUser', '');
+        if (this.user.isAdmin || this.user.isSupervisor) {
+            this.changeSupMode('team');
+        }
+        // Start the data rolling
         await store.dispatch('startProcess');
         this.chosenLayoutName = this.layout.name;
         this.isLoaded = true;
+
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
         setTimeout(this.refresh.bind(this), 2500);
