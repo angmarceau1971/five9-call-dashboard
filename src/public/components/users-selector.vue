@@ -17,7 +17,7 @@
         </div>
         <div class="user-list">
             <select multiple size="30" v-model="selectedUsernames"
-                @change="$emit('select-users', getUsers(selectedUsernames))">
+                @change="selectUsers(getUsers(selectedUsernames))">
                 <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
                     :value="userAgent.username">
                     {{ getUserSelectionString(userAgent) }}
@@ -42,11 +42,15 @@ const intersection = require('ramda/src/intersection');
 
 export default {
     name: 'users-selector',
+
+
     props: {
         showRefresh: {
             default: true
         }
     },
+
+
     data () {
         return {
             userList: [],
@@ -56,10 +60,14 @@ export default {
             message: ''
         }
     },
+
+
     mounted: async function() {
         this.userList = await this.loadUsersList();
         this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
     },
+
+
     methods: {
         clickRefresh: function() {
             if (this.$store.state.supMode == 'individual'
@@ -70,12 +78,14 @@ export default {
                 this.$emit('refresh');
             }
         },
+
         // Load list of users
         loadUsersList: async function() {
             let userList = await api.getUsers();
             userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
             return userList;
         },
+
         // Return users who are within the selectedAgentGroups
         filterUsersInGroup: function(users) {
             if (this.selectedAgentGroups.length == 0) return users;
@@ -83,6 +93,7 @@ export default {
                 intersection(user.agentGroups, this.selectedAgentGroups).length > 0
             )
         },
+
         // If a user is part of multiple groups, list them next to user's name
         getUserSelectionString: function(user) {
             let groupString = '';
@@ -91,24 +102,36 @@ export default {
             }
             return `${user.lastName}, ${user.firstName}${groupString}`;
         },
+
         // From the passed-in users, return array of agent groups
         getAgentGroupsFromUsers: function(users) {
             return extractValues(users, 'agentGroups').sort();
         },
+
         // Filter for agents within an agent group
         selectAgentGroups: async function(agentGroups) {
-            // this.$store.commit('setSelectedUsers', this.filterUsersInGroup(this.userList));
             this.selectedAgentGroups = agentGroups;
+            this.selectUsers(this.filterUsersInGroup(this.userList));
         },
+
         // Get users from usernames
         getUsers: function(usernames) {
             return usernames.map((username) =>
                 this.userList.find((user) => user.username == username)
             );
+        },
+
+        selectUsers: function(users) {
+            this.$emit('select-users', users);
+            // Make sure these cats are in the selectedUsernames list
+            this.selectedUsernames = users.map((u) => u.username);
         }
+
     }
+
 }
 </script>
+
 
 <style scoped>
 .message {
