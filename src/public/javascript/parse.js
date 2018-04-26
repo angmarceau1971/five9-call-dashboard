@@ -82,6 +82,9 @@ export function summarize(data, summaryField, valueFields) {
     if (summaryField == 'dateDay' || summaryField == 'date') {
         parseKey = (key) => new Date(key);
     }
+    else if (summaryField == 'agentUsername') {
+        parseKey = (key) => hub.store.getters.nameFromUsername(key);
+    }
 
     // Flatten the summarized nested data back to original format
     return nested.map((datum) => {

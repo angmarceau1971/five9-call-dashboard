@@ -40,6 +40,7 @@ export const store = new Vuex.Store({
         currentUser: '', // username. TODO: is this used?
         selectedUsers: [],
         user: {},
+        userList: [], // list of all users for supervisor views
         layouts: [], // list of available layouts
         layout: {}, // currently selected layout
     },
@@ -98,6 +99,10 @@ export const store = new Vuex.Store({
         },
         currentSkills: (state, getters) => {
             return usersToSkills(state.skillGroups, getters.currentUsers)
+        },
+        nameFromUsername: (state) => (username) => {
+            let user = state.userList.find((u) => u.username == username);
+            return `${user.firstName} ${user.lastName}`;
         }
     },
 
@@ -125,6 +130,9 @@ export const store = new Vuex.Store({
         setUser(state, user) {
             state.currentUser = user.username;
             state.user = clone(user);
+        },
+        setUserList(state, users) {
+            state.userList = users;
         },
         setTimeoutId(state, { datasourceName, id }) {
             state.timeoutIds[datasourceName] = id;

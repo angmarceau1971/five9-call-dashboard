@@ -65,6 +65,7 @@ export default {
     mounted: async function() {
         this.userList = await this.loadUsersList();
         this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+        this.$emit('users-loaded', this.userList);
     },
 
 

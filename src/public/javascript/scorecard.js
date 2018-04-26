@@ -183,6 +183,11 @@ const vm = new Vue({
             store.dispatch('updateLayout', newLayout);
             this.refresh();
         },
+        // When user selector loads the users list, save it to hub for later
+        // parsing.
+        updateUserList: function(users) {
+            store.commit('setUserList', users);
+        },
 
         //////////////////////////////////////////////////
         // Handle menus and theme

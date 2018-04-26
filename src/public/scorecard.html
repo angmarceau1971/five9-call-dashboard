@@ -217,6 +217,7 @@
                     <users-selector v-show="showFilters"
                         @select-users="selectUsers"
                         @refresh="refresh"
+                        @users-loaded="updateUserList"
                     ></users-selector>
                 </div>
 
