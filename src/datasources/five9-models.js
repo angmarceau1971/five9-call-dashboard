@@ -16,6 +16,7 @@ mongoose.Promise = global.Promise;
 const callLogSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     skill: String,
+    skillGroup: String, // calculated via lookup from skill
     zipCode: String,
     date: Date, // Date and time
     calls: { type: Number, default: 0 },
@@ -30,6 +31,7 @@ const acdFeedSchema = mongoose.Schema({
     agentName: String,
     agentGroup: String,
     skill: String,
+    skillGroup: String, // calculated via lookup from skill
     date: Date, // Date and time
     calls: { type: Number, default: 0 },
     // duration-based fields are stored as seconds
@@ -66,6 +68,7 @@ const chatDataSchema = mongoose.Schema({
     agentName: String,
     agentGroup: String,
     skill: String, // text "campaign" in Five9
+    skillGroup: String, // calculated via lookup from skill
     date: Date, // Date and time
     chats: { type: Number, default: 0 }, // chat count
     calls: { type: Number, default: 0 }, // chat count - named calls for consistency in calculated fields

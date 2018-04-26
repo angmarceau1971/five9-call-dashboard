@@ -27,17 +27,33 @@ const skillGroupSchema = mongoose.Schema({
 const SkillGroup = mongoose.model('SkillGroup', skillGroupSchema);
 module.exports.SkillGroup = SkillGroup;
 
-// Create a cached / in-memory copy of skill lookups for fast retrieval later.
-let skillGroupLookup = {};
+/**
+ * Create cached / in-memory copies of skill lookups for fast retrieval later.
+ * @type {Map}
+ */
+let skillGroupLookup, skillLookup; // <-- ES6 Map objects
+/**
+ * This is called anytime Express restarts. Should be re-ran when skill groupings
+ * change.
+ * @return {Promise} resolves when completed
+ */
 async function generateLookup() {
     log.message('Generating skill group lookup.')
     return new Promise((resolve, reject)  => {
         SkillGroup.find({}, (err, docs) => {
             if (err) reject(err);
+            // Create skill group -> skills lookup
             skillGroupLookup = docs.reduce((lookup, skillGroup) => {
-                lookup[skillGroup.name] = skillGroup;
+                lookup.set(skillGroup.name, skillGroup);
                 return lookup;
-            }, {});
+            }, new Map());
+            // Create skill -> skill group lookup
+            skillLookup = docs.reduce((lookup, skillGroup) => {
+                for (let skill of skillGroup.skills) {
+                    lookup.set(skill, skillGroup.name);
+                }
+                return lookup;
+            }, new Map());
             resolve(skillGroupLookup);
         });
     });
@@ -89,7 +105,7 @@ module.exports.process = process;
 function getSkills(skillGroupName) {
     // If this is just a single group name, return lookup at that name
     if (typeof(skillGroupName) == 'string') {
-        let skillGroup = skillGroupLookup[skillGroupName];
+        let skillGroup = skillGroupLookup.get(skillGroupName);
         if (!skillGroup) {
             throw new Error(`Skill Group name "${skillGroupName}" doesn't exist.`);
         }
@@ -102,6 +118,15 @@ function getSkills(skillGroupName) {
 }
 module.exports.getSkills = getSkills;
 
+/**
+ * Return skill group that the given skill belongs to
+ * @param  {String} skillName Five9 skill name
+ * @return {String} parent skill group
+ */
+function getSkillGroup(skillName) {
+    return skillLookup.get(skillName);
+}
+module.exports.getSkillGroup = getSkillGroup;
 
 /**
  * For the given Agent Group, returns Skill Groups that this team handles.
@@ -109,14 +134,14 @@ module.exports.getSkills = getSkills;
  * @return {Array of Objects} matching skill group objects
  */
 function getFromAgentGroup(agentGroup) {
-    return Object.keys(skillGroupLookup)
-        .filter((groupName) =>
-            skillGroupLookup[groupName].agentGroups.includes(agentGroup)
+    return [...skillGroupLookup.entries()]
+        .filter(([groupName, skillGroup]) =>
+            skillGroup.agentGroups.includes(agentGroup)
         )
-        .map((groupName) => {
+        .map(([groupName, skillGroup]) => {
             return {
                 name: groupName,
-                skills: skillGroupLookup[groupName].skills
+                skills: skillGroup.skills
             }
         });
 }

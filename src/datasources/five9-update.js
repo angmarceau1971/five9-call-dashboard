@@ -4,6 +4,7 @@
 const csv = require('csvtojson'); // CSV parsing
 const five9 = require('../utility/five9-interface'); // Five9 interface helper functions
 const log = require('../utility/log'); // recording updates
+const skillGroup = require('./skill-group.js');
 const moment = require('moment-timezone'); // dates/times
 const pt = require('promise-timeout'); // timeout if Five9 doesn't respond
 
@@ -196,6 +197,13 @@ function parseRow(model, row) {
     let datestring;
     let seconds = (hhMmSs) => moment.duration(hhMmSs).asSeconds();
 
+    // General field handlers
+    if (row.skill) {
+        p.skill = row.skill;
+        p.skillGroup = skillGroup.getSkillGroup(p.skill);
+    }
+
+    // Model-specific fields
     if (model == models.CallLog) {
         datestring = row.date + ' ' + row['HALF HOUR'];
         p.serviceLevel = row.serviceLevel * 1;
@@ -204,8 +212,6 @@ function parseRow(model, row) {
 
         // Leave only left 5 digits of zip code
         p.zipCode = row.zipCode.substr(0, 5);
-        // Set interval in Date format
-        p.skill = row.skill;
     }
     else if (model == models.AcdFeed) {
         datestring = row.date + ' ' + row['QUARTER HOUR'];
@@ -221,7 +227,6 @@ function parseRow(model, row) {
         p.conferenceTime = seconds(row.conferenceTime);
         p.acwTime = seconds(row.acwTime);
         p.speedOfAnswer = seconds(row.speedOfAnswer);
-        p.skill = row.skill;
 
         p.abandons = row.abandons * 1;
         if (p.abandons) {
@@ -256,7 +261,6 @@ function parseRow(model, row) {
 
         p.handleTime = seconds(row.handleTime);
         p.speedOfAnswer = seconds(row.speedOfAnswer);
-        p.skill = row.skill;
         p.mediaType = row.mediaType;
 
         p.abandons = row.agentName == '' ? 1 : 0;
