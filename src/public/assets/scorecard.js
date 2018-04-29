@@ -13611,7 +13611,7 @@ const clone = __webpack_require__(5);
 
 function clean(original) {
   let filter = clone(original);
-  const users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
+  let users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
 
   let dateKey;
 
@@ -13638,22 +13638,13 @@ function clean(original) {
 
 
   if (filter.skillGroup) {
-    if (filter.skillGroup.$in[0] == '<current skill group>') {
+    if (filter.skillGroup.$in && filter.skillGroup.$in[0] == '<current skill group>') {
       filter.skill = {
         $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
       };
-    } else {
-      throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`);
+      delete filter.skillGroup;
     }
-
-    delete filter.skillGroup;
-  } // Add selected agent groups ( in supervisor mode )
-  // if (filter.agentGroup == '<selected agents>') {
-  //     filter.agentGroup = {
-  //         $in: hub.store.getters.selectedAgents()
-  //     }
-  // }
-
+  }
 
   return filter;
 }

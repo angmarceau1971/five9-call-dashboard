@@ -11,7 +11,7 @@ const clone = require('ramda/src/clone');
  */
 export function clean(original) {
     let filter = clone(original);
-    const users = hub.store.getters.currentUsers;
+    let users = hub.store.getters.currentUsers;
 
     // Clean up dates
     let dateKey;
@@ -38,24 +38,14 @@ export function clean(original) {
         filter.agentName.$in = users.map((user) => `${user.lastName}, ${user.firstName}`);
     }
 
-
     // Update appropriate skill groups
     if (filter.skillGroup) {
-        if (filter.skillGroup.$in[0] == '<current skill group>') {
+        if (filter.skillGroup.$in &&
+            filter.skillGroup.$in[0] == '<current skill group>') {
             filter.skill = { $in: hub.store.getters.currentSkills };
+            delete filter.skillGroup;
         }
-        else {
-            throw new Error(`Invalid skill group filter: ${filter.skillGroup}. Must use $in filter.`)
-        }
-        delete filter.skillGroup;
     }
-
-    // Add selected agent groups ( in supervisor mode )
-    // if (filter.agentGroup == '<selected agents>') {
-    //     filter.agentGroup = {
-    //         $in: hub.store.getters.selectedAgents()
-    //     }
-    // }
 
     return filter;
 }
