@@ -186,7 +186,12 @@ async function runQueueDashboard() {
 
 
 function refreshView(data, serviceLevelData) {
-  // update each gizmo on the screen
+  if (data.length == 0) {
+    console.log(`[${moment()}] No queue data received. Aborting refresh.`);
+    return;
+  } // update each gizmo on the screen
+
+
   $('.gizmo').each((i, gizmoElement) => {
     const thisGizmo = gizmo.gizmos[gizmoElement.id];
     let name = thisGizmo.name;

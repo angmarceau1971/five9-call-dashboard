@@ -12798,11 +12798,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     // views.
     async forceRefresh(context) {
       clearTimeout(context.state.timeoutId);
-      await context.dispatch('loadAssets'); // If we're in individual mode, update the layout based on the
-      // individual chosen. Otherwise, we'll leave the Team layout as-is
-      // until the user selects a new one via the drop-down.
+      await context.dispatch('loadAssets'); // If we're in individual mode or have changed mode, update the
+      // layout based on the user(s) chosen.
+      // Otherwise, we'll leave the Team layout as-is until the user
+      // selects a new one via the drop-down.
 
-      if (!layoutMatchesSupMode(context.state.layout.layoutType, context.state.supMode)) {
+      if (context.state.supMode == 'individual' || !layoutMatchesSupMode(context.state.layout.layoutType, context.state.supMode)) {
         context.dispatch('updateLayout', context.state.layouts[0]);
       } // Refresh data
 
@@ -13713,6 +13714,13 @@ const dateMatcher = {
       $lt: moment().startOf('month').add(1, 'months').toDate()
     };
   },
+  '<this month>': function () {
+    // alternate name for month-to-date
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
   '<last month>': function () {
     return {
       $gte: moment().subtract(1, 'months').startOf('month').toDate(),
@@ -14125,6 +14133,8 @@ function process(data, field) {
     return sum(data, 'orders') / sum(data, 'calls');
   } else if (fieldName == 'notReadyPercentage') {
     return sum(data, 'notReadyTime') / sum(data, 'loginTime');
+  } else if (fieldName == 'sameDayAndNextDayOrders') {
+    return sum(data, 'sameDayOrders') + sum(data, 'nextDayOrders');
   } else return sum(data, fieldName);
 }
 /**

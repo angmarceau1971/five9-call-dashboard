@@ -53,6 +53,9 @@ function process(data, field) {
     else if (fieldName == 'notReadyPercentage') {
         return sum(data, 'notReadyTime') / sum(data, 'loginTime');
     }
+    else if (fieldName == 'sameDayAndNextDayOrders') {
+        return sum(data, 'sameDayOrders') + sum(data, 'nextDayOrders');
+    }
     else return sum(data, fieldName);
 }
 

@@ -91,6 +91,12 @@ const dateMatcher = {
             $lt:  moment().startOf('month').add(1, 'months').toDate()
         }
     },
+    '<this month>': function() { // alternate name for month-to-date
+        return {
+            $gte: moment().startOf('month').toDate(),
+            $lt:  moment().startOf('month').add(1, 'months').toDate()
+        }
+    },
     '<last month>': function() {
         return {
             $gte: moment().subtract(1, 'months').startOf('month').toDate(),
