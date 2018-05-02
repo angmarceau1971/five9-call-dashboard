@@ -23,7 +23,11 @@ export function clean(original) {
     }
     if (dateKey) {
         let dateFn = dateMatcher[filter[dateKey]];
-        filter[dateKey] = dateFn();
+        try {
+            filter[dateKey] = dateFn();
+        } catch (err) {
+            console.log(`Invalid date filter ${filter[dateKey]}: ${err}`);
+        }
     }
 
     // Insert actual username

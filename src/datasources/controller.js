@@ -1,3 +1,16 @@
+///////////////////////////
+// - CONTROL THE DATA -
+// This module brings together the various data sources (Five9 and custom models).
+//
+// Requests from the client can call in the getScorecardStatistics function
+// using filters and groupings, using MongoDB-like object syntax.
+//
+// - LOOKER UPDATING -
+// Also included are Looker upload automation functions that fill in the custom
+// data table.
+//
+///////////////////////////
+
 const moment = require('moment-timezone'); // dates/times
 
 const log = require('../utility/log'); // recording updates

@@ -1,4 +1,6 @@
 /**
+ * - THE HUB in the MIDDLE of IT ALL -
+ *
  * This module controls interaction with the server.
  *
  * Data is made accessible through the `store` Vuex object, which all Vue
@@ -111,8 +113,8 @@ export const store = new Vuex.Store({
         toggleEditMode(state) {
             state.editMode = !state.editMode;
         },
-        updateData(state, { newData, datasource }) {
-            Vue.set(state.data, datasource, newData);
+        updateData(state, { newData, frontendDatasourceName }) {
+            Vue.set(state.data, frontendDatasourceName, newData);
         },
         /**
          * Set a group of selected users for supervisor mode
@@ -193,7 +195,7 @@ export const store = new Vuex.Store({
             let layout = context.state.layouts[0];
             context.dispatch('updateLayout', layout);
             // Start updating based on data sources
-            context.dispatch('nextUpdate', null);
+            context.dispatch('nextUpdate');
         },
 
         async loadAssets(context) {
@@ -215,7 +217,7 @@ export const store = new Vuex.Store({
                 clearTimeout(id);
             }
             await context.dispatch('loadAssets');
-            context.dispatch('nextUpdate', null);
+            context.dispatch('nextUpdate');
         },
 
         async updateGoals(context) {
@@ -229,42 +231,52 @@ export const store = new Vuex.Store({
             context.commit('setDatasources', layout.datasources);
         },
 
-        // Refresh data based on current datasources
-        async nextUpdate(context, ms) {
+        // Refresh data based on current datasources every 290 seconds.
+        // This will trigger all the widgets to refreshing, hitting the getData
+        // method of the "hub".
+        async nextUpdate(context, refreshRateMs=290000) {
             console.log(`Refresh at ${moment()}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
             }
 
-            for (const [id, source] of Object.entries(context.state.datasources)) {
-                // Load data from server
-                try {
-                    let res = await loadData(getParams(source));
-                    let data = res.data;
-                    let meta = res.meta;
+            // Array of result objects with keys `data`, `meta`, and
+            // `datasourceName`
+            let newData = [];
+
+            let parametersList = Object.entries(context.state.datasources).map(
+                ([id, datasource]) => {
+                    return Object.assign(
+                        { frontendSourceName: datasource.name },
+                        getParams(datasource)
+                    );
+                }
+            );
+
+            // Load data from server
+            try {
+                let response = await loadData(parametersList);
+                // update the datas real quick
+                for (let dataset of response) {
                     context.commit('updateData', {
-                        newData: data, datasource: source.name
+                        newData: dataset.data,
+                        frontendDatasourceName: dataset.source.frontendSourceName
                     });
-                    if (!isEmpty(meta)) {
-                        let ds = clone(source);
-                        ds.lastUpdated = meta.lastUpdated;
+                    if (!isEmpty(dataset.source.meta)) {
+                        let ds = clone(dataset.source);
+                        ds.lastUpdated = dataset.meta.lastUpdated;
                         context.commit('changeDatasource', ds);
                     }
-                } catch (err) {
-                    console.log(`Error while loading data: ${err}`);
                 }
+            } catch (err) {
+                console.log(`Error while loading data: ${err}`);
+            }
 
-                // and schedule the next update
-                clearTimeout(context.state.timeoutIds[source.name]); // clear old timeout
-                let timeout = setTimeout(function next() {
-                    context.dispatch('nextUpdate', source.refreshRate * 1000);
-                }, source.refreshRate * 1000);
-                context.commit('setTimeoutId', {
-                        datasourceName: source.name,
-                        id: timeout
-                });
-            };
+            // and schedule the next update
+            let timeout = setTimeout(function next() {
+                context.dispatch('nextUpdate', refreshRateMs);
+            }, refreshRateMs);
         },
 
         // Save a new theme to server
@@ -292,10 +304,14 @@ function getParams(datasource) {
 
 export async function loadData(params) {
     let res = await api.getStatistics(params);
-    res.data = res.data.map((d) => {
-        if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
-        if (d['date']) d['date'] = moment(d['date']).toDate();
-        return d;
+    // convert date strings to values
+    res = res.map((set) => {
+        set.data = set.data.map((d) => {
+            if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
+            if (d['date']) d['date'] = moment(d['date']).toDate();
+            return d;
+        });
+        return set;
     });
     return res;
 }

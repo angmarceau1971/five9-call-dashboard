@@ -1,5 +1,5 @@
 ///////////////////////////
-// API routes to get data
+// - API ROUTES to GET the DATA -
 //
 // All routes need to include credentials via the auth token received from
 // login page. Some routes require administrator privileges.
@@ -39,9 +39,16 @@ router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
         five9Update.onReady(async () => {
             let data;
             try {
-                data = await datasource.getScorecardStatistics(req.body);
+                let dataPromises = req.body.map(async (ds) => {
+                    let stats = await datasource.getScorecardStatistics(ds);
+                    return {
+                        data: stats.data,
+                        meta: stats.meta,
+                        source: ds
+                    };
+                });
                 res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
+                res.send(JSON.stringify(await Promise.all(dataPromises)));
             } catch (err) {
                 log.error(`Error during scorecard retrieval: ${err}`);
                 res.set('Content-Type', 'application/text');
