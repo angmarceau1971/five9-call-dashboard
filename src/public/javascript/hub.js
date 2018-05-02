@@ -162,9 +162,10 @@ export const store = new Vuex.Store({
         setLayout(state, layout) {
             state.layout = layout;
         },
-        changeDatasource(state, datasource) {
-            const ds = clone(datasource);
-            Vue.set(state.datasources, ds.id, ds);
+        changeDatasourceLastUpdated(state, { datasourceId, lastUpdated }) {
+            let ds = clone(state.datasources[datasourceId]);
+            ds.lastUpdated = lastUpdated;
+            Vue.set(state.datasources, datasourceId, ds);
         },
         /**
          * Store datasources. Saved in { id: {Object} } form, in contrast to array of
@@ -252,10 +253,13 @@ export const store = new Vuex.Store({
             // `datasourceName`
             let newData = [];
 
+            // Create list of parameters and datasource information for requests
+            // to server
             let parametersList = Object.entries(context.state.datasources).map(
                 ([id, datasource]) => {
                     return Object.assign(
                         { frontendSourceName: datasource.name },
+                        clone(datasource),
                         getParams(datasource)
                     );
                 }
@@ -270,10 +274,10 @@ export const store = new Vuex.Store({
                         newData: dataset.data,
                         frontendDatasourceName: dataset.source.frontendSourceName
                     });
-                    if (!isEmpty(dataset.source.meta)) {
-                        let ds = clone(dataset.source);
-                        ds.lastUpdated = dataset.meta.lastUpdated;
-                        context.commit('changeDatasource', ds);
+                    if (!isEmpty(dataset.meta)) {
+                        context.commit('changeDatasourceLastUpdated', {
+                            datasourceId: dataset.source.id, lastUpdated: dataset.meta.lastUpdated
+                        });
                     }
                 }
             } catch (err) {

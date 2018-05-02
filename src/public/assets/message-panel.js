@@ -12401,9 +12401,13 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.layout = layout;
     },
 
-    changeDatasource(state, datasource) {
-      const ds = clone(datasource);
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, ds.id, ds);
+    changeDatasourceLastUpdated(state, {
+      datasourceId,
+      lastUpdated
+    }) {
+      let ds = clone(state.datasources[datasourceId]);
+      ds.lastUpdated = lastUpdated;
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, datasourceId, ds);
     },
 
     /**
@@ -12492,11 +12496,13 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       // `datasourceName`
 
 
-      let newData = [];
+      let newData = []; // Create list of parameters and datasource information for requests
+      // to server
+
       let parametersList = Object.entries(context.state.datasources).map(([id, datasource]) => {
         return Object.assign({
           frontendSourceName: datasource.name
-        }, getParams(datasource));
+        }, clone(datasource), getParams(datasource));
       }); // Load data from server
 
       try {
@@ -12508,10 +12514,11 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             frontendDatasourceName: dataset.source.frontendSourceName
           });
 
-          if (!isEmpty(dataset.source.meta)) {
-            let ds = clone(dataset.source);
-            ds.lastUpdated = dataset.meta.lastUpdated;
-            context.commit('changeDatasource', ds);
+          if (!isEmpty(dataset.meta)) {
+            context.commit('changeDatasourceLastUpdated', {
+              datasourceId: dataset.source.id,
+              lastUpdated: dataset.meta.lastUpdated
+            });
           }
         }
       } catch (err) {
