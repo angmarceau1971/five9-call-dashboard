@@ -192,8 +192,6 @@ export const store = new Vuex.Store({
         async startProcess(context) {
             // Load configuration and set layout
             await context.dispatch('loadAssets');
-            let layout = context.state.layouts[0];
-            context.dispatch('updateLayout', layout);
             // Start updating based on data sources
             context.dispatch('nextUpdate');
         },
@@ -203,6 +201,7 @@ export const store = new Vuex.Store({
             let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
             let layouts = await api.getLayouts(agentGroups, context.state.supMode);
             context.commit('setLayouts', layouts);
+            context.dispatch('updateLayout', layouts[0]);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
             context.commit('setSkillGroups', await api.getSkillGroups());

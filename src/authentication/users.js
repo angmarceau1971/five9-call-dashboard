@@ -324,7 +324,7 @@ async function refreshUserDatabase(usersModel) {
     originalUsers.forEach((user) => {
         if (!cleanData.find((newUser) => newUser.username == user.username)) {
             usersModel.findOneAndUpdate(
-                { username: user.username },
+                { $and: [ { username: user.username }, { active: true } ] },
                 { $set: { active: false } },
                 { }, // options
                 function(err, doc) {

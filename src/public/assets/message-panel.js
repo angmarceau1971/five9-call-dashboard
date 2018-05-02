@@ -12435,9 +12435,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     // Load the dashboard up. Assumes `updateUser` has already completed.
     async startProcess(context) {
       // Load configuration and set layout
-      await context.dispatch('loadAssets');
-      let layout = context.state.layouts[0];
-      context.dispatch('updateLayout', layout); // Start updating based on data sources
+      await context.dispatch('loadAssets'); // Start updating based on data sources
 
       context.dispatch('nextUpdate');
     },
@@ -12446,7 +12444,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       // load layout
       let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
       let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
-      context.commit('setLayouts', layouts); // load fields and helpful links from server
+      context.commit('setLayouts', layouts);
+      context.dispatch('updateLayout', layouts[0]); // load fields and helpful links from server
 
       context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
       context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
