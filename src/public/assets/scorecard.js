@@ -12599,8 +12599,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     links: [],
     skillGroups: [],
     supMode: 'individual',
-    // team or individual - start w/ indi. for agent users
-    timeoutIds: {},
+    // team or individual: default to indie (agents)
+    timeoutId: null,
     currentUser: '',
     // username. TODO: is this used?
     selectedUsers: [],
@@ -12706,11 +12706,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.userList = users;
     },
 
-    setTimeoutId(state, {
-      datasourceName,
-      id
-    }) {
-      state.timeoutIds[datasourceName] = id;
+    setTimeoutId(state, id) {
+      state.timeoutId = id;
     },
 
     setSupMode(state, newMode) {
@@ -12774,7 +12771,8 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     // Load the dashboard up. Assumes `updateUser` has already completed.
     async startProcess(context) {
       // Load configuration and set layout
-      await context.dispatch('loadAssets'); // Start updating based on data sources
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', context.state.layouts[0]); // Start updating based on data sources
 
       context.dispatch('nextUpdate');
     },
@@ -12783,8 +12781,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       // load layout
       let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
       let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
-      context.commit('setLayouts', layouts);
-      context.dispatch('updateLayout', layouts[0]); // load fields and helpful links from server
+      context.commit('setLayouts', layouts); // load fields and helpful links from server
 
       context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
       context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
@@ -12793,13 +12790,19 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       context.dispatch('updateGoals');
     },
 
-    // Force a refresh. For testing purposes.
+    // Refresh data and layout. Used after changing agent selection in sup
+    // views.
     async forceRefresh(context) {
-      for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
-        clearTimeout(id);
-      }
+      clearTimeout(context.state.timeoutId);
+      await context.dispatch('loadAssets'); // If we're in individual mode, update the layout based on the
+      // individual chosen. Otherwise, we'll leave the Team layout as-is
+      // until the user selects a new one via the drop-down.
 
-      await context.dispatch('loadAssets');
+      if (!layoutMatchesSupMode(context.state.layout.layoutType, context.state.supMode)) {
+        context.dispatch('updateLayout', context.state.layouts[0]);
+      } // Refresh data
+
+
       context.dispatch('nextUpdate');
     },
 
@@ -12810,12 +12813,7 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
 
     updateLayout(context, layout) {
-      // First set to empty object to force full refresh
-      context.commit('setLayout', {
-        cards: [],
-        datasources: []
-      }); // Then update to the passed-in layout
-
+      // Then update to the passed-in layout
       context.commit('setLayout', layout);
       context.commit('setDatasources', layout.datasources);
     },
@@ -12920,6 +12918,16 @@ function usersToSkills(skillGroups, users) {
 
 function extractValues(objectArray, prop) {
   return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
+}
+/**
+ * See if the given layout type corresponds to the current supervisor view mode.
+ * @param  {String} layoutType 'individual' or 'team'
+ * @param  {String} supMode    'individual' or 'team'
+ * @return {Boolean}            true if the types match
+ */
+
+function layoutMatchesSupMode(layoutType, supMode) {
+  return layoutType == supMode;
 }
 
 /***/ }),

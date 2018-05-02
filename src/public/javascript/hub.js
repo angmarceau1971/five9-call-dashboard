@@ -37,8 +37,8 @@ export const store = new Vuex.Store({
         goals: [],
         links: [],
         skillGroups: [],
-        supMode: 'individual', // team or individual - start w/ indi. for agent users
-        timeoutIds: {},
+        supMode: 'individual', // team or individual: default to indie (agents)
+        timeoutId: null,
         currentUser: '', // username. TODO: is this used?
         selectedUsers: [],
         user: {},
@@ -136,8 +136,8 @@ export const store = new Vuex.Store({
         setUserList(state, users) {
             state.userList = users;
         },
-        setTimeoutId(state, { datasourceName, id }) {
-            state.timeoutIds[datasourceName] = id;
+        setTimeoutId(state, id) {
+            state.timeoutId = id;
         },
         setSupMode(state, newMode) {
             state.supMode = newMode;
@@ -192,6 +192,7 @@ export const store = new Vuex.Store({
         async startProcess(context) {
             // Load configuration and set layout
             await context.dispatch('loadAssets');
+            context.dispatch('updateLayout', context.state.layouts[0]);
             // Start updating based on data sources
             context.dispatch('nextUpdate');
         },
@@ -201,7 +202,6 @@ export const store = new Vuex.Store({
             let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
             let layouts = await api.getLayouts(agentGroups, context.state.supMode);
             context.commit('setLayouts', layouts);
-            context.dispatch('updateLayout', layouts[0]);
             // load fields and helpful links from server
             context.commit('setFields', await api.getFieldList());
             context.commit('setSkillGroups', await api.getSkillGroups());
@@ -210,12 +210,19 @@ export const store = new Vuex.Store({
             context.dispatch('updateGoals');
         },
 
-        // Force a refresh. For testing purposes.
+        // Refresh data and layout. Used after changing agent selection in sup
+        // views.
         async forceRefresh(context) {
-            for (const [sourceName, id] of Object.entries(context.state.timeoutIds)) {
-                clearTimeout(id);
-            }
+            clearTimeout(context.state.timeoutId);
             await context.dispatch('loadAssets');
+            // If we're in individual mode, update the layout based on the
+            // individual chosen. Otherwise, we'll leave the Team layout as-is
+            // until the user selects a new one via the drop-down.
+            if (!layoutMatchesSupMode(
+                    context.state.layout.layoutType, context.state.supMode)) {
+                context.dispatch('updateLayout', context.state.layouts[0]);
+            }
+            // Refresh data
             context.dispatch('nextUpdate');
         },
 
@@ -226,8 +233,6 @@ export const store = new Vuex.Store({
         },
 
         updateLayout(context, layout) {
-            // First set to empty object to force full refresh
-            context.commit('setLayout', { cards:[], datasources: []});
             // Then update to the passed-in layout
             context.commit('setLayout', layout);
             context.commit('setDatasources', layout.datasources);
@@ -339,4 +344,14 @@ export function extractValues(objectArray, prop) {
     return uniq(
         objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
     );
+}
+
+/**
+ * See if the given layout type corresponds to the current supervisor view mode.
+ * @param  {String} layoutType 'individual' or 'team'
+ * @param  {String} supMode    'individual' or 'team'
+ * @return {Boolean}            true if the types match
+ */
+function layoutMatchesSupMode(layoutType, supMode) {
+    return (layoutType == supMode);
 }
