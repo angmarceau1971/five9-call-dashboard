@@ -12471,6 +12471,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
 
     updateLayout(context, layout) {
+      // First set to empty object to force full refresh
+      context.commit('setLayout', {
+        cards: [],
+        datasources: []
+      }); // Then update to the passed-in layout
+
       context.commit('setLayout', layout);
       context.commit('setDatasources', layout.datasources);
     },

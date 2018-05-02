@@ -226,6 +226,9 @@ export const store = new Vuex.Store({
         },
 
         updateLayout(context, layout) {
+            // First set to empty object to force full refresh
+            context.commit('setLayout', { cards:[], datasources: []});
+            // Then update to the passed-in layout
             context.commit('setLayout', layout);
             context.commit('setDatasources', layout.datasources);
         },

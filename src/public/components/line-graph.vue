@@ -181,7 +181,6 @@ export default {
         this.$el.removeAttribute('title');
         // Update everything when screen size changes
         window.addEventListener('resize', this.onResize);
-        this.onResize();
     },
 
     beforeDestroy() {
@@ -216,6 +215,7 @@ export default {
             return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
         },
         initialize() {
+            this.onResize();
             this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
             this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
             d3.axisLeft().scale(this.scaled.x);
