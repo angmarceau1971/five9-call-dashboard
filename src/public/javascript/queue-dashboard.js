@@ -109,6 +109,11 @@ async function runQueueDashboard() {
 // ${data} : ACD stats (current queue info)
 // ${serviceLevel} : service level report
 function refreshView(data, serviceLevelData) {
+    if (data.length == 0) {
+        console.log(`[${moment()}] No queue data received. Aborting refresh.`);
+        return;
+    }
+
     // update each gizmo on the screen
     $('.gizmo').each((i, gizmoElement) => {
         const thisGizmo = gizmo.gizmos[gizmoElement.id];
