@@ -87,13 +87,29 @@ async function isAllowed(level, req) {
  */
 function userAccess() {
     return async function(req, res, next) {
-        if (!(await couldBeSensitive(req))) return next();
+        // Allow access if request isn't sensitive (only contains custom data for
+        // current user)
+        let needsToBeSup = false;
+        for (let params of req.body) {
+            if (await couldBeSensitive(params, req.user.username)) {
+                needsToBeSup = true;
+            }
+        }
+        if (!needsToBeSup) {
+            return next();
+        }
 
+        // Let supervisor and admin users access everything
         if (await users.isSupervisor(req.user.username) ||
             await users.isAdmin(req.user.username)) {
                 return next();
         }
         // It's a sensitive request, and the user isn't an admin or supervisor
+        log.error(`Access to data forbidden for ${req.user.username}'s request'.`,
+                  'forbidden', {
+                      username: req.user.username,
+                      requestBody: req.body
+                  });
         res.set('Content-Type', 'application/text');
         res.status(403).send('Could not allow access to requested resource. Sorry!');
     }
@@ -105,8 +121,8 @@ module.exports.userAccess = userAccess;
  * @param  {Object} req Express request object
  * @return {Boolean}    might be sensitive
  */
-async function couldBeSensitive(req) {
-    if (!datasource.isCustomSource(req.body.source)) return false;
+async function couldBeSensitive(params, username) {
+    if (!datasource.isCustomSource(params.source)) return false;
 
     function onlyForAgent(query, criteria) {
         try {
@@ -118,12 +134,12 @@ async function couldBeSensitive(req) {
         }
     }
 
-    if (onlyForAgent(req.body.filter.agentUsername, req.user.username)) {
+    if (onlyForAgent(params.filter.agentUsername, username)) {
         return false;
     }
     try {
-        let fullName = await users.getFullName(req.user.username);
-        if (onlyForAgent(req.body.filter.agentName, fullName)) {
+        let fullName = await users.getFullName(username);
+        if (onlyForAgent(params.filter.agentName, fullName)) {
             return false;
         }
     } catch (err) {
