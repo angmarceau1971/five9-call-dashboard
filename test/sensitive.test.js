@@ -20,31 +20,24 @@ const verify = require('../src/authentication/verify');
 let myName = secure.FIVE9_FULLNAME;
 let myUsername = secure.FIVE9_USERNAME;
 let querySensitiveName = {
-    body: {
-        filter: { agentName: { $in: [myName, 'Another, Name'] } },
-        source: 'QA'
-    },
+    filter: { agentName: { $in: [myName, 'Another, Name'] } },
+    source: 'QA',
     user: {username:myUsername}
 };
 let querySensitiveUsername = {
-    body: {
-        filter: { agentUsername: { $in: [myUsername, 'abc@def.com'] } },
-        source: 'QA'
-    },
+    filter: { agentUsername: { $in: [myUsername, 'abc@def.com'] } },
+    source: 'QA',
     user: {username:myUsername}
 };
+// NOT sensitive queries
 let queryInsensitiveName = {
-    body: {
-        filter: { agentName: { $in: [myName] } },
-        source: 'QA'
-    },
+    filter: { agentName: { $in: [myName] } },
+    source: 'QA',
     user: {username:myUsername}
 };
 let queryInsensitiveUsername = {
-    body: {
-        filter: { agentUsername: { $in: [myUsername] } },
-        source: 'QA'
-    },
+    filter: { agentUsername: { $in: [myUsername] } },
+    source: 'QA',
     user: {username:myUsername}
 };
 
@@ -53,11 +46,11 @@ describe('Verify `couldBeSensitive`', function() {
     database.connect();
     this.timeout(5000); // allow 5 seconds to complete test
     it('should return true for sensitive queries', async function() {
-        expect(await verify.couldBeSensitive(querySensitiveName)).to.be.true;
-        expect(await verify.couldBeSensitive(querySensitiveUsername)).to.be.true;
+        expect(await verify.couldBeSensitive(querySensitiveName, myUsername)).to.be.true;
+        expect(await verify.couldBeSensitive(querySensitiveUsername, myUsername)).to.be.true;
     });
     it('should return false for insensitive queries', async function() {
-        expect(await verify.couldBeSensitive(queryInsensitiveName)).to.be.false;
-        expect(await verify.couldBeSensitive(queryInsensitiveUsername)).to.be.false;
+        expect(await verify.couldBeSensitive(queryInsensitiveName, myUsername)).to.be.false;
+        expect(await verify.couldBeSensitive(queryInsensitiveUsername, myUsername)).to.be.false;
     });
 });

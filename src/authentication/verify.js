@@ -117,7 +117,7 @@ function userAccess() {
 module.exports.userAccess = userAccess;
 
 /**
- * True if datasource is custom, and response isn't filtered for the current userW
+ * True if datasource is custom and response isn't filtered for the current user
  * @param  {Object} req Express request object
  * @return {Boolean}    might be sensitive
  */
