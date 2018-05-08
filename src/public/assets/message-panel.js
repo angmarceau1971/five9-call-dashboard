@@ -12457,17 +12457,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Refresh data and layout. Used after changing agent selection in sup
     // views.
-    async forceRefresh(context) {
-      clearTimeout(context.state.timeoutId);
-      await context.dispatch('loadAssets'); // If we're in individual mode or have changed mode, update the
-      // layout based on the user(s) chosen.
-      // Otherwise, we'll leave the Team layout as-is until the user
-      // selects a new one via the drop-down.
+    async forceRefresh(context, layout = null) {
+      let newLayout = layout || context.state.layouts[0];
+      clearTimeout(context.state.timeoutId); // load assets and new layout 
 
-      if (context.state.supMode == 'individual' || !layoutMatchesSupMode(context.state.layout.layoutType, context.state.supMode)) {
-        context.dispatch('updateLayout', context.state.layouts[0]);
-      } // Refresh data
-
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', newLayout); // Refresh data
 
       context.dispatch('nextUpdate');
     },
@@ -12587,16 +12582,6 @@ function usersToSkills(skillGroups, users) {
 
 function extractValues(objectArray, prop) {
   return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
-}
-/**
- * See if the given layout type corresponds to the current supervisor view mode.
- * @param  {String} layoutType 'individual' or 'team'
- * @param  {String} supMode    'individual' or 'team'
- * @return {Boolean}            true if the types match
- */
-
-function layoutMatchesSupMode(layoutType, supMode) {
-  return layoutType == supMode;
 }
 
 /***/ }),

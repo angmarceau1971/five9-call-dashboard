@@ -12796,17 +12796,12 @@ const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     // Refresh data and layout. Used after changing agent selection in sup
     // views.
-    async forceRefresh(context) {
-      clearTimeout(context.state.timeoutId);
-      await context.dispatch('loadAssets'); // If we're in individual mode or have changed mode, update the
-      // layout based on the user(s) chosen.
-      // Otherwise, we'll leave the Team layout as-is until the user
-      // selects a new one via the drop-down.
+    async forceRefresh(context, layout = null) {
+      let newLayout = layout || context.state.layouts[0];
+      clearTimeout(context.state.timeoutId); // load assets and new layout 
 
-      if (context.state.supMode == 'individual' || !layoutMatchesSupMode(context.state.layout.layoutType, context.state.supMode)) {
-        context.dispatch('updateLayout', context.state.layouts[0]);
-      } // Refresh data
-
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', newLayout); // Refresh data
 
       context.dispatch('nextUpdate');
     },
@@ -12926,16 +12921,6 @@ function usersToSkills(skillGroups, users) {
 
 function extractValues(objectArray, prop) {
   return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
-}
-/**
- * See if the given layout type corresponds to the current supervisor view mode.
- * @param  {String} layoutType 'individual' or 'team'
- * @param  {String} supMode    'individual' or 'team'
- * @return {Boolean}            true if the types match
- */
-
-function layoutMatchesSupMode(layoutType, supMode) {
-  return layoutType == supMode;
 }
 
 /***/ }),
@@ -18677,9 +18662,9 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
     // TODO: fix bug causing data to be blank after first `startProcess`
 
-    setTimeout(this.refresh.bind(this), 2500); // start checking messages every 2 minutes
+    setTimeout(this.refresh.bind(this), 2500); // start checking messages every minute
 
-    setTimeout(this.messageRefreshLoop.bind(this), 120000);
+    setTimeout(this.messageRefreshLoop.bind(this), 60000);
   },
 
   computed: {
@@ -18743,16 +18728,61 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   },
   methods: {
     ///////////////////////////
-    // UI / interactions
-    refresh: async function () {
+    // Refresh layout and data
+    refresh: async function (layout = null) {
       this.isLoading = true;
-      await store.dispatch('forceRefresh');
+      await store.dispatch('forceRefresh', layout);
       this.isLoading = false;
       this.messages = await this.updateMessages();
+    },
+    //////////////////////////////////////////////////
+    // Supervisor view controls
+    // Select a new layout type
+    changeLayout: function (name) {
+      this.refresh(store.getters.layout(name));
+    },
+    // Select users to filter data for
+    selectUsers: async function (users) {
+      store.commit('setSelectedUsers', users);
+    },
+    // Turn sup mode on or off
+    changeSupMode: function (newMode) {
+      store.commit('setSupMode', newMode);
+    },
+    // When user selector loads the users list, save it to hub for later
+    // parsing.
+    updateUserList: function (users) {
+      store.commit('setUserList', users);
+    },
+    //////////////////////////////////////////////////
+    // Handle menus and theme
+    mouseleaveMenu: function (event) {
+      if (!event.relatedTarget) return;
+
+      if (event.relatedTarget === this.$refs.menuButton || isDescendant(this.$refs.menu, event.relatedTarget)) {
+        event.stopPropagation();
+        return;
+      } else {
+        this.showMenu = false;
+      }
+    },
+    mouseleaveThemeSubMenu: function (event) {
+      if (!event.relatedTarget) return;
+      let classList = Array.from(event.relatedTarget.classList);
+
+      if (event.relatedTarget == this.$refs.themeSubMenu || classList.includes('submenu-button') || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
+        event.stopPropagation();
+        return;
+      } else {
+        this.showMenuThemes = false;
+      }
     },
     changeTheme: function (attribute, value) {
       this.theme[attribute] = value;
       this.updateThemeStyles(this.theme);
+    },
+    updateThemeStyles: function (theme) {
+      document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
     },
     saveTheme: function () {
       if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
@@ -18760,6 +18790,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       this.showMenuThemes = false;
       this.showMenu = false;
     },
+    //////////////////////////////////////////////////
+    // Messages
     openInbox: async function () {
       this.showInbox = true;
       this.messages = await this.updateMessages(this.showInbox);
@@ -18780,53 +18812,7 @@ const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     },
     messageRefreshLoop: async function () {
       this.messages = await this.updateMessages(this.showInbox);
-      setTimeout(this.messageRefreshLoop.bind(this), 120000);
-    },
-    //////////////////////////////////////////////////
-    // Supervisor view controls
-    // Select users to filter data for
-    selectUsers: async function (users) {
-      store.commit('setSelectedUsers', users);
-    },
-    // Turn sup mode on or off
-    changeSupMode: function (newMode) {
-      store.commit('setSupMode', newMode);
-    },
-    changeLayout: function (name) {
-      let newLayout = store.getters.layout(name);
-      store.dispatch('updateLayout', newLayout);
-      this.refresh();
-    },
-    // When user selector loads the users list, save it to hub for later
-    // parsing.
-    updateUserList: function (users) {
-      store.commit('setUserList', users);
-    },
-    //////////////////////////////////////////////////
-    // Handle menus and theme
-    updateThemeStyles: function (theme) {
-      document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
-    },
-    mouseleaveThemeSubMenu: function (event) {
-      if (!event.relatedTarget) return;
-      let classList = Array.from(event.relatedTarget.classList);
-
-      if (event.relatedTarget == this.$refs.themeSubMenu || classList.includes('submenu-button') || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
-        event.stopPropagation();
-        return;
-      } else {
-        this.showMenuThemes = false;
-      }
-    },
-    mouseleaveMenu: function (event) {
-      if (!event.relatedTarget) return;
-
-      if (event.relatedTarget === this.$refs.menuButton || isDescendant(this.$refs.menu, event.relatedTarget)) {
-        event.stopPropagation();
-        return;
-      } else {
-        this.showMenu = false;
-      }
+      setTimeout(this.messageRefreshLoop.bind(this), 60000);
     },
     ///////////////////////////
     // Handle export of layout to JSON

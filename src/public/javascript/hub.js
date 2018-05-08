@@ -213,10 +213,12 @@ export const store = new Vuex.Store({
 
         // Refresh data and layout. Used after changing agent selection in sup
         // views.
-        async forceRefresh(context) {
+        async forceRefresh(context, layout=null) {
+            let newLayout = layout || context.state.layouts[0];
             clearTimeout(context.state.timeoutId);
+            // load assets and new layout 
             await context.dispatch('loadAssets');
-            context.dispatch('updateLayout', context.state.layouts[0]);
+            context.dispatch('updateLayout', newLayout);
             // Refresh data
             context.dispatch('nextUpdate');
         },
