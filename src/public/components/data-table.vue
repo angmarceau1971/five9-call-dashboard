@@ -72,7 +72,11 @@ export default {
             type: String,
             default: ''
         },
-        sortByField: String
+        sortByField: String,
+        sortAscending: {
+            type: Boolean,
+            default: true
+        }
     },
 
     data () {
@@ -107,9 +111,12 @@ export default {
                 return getNotReadyPercentage(data).sort((a,b) => a['reasonCode'] < b['reasonCode'] ? -1 : 1);
             // Sort by sortByField, or first field if none given
             let sortField = this.sortByField || this.fields[0];
-            data.sort((a, b) =>
-                a[sortField] < b[sortField] ? -1 : 1
-            );
+            data.sort((a, b) => {
+                if (this.sortAscending)
+                    return a[sortField] < b[sortField] ? -1 : 1;
+                else
+                    return a[sortField] > b[sortField] ? -1 : 1;
+            });
             // Leave only fields that are defined in widget
             return data.map(parse.filterFields(this.fields));
         },

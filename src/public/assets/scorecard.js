@@ -17591,7 +17591,11 @@ const clone = __webpack_require__(5);
       type: String,
       default: ''
     },
-    sortByField: String
+    sortByField: String,
+    sortAscending: {
+      type: Boolean,
+      default: true
+    }
   },
 
   data() {
@@ -17629,7 +17633,9 @@ const clone = __webpack_require__(5);
       if (this.fields[0] == 'reasonCode') return getNotReadyPercentage(data).sort((a, b) => a['reasonCode'] < b['reasonCode'] ? -1 : 1); // Sort by sortByField, or first field if none given
 
       let sortField = this.sortByField || this.fields[0];
-      data.sort((a, b) => a[sortField] < b[sortField] ? -1 : 1); // Leave only fields that are defined in widget
+      data.sort((a, b) => {
+        if (this.sortAscending) return a[sortField] < b[sortField] ? -1 : 1;else return a[sortField] > b[sortField] ? -1 : 1;
+      }); // Leave only fields that are defined in widget
 
       return data.map(__WEBPACK_IMPORTED_MODULE_1__javascript_parse__["a" /* filterFields */](this.fields));
     },
@@ -19464,7 +19470,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
 
 // exports
 

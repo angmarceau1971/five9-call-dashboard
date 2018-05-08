@@ -329,7 +329,7 @@ async function refreshUserDatabase(usersModel) {
                 { }, // options
                 function(err, doc) {
                     if (err) log.error(`Error when removing no-longer-existent user ${user.username}: ${err}`, 'user status');
-                    log.info(`Marking no-longer-existent user ${user.username} as inactive in Users table.`, 'user status');
+                    log.info(`Set no-longer-existent user ${user.username}'s active status to ${user.active}.`, 'user status');
                 }
             );
         }
