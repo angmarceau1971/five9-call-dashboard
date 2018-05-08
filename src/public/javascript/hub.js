@@ -216,14 +216,7 @@ export const store = new Vuex.Store({
         async forceRefresh(context) {
             clearTimeout(context.state.timeoutId);
             await context.dispatch('loadAssets');
-            // If we're in individual mode or have changed mode, update the
-            // layout based on the user(s) chosen.
-            // Otherwise, we'll leave the Team layout as-is until the user
-            // selects a new one via the drop-down.
-            if (context.state.supMode == 'individual' || !layoutMatchesSupMode(
-                    context.state.layout.layoutType, context.state.supMode)) {
-                context.dispatch('updateLayout', context.state.layouts[0]);
-            }
+            context.dispatch('updateLayout', context.state.layouts[0]);
             // Refresh data
             context.dispatch('nextUpdate');
         },
@@ -349,14 +342,4 @@ export function extractValues(objectArray, prop) {
     return uniq(
         objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
     );
-}
-
-/**
- * See if the given layout type corresponds to the current supervisor view mode.
- * @param  {String} layoutType 'individual' or 'team'
- * @param  {String} supMode    'individual' or 'team'
- * @return {Boolean}            true if the types match
- */
-function layoutMatchesSupMode(layoutType, supMode) {
-    return (layoutType == supMode);
 }
