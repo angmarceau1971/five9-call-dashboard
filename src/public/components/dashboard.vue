@@ -8,7 +8,9 @@
  */
 <template>
 <div class="dashboard scorecard-wrapper"
-    @dragover="dragoverHandler" @drop="dropHandler">
+    @dragover="dragoverHandler" @drop="dropHandler"
+    :style="columnsStyle"
+    >
         <card
             v-for="(card, i) in layout.cards"
             v-bind="card"
@@ -46,6 +48,16 @@ export default {
         return {
             editingCard: false,
             editedCard: null
+        }
+    },
+
+    computed: {
+        columnsStyle: function() {
+            if (this.layout.columns) {
+                return `grid-template-columns: repeat(${this.layout.columns}, 1fr);`;
+            } else {
+                return '';
+            }
         }
     },
 

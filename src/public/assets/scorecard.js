@@ -17053,6 +17053,8 @@ if (false) {
 //
 //
 //
+//
+//
 
 
 
@@ -17067,6 +17069,15 @@ if (false) {
       editingCard: false,
       editedCard: null
     };
+  },
+  computed: {
+    columnsStyle: function () {
+      if (this.layout.columns) {
+        return `grid-template-columns: repeat(${this.layout.columns}, 1fr);`;
+      } else {
+        return '';
+      }
+    }
   },
   methods: {
     // Edit or delete a card
@@ -20675,6 +20686,7 @@ var render = function() {
     "div",
     {
       staticClass: "dashboard scorecard-wrapper",
+      style: _vm.columnsStyle,
       on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
     },
     [

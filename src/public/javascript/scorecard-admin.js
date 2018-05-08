@@ -48,7 +48,8 @@ const vm = new Vue({
                 defaultForAgentGroups: [],
                 optionalForAgentGroups: [],
                 cards: [],
-                datasources: []
+                datasources: [],
+                columns: 4
             }
         },
         layoutRemover: function(layout) {

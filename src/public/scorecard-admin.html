@@ -33,7 +33,7 @@
                 :loader="layoutLoader"
                 :adder="layoutAdder"
                 :remover="layoutRemover"
-                :headers="['Name', 'Type', 'Default for Agent Groups', 'Optional for Agent Groups', 'Cards', 'Datasources', 'Sort Order']"
+                :headers="['Name', 'Type', 'Default for Agent Groups', 'Optional for Agent Groups', 'Cards', 'Datasources', 'Sort Order', 'Columns']"
             >
                 <template slot="item" slot-scope="props">
                     <td>
@@ -76,7 +76,13 @@
                         <input
                             v-model="props.item.sortOrder"
                             type="number"
-                        ></textarea>
+                        />
+                    </td>
+                    <td>
+                        <input
+                            v-model="props.item.columns"
+                            type="number"
+                        />
                     </td>
                 </template>
             </editor-table>

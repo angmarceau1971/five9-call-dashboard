@@ -55,6 +55,11 @@ const layoutSchema = mongoose.Schema({
     sortOrder: {
         type: Number,
         default: Infinity
+    },
+    // Total number of columns in Dashboard. Usually 4.
+    columns: {
+        type: Number,
+        default: 4
     }
 });
 
@@ -114,7 +119,7 @@ async function update(layoutObject) {
         layout
     );
     if (response.n > 0) {
-        log.message(`Field ${layout.name} has been modified.`);
+        log.message(`Layout ${layout.name} has been modified.`);
         return response;
     }
     log.message(`No match for layout ID. Adding new layout ${layout.name}.`);

@@ -441,7 +441,8 @@ const vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         defaultForAgentGroups: [],
         optionalForAgentGroups: [],
         cards: [],
-        datasources: []
+        datasources: [],
+        columns: 4
       };
     },
     layoutRemover: function (layout) {
