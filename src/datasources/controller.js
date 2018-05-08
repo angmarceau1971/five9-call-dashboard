@@ -155,7 +155,7 @@ function createFilter(obj) {
                 return { [key]: obj[key] };
             });
     if (obj.date) {
-        filter.concat({
+        filter.push({
             date: {
                 $gte: moment(obj.date.$gte, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
                 $lt:  moment(obj.date.$lt, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
