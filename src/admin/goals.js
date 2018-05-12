@@ -13,8 +13,13 @@ const goalSchema = mongoose.Schema({
         type: String,
         default: ''
     },
-    // Agent group(s) to apply goal to
+    // Agent group(s) to apply goal to. Empty array means apply to all.
     agentGroups: {
+        type: [String],
+        default: []
+    },
+    // Skill group(s) to apply goal to
+    skillGroups: {
         type: [String],
         default: []
     },
