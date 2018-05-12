@@ -9,7 +9,7 @@ let comparators = {
 };
 
 
-export function formatValue(value, field) {
+export function formatValue(value, field, skillGroup=null) {
     let formattedValue;
     if (typeof(field) == 'string') {
         field = hub.store.getters.field(field);
@@ -21,7 +21,7 @@ export function formatValue(value, field) {
         }
     }
 
-    let style = getStyleFromGoal(value, field);
+    let style = getStyleFromGoal(value, field, skillGroup);
 
     if (isNumberType(field.format.type)) {
         if (isNaN(value) || !isFinite(value)) formattedValue = "N/A";
@@ -43,8 +43,8 @@ export function formatValue(value, field) {
 };
 
 
-function getStyleFromGoal(value, field) {
-    let goal = hub.store.getters.goalForField(field);
+function getStyleFromGoal(value, field, skillGroup=null) {
+    let goal = hub.store.getters.goalForField(field, skillGroup);
     if (isNaN(value) && isNumberType(field.format.type)) {
         return 'font-color-secondary';
     }

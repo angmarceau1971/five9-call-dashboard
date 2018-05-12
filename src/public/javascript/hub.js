@@ -83,10 +83,16 @@ export const store = new Vuex.Store({
                 return datum;
             });
         },
-        goalForField: (state) => (field) => {
-            return state.goals.filter((goal) =>
-                goal.field == field.name
-            )[0];
+        goalForField: (state) => (field, skillGroup=null) => {
+            function match(goal) {
+                if (skillGroup) {
+                    return (goal.field == field.name
+                            && goal.skillGroups.includes(skillGroup));
+                } else {
+                    return (goal.field == field.name);
+                }
+            }
+            return state.goals.filter(match)[0];
         },
         getDatasource: (state) => (datasourceName) => {
             let ds = Object.entries(state.datasources).find(([id, ds]) => {
@@ -235,8 +241,14 @@ export const store = new Vuex.Store({
         },
 
         async updateGoals(context) {
-            let groups = extractValues(context.getters.currentUsers, 'agentGroups');
-            let goals = await api.getGoalsForAgentGroups(groups);
+            // Load goals for current agent groups -- or all goals for "Over-View"
+            let goals;
+            if (context.state.chosenLayoutName == 'Over-View') {
+                goals = await api.getGoalList();
+            } else {
+                let groups = extractValues(context.getters.currentUsers, 'agentGroups');
+                goals = await api.getGoalsForAgentGroups(groups);
+            }
             context.commit('setGoals', goals);
         },
 

@@ -49,7 +49,7 @@ export default {
             return this.$store.getters.field(this.fieldName);
         },
         formatted: function() {
-            return formatValue(this.value, this.field);
+            return formatValue(this.value, this.field, this.skillGroup(this.filter));
         },
         data: function() {
             return this.$store.getters.getData(this.filter, this.datasource);

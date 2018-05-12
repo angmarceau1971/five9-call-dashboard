@@ -12,6 +12,9 @@ export default {
     methods: {
         dragstartHandler: function(event) {
             this.$emit('dragstart-widget', event, this.$props);
+        },
+        skillGroup: function(filter) {
+            return filter.skillGroup || null;
         }
     },
     // Utility to return a blank widget

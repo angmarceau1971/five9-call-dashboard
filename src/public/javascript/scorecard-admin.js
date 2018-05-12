@@ -62,6 +62,7 @@ const vm = new Vue({
             let clean = clone(goal);
             try {
                 clean.agentGroups = JSON.parse(clean.agentGroups);
+                clean.skillGroups = JSON.parse(clean.skillGroups);
                 clean.thresholds = JSON.parse(clean.thresholds);
             } catch (err) {
                 return `Unable to save: ${err}.`;
@@ -73,6 +74,7 @@ const vm = new Vue({
             const str = (s) => JSON.stringify(s, null, 2);
             const stringin = function(goal) {
                 goal.agentGroups = str(goal.agentGroups);
+                goal.skillGroups = str(goal.skillGroups);
                 goal.thresholds = str(goal.thresholds);
                 return goal;
             }
@@ -82,6 +84,7 @@ const vm = new Vue({
             return {
                 name: '',
                 agentGroups: [],
+                skillGroups: [],
                 comparator: '<',
                 thresholds: [],
                 field: ''
