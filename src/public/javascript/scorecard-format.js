@@ -44,7 +44,6 @@ export function formatValue(value, field, skillGroup=null) {
 
 
 function getStyleFromGoal(value, field, skillGroup=null) {
-    if (skillGroup == 'Sales') debugger;
     let goal = hub.store.getters.goalForField(field, skillGroup);
     if (isNaN(value) && isNumberType(field.format.type)) {
         return 'font-color-secondary';
