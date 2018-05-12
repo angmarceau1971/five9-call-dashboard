@@ -145,7 +145,7 @@ export default {
             return this.highlightedRow == i;
         },
         formatted: function (val, fieldName) {
-            let res = formatValue(val, fieldName);
+            let res = formatValue(val, fieldName, this.skillGroup(this.filter));
             return res;
         },
         alignColumns: function() {
