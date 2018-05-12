@@ -5,4 +5,4 @@ local_settings.js
 secure_settings.*
 *.csv*
 *.tsv*
-/assets/
+assets/
