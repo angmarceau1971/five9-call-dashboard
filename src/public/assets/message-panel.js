@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 131);
+/******/ 	return __webpack_require__(__webpack_require__.s = 129);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -557,7 +557,7 @@ function applyToTag (styleElement, obj) {
 /* harmony export (immutable) */ __webpack_exports__["E"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["P"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
  ////////////////////////////////////////////////////////////////
@@ -1111,42 +1111,6 @@ function getParameters(requestType) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1173,7 +1137,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1205,6 +1169,42 @@ function formatAMPM(date) {
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
 }
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(14);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 /* 8 */
@@ -1300,7 +1300,45 @@ module.exports = function listToStyles (parentId, list) {
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(14);
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(15);
 
 var type = /*#__PURE__*/__webpack_require__(11);
 
@@ -1349,7 +1387,7 @@ function _clone(value, refFrom, refTo, deep) {
 module.exports = _clone;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 function _cloneRegExp(pattern) {
@@ -1358,45 +1396,11 @@ function _cloneRegExp(pattern) {
 module.exports = _cloneRegExp;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
-
-/**
- * Optimized internal two-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry2(fn) {
-  return function f2(a, b) {
-    switch (arguments.length) {
-      case 0:
-        return f2;
-      case 1:
-        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-          return fn(a, _b);
-        });
-      default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-          return fn(_a, b);
-        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-          return fn(a, _b);
-        }) : fn(a, b);
-    }
-  };
-}
-module.exports = _curry2;
-
-/***/ }),
-/* 16 */
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -12198,394 +12202,10 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(22).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(21).setImmediate))
 
 /***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
 /* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export loadData */
-/* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(30);
-/**
- * - THE HUB in the MIDDLE of IT ALL -
- *
- * This module controls interaction with the server.
- *
- * Data is made accessible through the `store` Vuex object, which all Vue
- * components can access.
- */
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
-
-
-
-const clone = __webpack_require__(5);
-
-const intersection = __webpack_require__(27);
-
-const isEmpty = __webpack_require__(36);
-
-const uniq = __webpack_require__(28);
-
-const sift = __webpack_require__(58);
-/**
- * This Vuex store is the ultimate source of truth. It handles all access to
- * data and interactions with the server.
- *
- * Also included here are global-impacting settings like Edit Mode and user
- * data.
- *
- * @type {Vuex}
- */
-
-
-const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-  state: {
-    data: {},
-    datasources: {},
-    editMode: false,
-    fields: [],
-    goals: [],
-    links: [],
-    skillGroups: [],
-    supMode: 'individual',
-    // team or individual: default to indie (agents)
-    timeoutId: null,
-    currentUser: '',
-    // username. TODO: is this used?
-    selectedUsers: [],
-    user: {},
-    userList: [],
-    // list of all users for supervisor views
-    layouts: [],
-    // list of available layouts
-    layout: {} // currently selected layout
-
-  },
-  // Helper functions to retrieve data
-  getters: {
-    /**
-     * Return field object matching the field name.
-     * @param  {String} fieldName name in `source.name` or just `name` format
-     * @return {Object}  field object
-     */
-    field: state => fieldName => {
-      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
-    },
-    layout: state => layoutName => {
-      return state.layouts.find(l => l.name == layoutName);
-    },
-    rawFieldName: state => fullFieldName => {
-      let [source, field] = fullFieldName.split('.');
-      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
-      return field;
-    },
-    getData: state => (filter, datasource) => {
-      if (!state.data[datasource]) {
-        console.log(`getData: datasource ${datasource} doesn't exist.`);
-        return [];
-      }
-
-      if (!filter) {
-        console.log(`getData: filter not defined.`);
-        return [];
-      }
-
-      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
-      let data = sift(filt, state.data[datasource]);
-      return data.map(datum => {
-        delete datum._id;
-        return datum;
-      });
-    },
-    goalForField: state => field => {
-      return state.goals.filter(goal => goal.field == field.name)[0];
-    },
-    getDatasource: state => datasourceName => {
-      let ds = Object.entries(state.datasources).find(([id, ds]) => {
-        return ds.name == datasourceName;
-      })[1];
-      return ds;
-    },
-    // Returns current user for agent, or selected users in supervisor team
-    // mode
-    currentUsers: state => {
-      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
-    },
-    currentSkills: (state, getters) => {
-      return usersToSkills(state.skillGroups, getters.currentUsers);
-    },
-    nameFromUsername: state => username => {
-      let user = state.userList.find(u => u.username == username);
-      return `${user.firstName} ${user.lastName}`;
-    }
-  },
-  // Functions to modify the store's state (all synchronous)
-  mutations: {
-    toggleEditMode(state) {
-      state.editMode = !state.editMode;
-    },
-
-    updateData(state, {
-      newData,
-      frontendDatasourceName
-    }) {
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, frontendDatasourceName, newData);
-    },
-
-    /**
-     * Set a group of selected users for supervisor mode
-     * @param {Object} state
-     * @param {Array} usersList array of objects with fields username, firstName, lastName
-     */
-    setSelectedUsers(state, usersList) {
-      state.selectedUsers = usersList;
-    },
-
-    /**
-     * Set the current username and user information
-     * @param  {Object} state
-     * @param  {String} user new user object
-     */
-    setUser(state, user) {
-      state.currentUser = user.username;
-      state.user = clone(user);
-    },
-
-    setUserList(state, users) {
-      state.userList = users;
-    },
-
-    setTimeoutId(state, id) {
-      state.timeoutId = id;
-    },
-
-    setSupMode(state, newMode) {
-      state.supMode = newMode;
-    },
-
-    setFields(state, fields) {
-      state.fields = fields;
-    },
-
-    setSkillGroups(state, skillGroups) {
-      state.skillGroups = skillGroups;
-    },
-
-    setGoals(state, goals) {
-      state.goals = goals;
-    },
-
-    setLinks(state, links) {
-      state.links = links.sort((a, b) => a.name > b.name);
-    },
-
-    // Update list of available layouts
-    setLayouts(state, layouts) {
-      state.layouts = layouts;
-    },
-
-    // Update currently chosen layout
-    setLayout(state, layout) {
-      state.layout = layout;
-    },
-
-    changeDatasourceLastUpdated(state, {
-      datasourceId,
-      lastUpdated
-    }) {
-      let ds = clone(state.datasources[datasourceId]);
-      ds.lastUpdated = lastUpdated;
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, datasourceId, ds);
-    },
-
-    /**
-     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
-     * datasource objects stored in database.
-     * @param {Object} state
-     * @param {Array}  datasources array of datasource objects from server
-     */
-    setDatasources(state, datasources) {
-      state.datasources = clone(datasources).reduce((newObj, source) => {
-        newObj[source.id] = source;
-        return newObj;
-      }, {});
-    }
-
-  },
-  // Asynchronous actions
-  actions: {
-    // Call when page first loads
-    async updateUser(context, username) {
-      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["z" /* getUserInformation */](username);
-      context.commit('setUser', user);
-      context.dispatch('updateGoals');
-    },
-
-    // Load the dashboard up. Assumes `updateUser` has already completed.
-    async startProcess(context) {
-      // Load configuration and set layout
-      await context.dispatch('loadAssets');
-      context.dispatch('updateLayout', context.state.layouts[0]); // Start updating based on data sources
-
-      context.dispatch('nextUpdate');
-    },
-
-    async loadAssets(context) {
-      // load layout
-      let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
-      context.commit('setLayouts', layouts); // load fields and helpful links from server
-
-      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
-      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
-      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
-
-      context.dispatch('updateGoals');
-    },
-
-    // Refresh data and layout. Used after changing agent selection in sup
-    // views.
-    async forceRefresh(context, layout = null) {
-      let newLayout = layout || context.state.layouts[0];
-      clearTimeout(context.state.timeoutId); // load assets and new layout 
-
-      await context.dispatch('loadAssets');
-      context.dispatch('updateLayout', newLayout); // Refresh data
-
-      context.dispatch('nextUpdate');
-    },
-
-    async updateGoals(context) {
-      let groups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
-      context.commit('setGoals', goals);
-    },
-
-    updateLayout(context, layout) {
-      // Then update to the passed-in layout
-      context.commit('setLayout', layout);
-      context.commit('setDatasources', layout.datasources);
-    },
-
-    // Refresh data based on current datasources every 290 seconds.
-    // This will trigger all the widgets to refreshing, hitting the getData
-    // method of the "hub".
-    async nextUpdate(context, refreshRateMs = 290000) {
-      console.log(`Refresh at ${moment()}`);
-
-      if (!context.state.currentUser) {
-        console.log('No current user assigned. Skipping update.');
-        return;
-      } // Array of result objects with keys `data`, `meta`, and
-      // `datasourceName`
-
-
-      let newData = []; // Create list of parameters and datasource information for requests
-      // to server
-
-      let parametersList = Object.entries(context.state.datasources).map(([id, datasource]) => {
-        return Object.assign({
-          frontendSourceName: datasource.name
-        }, clone(datasource), getParams(datasource));
-      }); // Load data from server
-
-      try {
-        let response = await loadData(parametersList); // update the datas real quick
-
-        for (let dataset of response) {
-          context.commit('updateData', {
-            newData: dataset.data,
-            frontendDatasourceName: dataset.source.frontendSourceName
-          });
-
-          if (!isEmpty(dataset.meta)) {
-            context.commit('changeDatasourceLastUpdated', {
-              datasourceId: dataset.source.id,
-              lastUpdated: dataset.meta.lastUpdated
-            });
-          }
-        }
-      } catch (err) {
-        console.log(`Error while loading data: ${err}`);
-      } // and schedule the next update
-
-
-      let timeout = setTimeout(function next() {
-        context.dispatch('nextUpdate', refreshRateMs);
-      }, refreshRateMs);
-    },
-
-    // Save a new theme to server
-    async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["O" /* updateUserTheme */](context.state.currentUser, newTheme);
-      let updatedUser = clone(context.state.user);
-      updatedUser.theme = newTheme;
-      context.commit('setUser', updatedUser);
-    }
-
-  }
-});
-/* harmony export (immutable) */ __webpack_exports__["b"] = store;
-
-const getField = store.getters.field;
-/* unused harmony export getField */
-
-
-function getParams(datasource) {
-  const params = {
-    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
-    fields: datasource.fields,
-    groupBy: datasource.groupBy,
-    source: datasource.source
-  };
-  return params;
-}
-
-async function loadData(params) {
-  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["w" /* getStatistics */](params); // convert date strings to values
-
-  res = res.map(set => {
-    set.data = set.data.map(d => {
-      if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
-      if (d['date']) d['date'] = moment(d['date']).toDate();
-      return d;
-    });
-    return set;
-  });
-  return res;
-}
-
-function usersToSkills(skillGroups, users) {
-  let agentGroups = extractValues(users, 'agentGroups');
-  return extractValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
-}
-/**
- * This function takes a list of objects, each of which has a property which is
- * an array, and returns all of the unique values in the given property's arrays.
- * @param  {Array} objectArray
- * @param  {String} prop
- * @return {Array} array of unique values in each object's @param prop
- */
-
-
-function extractValues(objectArray, prop) {
-  return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
-}
-
-/***/ }),
-/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -12638,7 +12258,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(23);
+__webpack_require__(22);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -12649,10 +12269,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -12842,10 +12462,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(23)))
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -13035,7 +12655,402 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 25 */
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export loadData */
+/* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(60);
+/**
+ * - THE HUB in the MIDDLE of IT ALL -
+ *
+ * This module controls interaction with the server.
+ *
+ * Data is made accessible through the `store` Vuex object, which all Vue
+ * components can access.
+ */
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+
+
+const clone = __webpack_require__(7);
+
+const intersection = __webpack_require__(32);
+
+const isEmpty = __webpack_require__(108);
+
+const uniq = __webpack_require__(35);
+
+const sift = __webpack_require__(132);
+/**
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
+ * @type {Vuex}
+ */
+
+
+const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    data: {},
+    datasources: {},
+    editMode: false,
+    fields: [],
+    goals: [],
+    links: [],
+    skillGroups: [],
+    supMode: 'individual',
+    // team or individual: default to indie (agents)
+    timeoutId: null,
+    currentUser: '',
+    // username. TODO: is this used?
+    selectedUsers: [],
+    user: {},
+    userList: [],
+    // list of all users for supervisor views
+    layouts: [],
+    // list of available layouts
+    layout: {},
+    // currently selected layout
+    chosenLayoutName: ''
+  },
+  // Helper functions to retrieve data
+  getters: {
+    /**
+     * Return field object matching the field name.
+     * @param  {String} fieldName name in `source.name` or just `name` format
+     * @return {Object}  field object
+     */
+    field: state => fieldName => {
+      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
+    },
+    layout: state => layoutName => {
+      return state.layouts.find(l => l.name == layoutName);
+    },
+    rawFieldName: state => fullFieldName => {
+      let [source, field] = fullFieldName.split('.');
+      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
+      return field;
+    },
+    getData: state => (filter, datasource) => {
+      if (!state.data[datasource]) {
+        console.log(`getData: datasource ${datasource} doesn't exist.`);
+        return [];
+      }
+
+      if (!filter) {
+        console.log(`getData: filter not defined.`);
+        return [];
+      }
+
+      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
+      let data = sift(filt, state.data[datasource]);
+      return data.map(datum => {
+        delete datum._id;
+        return datum;
+      });
+    },
+    goalForField: state => field => {
+      return state.goals.filter(goal => goal.field == field.name)[0];
+    },
+    getDatasource: state => datasourceName => {
+      let ds = Object.entries(state.datasources).find(([id, ds]) => {
+        return ds.name == datasourceName;
+      })[1];
+      return ds;
+    },
+    // Returns current user for agent, or selected users in supervisor team
+    // mode
+    currentUsers: state => {
+      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
+    },
+    currentSkills: (state, getters) => {
+      return usersToSkills(state.skillGroups, getters.currentUsers);
+    },
+    nameFromUsername: state => username => {
+      let user = state.userList.find(u => u.username == username);
+      return `${user.firstName} ${user.lastName}`;
+    },
+    // Determine what layout should be displayed
+    getCurrentLayout: state => {
+      if (state.chosenLayoutName == 'Over-View') {
+        return state.layouts.find(l => l.name == 'Over-View');
+      } else {
+        return state.layouts[0];
+      }
+    }
+  },
+  // Functions to modify the store's state (all synchronous)
+  mutations: {
+    toggleEditMode(state) {
+      state.editMode = !state.editMode;
+    },
+
+    updateData(state, {
+      newData,
+      frontendDatasourceName
+    }) {
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, frontendDatasourceName, newData);
+    },
+
+    /**
+     * Set a group of selected users for supervisor mode
+     * @param {Object} state
+     * @param {Array} usersList array of objects with fields username, firstName, lastName
+     */
+    setSelectedUsers(state, usersList) {
+      state.selectedUsers = usersList;
+    },
+
+    /**
+     * Set the current username and user information
+     * @param  {Object} state
+     * @param  {String} user new user object
+     */
+    setUser(state, user) {
+      state.currentUser = user.username;
+      state.user = clone(user);
+    },
+
+    setUserList(state, users) {
+      state.userList = users;
+    },
+
+    setTimeoutId(state, id) {
+      state.timeoutId = id;
+    },
+
+    setSupMode(state, newMode) {
+      state.supMode = newMode;
+    },
+
+    setFields(state, fields) {
+      state.fields = fields;
+    },
+
+    setSkillGroups(state, skillGroups) {
+      state.skillGroups = skillGroups;
+    },
+
+    setGoals(state, goals) {
+      state.goals = goals;
+    },
+
+    setLinks(state, links) {
+      state.links = links.sort((a, b) => a.name > b.name);
+    },
+
+    // Update list of available layouts
+    setLayouts(state, layouts) {
+      state.layouts = layouts;
+    },
+
+    // Update currently chosen layout
+    setLayout(state, layout) {
+      state.layout = layout;
+    },
+
+    setChosenLayoutName(state, name) {
+      state.chosenLayoutName = name;
+    },
+
+    changeDatasourceLastUpdated(state, {
+      datasourceId,
+      lastUpdated
+    }) {
+      let ds = clone(state.datasources[datasourceId]);
+      ds.lastUpdated = lastUpdated;
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, datasourceId, ds);
+    },
+
+    /**
+     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+     * datasource objects stored in database.
+     * @param {Object} state
+     * @param {Array}  datasources array of datasource objects from server
+     */
+    setDatasources(state, datasources) {
+      state.datasources = clone(datasources).reduce((newObj, source) => {
+        newObj[source.id] = source;
+        return newObj;
+      }, {});
+    }
+
+  },
+  // Asynchronous actions
+  actions: {
+    // Call when page first loads
+    async updateUser(context, username) {
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["z" /* getUserInformation */](username);
+      context.commit('setUser', user);
+      context.dispatch('updateGoals');
+    },
+
+    // Load the dashboard up. Assumes `updateUser` has already completed.
+    async startProcess(context) {
+      // Load configuration and set layout
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', context.state.layouts[0]);
+      context.commit('setChosenLayoutName', context.state.layouts[0].name); // Start updating based on data sources
+
+      context.dispatch('nextUpdate');
+    },
+
+    async loadAssets(context) {
+      // load layout
+      let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
+      context.commit('setLayouts', layouts); // load fields and helpful links from server
+
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
+      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
+
+      context.dispatch('updateGoals');
+    },
+
+    // Refresh data and layout. Used after changing agent selection in sup
+    // views.
+    async forceRefresh(context, layout = null) {
+      // load assets and new layout
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', context.getters.getCurrentLayout); // Refresh data
+
+      context.dispatch('nextUpdate');
+    },
+
+    async updateGoals(context) {
+      let groups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
+      context.commit('setGoals', goals);
+    },
+
+    updateLayout(context, layout) {
+      // Then update to the passed-in layout
+      context.commit('setLayout', layout);
+      context.commit('setDatasources', layout.datasources);
+    },
+
+    // Refresh data based on current datasources every 290 seconds.
+    // This will trigger all the widgets to refreshing, hitting the getData
+    // method of the "hub".
+    async nextUpdate(context, refreshRateMs = 290000) {
+      console.log(`Refresh at ${moment()}`);
+
+      if (!context.state.currentUser) {
+        console.log('No current user assigned. Skipping update.');
+        return;
+      } // Array of result objects with keys `data`, `meta`, and
+      // `datasourceName`
+
+
+      let newData = []; // Create list of parameters and datasource information for requests
+      // to server
+
+      let parametersList = Object.entries(context.state.datasources).map(([id, datasource]) => {
+        return Object.assign({
+          frontendSourceName: datasource.name
+        }, clone(datasource), getParams(datasource));
+      }); // Load data from server
+
+      try {
+        let response = await loadData(parametersList); // update the datas real quick
+
+        for (let dataset of response) {
+          context.commit('updateData', {
+            newData: dataset.data,
+            frontendDatasourceName: dataset.source.frontendSourceName
+          });
+
+          if (!isEmpty(dataset.meta)) {
+            context.commit('changeDatasourceLastUpdated', {
+              datasourceId: dataset.source.id,
+              lastUpdated: dataset.meta.lastUpdated
+            });
+          }
+        }
+      } catch (err) {
+        console.log(`Error while loading data: ${err}`);
+      } // and schedule the next update
+
+
+      clearTimeout(context.state.timeoutId);
+      let timeout = setTimeout(function next() {
+        context.dispatch('nextUpdate', refreshRateMs);
+      }, refreshRateMs);
+      context.commit('setTimeoutId', timeout);
+    },
+
+    // Save a new theme to server
+    async updateTheme(context, newTheme) {
+      await __WEBPACK_IMPORTED_MODULE_2__api__["O" /* updateUserTheme */](context.state.currentUser, newTheme);
+      let updatedUser = clone(context.state.user);
+      updatedUser.theme = newTheme;
+      context.commit('setUser', updatedUser);
+    }
+
+  }
+});
+/* harmony export (immutable) */ __webpack_exports__["b"] = store;
+
+const getField = store.getters.field;
+/* unused harmony export getField */
+
+
+function getParams(datasource) {
+  const params = {
+    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
+    fields: datasource.fields,
+    groupBy: datasource.groupBy,
+    source: datasource.source
+  };
+  return params;
+}
+
+async function loadData(params) {
+  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["w" /* getStatistics */](params); // convert date strings to values
+
+  res = res.map(set => {
+    set.data = set.data.map(d => {
+      if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
+      if (d['date']) d['date'] = moment(d['date']).toDate();
+      return d;
+    });
+    return set;
+  });
+  return res;
+}
+
+function usersToSkills(skillGroups, users) {
+  let agentGroups = extractValues(users, 'agentGroups');
+  return extractValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
+}
+/**
+ * This function takes a list of objects, each of which has a property which is
+ * an array, and returns all of the unique values in the given property's arrays.
+ * @param  {Array} objectArray
+ * @param  {String} prop
+ * @return {Array} array of unique values in each object's @param prop
+ */
+
+
+function extractValues(objectArray, prop) {
+  return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
+}
+
+/***/ }),
+/* 25 */,
+/* 26 */
 /***/ (function(module, exports) {
 
 function _has(prop, obj) {
@@ -13044,19 +13059,211 @@ function _has(prop, obj) {
 module.exports = _has;
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 27 */,
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(24);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+const intersection = __webpack_require__(32);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  name: 'users-selector',
+  props: {
+    showRefresh: {
+      default: true
+    }
+  },
+
+  data() {
+    return {
+      userList: [],
+      selectedUsernames: [],
+      selectedAgentGroups: [],
+      agentGroups: [],
+      message: ''
+    };
+  },
+
+  mounted: async function () {
+    this.userList = await this.loadUsersList();
+    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
+    this.$emit('users-loaded', this.userList);
+  },
+  methods: {
+    clickRefresh: function () {
+      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
+        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
+      } else {
+        this.message = '';
+        this.$emit('refresh');
+      }
+    },
+    // Load list of users
+    loadUsersList: async function () {
+      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["A" /* getUsers */]();
+      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
+      return userList;
+    },
+    // Return users who are within the selectedAgentGroups
+    filterUsersInGroup: function (users) {
+      if (this.selectedAgentGroups.length == 0) return users;
+      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
+    },
+    // If a user is part of multiple groups, list them next to user's name
+    getUserSelectionString: function (user) {
+      let groupString = '';
+
+      if (user.agentGroups.length > 1) {
+        groupString = ` - ${user.agentGroups.join(', ')}`;
+      }
+
+      return `${user.lastName}, ${user.firstName}${groupString}`;
+    },
+    // From the passed-in users, return array of agent groups
+    getAgentGroupsFromUsers: function (users) {
+      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
+    },
+    // Filter for agents within an agent group
+    selectAgentGroups: async function (agentGroups) {
+      this.selectedAgentGroups = agentGroups;
+      this.selectUsers(this.filterUsersInGroup(this.userList));
+    },
+    // Get users from usernames
+    getUsers: function (usernames) {
+      return usernames.map(username => this.userList.find(user => user.username == username));
+    },
+    selectUsers: function (users) {
+      this.$emit('select-users', users); // Make sure these cats are in the selectedUsernames list
+
+      this.selectedUsernames = users.map(u => u.username);
+    }
+  }
+});
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _contains = /*#__PURE__*/__webpack_require__(31);
+var _indexOf = /*#__PURE__*/__webpack_require__(40);
 
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
+function _contains(a, list) {
+  return _indexOf(list, a, 0) >= 0;
+}
+module.exports = _contains;
 
-var _filter = /*#__PURE__*/__webpack_require__(46);
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
 
-var flip = /*#__PURE__*/__webpack_require__(47);
+function _arity(n, fn) {
+  /* eslint-disable no-unused-vars */
+  switch (n) {
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+module.exports = _arity;
 
-var uniq = /*#__PURE__*/__webpack_require__(28);
+/***/ }),
+/* 31 */,
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(29);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+var _filter = /*#__PURE__*/__webpack_require__(47);
+
+var flip = /*#__PURE__*/__webpack_require__(48);
+
+var uniq = /*#__PURE__*/__webpack_require__(35);
 
 /**
  * Combines two lists into a set (i.e. no duplicates) composed of those
@@ -13091,12 +13298,69 @@ var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
 module.exports = intersection;
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = /*#__PURE__*/__webpack_require__(50);
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
 
-var uniqBy = /*#__PURE__*/__webpack_require__(52);
+var _equals = /*#__PURE__*/__webpack_require__(41);
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
+
+
+var equals = /*#__PURE__*/_curry2(function equals(a, b) {
+  return _equals(a, b, [], []);
+});
+module.exports = equals;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var toString = Object.prototype.toString;
+var _isArguments = function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+};
+
+module.exports = _isArguments;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var identity = /*#__PURE__*/__webpack_require__(51);
+
+var uniqBy = /*#__PURE__*/__webpack_require__(53);
 
 /**
  * Returns a new list containing only one copy of each element in the original
@@ -13121,8 +13385,1081 @@ var uniq = /*#__PURE__*/uniqBy(identity);
 module.exports = uniq;
 
 /***/ }),
-/* 29 */,
-/* 30 */
+/* 36 */,
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(28);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(55);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(38)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-a22da046"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\users-selector.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a22da046", Component.options)
+  } else {
+    hotAPI.reload("data-v-a22da046", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(39);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("fb81eb78", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAyIA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"selectUsers(getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n\r\n\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n\r\n\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n\r\n\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n        this.$emit('users-loaded', this.userList);\r\n    },\r\n\r\n\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            this.selectedAgentGroups = agentGroups;\r\n            this.selectUsers(this.filterUsersInGroup(this.userList));\r\n        },\r\n\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        },\r\n\r\n        selectUsers: function(users) {\r\n            this.$emit('select-users', users);\r\n            // Make sure these cats are in the selectedUsernames list\r\n            this.selectedUsernames = users.map((u) => u.username);\r\n        }\r\n\r\n    }\r\n\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var equals = /*#__PURE__*/__webpack_require__(33);
+
+function _indexOf(list, a, idx) {
+  var inf, item;
+  // Array.prototype.indexOf doesn't exist below IE9
+  if (typeof list.indexOf === 'function') {
+    switch (typeof a) {
+      case 'number':
+        if (a === 0) {
+          // manually crawl the list to distinguish between +0 and -0
+          inf = 1 / a;
+          while (idx < list.length) {
+            item = list[idx];
+            if (item === 0 && 1 / item === inf) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        } else if (a !== a) {
+          // NaN
+          while (idx < list.length) {
+            item = list[idx];
+            if (typeof item === 'number' && item !== item) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        }
+        // non-zero numbers can utilise Set
+        return list.indexOf(a, idx);
+
+      // all these types can utilise Set
+      case 'string':
+      case 'boolean':
+      case 'function':
+      case 'undefined':
+        return list.indexOf(a, idx);
+
+      case 'object':
+        if (a === null) {
+          // null can utilise Set
+          return list.indexOf(a, idx);
+        }
+    }
+  }
+  // anything else not covered above, defer to R.equals
+  while (idx < list.length) {
+    if (equals(list[idx], a)) {
+      return idx;
+    }
+    idx += 1;
+  }
+  return -1;
+}
+module.exports = _indexOf;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(42);
+
+var _containsWith = /*#__PURE__*/__webpack_require__(43);
+
+var _functionName = /*#__PURE__*/__webpack_require__(44);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var identical = /*#__PURE__*/__webpack_require__(45);
+
+var keys = /*#__PURE__*/__webpack_require__(46);
+
+var type = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
+
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  }
+
+  // if *a* array contains any element that is not included in *b*
+  return !_containsWith(function (b, aItem) {
+    return !_containsWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (identical(a, b)) {
+    return true;
+  }
+
+  var typeA = type(a);
+
+  if (typeA !== type(b)) {
+    return false;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+  }
+
+  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
+  }
+
+  switch (typeA) {
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
+        return a === b;
+      }
+      break;
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+        return false;
+      }
+      break;
+    case 'Date':
+      if (!identical(a.valueOf(), b.valueOf())) {
+        return false;
+      }
+      break;
+    case 'Error':
+      return a.name === b.name && a.message === b.message;
+    case 'RegExp':
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
+        return false;
+      }
+      break;
+  }
+
+  var idx = stackA.length - 1;
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+    idx -= 1;
+  }
+
+  switch (typeA) {
+    case 'Map':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'ArrayBuffer':
+      break;
+    default:
+      // Values of other types are only equal if identical.
+      return false;
+  }
+
+  var keysA = keys(a);
+  if (keysA.length !== keys(b).length) {
+    return false;
+  }
+
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
+
+  idx = keysA.length - 1;
+  while (idx >= 0) {
+    var key = keysA[idx];
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+      return false;
+    }
+    idx -= 1;
+  }
+  return true;
+}
+module.exports = _equals;
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+function _arrayFromIterator(iter) {
+  var list = [];
+  var next;
+  while (!(next = iter.next()).done) {
+    list.push(next.value);
+  }
+  return list;
+}
+module.exports = _arrayFromIterator;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+function _containsWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+}
+module.exports = _containsWith;
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports) {
+
+function _functionName(f) {
+  // String(x => x) evaluates to "x => x", so the pattern may not match.
+  var match = String(f).match(/^function (\w*)/);
+  return match == null ? '' : match[1];
+}
+module.exports = _functionName;
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
+
+var identical = /*#__PURE__*/_curry2(function identical(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+});
+module.exports = identical;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(34);
+
+// cover IE < 9 keys issues
+
+
+var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// Safari bug
+var hasArgsEnumBug = /*#__PURE__*/function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+};
+
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+} : function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+  var prop, nIdx;
+  var ks = [];
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+      nIdx -= 1;
+    }
+  }
+  return ks;
+};
+var keys = /*#__PURE__*/_curry1(_keys);
+module.exports = keys;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+function _filter(fn, list) {
+  var idx = 0;
+  var len = list.length;
+  var result = [];
+
+  while (idx < len) {
+    if (fn(list[idx])) {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+module.exports = _filter;
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var curryN = /*#__PURE__*/__webpack_require__(49);
+
+/**
+ * Returns a new function much like the supplied one, except that the first two
+ * arguments' order is reversed.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
+ * @param {Function} fn The function to invoke with its first two parameters reversed.
+ * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+ * @example
+ *
+ *      var mergeThree = (a, b, c) => [].concat(a, b, c);
+ *
+ *      mergeThree(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
+ * @symb R.flip(f)(a, b, c) = f(b, a, c)
+ */
+
+
+var flip = /*#__PURE__*/_curry1(function flip(fn) {
+  return curryN(fn.length, function (a, b) {
+    var args = Array.prototype.slice.call(arguments, 0);
+    args[0] = b;
+    args[1] = a;
+    return fn.apply(this, args);
+  });
+});
+module.exports = flip;
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(30);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+var _curryN = /*#__PURE__*/__webpack_require__(50);
+
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      var sumArgs = (...args) => R.sum(args);
+ *
+ *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
+
+var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
+  if (length === 1) {
+    return _curry1(fn);
+  }
+  return _arity(length, _curryN(length, [], fn));
+});
+module.exports = curryN;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(30);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curryN(length, received, fn) {
+  return function () {
+    var combined = [];
+    var argsIdx = 0;
+    var left = length;
+    var combinedIdx = 0;
+    while (combinedIdx < received.length || argsIdx < arguments.length) {
+      var result;
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+        result = received[combinedIdx];
+      } else {
+        result = arguments[argsIdx];
+        argsIdx += 1;
+      }
+      combined[combinedIdx] = result;
+      if (!_isPlaceholder(result)) {
+        left -= 1;
+      }
+      combinedIdx += 1;
+    }
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+  };
+}
+module.exports = _curryN;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _identity = /*#__PURE__*/__webpack_require__(52);
+
+/**
+ * A function that does nothing but return the parameter supplied to it. Good
+ * as a default or placeholder function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x The value to return.
+ * @return {*} The input value, `x`.
+ * @example
+ *
+ *      R.identity(1); //=> 1
+ *
+ *      var obj = {};
+ *      R.identity(obj) === obj; //=> true
+ * @symb R.identity(a) = a
+ */
+
+
+var identity = /*#__PURE__*/_curry1(_identity);
+module.exports = identity;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+function _identity(x) {
+  return x;
+}
+module.exports = _identity;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Set = /*#__PURE__*/__webpack_require__(54);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied function to
+ * each list element. Prefers the first item if the supplied function produces
+ * the same value on two items. [`R.equals`](#equals) is used for comparison.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> b) -> [a] -> [a]
+ * @param {Function} fn A function used to produce a value to use during comparisons.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
+ */
+
+
+var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
+  var set = new _Set();
+  var result = [];
+  var idx = 0;
+  var appliedItem, item;
+
+  while (idx < list.length) {
+    item = list[idx];
+    appliedItem = fn(item);
+    if (set.add(appliedItem)) {
+      result.push(item);
+    }
+    idx += 1;
+  }
+  return result;
+});
+module.exports = uniqBy;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(29);
+
+var _Set = /*#__PURE__*/function () {
+
+  function _Set() {
+    /* globals Set */
+    this._nativeSet = typeof Set === 'function' ? new Set() : null;
+    this._items = {};
+  }
+
+  // until we figure out why jsdoc chokes on this
+  // @param item The item to add to the Set
+  // @returns {boolean} true if the item did not exist prior, otherwise false
+  //
+  _Set.prototype.add = function (item) {
+    return !hasOrAdd(item, true, this);
+  };
+
+  //
+  // @param item The item to check for existence in the Set
+  // @returns {boolean} true if the item exists in the Set, otherwise false
+  //
+  _Set.prototype.has = function (item) {
+    return hasOrAdd(item, false, this);
+  };
+
+  //
+  // Combines the logic for checking whether an item is a member of the set and
+  // for adding a new item to the set.
+  //
+  // @param item       The item to check or add to the Set instance.
+  // @param shouldAdd  If true, the item will be added to the set if it doesn't
+  //                   already exist.
+  // @param set        The set instance to check or add to.
+  // @return {boolean} true if the item already existed, otherwise false.
+  //
+  return _Set;
+}();
+
+function hasOrAdd(item, shouldAdd, set) {
+  var type = typeof item;
+  var prevSize, newSize;
+  switch (type) {
+    case 'string':
+    case 'number':
+      // distinguish between +0 and -0
+      if (item === 0 && 1 / item === -Infinity) {
+        if (set._items['-0']) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items['-0'] = true;
+          }
+          return false;
+        }
+      }
+      // these types can all utilise the native Set
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = {};
+            set._items[type][item] = true;
+          }
+          return false;
+        } else if (item in set._items[type]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][item] = true;
+          }
+          return false;
+        }
+      }
+
+    case 'boolean':
+      // set._items['boolean'] holds a two element array
+      // representing [ falseExists, trueExists ]
+      if (type in set._items) {
+        var bIdx = item ? 1 : 0;
+        if (set._items[type][bIdx]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][bIdx] = true;
+          }
+          return false;
+        }
+      } else {
+        if (shouldAdd) {
+          set._items[type] = item ? [false, true] : [true, false];
+        }
+        return false;
+      }
+
+    case 'function':
+      // compare functions for reference equality
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = [item];
+          }
+          return false;
+        }
+        if (!_contains(item, set._items[type])) {
+          if (shouldAdd) {
+            set._items[type].push(item);
+          }
+          return false;
+        }
+        return true;
+      }
+
+    case 'undefined':
+      if (set._items[type]) {
+        return true;
+      } else {
+        if (shouldAdd) {
+          set._items[type] = true;
+        }
+        return false;
+      }
+
+    case 'object':
+      if (item === null) {
+        if (!set._items['null']) {
+          if (shouldAdd) {
+            set._items['null'] = true;
+          }
+          return false;
+        }
+        return true;
+      }
+    /* falls through */
+    default:
+      // reduce the search size of heterogeneous sets by creating buckets
+      // for each type.
+      type = Object.prototype.toString.call(item);
+      if (!(type in set._items)) {
+        if (shouldAdd) {
+          set._items[type] = [item];
+        }
+        return false;
+      }
+      // scan through all previously applied items
+      if (!_contains(item, set._items[type])) {
+        if (shouldAdd) {
+          set._items[type].push(item);
+        }
+        return false;
+      }
+      return true;
+  }
+}
+
+// A simple Set type that honours R.equals semantics
+module.exports = _Set;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "message" }, [
+          _c("p", [
+            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.userList.length > 0
+      ? _c("div", { staticClass: "section agent-selectors" }, [
+          _c("div", { staticClass: "agentgroup-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAgentGroups,
+                    expression: "selectedAgentGroups"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedAgentGroups = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.agentGroups, function(agentGroup, i) {
+                return _c("option", { domProps: { value: agentGroup } }, [
+                  _vm._v(
+                    "\r\n                    " +
+                      _vm._s(agentGroup) +
+                      "\r\n                "
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedUsernames,
+                    expression: "selectedUsernames"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedUsernames = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectUsers(_vm.getUsers(_vm.selectedUsernames))
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
+                userAgent,
+                i
+              ) {
+                return _c(
+                  "option",
+                  { domProps: { value: userAgent.username } },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.getUserSelectionString(userAgent)) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _vm.showRefresh
+            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "refresh-button",
+                    on: { click: _vm.clickRefresh }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                    _vm._v(" Refresh\r\n            ")
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
+  }
+}
+
+/***/ }),
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13130,10 +14467,10 @@ module.exports = uniq;
 /* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
 /* unused harmony export prettifyDateOption */
 /* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
 
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(7);
 /**
  * Returns a cleaned / formatted copy of widget filter to pass to server or
  * apply to data.
@@ -13295,262 +14632,61 @@ function props(array, property) {
 }
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _indexOf = /*#__PURE__*/__webpack_require__(39);
-
-function _contains(a, list) {
-  return _indexOf(list, a, 0) >= 0;
-}
-module.exports = _contains;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-var _equals = /*#__PURE__*/__webpack_require__(40);
-
-/**
- * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
- * cyclical data structures.
- *
- * Dispatches symmetrically to the `equals` methods of both arguments, if
- * present.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> b -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      R.equals(1, 1); //=> true
- *      R.equals(1, '1'); //=> false
- *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
- *
- *      var a = {}; a.v = a;
- *      var b = {}; b.v = b;
- *      R.equals(a, b); //=> true
- */
-
-
-var equals = /*#__PURE__*/_curry2(function equals(a, b) {
-  return _equals(a, b, [], []);
-});
-module.exports = equals;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var toString = Object.prototype.toString;
-var _isArguments = function () {
-  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
-    return toString.call(x) === '[object Arguments]';
-  } : function _isArguments(x) {
-    return _has('callee', x);
-  };
-};
-
-module.exports = _isArguments;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-function _arity(n, fn) {
-  /* eslint-disable no-unused-vars */
-  switch (n) {
-    case 0:
-      return function () {
-        return fn.apply(this, arguments);
-      };
-    case 1:
-      return function (a0) {
-        return fn.apply(this, arguments);
-      };
-    case 2:
-      return function (a0, a1) {
-        return fn.apply(this, arguments);
-      };
-    case 3:
-      return function (a0, a1, a2) {
-        return fn.apply(this, arguments);
-      };
-    case 4:
-      return function (a0, a1, a2, a3) {
-        return fn.apply(this, arguments);
-      };
-    case 5:
-      return function (a0, a1, a2, a3, a4) {
-        return fn.apply(this, arguments);
-      };
-    case 6:
-      return function (a0, a1, a2, a3, a4, a5) {
-        return fn.apply(this, arguments);
-      };
-    case 7:
-      return function (a0, a1, a2, a3, a4, a5, a6) {
-        return fn.apply(this, arguments);
-      };
-    case 8:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-        return fn.apply(this, arguments);
-      };
-    case 9:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-        return fn.apply(this, arguments);
-      };
-    case 10:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-        return fn.apply(this, arguments);
-      };
-    default:
-      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-  }
-}
-module.exports = _arity;
-
-/***/ }),
-/* 35 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(21);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-const intersection = __webpack_require__(27);
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  name: 'users-selector',
-  props: {
-    showRefresh: {
-      default: true
-    }
-  },
-
-  data() {
-    return {
-      userList: [],
-      selectedUsernames: [],
-      selectedAgentGroups: [],
-      agentGroups: [],
-      message: ''
-    };
-  },
-
-  mounted: async function () {
-    this.userList = await this.loadUsersList();
-    this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-    this.$emit('users-loaded', this.userList);
-  },
-  methods: {
-    clickRefresh: function () {
-      if (this.$store.state.supMode == 'individual' && this.selectedUsernames.length > 1) {
-        this.message = `Change to TEAM mode to view multiple users, ya turkey!`;
-      } else {
-        this.message = '';
-        this.$emit('refresh');
-      }
-    },
-    // Load list of users
-    loadUsersList: async function () {
-      let userList = await __WEBPACK_IMPORTED_MODULE_0__javascript_api__["A" /* getUsers */]();
-      userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
-      return userList;
-    },
-    // Return users who are within the selectedAgentGroups
-    filterUsersInGroup: function (users) {
-      if (this.selectedAgentGroups.length == 0) return users;
-      return users.filter(user => intersection(user.agentGroups, this.selectedAgentGroups).length > 0);
-    },
-    // If a user is part of multiple groups, list them next to user's name
-    getUserSelectionString: function (user) {
-      let groupString = '';
-
-      if (user.agentGroups.length > 1) {
-        groupString = ` - ${user.agentGroups.join(', ')}`;
-      }
-
-      return `${user.lastName}, ${user.firstName}${groupString}`;
-    },
-    // From the passed-in users, return array of agent groups
-    getAgentGroupsFromUsers: function (users) {
-      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_hub__["a" /* extractValues */])(users, 'agentGroups').sort();
-    },
-    // Filter for agents within an agent group
-    selectAgentGroups: async function (agentGroups) {
-      this.selectedAgentGroups = agentGroups;
-      this.selectUsers(this.filterUsersInGroup(this.userList));
-    },
-    // Get users from usernames
-    getUsers: function (usernames) {
-      return usernames.map(username => this.userList.find(user => user.username == username));
-    },
-    selectUsers: function (users) {
-      this.$emit('select-users', users); // Make sure these cats are in the selectedUsernames list
-
-      this.selectedUsernames = users.map(u => u.username);
-    }
-  }
-});
-
-/***/ }),
-/* 36 */
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry1 = /*#__PURE__*/__webpack_require__(0);
 
-var empty = /*#__PURE__*/__webpack_require__(54);
+var empty = /*#__PURE__*/__webpack_require__(109);
 
-var equals = /*#__PURE__*/__webpack_require__(32);
+var equals = /*#__PURE__*/__webpack_require__(33);
 
 /**
  * Returns `true` if the given value is its type's empty value; `false`
@@ -13581,8 +14717,185 @@ var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
 module.exports = isEmpty;
 
 /***/ }),
-/* 37 */,
-/* 38 */
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(34);
+
+var _isArray = /*#__PURE__*/__webpack_require__(110);
+
+var _isObject = /*#__PURE__*/__webpack_require__(111);
+
+var _isString = /*#__PURE__*/__webpack_require__(112);
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
+
+
+var empty = /*#__PURE__*/_curry1(function empty(x) {
+  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
+    return arguments;
+  }() :
+  // else
+  void 0;
+});
+module.exports = empty;
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports) {
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+module.exports = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports) {
+
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === '[object Object]';
+}
+module.exports = _isObject;
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+module.exports = _isString;
+
+/***/ }),
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(130);
+
+
+/***/ }),
+/* 130 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_js__ = __webpack_require__(4);
+
+
+
+const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#app',
+  components: {
+    'users-selector': __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__["a" /* default */]
+  },
+  data: {
+    statusMessage: '',
+    to: '',
+    subject: '',
+    body: '',
+    usersTo: [],
+    sentMessages: []
+  },
+  mounted: async function () {
+    this.loadSentMessages();
+  },
+  computed: {
+    toNameList: function () {
+      return this.usersTo.reduce((str, user) => `${str ? str + ', ' : ''}${user.firstName} ${user.lastName}`, '');
+    }
+  },
+  methods: {
+    selectUsers: function (users) {
+      this.usersTo = users;
+    },
+    send: async function (toString, subject, body) {
+      let users = this.usersTo.map(user => {
+        return {
+          username: user.username
+        };
+      });
+      let message = {
+        to: users,
+        subject: subject,
+        body: body
+      };
+      let response = await __WEBPACK_IMPORTED_MODULE_2__api_js__["F" /* sendMessage */](message);
+      this.statusMessage = response;
+      setTimeout(() => this.statusMessage = '', 5000);
+      this.clearMessage();
+      this.loadSentMessages();
+    },
+    clearMessage: function () {
+      this.to = '';
+      this.subject = '';
+      this.body = '';
+    },
+    loadSentMessages: async function () {
+      this.sentMessages = (await __WEBPACK_IMPORTED_MODULE_2__api_js__["t" /* getSentMessages */]()).sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);
+    },
+    getDate: function (message) {
+      return moment(message.timestamp).format('M/D h:mm A');
+    }
+  }
+});
+
+/***/ }),
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14526,917 +15839,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var equals = /*#__PURE__*/__webpack_require__(32);
-
-function _indexOf(list, a, idx) {
-  var inf, item;
-  // Array.prototype.indexOf doesn't exist below IE9
-  if (typeof list.indexOf === 'function') {
-    switch (typeof a) {
-      case 'number':
-        if (a === 0) {
-          // manually crawl the list to distinguish between +0 and -0
-          inf = 1 / a;
-          while (idx < list.length) {
-            item = list[idx];
-            if (item === 0 && 1 / item === inf) {
-              return idx;
-            }
-            idx += 1;
-          }
-          return -1;
-        } else if (a !== a) {
-          // NaN
-          while (idx < list.length) {
-            item = list[idx];
-            if (typeof item === 'number' && item !== item) {
-              return idx;
-            }
-            idx += 1;
-          }
-          return -1;
-        }
-        // non-zero numbers can utilise Set
-        return list.indexOf(a, idx);
-
-      // all these types can utilise Set
-      case 'string':
-      case 'boolean':
-      case 'function':
-      case 'undefined':
-        return list.indexOf(a, idx);
-
-      case 'object':
-        if (a === null) {
-          // null can utilise Set
-          return list.indexOf(a, idx);
-        }
-    }
-  }
-  // anything else not covered above, defer to R.equals
-  while (idx < list.length) {
-    if (equals(list[idx], a)) {
-      return idx;
-    }
-    idx += 1;
-  }
-  return -1;
-}
-module.exports = _indexOf;
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(41);
-
-var _containsWith = /*#__PURE__*/__webpack_require__(42);
-
-var _functionName = /*#__PURE__*/__webpack_require__(43);
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var identical = /*#__PURE__*/__webpack_require__(44);
-
-var keys = /*#__PURE__*/__webpack_require__(45);
-
-var type = /*#__PURE__*/__webpack_require__(11);
-
-/**
- * private _uniqContentEquals function.
- * That function is checking equality of 2 iterator contents with 2 assumptions
- * - iterators lengths are the same
- * - iterators values are unique
- *
- * false-positive result will be returned for comparision of, e.g.
- * - [1,2,3] and [1,2,3,4]
- * - [1,1,1] and [1,2,3]
- * */
-
-function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
-  var a = _arrayFromIterator(aIterator);
-  var b = _arrayFromIterator(bIterator);
-
-  function eq(_a, _b) {
-    return _equals(_a, _b, stackA.slice(), stackB.slice());
-  }
-
-  // if *a* array contains any element that is not included in *b*
-  return !_containsWith(function (b, aItem) {
-    return !_containsWith(eq, aItem, b);
-  }, b, a);
-}
-
-function _equals(a, b, stackA, stackB) {
-  if (identical(a, b)) {
-    return true;
-  }
-
-  var typeA = type(a);
-
-  if (typeA !== type(b)) {
-    return false;
-  }
-
-  if (a == null || b == null) {
-    return false;
-  }
-
-  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
-    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
-  }
-
-  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
-    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
-  }
-
-  switch (typeA) {
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
-        return a === b;
-      }
-      break;
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
-        return false;
-      }
-      break;
-    case 'Date':
-      if (!identical(a.valueOf(), b.valueOf())) {
-        return false;
-      }
-      break;
-    case 'Error':
-      return a.name === b.name && a.message === b.message;
-    case 'RegExp':
-      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
-        return false;
-      }
-      break;
-  }
-
-  var idx = stackA.length - 1;
-  while (idx >= 0) {
-    if (stackA[idx] === a) {
-      return stackB[idx] === b;
-    }
-    idx -= 1;
-  }
-
-  switch (typeA) {
-    case 'Map':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
-    case 'Set':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-    case 'Date':
-    case 'Error':
-    case 'RegExp':
-    case 'Int8Array':
-    case 'Uint8Array':
-    case 'Uint8ClampedArray':
-    case 'Int16Array':
-    case 'Uint16Array':
-    case 'Int32Array':
-    case 'Uint32Array':
-    case 'Float32Array':
-    case 'Float64Array':
-    case 'ArrayBuffer':
-      break;
-    default:
-      // Values of other types are only equal if identical.
-      return false;
-  }
-
-  var keysA = keys(a);
-  if (keysA.length !== keys(b).length) {
-    return false;
-  }
-
-  var extendedStackA = stackA.concat([a]);
-  var extendedStackB = stackB.concat([b]);
-
-  idx = keysA.length - 1;
-  while (idx >= 0) {
-    var key = keysA[idx];
-    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
-      return false;
-    }
-    idx -= 1;
-  }
-  return true;
-}
-module.exports = _equals;
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-function _arrayFromIterator(iter) {
-  var list = [];
-  var next;
-  while (!(next = iter.next()).done) {
-    list.push(next.value);
-  }
-  return list;
-}
-module.exports = _arrayFromIterator;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-function _containsWith(pred, x, list) {
-  var idx = 0;
-  var len = list.length;
-
-  while (idx < len) {
-    if (pred(x, list[idx])) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-}
-module.exports = _containsWith;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-function _functionName(f) {
-  // String(x => x) evaluates to "x => x", so the pattern may not match.
-  var match = String(f).match(/^function (\w*)/);
-  return match == null ? '' : match[1];
-}
-module.exports = _functionName;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-/**
- * Returns true if its arguments are identical, false otherwise. Values are
- * identical if they reference the same memory. `NaN` is identical to `NaN`;
- * `0` and `-0` are not identical.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> a -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      var o = {};
- *      R.identical(o, o); //=> true
- *      R.identical(1, 1); //=> true
- *      R.identical(1, '1'); //=> false
- *      R.identical([], []); //=> false
- *      R.identical(0, -0); //=> false
- *      R.identical(NaN, NaN); //=> true
- */
-
-
-var identical = /*#__PURE__*/_curry2(function identical(a, b) {
-  // SameValue algorithm
-  if (a === b) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return a !== 0 || 1 / a === 1 / b;
-  } else {
-    // Step 6.a: NaN == NaN
-    return a !== a && b !== b;
-  }
-});
-module.exports = identical;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(33);
-
-// cover IE < 9 keys issues
-
-
-var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
-var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-// Safari bug
-var hasArgsEnumBug = /*#__PURE__*/function () {
-  'use strict';
-
-  return arguments.propertyIsEnumerable('length');
-}();
-
-var contains = function contains(list, item) {
-  var idx = 0;
-  while (idx < list.length) {
-    if (list[idx] === item) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-};
-
-/**
- * Returns a list containing the names of all the enumerable own properties of
- * the supplied object.
- * Note that the order of the output array is not guaranteed to be consistent
- * across different JS platforms.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {k: v} -> [k]
- * @param {Object} obj The object to extract properties from
- * @return {Array} An array of the object's own properties.
- * @see R.keysIn, R.values
- * @example
- *
- *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
- */
-var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
-  return Object(obj) !== obj ? [] : Object.keys(obj);
-} : function keys(obj) {
-  if (Object(obj) !== obj) {
-    return [];
-  }
-  var prop, nIdx;
-  var ks = [];
-  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
-  for (prop in obj) {
-    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
-      ks[ks.length] = prop;
-    }
-  }
-  if (hasEnumBug) {
-    nIdx = nonEnumerableProps.length - 1;
-    while (nIdx >= 0) {
-      prop = nonEnumerableProps[nIdx];
-      if (_has(prop, obj) && !contains(ks, prop)) {
-        ks[ks.length] = prop;
-      }
-      nIdx -= 1;
-    }
-  }
-  return ks;
-};
-var keys = /*#__PURE__*/_curry1(_keys);
-module.exports = keys;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-function _filter(fn, list) {
-  var idx = 0;
-  var len = list.length;
-  var result = [];
-
-  while (idx < len) {
-    if (fn(list[idx])) {
-      result[result.length] = list[idx];
-    }
-    idx += 1;
-  }
-  return result;
-}
-module.exports = _filter;
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var curryN = /*#__PURE__*/__webpack_require__(48);
-
-/**
- * Returns a new function much like the supplied one, except that the first two
- * arguments' order is reversed.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Function
- * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
- * @param {Function} fn The function to invoke with its first two parameters reversed.
- * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
- * @example
- *
- *      var mergeThree = (a, b, c) => [].concat(a, b, c);
- *
- *      mergeThree(1, 2, 3); //=> [1, 2, 3]
- *
- *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
- * @symb R.flip(f)(a, b, c) = f(b, a, c)
- */
-
-
-var flip = /*#__PURE__*/_curry1(function flip(fn) {
-  return curryN(fn.length, function (a, b) {
-    var args = Array.prototype.slice.call(arguments, 0);
-    args[0] = b;
-    args[1] = a;
-    return fn.apply(this, args);
-  });
-});
-module.exports = flip;
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arity = /*#__PURE__*/__webpack_require__(34);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-var _curryN = /*#__PURE__*/__webpack_require__(49);
-
-/**
- * Returns a curried equivalent of the provided function, with the specified
- * arity. The curried function has two unusual capabilities. First, its
- * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
- * following are equivalent:
- *
- *   - `g(1)(2)(3)`
- *   - `g(1)(2, 3)`
- *   - `g(1, 2)(3)`
- *   - `g(1, 2, 3)`
- *
- * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
- * "gaps", allowing partial application of any combination of arguments,
- * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
- * the following are equivalent:
- *
- *   - `g(1, 2, 3)`
- *   - `g(_, 2, 3)(1)`
- *   - `g(_, _, 3)(1)(2)`
- *   - `g(_, _, 3)(1, 2)`
- *   - `g(_, 2)(1)(3)`
- *   - `g(_, 2)(1, 3)`
- *   - `g(_, 2)(_, 3)(1)`
- *
- * @func
- * @memberOf R
- * @since v0.5.0
- * @category Function
- * @sig Number -> (* -> a) -> (* -> a)
- * @param {Number} length The arity for the returned function.
- * @param {Function} fn The function to curry.
- * @return {Function} A new, curried function.
- * @see R.curry
- * @example
- *
- *      var sumArgs = (...args) => R.sum(args);
- *
- *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
- *      var f = curriedAddFourNumbers(1, 2);
- *      var g = f(3);
- *      g(4); //=> 10
- */
-
-
-var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
-  if (length === 1) {
-    return _curry1(fn);
-  }
-  return _arity(length, _curryN(length, [], fn));
-});
-module.exports = curryN;
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arity = /*#__PURE__*/__webpack_require__(34);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
-
-/**
- * Internal curryN function.
- *
- * @private
- * @category Function
- * @param {Number} length The arity of the curried function.
- * @param {Array} received An array of arguments received thus far.
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curryN(length, received, fn) {
-  return function () {
-    var combined = [];
-    var argsIdx = 0;
-    var left = length;
-    var combinedIdx = 0;
-    while (combinedIdx < received.length || argsIdx < arguments.length) {
-      var result;
-      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
-        result = received[combinedIdx];
-      } else {
-        result = arguments[argsIdx];
-        argsIdx += 1;
-      }
-      combined[combinedIdx] = result;
-      if (!_isPlaceholder(result)) {
-        left -= 1;
-      }
-      combinedIdx += 1;
-    }
-    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
-  };
-}
-module.exports = _curryN;
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _identity = /*#__PURE__*/__webpack_require__(51);
-
-/**
- * A function that does nothing but return the parameter supplied to it. Good
- * as a default or placeholder function.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Function
- * @sig a -> a
- * @param {*} x The value to return.
- * @return {*} The input value, `x`.
- * @example
- *
- *      R.identity(1); //=> 1
- *
- *      var obj = {};
- *      R.identity(obj) === obj; //=> true
- * @symb R.identity(a) = a
- */
-
-
-var identity = /*#__PURE__*/_curry1(_identity);
-module.exports = identity;
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-function _identity(x) {
-  return x;
-}
-module.exports = _identity;
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _Set = /*#__PURE__*/__webpack_require__(53);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-/**
- * Returns a new list containing only one copy of each element in the original
- * list, based upon the value returned by applying the supplied function to
- * each list element. Prefers the first item if the supplied function produces
- * the same value on two items. [`R.equals`](#equals) is used for comparison.
- *
- * @func
- * @memberOf R
- * @since v0.16.0
- * @category List
- * @sig (a -> b) -> [a] -> [a]
- * @param {Function} fn A function used to produce a value to use during comparisons.
- * @param {Array} list The array to consider.
- * @return {Array} The list of unique items.
- * @example
- *
- *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
- */
-
-
-var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
-  var set = new _Set();
-  var result = [];
-  var idx = 0;
-  var appliedItem, item;
-
-  while (idx < list.length) {
-    item = list[idx];
-    appliedItem = fn(item);
-    if (set.add(appliedItem)) {
-      result.push(item);
-    }
-    idx += 1;
-  }
-  return result;
-});
-module.exports = uniqBy;
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _contains = /*#__PURE__*/__webpack_require__(31);
-
-var _Set = /*#__PURE__*/function () {
-
-  function _Set() {
-    /* globals Set */
-    this._nativeSet = typeof Set === 'function' ? new Set() : null;
-    this._items = {};
-  }
-
-  // until we figure out why jsdoc chokes on this
-  // @param item The item to add to the Set
-  // @returns {boolean} true if the item did not exist prior, otherwise false
-  //
-  _Set.prototype.add = function (item) {
-    return !hasOrAdd(item, true, this);
-  };
-
-  //
-  // @param item The item to check for existence in the Set
-  // @returns {boolean} true if the item exists in the Set, otherwise false
-  //
-  _Set.prototype.has = function (item) {
-    return hasOrAdd(item, false, this);
-  };
-
-  //
-  // Combines the logic for checking whether an item is a member of the set and
-  // for adding a new item to the set.
-  //
-  // @param item       The item to check or add to the Set instance.
-  // @param shouldAdd  If true, the item will be added to the set if it doesn't
-  //                   already exist.
-  // @param set        The set instance to check or add to.
-  // @return {boolean} true if the item already existed, otherwise false.
-  //
-  return _Set;
-}();
-
-function hasOrAdd(item, shouldAdd, set) {
-  var type = typeof item;
-  var prevSize, newSize;
-  switch (type) {
-    case 'string':
-    case 'number':
-      // distinguish between +0 and -0
-      if (item === 0 && 1 / item === -Infinity) {
-        if (set._items['-0']) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items['-0'] = true;
-          }
-          return false;
-        }
-      }
-      // these types can all utilise the native Set
-      if (set._nativeSet !== null) {
-        if (shouldAdd) {
-          prevSize = set._nativeSet.size;
-          set._nativeSet.add(item);
-          newSize = set._nativeSet.size;
-          return newSize === prevSize;
-        } else {
-          return set._nativeSet.has(item);
-        }
-      } else {
-        if (!(type in set._items)) {
-          if (shouldAdd) {
-            set._items[type] = {};
-            set._items[type][item] = true;
-          }
-          return false;
-        } else if (item in set._items[type]) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items[type][item] = true;
-          }
-          return false;
-        }
-      }
-
-    case 'boolean':
-      // set._items['boolean'] holds a two element array
-      // representing [ falseExists, trueExists ]
-      if (type in set._items) {
-        var bIdx = item ? 1 : 0;
-        if (set._items[type][bIdx]) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items[type][bIdx] = true;
-          }
-          return false;
-        }
-      } else {
-        if (shouldAdd) {
-          set._items[type] = item ? [false, true] : [true, false];
-        }
-        return false;
-      }
-
-    case 'function':
-      // compare functions for reference equality
-      if (set._nativeSet !== null) {
-        if (shouldAdd) {
-          prevSize = set._nativeSet.size;
-          set._nativeSet.add(item);
-          newSize = set._nativeSet.size;
-          return newSize === prevSize;
-        } else {
-          return set._nativeSet.has(item);
-        }
-      } else {
-        if (!(type in set._items)) {
-          if (shouldAdd) {
-            set._items[type] = [item];
-          }
-          return false;
-        }
-        if (!_contains(item, set._items[type])) {
-          if (shouldAdd) {
-            set._items[type].push(item);
-          }
-          return false;
-        }
-        return true;
-      }
-
-    case 'undefined':
-      if (set._items[type]) {
-        return true;
-      } else {
-        if (shouldAdd) {
-          set._items[type] = true;
-        }
-        return false;
-      }
-
-    case 'object':
-      if (item === null) {
-        if (!set._items['null']) {
-          if (shouldAdd) {
-            set._items['null'] = true;
-          }
-          return false;
-        }
-        return true;
-      }
-    /* falls through */
-    default:
-      // reduce the search size of heterogeneous sets by creating buckets
-      // for each type.
-      type = Object.prototype.toString.call(item);
-      if (!(type in set._items)) {
-        if (shouldAdd) {
-          set._items[type] = [item];
-        }
-        return false;
-      }
-      // scan through all previously applied items
-      if (!_contains(item, set._items[type])) {
-        if (shouldAdd) {
-          set._items[type].push(item);
-        }
-        return false;
-      }
-      return true;
-  }
-}
-
-// A simple Set type that honours R.equals semantics
-module.exports = _Set;
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(33);
-
-var _isArray = /*#__PURE__*/__webpack_require__(55);
-
-var _isObject = /*#__PURE__*/__webpack_require__(56);
-
-var _isString = /*#__PURE__*/__webpack_require__(57);
-
-/**
- * Returns the empty value of its argument's type. Ramda defines the empty
- * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
- * types are supported if they define `<Type>.empty`,
- * `<Type>.prototype.empty` or implement the
- * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
- *
- * Dispatches to the `empty` method of the first argument, if present.
- *
- * @func
- * @memberOf R
- * @since v0.3.0
- * @category Function
- * @sig a -> a
- * @param {*} x
- * @return {*}
- * @example
- *
- *      R.empty(Just(42));      //=> Nothing()
- *      R.empty([1, 2, 3]);     //=> []
- *      R.empty('unicorns');    //=> ''
- *      R.empty({x: 1, y: 2});  //=> {}
- */
-
-
-var empty = /*#__PURE__*/_curry1(function empty(x) {
-  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
-    return arguments;
-  }() :
-  // else
-  void 0;
-});
-module.exports = empty;
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-/**
- * Tests whether or not an object is an array.
- *
- * @private
- * @param {*} val The object to test.
- * @return {Boolean} `true` if `val` is an array, `false` otherwise.
- * @example
- *
- *      _isArray([]); //=> true
- *      _isArray(null); //=> false
- *      _isArray({}); //=> false
- */
-module.exports = Array.isArray || function _isArray(val) {
-  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
-};
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-function _isObject(x) {
-  return Object.prototype.toString.call(x) === '[object Object]';
-}
-module.exports = _isObject;
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-}
-module.exports = _isString;
-
-/***/ }),
-/* 58 */
+/* 132 */
 /***/ (function(module, exports) {
 
 /*
@@ -16023,395 +16426,6 @@ module.exports = _isString;
   }
 })();
 
-
-/***/ }),
-/* 59 */,
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(35);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(63);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(61)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-a22da046"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\users-selector.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a22da046", Component.options)
-  } else {
-    hotAPI.reload("data-v-a22da046", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("fb81eb78", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAyIA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"selectUsers(getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n\r\n\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n\r\n\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n\r\n\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n        this.$emit('users-loaded', this.userList);\r\n    },\r\n\r\n\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            this.selectedAgentGroups = agentGroups;\r\n            this.selectUsers(this.filterUsersInGroup(this.userList));\r\n        },\r\n\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        },\r\n\r\n        selectUsers: function(users) {\r\n            this.$emit('select-users', users);\r\n            // Make sure these cats are in the selectedUsernames list\r\n            this.selectedUsernames = users.map((u) => u.username);\r\n        }\r\n\r\n    }\r\n\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.message
-      ? _c("div", { staticClass: "message" }, [
-          _c("p", [
-            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.userList.length > 0
-      ? _c("div", { staticClass: "section agent-selectors" }, [
-          _c("div", { staticClass: "agentgroup-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedAgentGroups,
-                    expression: "selectedAgentGroups"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedAgentGroups = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.agentGroups, function(agentGroup, i) {
-                return _c("option", { domProps: { value: agentGroup } }, [
-                  _vm._v(
-                    "\r\n                    " +
-                      _vm._s(agentGroup) +
-                      "\r\n                "
-                  )
-                ])
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "user-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedUsernames,
-                    expression: "selectedUsernames"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedUsernames = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.selectUsers(_vm.getUsers(_vm.selectedUsernames))
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
-                userAgent,
-                i
-              ) {
-                return _c(
-                  "option",
-                  { domProps: { value: userAgent.username } },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(_vm.getUserSelectionString(userAgent)) +
-                        "\r\n                "
-                    )
-                  ]
-                )
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _vm.showRefresh
-            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "refresh-button",
-                    on: { click: _vm.clickRefresh }
-                  },
-                  [
-                    _c("i", { staticClass: "fas fa-sync-alt" }),
-                    _vm._v(" Refresh\r\n            ")
-                  ]
-                )
-              ])
-            : _vm._e()
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
-  }
-}
-
-/***/ }),
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(132);
-
-
-/***/ }),
-/* 132 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_js__ = __webpack_require__(4);
-
-
-
-const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#app',
-  components: {
-    'users-selector': __WEBPACK_IMPORTED_MODULE_1__components_users_selector_vue__["a" /* default */]
-  },
-  data: {
-    statusMessage: '',
-    to: '',
-    subject: '',
-    body: '',
-    usersTo: [],
-    sentMessages: []
-  },
-  mounted: async function () {
-    this.loadSentMessages();
-  },
-  computed: {
-    toNameList: function () {
-      return this.usersTo.reduce((str, user) => `${str ? str + ', ' : ''}${user.firstName} ${user.lastName}`, '');
-    }
-  },
-  methods: {
-    selectUsers: function (users) {
-      this.usersTo = users;
-    },
-    send: async function (toString, subject, body) {
-      let users = this.usersTo.map(user => {
-        return {
-          username: user.username
-        };
-      });
-      let message = {
-        to: users,
-        subject: subject,
-        body: body
-      };
-      let response = await __WEBPACK_IMPORTED_MODULE_2__api_js__["F" /* sendMessage */](message);
-      this.statusMessage = response;
-      setTimeout(() => this.statusMessage = '', 5000);
-      this.clearMessage();
-      this.loadSentMessages();
-    },
-    clearMessage: function () {
-      this.to = '';
-      this.subject = '';
-      this.body = '';
-    },
-    loadSentMessages: async function () {
-      this.sentMessages = (await __WEBPACK_IMPORTED_MODULE_2__api_js__["t" /* getSentMessages */]()).sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);
-    },
-    getDate: function (message) {
-      return moment(message.timestamp).format('M/D h:mm A');
-    }
-  }
-});
 
 /***/ })
 /******/ ]);

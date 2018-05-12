@@ -31,8 +31,7 @@ const vm = new Vue({
         showFilters: true,
         datasourceMessage: '',
         messages: [],
-        showInbox: false,
-        chosenLayoutName: ''
+        showInbox: false
     },
 
     components: {
@@ -50,19 +49,26 @@ const vm = new Vue({
         }
         // Start the data rolling
         await store.dispatch('startProcess');
-        this.chosenLayoutName = this.layout.name;
         this.isLoaded = true;
 
         // Hack to make sure data loads in cases where first round is blank
         // TODO: fix bug causing data to be blank after first `startProcess`
         setTimeout(this.refresh.bind(this), 2500);
-        // start checking messages every minute
-        setTimeout(this.messageRefreshLoop.bind(this), 60000);
+        // start checking messages every 2 minutes
+        setTimeout(this.messageRefreshLoop.bind(this), 120000);
     },
 
     computed: {
         layout: function() {
             return store.state.layout;
+        },
+        chosenLayoutName: {
+            get() {
+                return store.state.chosenLayoutName;
+            },
+            set(name) {
+                store.commit('setChosenLayoutName', name);
+            }
         },
         username: {
             get() {
@@ -124,69 +130,19 @@ const vm = new Vue({
 
     methods: {
         ///////////////////////////
-        // Refresh layout and data
-        refresh: async function(layout=null) {
+        // UI / interactions
+        refresh: async function() {
             this.isLoading = true;
-            await store.dispatch('forceRefresh', layout);
+            await store.dispatch('forceRefresh');
             this.isLoading = false;
             this.messages = await this.updateMessages();
         },
 
-
-        //////////////////////////////////////////////////
-        // Supervisor view controls
-        // Select a new layout type
-        changeLayout: function(name) {
-            this.refresh(store.getters.layout(name));
-        },
-        // Select users to filter data for
-        selectUsers: async function(users) {
-            store.commit('setSelectedUsers', users);
-        },
-        // Turn sup mode on or off
-        changeSupMode: function(newMode) {
-            store.commit('setSupMode', newMode);
-        },
-        // When user selector loads the users list, save it to hub for later
-        // parsing.
-        updateUserList: function(users) {
-            store.commit('setUserList', users);
-        },
-
-        //////////////////////////////////////////////////
-        // Handle menus and theme
-        mouseleaveMenu: function(event) {
-            if (!event.relatedTarget) return;
-            if (event.relatedTarget === this.$refs.menuButton
-                || isDescendant(this.$refs.menu, event.relatedTarget)) {
-                event.stopPropagation();
-                return;
-            }
-            else {
-                this.showMenu = false;
-            }
-        },
-        mouseleaveThemeSubMenu: function(event) {
-            if (!event.relatedTarget) return;
-            let classList = Array.from(event.relatedTarget.classList);
-            if (event.relatedTarget == this.$refs.themeSubMenu
-                || classList.includes('submenu-button')
-                || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
-                event.stopPropagation();
-                return;
-            }
-            else {
-                this.showMenuThemes = false;
-            }
-        },
         changeTheme: function(attribute, value) {
             this.theme[attribute] = value;
             this.updateThemeStyles(this.theme);
         },
-        updateThemeStyles: function(theme) {
-            document.getElementById('theme_css').href =
-                                    `styles/theme-${theme.color}.css`;
-        },
+
         saveTheme: function() {
             if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
             store.dispatch('updateTheme', this.theme);
@@ -194,8 +150,6 @@ const vm = new Vue({
             this.showMenu = false;
         },
 
-        //////////////////////////////////////////////////
-        // Messages
         openInbox: async function() {
             this.showInbox = true;
             this.messages = await this.updateMessages(this.showInbox);
@@ -217,7 +171,59 @@ const vm = new Vue({
         },
         messageRefreshLoop: async function() {
             this.messages = await this.updateMessages(this.showInbox);
-            setTimeout(this.messageRefreshLoop.bind(this), 60000);
+            setTimeout(this.messageRefreshLoop.bind(this), 120000);
+        },
+
+        //////////////////////////////////////////////////
+        // Supervisor view controls
+        // Select users to filter data for
+        selectUsers: async function(users) {
+            store.commit('setSelectedUsers', users);
+        },
+        // Turn sup mode on or off
+        changeSupMode: function(newMode) {
+            store.commit('setSupMode', newMode);
+        },
+        changeLayout: function(name) {
+            store.commit('setChosenLayoutName', name);
+            this.refresh();
+        },
+        // When user selector loads the users list, save it to hub for later
+        // parsing.
+        updateUserList: function(users) {
+            store.commit('setUserList', users);
+        },
+
+        //////////////////////////////////////////////////
+        // Handle menus and theme
+        updateThemeStyles: function(theme) {
+            document.getElementById('theme_css').href =
+                                    `styles/theme-${theme.color}.css`;
+        },
+
+        mouseleaveThemeSubMenu: function(event) {
+            if (!event.relatedTarget) return;
+            let classList = Array.from(event.relatedTarget.classList);
+            if (event.relatedTarget == this.$refs.themeSubMenu
+                || classList.includes('submenu-button')
+                || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
+                event.stopPropagation();
+                return;
+            }
+            else {
+                this.showMenuThemes = false;
+            }
+        },
+        mouseleaveMenu: function(event) {
+            if (!event.relatedTarget) return;
+            if (event.relatedTarget === this.$refs.menuButton
+                || isDescendant(this.$refs.menu, event.relatedTarget)) {
+                event.stopPropagation();
+                return;
+            }
+            else {
+                this.showMenu = false;
+            }
         },
 
         ///////////////////////////

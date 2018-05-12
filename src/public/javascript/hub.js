@@ -45,6 +45,7 @@ export const store = new Vuex.Store({
         userList: [], // list of all users for supervisor views
         layouts: [], // list of available layouts
         layout: {}, // currently selected layout
+        chosenLayoutName: ''
     },
 
     // Helper functions to retrieve data
@@ -105,6 +106,14 @@ export const store = new Vuex.Store({
         nameFromUsername: (state) => (username) => {
             let user = state.userList.find((u) => u.username == username);
             return `${user.firstName} ${user.lastName}`;
+        },
+        // Determine what layout should be displayed
+        getCurrentLayout: (state) => {
+            if (state.chosenLayoutName == 'Over-View') {
+                return state.layouts.find(l => l.name == 'Over-View');
+            } else {
+                return state.layouts[0];
+            }
         }
     },
 
@@ -162,6 +171,9 @@ export const store = new Vuex.Store({
         setLayout(state, layout) {
             state.layout = layout;
         },
+        setChosenLayoutName(state, name) {
+            state.chosenLayoutName = name;
+        },
         changeDatasourceLastUpdated(state, { datasourceId, lastUpdated }) {
             let ds = clone(state.datasources[datasourceId]);
             ds.lastUpdated = lastUpdated;
@@ -194,6 +206,7 @@ export const store = new Vuex.Store({
             // Load configuration and set layout
             await context.dispatch('loadAssets');
             context.dispatch('updateLayout', context.state.layouts[0]);
+            context.commit('setChosenLayoutName', context.state.layouts[0].name);
             // Start updating based on data sources
             context.dispatch('nextUpdate');
         },
@@ -214,11 +227,9 @@ export const store = new Vuex.Store({
         // Refresh data and layout. Used after changing agent selection in sup
         // views.
         async forceRefresh(context, layout=null) {
-            let newLayout = layout || context.state.layouts[0];
-            clearTimeout(context.state.timeoutId);
-            // load assets and new layout 
+            // load assets and new layout
             await context.dispatch('loadAssets');
-            context.dispatch('updateLayout', newLayout);
+            context.dispatch('updateLayout', context.getters.getCurrentLayout);
             // Refresh data
             context.dispatch('nextUpdate');
         },
@@ -281,9 +292,11 @@ export const store = new Vuex.Store({
             }
 
             // and schedule the next update
+            clearTimeout(context.state.timeoutId);
             let timeout = setTimeout(function next() {
                 context.dispatch('nextUpdate', refreshRateMs);
             }, refreshRateMs);
+            context.commit('setTimeoutId', timeout);
         },
 
         // Save a new theme to server

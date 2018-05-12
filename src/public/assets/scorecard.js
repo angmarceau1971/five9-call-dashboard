@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 76);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -557,7 +557,7 @@ function applyToTag (styleElement, obj) {
 /* harmony export (immutable) */ __webpack_exports__["E"] = reloadData;
 /* harmony export (immutable) */ __webpack_exports__["P"] = uploadData;
 /* unused harmony export getParameters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utility_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__local_settings_js__ = __webpack_require__(8);
 
  ////////////////////////////////////////////////////////////////
@@ -1111,42 +1111,6 @@ function getParameters(requestType) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _clone = /*#__PURE__*/__webpack_require__(13);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-/**
- * Creates a deep copy of the value which may contain (nested) `Array`s and
- * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
- * assigned by reference rather than copied
- *
- * Dispatches to a `clone` method if present.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {*} -> {*}
- * @param {*} value The object or array to clone
- * @return {*} A deeply cloned copy of `val`
- * @example
- *
- *      var objects = [{}, {}, {}];
- *      var objectsClone = R.clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
- */
-
-
-var clone = /*#__PURE__*/_curry1(function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-});
-module.exports = clone;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1173,7 +1137,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1205,6 +1169,42 @@ function formatAMPM(date) {
   let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
   return strTime;
 }
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _clone = /*#__PURE__*/__webpack_require__(14);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+
+var clone = /*#__PURE__*/_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+module.exports = clone;
 
 /***/ }),
 /* 8 */
@@ -1292,7 +1292,7 @@ module.exports = _isPlaceholder;
 //
 //
 //
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(7);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['updater', 'loader', 'adder', 'remover', 'headers'],
@@ -1427,7 +1427,45 @@ module.exports = function listToStyles (parentId, list) {
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _cloneRegExp = /*#__PURE__*/__webpack_require__(14);
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+module.exports = _curry2;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _cloneRegExp = /*#__PURE__*/__webpack_require__(15);
 
 var type = /*#__PURE__*/__webpack_require__(11);
 
@@ -1476,7 +1514,7 @@ function _clone(value, refFrom, refTo, deep) {
 module.exports = _clone;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 function _cloneRegExp(pattern) {
@@ -1485,45 +1523,223 @@ function _cloneRegExp(pattern) {
 module.exports = _cloneRegExp;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
-
-/**
- * Optimized internal two-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curry2(fn) {
-  return function f2(a, b) {
-    switch (arguments.length) {
-      case 0:
-        return f2;
-      case 1:
-        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-          return fn(a, _b);
-        });
-      default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-          return fn(_a, b);
-        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-          return fn(a, _b);
-        }) : fn(a, b);
-    }
-  };
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(10);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(19);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(17)
 }
-module.exports = _curry2;
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-44c58087"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\editor-table.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-44c58087", Component.options)
+  } else {
+    hotAPI.reload("data-v-44c58087", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
 
 /***/ }),
-/* 16 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(18);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("571a7959", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\n}\n.table-body-wrapper[data-v-44c58087] {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\n}\n.editor-list thead[data-v-44c58087] {\r\n    position: fixed;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue"],"names":[],"mappings":";AAmIA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,yBAAA;IACA,YAAA;CACA;AACA;IACA,kBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,uBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"(header, i) in completeHeaders\"\r\n                        ref=\"headerRow\">\r\n                        {{ header }}\r\n                    </th>\r\n\r\n                </tr>\r\n            </thead>\r\n            <div class=\"table-body-wrapper\">\r\n                <tr class=\"row\" v-for=\"(item, i) in items\" ref=\"bodyRows\">\r\n                    <slot name=\"item\" :item=\"item\">\r\n                        <p>\r\n                            This is just a dang filler! Use\r\n                            <a target=\"_blank\"\r\n                            href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                              slot-scope</a>\r\n                            to render `td` elements in parent.\r\n                        </p>\r\n                    </slot>\r\n\r\n                    <td>\r\n                        <button class=\"save-button\" title=\"Save changes\"\r\n                            @click=\"update(item)\"\r\n                        >Save</button>\r\n                    </td>\r\n                    <td v-if=\"!!remover\">\r\n                        <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                            @click=\"remove(item)\"\r\n                        >Delete</button>\r\n                    </td>\r\n                </tr>\r\n            </div>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        completeHeaders: function() {\r\n            let newHeaders = this.headers.concat(['Save']);\r\n            if (!!this.remover) return newHeaders.concat(['Delete']);\r\n            else return newHeaders;\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    /**\r\n     * Any time an update occurs, the headers' width needs to be matched to the\r\n     * body's width (because the header is contained in its own fixed div).\r\n     */\r\n    updated() {\r\n        if (this.items.length == 0) return;\r\n        let headerRow = this.$refs.headerRow;\r\n        let bodyRow = this.$refs.bodyRows[0].children;\r\n        let i = 0;\r\n        for (let cell of bodyRow) {\r\n            let cellStyles = getComputedStyle(cell);\r\n            headerRow[i].style.width = cellStyles.width;\r\n            i++;\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\r\n}\r\n.table-body-wrapper {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\r\n}\r\n.editor-list thead {\r\n    position: fixed;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "editor-wrapper" }, [
+    _c("table", { staticClass: "editor-list" }, [
+      _c("thead", [
+        _c(
+          "tr",
+          _vm._l(_vm.completeHeaders, function(header, i) {
+            return _c("th", { ref: "headerRow", refInFor: true }, [
+              _vm._v(
+                "\n                    " + _vm._s(header) + "\n                "
+              )
+            ])
+          })
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "table-body-wrapper" },
+        _vm._l(_vm.items, function(item, i) {
+          return _c(
+            "tr",
+            { ref: "bodyRows", refInFor: true, staticClass: "row" },
+            [
+              _vm._t("item", [_vm._m(0, true)], { item: item }),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "save-button",
+                    attrs: { title: "Save changes" },
+                    on: {
+                      click: function($event) {
+                        _vm.update(item)
+                      }
+                    }
+                  },
+                  [_vm._v("Save")]
+                )
+              ]),
+              _vm._v(" "),
+              !!_vm.remover
+                ? _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "delete-button",
+                        attrs: { title: "Permanently delete row" },
+                        on: {
+                          click: function($event) {
+                            _vm.remove(item)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ])
+                : _vm._e()
+            ],
+            2
+          )
+        })
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "add-button",
+        attrs: { title: "Add a new row" },
+        on: { click: _vm.addRow }
+      },
+      [_vm._v("+")]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _vm._v(
+        "\n                        This is just a dang filler! Use\n                        "
+      ),
+      _c(
+        "a",
+        {
+          attrs: {
+            target: "_blank",
+            href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
+          }
+        },
+        [_vm._v("\n                          slot-scope")]
+      ),
+      _vm._v(
+        "\n                        to render `td` elements in parent.\n                    "
+      )
+    ])
+  }
+]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-44c58087", esExports)
+  }
+}
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -12325,606 +12541,10 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(22).setImmediate))
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__ = __webpack_require__(10);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__ = __webpack_require__(20);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(18)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-44c58087"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_44c58087_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\editor-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-44c58087", Component.options)
-  } else {
-    hotAPI.reload("data-v-44c58087", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(19);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("571a7959", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-44c58087\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.editor-wrapper[data-v-44c58087] {\r\n    width: 100%;\r\n    overflow-x: scroll;\n}\n.editor-list[data-v-44c58087] {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\n}\n.table-body-wrapper[data-v-44c58087] {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\n}\n.editor-list thead[data-v-44c58087] {\r\n    position: fixed;\n}\n.editor-list .row[data-v-44c58087] {\r\n    height: 3em;\n}\nth[data-v-44c58087], td[data-v-44c58087] {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\n}\nth[data-v-44c58087] {\r\n    text-align: left;\n}\ntd[data-v-44c58087] {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\n}\ntd input[type=\"text\"][data-v-44c58087] {\r\n    width: 8em;\n}\ntd input[type=\"number\"][data-v-44c58087] {\r\n    width: 4em;\n}\n.editor-wrapper button[data-v-44c58087] {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\n}\n.editor-wrapper button[data-v-44c58087]:hover {\r\n    background-color: white;\n}\n.editor-wrapper .add-button[data-v-44c58087] {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor-table.vue"],"names":[],"mappings":";AAmIA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,yBAAA;IACA,YAAA;CACA;AACA;IACA,kBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,uBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,2CAAA;IACA,oBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,uBAAA;IACA,uBAAA;IACA,mBAAA;IACA,gBAAA;CACA;AACA;IACA,wBAAA;CACA;AACA;IACA,eAAA;IACA,qBAAA;IACA,0BAAA;CACA","file":"editor-table.vue","sourcesContent":["/**\r\n * Creates a table used to modify data through API functions.\r\n *\r\n * The parent template is responsible for rendering table fields. See:\r\n *  https://vuejs.org/v2/guide/components.html#Scoped-Slots\r\n * for documentation, or ../scorecard-admin.html for example usage.\r\n *\r\n * Save buttons are included with each item's row. A Delete button is included\r\n * if a \"remover\" prop function is passed in.\r\n *\r\n *  Component properties:\r\n * @prop {Function} updater(item: new object) - API function to update an item on server\r\n * @prop {Function} loader() - API function to load items from server\r\n * @prop {Function} adder(item: new object) - API function to add new item to server\r\n * @prop {Function} remover(item: old object) - optional API function to delete item\r\n * @prop {Array} headers - array of string header names.\r\n */\r\n\r\n<template>\r\n    <div class=\"editor-wrapper\">\r\n        <table class=\"editor-list\">\r\n            <thead>\r\n                <tr>\r\n                    <th v-for=\"(header, i) in completeHeaders\"\r\n                        ref=\"headerRow\">\r\n                        {{ header }}\r\n                    </th>\r\n\r\n                </tr>\r\n            </thead>\r\n            <div class=\"table-body-wrapper\">\r\n                <tr class=\"row\" v-for=\"(item, i) in items\" ref=\"bodyRows\">\r\n                    <slot name=\"item\" :item=\"item\">\r\n                        <p>\r\n                            This is just a dang filler! Use\r\n                            <a target=\"_blank\"\r\n                            href=\"https://vuejs.org/v2/guide/components.html#Scoped-Slots\">\r\n                              slot-scope</a>\r\n                            to render `td` elements in parent.\r\n                        </p>\r\n                    </slot>\r\n\r\n                    <td>\r\n                        <button class=\"save-button\" title=\"Save changes\"\r\n                            @click=\"update(item)\"\r\n                        >Save</button>\r\n                    </td>\r\n                    <td v-if=\"!!remover\">\r\n                        <button class=\"delete-button\" title=\"Permanently delete row\"\r\n                            @click=\"remove(item)\"\r\n                        >Delete</button>\r\n                    </td>\r\n                </tr>\r\n            </div>\r\n        </table>\r\n\r\n        <button class=\"add-button\" title=\"Add a new row\"\r\n            @click=\"addRow\"\r\n        >+</button>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['updater', 'loader', 'adder', 'remover', 'headers'],\r\n\r\n    data: function() {\r\n        return {\r\n            items: []\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        completeHeaders: function() {\r\n            let newHeaders = this.headers.concat(['Save']);\r\n            if (!!this.remover) return newHeaders.concat(['Delete']);\r\n            else return newHeaders;\r\n        }\r\n    },\r\n\r\n    components: {},\r\n\r\n    beforeMount: function() {\r\n        this.load();\r\n    },\r\n\r\n    /**\r\n     * Any time an update occurs, the headers' width needs to be matched to the\r\n     * body's width (because the header is contained in its own fixed div).\r\n     */\r\n    updated() {\r\n        if (this.items.length == 0) return;\r\n        let headerRow = this.$refs.headerRow;\r\n        let bodyRow = this.$refs.bodyRows[0].children;\r\n        let i = 0;\r\n        for (let cell of bodyRow) {\r\n            let cellStyles = getComputedStyle(cell);\r\n            headerRow[i].style.width = cellStyles.width;\r\n            i++;\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        update: async function(item) {\r\n            this.$emit('message', `Updating ${item.name}...`);\r\n            const message = await this.updater(item);\r\n            this.$emit('message', message);\r\n        },\r\n        load: async function() {\r\n            this.items = clone(await this.loader());\r\n        },\r\n        addRow: function() {\r\n            let newItem = this.adder();\r\n            this.items.push(newItem);\r\n        },\r\n        remove: async function(item) {\r\n            this.$emit('message', `Deleting ${item.name}...`);\r\n            const message = await this.remover(item);\r\n            this.$emit('message', message);\r\n            // Remove item from array\r\n            this.items = this.items.filter((el) => el !== item);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.editor-wrapper {\r\n    width: 100%;\r\n    overflow-x: scroll;\r\n}\r\n.editor-list {\r\n    display: table;\r\n    transform: translateX(0);\r\n    width: 100%;\r\n}\r\n.table-body-wrapper {\r\n    max-height: 450px;\r\n    overflow-y: scroll;\r\n    margin-top: 4em;\r\n}\r\n.editor-list thead {\r\n    position: fixed;\r\n}\r\n.editor-list .row {\r\n    height: 3em;\r\n}\r\nth, td {\r\n    padding: 0 0.5em;\r\n    min-width: 120px;\r\n    vertical-align: middle;\r\n}\r\nth {\r\n    text-align: left;\r\n}\r\ntd {\r\n    border-bottom: 1px solid hsl(225, 2%, 64%);\r\n    align-items: center;\r\n    height: 3em;\r\n}\r\ntd input[type=\"text\"] {\r\n    width: 8em;\r\n}\r\ntd input[type=\"number\"] {\r\n    width: 4em;\r\n}\r\n.editor-wrapper button {\r\n    box-sizing: border-box;\r\n    border: 4px solid #444;\r\n    border-radius: 6px;\r\n    min-width: 80px;\r\n}\r\n.editor-wrapper button:hover {\r\n    background-color: white;\r\n}\r\n.editor-wrapper .add-button {\r\n    font-size: 2em;\r\n    font-weight: lighter;\r\n    color: hsl(208, 72%, 72%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "editor-wrapper" }, [
-    _c("table", { staticClass: "editor-list" }, [
-      _c("thead", [
-        _c(
-          "tr",
-          _vm._l(_vm.completeHeaders, function(header, i) {
-            return _c("th", { ref: "headerRow", refInFor: true }, [
-              _vm._v(
-                "\n                    " + _vm._s(header) + "\n                "
-              )
-            ])
-          })
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "table-body-wrapper" },
-        _vm._l(_vm.items, function(item, i) {
-          return _c(
-            "tr",
-            { ref: "bodyRows", refInFor: true, staticClass: "row" },
-            [
-              _vm._t("item", [_vm._m(0, true)], { item: item }),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "save-button",
-                    attrs: { title: "Save changes" },
-                    on: {
-                      click: function($event) {
-                        _vm.update(item)
-                      }
-                    }
-                  },
-                  [_vm._v("Save")]
-                )
-              ]),
-              _vm._v(" "),
-              !!_vm.remover
-                ? _c("td", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "delete-button",
-                        attrs: { title: "Permanently delete row" },
-                        on: {
-                          click: function($event) {
-                            _vm.remove(item)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ])
-                : _vm._e()
-            ],
-            2
-          )
-        })
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "add-button",
-        attrs: { title: "Add a new row" },
-        on: { click: _vm.addRow }
-      },
-      [_vm._v("+")]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "\n                        This is just a dang filler! Use\n                        "
-      ),
-      _c(
-        "a",
-        {
-          attrs: {
-            target: "_blank",
-            href: "https://vuejs.org/v2/guide/components.html#Scoped-Slots"
-          }
-        },
-        [_vm._v("\n                          slot-scope")]
-      ),
-      _vm._v(
-        "\n                        to render `td` elements in parent.\n                    "
-      )
-    ])
-  }
-]
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-44c58087", esExports)
-  }
-}
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(21).setImmediate))
 
 /***/ }),
 /* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export loadData */
-/* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(30);
-/**
- * - THE HUB in the MIDDLE of IT ALL -
- *
- * This module controls interaction with the server.
- *
- * Data is made accessible through the `store` Vuex object, which all Vue
- * components can access.
- */
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
-
-
-
-const clone = __webpack_require__(5);
-
-const intersection = __webpack_require__(27);
-
-const isEmpty = __webpack_require__(36);
-
-const uniq = __webpack_require__(28);
-
-const sift = __webpack_require__(58);
-/**
- * This Vuex store is the ultimate source of truth. It handles all access to
- * data and interactions with the server.
- *
- * Also included here are global-impacting settings like Edit Mode and user
- * data.
- *
- * @type {Vuex}
- */
-
-
-const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-  state: {
-    data: {},
-    datasources: {},
-    editMode: false,
-    fields: [],
-    goals: [],
-    links: [],
-    skillGroups: [],
-    supMode: 'individual',
-    // team or individual: default to indie (agents)
-    timeoutId: null,
-    currentUser: '',
-    // username. TODO: is this used?
-    selectedUsers: [],
-    user: {},
-    userList: [],
-    // list of all users for supervisor views
-    layouts: [],
-    // list of available layouts
-    layout: {} // currently selected layout
-
-  },
-  // Helper functions to retrieve data
-  getters: {
-    /**
-     * Return field object matching the field name.
-     * @param  {String} fieldName name in `source.name` or just `name` format
-     * @return {Object}  field object
-     */
-    field: state => fieldName => {
-      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
-    },
-    layout: state => layoutName => {
-      return state.layouts.find(l => l.name == layoutName);
-    },
-    rawFieldName: state => fullFieldName => {
-      let [source, field] = fullFieldName.split('.');
-      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
-      return field;
-    },
-    getData: state => (filter, datasource) => {
-      if (!state.data[datasource]) {
-        console.log(`getData: datasource ${datasource} doesn't exist.`);
-        return [];
-      }
-
-      if (!filter) {
-        console.log(`getData: filter not defined.`);
-        return [];
-      }
-
-      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
-      let data = sift(filt, state.data[datasource]);
-      return data.map(datum => {
-        delete datum._id;
-        return datum;
-      });
-    },
-    goalForField: state => field => {
-      return state.goals.filter(goal => goal.field == field.name)[0];
-    },
-    getDatasource: state => datasourceName => {
-      let ds = Object.entries(state.datasources).find(([id, ds]) => {
-        return ds.name == datasourceName;
-      })[1];
-      return ds;
-    },
-    // Returns current user for agent, or selected users in supervisor team
-    // mode
-    currentUsers: state => {
-      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
-    },
-    currentSkills: (state, getters) => {
-      return usersToSkills(state.skillGroups, getters.currentUsers);
-    },
-    nameFromUsername: state => username => {
-      let user = state.userList.find(u => u.username == username);
-      return `${user.firstName} ${user.lastName}`;
-    }
-  },
-  // Functions to modify the store's state (all synchronous)
-  mutations: {
-    toggleEditMode(state) {
-      state.editMode = !state.editMode;
-    },
-
-    updateData(state, {
-      newData,
-      frontendDatasourceName
-    }) {
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, frontendDatasourceName, newData);
-    },
-
-    /**
-     * Set a group of selected users for supervisor mode
-     * @param {Object} state
-     * @param {Array} usersList array of objects with fields username, firstName, lastName
-     */
-    setSelectedUsers(state, usersList) {
-      state.selectedUsers = usersList;
-    },
-
-    /**
-     * Set the current username and user information
-     * @param  {Object} state
-     * @param  {String} user new user object
-     */
-    setUser(state, user) {
-      state.currentUser = user.username;
-      state.user = clone(user);
-    },
-
-    setUserList(state, users) {
-      state.userList = users;
-    },
-
-    setTimeoutId(state, id) {
-      state.timeoutId = id;
-    },
-
-    setSupMode(state, newMode) {
-      state.supMode = newMode;
-    },
-
-    setFields(state, fields) {
-      state.fields = fields;
-    },
-
-    setSkillGroups(state, skillGroups) {
-      state.skillGroups = skillGroups;
-    },
-
-    setGoals(state, goals) {
-      state.goals = goals;
-    },
-
-    setLinks(state, links) {
-      state.links = links.sort((a, b) => a.name > b.name);
-    },
-
-    // Update list of available layouts
-    setLayouts(state, layouts) {
-      state.layouts = layouts;
-    },
-
-    // Update currently chosen layout
-    setLayout(state, layout) {
-      state.layout = layout;
-    },
-
-    changeDatasourceLastUpdated(state, {
-      datasourceId,
-      lastUpdated
-    }) {
-      let ds = clone(state.datasources[datasourceId]);
-      ds.lastUpdated = lastUpdated;
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, datasourceId, ds);
-    },
-
-    /**
-     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
-     * datasource objects stored in database.
-     * @param {Object} state
-     * @param {Array}  datasources array of datasource objects from server
-     */
-    setDatasources(state, datasources) {
-      state.datasources = clone(datasources).reduce((newObj, source) => {
-        newObj[source.id] = source;
-        return newObj;
-      }, {});
-    }
-
-  },
-  // Asynchronous actions
-  actions: {
-    // Call when page first loads
-    async updateUser(context, username) {
-      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["z" /* getUserInformation */](username);
-      context.commit('setUser', user);
-      context.dispatch('updateGoals');
-    },
-
-    // Load the dashboard up. Assumes `updateUser` has already completed.
-    async startProcess(context) {
-      // Load configuration and set layout
-      await context.dispatch('loadAssets');
-      context.dispatch('updateLayout', context.state.layouts[0]); // Start updating based on data sources
-
-      context.dispatch('nextUpdate');
-    },
-
-    async loadAssets(context) {
-      // load layout
-      let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
-      context.commit('setLayouts', layouts); // load fields and helpful links from server
-
-      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
-      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
-      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
-
-      context.dispatch('updateGoals');
-    },
-
-    // Refresh data and layout. Used after changing agent selection in sup
-    // views.
-    async forceRefresh(context, layout = null) {
-      let newLayout = layout || context.state.layouts[0];
-      clearTimeout(context.state.timeoutId); // load assets and new layout 
-
-      await context.dispatch('loadAssets');
-      context.dispatch('updateLayout', newLayout); // Refresh data
-
-      context.dispatch('nextUpdate');
-    },
-
-    async updateGoals(context) {
-      let groups = extractValues(context.getters.currentUsers, 'agentGroups');
-      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
-      context.commit('setGoals', goals);
-    },
-
-    updateLayout(context, layout) {
-      // Then update to the passed-in layout
-      context.commit('setLayout', layout);
-      context.commit('setDatasources', layout.datasources);
-    },
-
-    // Refresh data based on current datasources every 290 seconds.
-    // This will trigger all the widgets to refreshing, hitting the getData
-    // method of the "hub".
-    async nextUpdate(context, refreshRateMs = 290000) {
-      console.log(`Refresh at ${moment()}`);
-
-      if (!context.state.currentUser) {
-        console.log('No current user assigned. Skipping update.');
-        return;
-      } // Array of result objects with keys `data`, `meta`, and
-      // `datasourceName`
-
-
-      let newData = []; // Create list of parameters and datasource information for requests
-      // to server
-
-      let parametersList = Object.entries(context.state.datasources).map(([id, datasource]) => {
-        return Object.assign({
-          frontendSourceName: datasource.name
-        }, clone(datasource), getParams(datasource));
-      }); // Load data from server
-
-      try {
-        let response = await loadData(parametersList); // update the datas real quick
-
-        for (let dataset of response) {
-          context.commit('updateData', {
-            newData: dataset.data,
-            frontendDatasourceName: dataset.source.frontendSourceName
-          });
-
-          if (!isEmpty(dataset.meta)) {
-            context.commit('changeDatasourceLastUpdated', {
-              datasourceId: dataset.source.id,
-              lastUpdated: dataset.meta.lastUpdated
-            });
-          }
-        }
-      } catch (err) {
-        console.log(`Error while loading data: ${err}`);
-      } // and schedule the next update
-
-
-      let timeout = setTimeout(function next() {
-        context.dispatch('nextUpdate', refreshRateMs);
-      }, refreshRateMs);
-    },
-
-    // Save a new theme to server
-    async updateTheme(context, newTheme) {
-      await __WEBPACK_IMPORTED_MODULE_2__api__["O" /* updateUserTheme */](context.state.currentUser, newTheme);
-      let updatedUser = clone(context.state.user);
-      updatedUser.theme = newTheme;
-      context.commit('setUser', updatedUser);
-    }
-
-  }
-});
-/* harmony export (immutable) */ __webpack_exports__["b"] = store;
-
-const getField = store.getters.field;
-/* unused harmony export getField */
-
-
-function getParams(datasource) {
-  const params = {
-    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
-    fields: datasource.fields,
-    groupBy: datasource.groupBy,
-    source: datasource.source
-  };
-  return params;
-}
-
-async function loadData(params) {
-  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["w" /* getStatistics */](params); // convert date strings to values
-
-  res = res.map(set => {
-    set.data = set.data.map(d => {
-      if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
-      if (d['date']) d['date'] = moment(d['date']).toDate();
-      return d;
-    });
-    return set;
-  });
-  return res;
-}
-
-function usersToSkills(skillGroups, users) {
-  let agentGroups = extractValues(users, 'agentGroups');
-  return extractValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
-}
-/**
- * This function takes a list of objects, each of which has a property which is
- * an array, and returns all of the unique values in the given property's arrays.
- * @param  {Array} objectArray
- * @param  {String} prop
- * @return {Array} array of unique values in each object's @param prop
- */
-
-
-function extractValues(objectArray, prop) {
-  return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
-}
-
-/***/ }),
-/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -12977,7 +12597,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(23);
+__webpack_require__(22);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -12988,10 +12608,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -13181,10 +12801,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(24)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(23)))
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -13374,21 +12994,406 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports) {
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-function _has(prop, obj) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
+"use strict";
+/* unused harmony export loadData */
+/* harmony export (immutable) */ __webpack_exports__["a"] = extractValues;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filters__ = __webpack_require__(60);
+/**
+ * - THE HUB in the MIDDLE of IT ALL -
+ *
+ * This module controls interaction with the server.
+ *
+ * Data is made accessible through the `store` Vuex object, which all Vue
+ * components can access.
+ */
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+
+
+const clone = __webpack_require__(7);
+
+const intersection = __webpack_require__(32);
+
+const isEmpty = __webpack_require__(108);
+
+const uniq = __webpack_require__(35);
+
+const sift = __webpack_require__(132);
+/**
+ * This Vuex store is the ultimate source of truth. It handles all access to
+ * data and interactions with the server.
+ *
+ * Also included here are global-impacting settings like Edit Mode and user
+ * data.
+ *
+ * @type {Vuex}
+ */
+
+
+const store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    data: {},
+    datasources: {},
+    editMode: false,
+    fields: [],
+    goals: [],
+    links: [],
+    skillGroups: [],
+    supMode: 'individual',
+    // team or individual: default to indie (agents)
+    timeoutId: null,
+    currentUser: '',
+    // username. TODO: is this used?
+    selectedUsers: [],
+    user: {},
+    userList: [],
+    // list of all users for supervisor views
+    layouts: [],
+    // list of available layouts
+    layout: {},
+    // currently selected layout
+    chosenLayoutName: ''
+  },
+  // Helper functions to retrieve data
+  getters: {
+    /**
+     * Return field object matching the field name.
+     * @param  {String} fieldName name in `source.name` or just `name` format
+     * @return {Object}  field object
+     */
+    field: state => fieldName => {
+      return state.fields.find(f => f.fullName == fieldName) || state.fields.find(f => f.name == fieldName);
+    },
+    layout: state => layoutName => {
+      return state.layouts.find(l => l.name == layoutName);
+    },
+    rawFieldName: state => fullFieldName => {
+      let [source, field] = fullFieldName.split('.');
+      if (!field) throw new Error(`Hub.rawFieldName: "${fullFieldName}" is not a valid full field name!`);
+      return field;
+    },
+    getData: state => (filter, datasource) => {
+      if (!state.data[datasource]) {
+        console.log(`getData: datasource ${datasource} doesn't exist.`);
+        return [];
+      }
+
+      if (!filter) {
+        console.log(`getData: filter not defined.`);
+        return [];
+      }
+
+      const filt = __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](filter, state.currentUser);
+      let data = sift(filt, state.data[datasource]);
+      return data.map(datum => {
+        delete datum._id;
+        return datum;
+      });
+    },
+    goalForField: state => field => {
+      return state.goals.filter(goal => goal.field == field.name)[0];
+    },
+    getDatasource: state => datasourceName => {
+      let ds = Object.entries(state.datasources).find(([id, ds]) => {
+        return ds.name == datasourceName;
+      })[1];
+      return ds;
+    },
+    // Returns current user for agent, or selected users in supervisor team
+    // mode
+    currentUsers: state => {
+      if (state.selectedUsers.length > 0) return state.selectedUsers;else return [state.user];
+    },
+    currentSkills: (state, getters) => {
+      return usersToSkills(state.skillGroups, getters.currentUsers);
+    },
+    nameFromUsername: state => username => {
+      let user = state.userList.find(u => u.username == username);
+      return `${user.firstName} ${user.lastName}`;
+    },
+    // Determine what layout should be displayed
+    getCurrentLayout: state => {
+      if (state.chosenLayoutName == 'Over-View') {
+        return state.layouts.find(l => l.name == 'Over-View');
+      } else {
+        return state.layouts[0];
+      }
+    }
+  },
+  // Functions to modify the store's state (all synchronous)
+  mutations: {
+    toggleEditMode(state) {
+      state.editMode = !state.editMode;
+    },
+
+    updateData(state, {
+      newData,
+      frontendDatasourceName
+    }) {
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.data, frontendDatasourceName, newData);
+    },
+
+    /**
+     * Set a group of selected users for supervisor mode
+     * @param {Object} state
+     * @param {Array} usersList array of objects with fields username, firstName, lastName
+     */
+    setSelectedUsers(state, usersList) {
+      state.selectedUsers = usersList;
+    },
+
+    /**
+     * Set the current username and user information
+     * @param  {Object} state
+     * @param  {String} user new user object
+     */
+    setUser(state, user) {
+      state.currentUser = user.username;
+      state.user = clone(user);
+    },
+
+    setUserList(state, users) {
+      state.userList = users;
+    },
+
+    setTimeoutId(state, id) {
+      state.timeoutId = id;
+    },
+
+    setSupMode(state, newMode) {
+      state.supMode = newMode;
+    },
+
+    setFields(state, fields) {
+      state.fields = fields;
+    },
+
+    setSkillGroups(state, skillGroups) {
+      state.skillGroups = skillGroups;
+    },
+
+    setGoals(state, goals) {
+      state.goals = goals;
+    },
+
+    setLinks(state, links) {
+      state.links = links.sort((a, b) => a.name > b.name);
+    },
+
+    // Update list of available layouts
+    setLayouts(state, layouts) {
+      state.layouts = layouts;
+    },
+
+    // Update currently chosen layout
+    setLayout(state, layout) {
+      state.layout = layout;
+    },
+
+    setChosenLayoutName(state, name) {
+      state.chosenLayoutName = name;
+    },
+
+    changeDatasourceLastUpdated(state, {
+      datasourceId,
+      lastUpdated
+    }) {
+      let ds = clone(state.datasources[datasourceId]);
+      ds.lastUpdated = lastUpdated;
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(state.datasources, datasourceId, ds);
+    },
+
+    /**
+     * Store datasources. Saved in { id: {Object} } form, in contrast to array of
+     * datasource objects stored in database.
+     * @param {Object} state
+     * @param {Array}  datasources array of datasource objects from server
+     */
+    setDatasources(state, datasources) {
+      state.datasources = clone(datasources).reduce((newObj, source) => {
+        newObj[source.id] = source;
+        return newObj;
+      }, {});
+    }
+
+  },
+  // Asynchronous actions
+  actions: {
+    // Call when page first loads
+    async updateUser(context, username) {
+      let user = await __WEBPACK_IMPORTED_MODULE_2__api__["z" /* getUserInformation */](username);
+      context.commit('setUser', user);
+      context.dispatch('updateGoals');
+    },
+
+    // Load the dashboard up. Assumes `updateUser` has already completed.
+    async startProcess(context) {
+      // Load configuration and set layout
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', context.state.layouts[0]);
+      context.commit('setChosenLayoutName', context.state.layouts[0].name); // Start updating based on data sources
+
+      context.dispatch('nextUpdate');
+    },
+
+    async loadAssets(context) {
+      // load layout
+      let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let layouts = await __WEBPACK_IMPORTED_MODULE_2__api__["n" /* getLayouts */](agentGroups, context.state.supMode);
+      context.commit('setLayouts', layouts); // load fields and helpful links from server
+
+      context.commit('setFields', (await __WEBPACK_IMPORTED_MODULE_2__api__["j" /* getFieldList */]()));
+      context.commit('setSkillGroups', (await __WEBPACK_IMPORTED_MODULE_2__api__["u" /* getSkillGroups */]()));
+      context.commit('setLinks', (await __WEBPACK_IMPORTED_MODULE_2__api__["o" /* getLinkList */]())); // load in goals
+
+      context.dispatch('updateGoals');
+    },
+
+    // Refresh data and layout. Used after changing agent selection in sup
+    // views.
+    async forceRefresh(context, layout = null) {
+      // load assets and new layout
+      await context.dispatch('loadAssets');
+      context.dispatch('updateLayout', context.getters.getCurrentLayout); // Refresh data
+
+      context.dispatch('nextUpdate');
+    },
+
+    async updateGoals(context) {
+      let groups = extractValues(context.getters.currentUsers, 'agentGroups');
+      let goals = await __WEBPACK_IMPORTED_MODULE_2__api__["l" /* getGoalsForAgentGroups */](groups);
+      context.commit('setGoals', goals);
+    },
+
+    updateLayout(context, layout) {
+      // Then update to the passed-in layout
+      context.commit('setLayout', layout);
+      context.commit('setDatasources', layout.datasources);
+    },
+
+    // Refresh data based on current datasources every 290 seconds.
+    // This will trigger all the widgets to refreshing, hitting the getData
+    // method of the "hub".
+    async nextUpdate(context, refreshRateMs = 290000) {
+      console.log(`Refresh at ${moment()}`);
+
+      if (!context.state.currentUser) {
+        console.log('No current user assigned. Skipping update.');
+        return;
+      } // Array of result objects with keys `data`, `meta`, and
+      // `datasourceName`
+
+
+      let newData = []; // Create list of parameters and datasource information for requests
+      // to server
+
+      let parametersList = Object.entries(context.state.datasources).map(([id, datasource]) => {
+        return Object.assign({
+          frontendSourceName: datasource.name
+        }, clone(datasource), getParams(datasource));
+      }); // Load data from server
+
+      try {
+        let response = await loadData(parametersList); // update the datas real quick
+
+        for (let dataset of response) {
+          context.commit('updateData', {
+            newData: dataset.data,
+            frontendDatasourceName: dataset.source.frontendSourceName
+          });
+
+          if (!isEmpty(dataset.meta)) {
+            context.commit('changeDatasourceLastUpdated', {
+              datasourceId: dataset.source.id,
+              lastUpdated: dataset.meta.lastUpdated
+            });
+          }
+        }
+      } catch (err) {
+        console.log(`Error while loading data: ${err}`);
+      } // and schedule the next update
+
+
+      clearTimeout(context.state.timeoutId);
+      let timeout = setTimeout(function next() {
+        context.dispatch('nextUpdate', refreshRateMs);
+      }, refreshRateMs);
+      context.commit('setTimeoutId', timeout);
+    },
+
+    // Save a new theme to server
+    async updateTheme(context, newTheme) {
+      await __WEBPACK_IMPORTED_MODULE_2__api__["O" /* updateUserTheme */](context.state.currentUser, newTheme);
+      let updatedUser = clone(context.state.user);
+      updatedUser.theme = newTheme;
+      context.commit('setUser', updatedUser);
+    }
+
+  }
+});
+/* harmony export (immutable) */ __webpack_exports__["b"] = store;
+
+const getField = store.getters.field;
+/* unused harmony export getField */
+
+
+function getParams(datasource) {
+  const params = {
+    filter: __WEBPACK_IMPORTED_MODULE_3__filters__["a" /* clean */](datasource.filter, store.state.currentUser),
+    fields: datasource.fields,
+    groupBy: datasource.groupBy,
+    source: datasource.source
+  };
+  return params;
 }
-module.exports = _has;
+
+async function loadData(params) {
+  let res = await __WEBPACK_IMPORTED_MODULE_2__api__["w" /* getStatistics */](params); // convert date strings to values
+
+  res = res.map(set => {
+    set.data = set.data.map(d => {
+      if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
+      if (d['date']) d['date'] = moment(d['date']).toDate();
+      return d;
+    });
+    return set;
+  });
+  return res;
+}
+
+function usersToSkills(skillGroups, users) {
+  let agentGroups = extractValues(users, 'agentGroups');
+  return extractValues(skillGroups.filter(skillGroup => intersection(skillGroup.agentGroups, agentGroups).length > 0), 'skills');
+}
+/**
+ * This function takes a list of objects, each of which has a property which is
+ * an array, and returns all of the unique values in the given property's arrays.
+ * @param  {Array} objectArray
+ * @param  {String} prop
+ * @return {Array} array of unique values in each object's @param prop
+ */
+
+
+function extractValues(objectArray, prop) {
+  return uniq(objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), []));
+}
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
 
 let comparators = {
   '>=': (value, goal) => value >= goal,
@@ -13473,87 +13478,20 @@ function isNumberType(fieldType) {
 }
 
 /***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+module.exports = _has;
+
+/***/ }),
 /* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _contains = /*#__PURE__*/__webpack_require__(31);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-var _filter = /*#__PURE__*/__webpack_require__(46);
-
-var flip = /*#__PURE__*/__webpack_require__(47);
-
-var uniq = /*#__PURE__*/__webpack_require__(28);
-
-/**
- * Combines two lists into a set (i.e. no duplicates) composed of those
- * elements common to both lists.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Relation
- * @sig [*] -> [*] -> [*]
- * @param {Array} list1 The first list.
- * @param {Array} list2 The second list.
- * @return {Array} The list of elements found in both `list1` and `list2`.
- * @see R.innerJoin
- * @example
- *
- *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
- */
-
-
-var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
-  var lookupList, filteredList;
-  if (list1.length > list2.length) {
-    lookupList = list1;
-    filteredList = list2;
-  } else {
-    lookupList = list2;
-    filteredList = list1;
-  }
-  return uniq(_filter(flip(_contains)(lookupList), filteredList));
-});
-module.exports = intersection;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var identity = /*#__PURE__*/__webpack_require__(50);
-
-var uniqBy = /*#__PURE__*/__webpack_require__(52);
-
-/**
- * Returns a new list containing only one copy of each element in the original
- * list. [`R.equals`](#equals) is used to determine equality.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category List
- * @sig [a] -> [a]
- * @param {Array} list The array to consider.
- * @return {Array} The list of unique items.
- * @example
- *
- *      R.uniq([1, 1, 2, 1]); //=> [1, 2]
- *      R.uniq([1, '1']);     //=> [1, '1']
- *      R.uniq([[42], [42]]); //=> [[42]]
- */
-
-
-var uniq = /*#__PURE__*/uniqBy(identity);
-module.exports = uniq;
-
-/***/ }),
-/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_widget_base_vue__ = __webpack_require__(58);
 /* unused harmony namespace reexport */
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
@@ -13600,310 +13538,12 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
-/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
-/* unused harmony export prettifyDateOption */
-/* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(21);
-
-
-const clone = __webpack_require__(5);
-/**
- * Returns a cleaned / formatted copy of widget filter to pass to server or
- * apply to data.
- *
- * @param  {Object} original    filter from widget; can include generic properties
- *                              like `<current user>` and `<month-to-date>`
- * @return {Object}             cleaned up filter for server
- */
-
-
-function clean(original) {
-  let filter = clone(original);
-  let users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
-
-  let dateKey;
-
-  if (filter.date) {
-    dateKey = 'date';
-  } else if (filter.dateDay) {
-    dateKey = 'dateDay';
-  }
-
-  if (dateKey) {
-    let dateFn = dateMatcher[filter[dateKey]];
-
-    try {
-      filter[dateKey] = dateFn();
-    } catch (err) {
-      console.log(`Invalid date filter ${filter[dateKey]}: ${err}`);
-    }
-  } // Insert actual username
-
-
-  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
-    filter.agentUsername.$in = props(users, 'username');
-  } // Insert actual full name
-
-
-  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
-    filter.agentName.$in = users.map(user => `${user.lastName}, ${user.firstName}`);
-  } // Update appropriate skill groups
-
-
-  if (filter.skillGroup) {
-    if (filter.skillGroup.$in && filter.skillGroup.$in[0] == '<current skill group>') {
-      filter.skill = {
-        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
-      };
-      delete filter.skillGroup;
-    }
-  }
-
-  return filter;
-}
-function dateOptions() {
-  return Object.keys(dateMatcher);
-}
-function prettifyDateOption(option) {
-  // remove brackets
-  option.replace(/[<|>]/, ''); // TODO: capitalize properly
-
-  return option;
-}
-function getDates(datePattern) {
-  return dateMatcher[datePattern]();
-}
-const dateMatcher = {
-  // Days
-  '<today>': function () {
-    return {
-      $gte: moment().startOf('day').toDate(),
-      $lt: moment().endOf('day').toDate()
-    };
-  },
-  '<yesterday>': function () {
-    return {
-      $gte: moment().add(-1, 'days').startOf('day').toDate(),
-      $lt: moment().startOf('day').toDate()
-    };
-  },
-  // Months
-  '<month-to-date>': function () {
-    return {
-      $gte: moment().startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  '<this month>': function () {
-    // alternate name for month-to-date
-    return {
-      $gte: moment().startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  '<last month>': function () {
-    return {
-      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').toDate()
-    };
-  },
-  '<last 2 months>': function () {
-    return {
-      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  '<last 3 months>': function () {
-    return {
-      $gte: moment().subtract(3, 'months').startOf('month').toDate(),
-      $lt: moment().startOf('month').add(1, 'months').toDate()
-    };
-  },
-  // Pay periods
-  '<this pay period>': function () {
-    let startDate = startOfPayPeriod(moment());
-    return {
-      $gte: startDate.toDate(),
-      $lt: startDate.clone().add(2, 'weeks').toDate()
-    };
-  },
-  '<last pay period>': function () {
-    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
-    return {
-      $gte: startDate.toDate(),
-      $lt: startDate.clone().add(2, 'weeks').toDate()
-    };
-  }
-};
-/**
- * @param  {Moment object} date to find pay period of
- * @return {Moment object}      start of pay period that contains @param date
- */
-
-function startOfPayPeriod(date) {
-  let startDate;
-  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
-
-  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
-  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
-  let daysSincePeriodStart = Math.round(hours / 24);
-
-  if (daysSincePeriodStart % 14 == 0) {
-    return sunday;
-  } else {
-    return sunday.subtract(1, 'weeks');
-  }
-}
-
-const payPeriodStart = moment('2018-03-11');
-/**
- *
- * @param  {Array of Objects} array objects to extract property from
- * @param  {String} property name of property to extract
- * @return {Array of values} array of values from given property
- */
-
-function props(array, property) {
-  return array.map(element => element[property]);
-}
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _indexOf = /*#__PURE__*/__webpack_require__(39);
-
-function _contains(a, list) {
-  return _indexOf(list, a, 0) >= 0;
-}
-module.exports = _contains;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-var _equals = /*#__PURE__*/__webpack_require__(40);
-
-/**
- * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
- * cyclical data structures.
- *
- * Dispatches symmetrically to the `equals` methods of both arguments, if
- * present.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> b -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      R.equals(1, 1); //=> true
- *      R.equals(1, '1'); //=> false
- *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
- *
- *      var a = {}; a.v = a;
- *      var b = {}; b.v = b;
- *      R.equals(a, b); //=> true
- */
-
-
-var equals = /*#__PURE__*/_curry2(function equals(a, b) {
-  return _equals(a, b, [], []);
-});
-module.exports = equals;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var toString = Object.prototype.toString;
-var _isArguments = function () {
-  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
-    return toString.call(x) === '[object Arguments]';
-  } : function _isArguments(x) {
-    return _has('callee', x);
-  };
-};
-
-module.exports = _isArguments;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-function _arity(n, fn) {
-  /* eslint-disable no-unused-vars */
-  switch (n) {
-    case 0:
-      return function () {
-        return fn.apply(this, arguments);
-      };
-    case 1:
-      return function (a0) {
-        return fn.apply(this, arguments);
-      };
-    case 2:
-      return function (a0, a1) {
-        return fn.apply(this, arguments);
-      };
-    case 3:
-      return function (a0, a1, a2) {
-        return fn.apply(this, arguments);
-      };
-    case 4:
-      return function (a0, a1, a2, a3) {
-        return fn.apply(this, arguments);
-      };
-    case 5:
-      return function (a0, a1, a2, a3, a4) {
-        return fn.apply(this, arguments);
-      };
-    case 6:
-      return function (a0, a1, a2, a3, a4, a5) {
-        return fn.apply(this, arguments);
-      };
-    case 7:
-      return function (a0, a1, a2, a3, a4, a5, a6) {
-        return fn.apply(this, arguments);
-      };
-    case 8:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-        return fn.apply(this, arguments);
-      };
-    case 9:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-        return fn.apply(this, arguments);
-      };
-    case 10:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-        return fn.apply(this, arguments);
-      };
-    default:
-      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-  }
-}
-module.exports = _arity;
-
-/***/ }),
-/* 35 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_hub__ = __webpack_require__(24);
 //
 //
 //
@@ -13944,7 +13584,7 @@ module.exports = _arity;
 
 
 
-const intersection = __webpack_require__(27);
+const intersection = __webpack_require__(32);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'users-selector',
@@ -14021,45 +13661,75 @@ const intersection = __webpack_require__(27);
 });
 
 /***/ }),
-/* 36 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
+var _indexOf = /*#__PURE__*/__webpack_require__(40);
 
-var empty = /*#__PURE__*/__webpack_require__(54);
-
-var equals = /*#__PURE__*/__webpack_require__(32);
-
-/**
- * Returns `true` if the given value is its type's empty value; `false`
- * otherwise.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Logic
- * @sig a -> Boolean
- * @param {*} x
- * @return {Boolean}
- * @see R.empty
- * @example
- *
- *      R.isEmpty([1, 2, 3]);   //=> false
- *      R.isEmpty([]);          //=> true
- *      R.isEmpty('');          //=> true
- *      R.isEmpty(null);        //=> false
- *      R.isEmpty({});          //=> true
- *      R.isEmpty({length: 0}); //=> false
- */
-
-
-var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
-  return x != null && equals(x, empty(x));
-});
-module.exports = isEmpty;
+function _contains(a, list) {
+  return _indexOf(list, a, 0) >= 0;
+}
+module.exports = _contains;
 
 /***/ }),
-/* 37 */
+/* 30 */
+/***/ (function(module, exports) {
+
+function _arity(n, fn) {
+  /* eslint-disable no-unused-vars */
+  switch (n) {
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+module.exports = _arity;
+
+/***/ }),
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14070,13 +13740,13 @@ module.exports = isEmpty;
 /* harmony export (immutable) */ __webpack_exports__["a"] = filterFields;
 /* harmony export (immutable) */ __webpack_exports__["c"] = sum;
 /* unused harmony export fieldsToServer */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
 /**
  * Handle expression parsing for calculated fields.
  */
 
 
-const clone = __webpack_require__(5);
+const clone = __webpack_require__(7);
 /**
  * Extract an overall value from a set of data, based on the provided field.
  * @param  {Array} data   array of data objects
@@ -14256,7 +13926,5579 @@ function fieldsToServer(fields) {
 }
 
 /***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(29);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+var _filter = /*#__PURE__*/__webpack_require__(47);
+
+var flip = /*#__PURE__*/__webpack_require__(48);
+
+var uniq = /*#__PURE__*/__webpack_require__(35);
+
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of those
+ * elements common to both lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The list of elements found in both `list1` and `list2`.
+ * @see R.innerJoin
+ * @example
+ *
+ *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+ */
+
+
+var intersection = /*#__PURE__*/_curry2(function intersection(list1, list2) {
+  var lookupList, filteredList;
+  if (list1.length > list2.length) {
+    lookupList = list1;
+    filteredList = list2;
+  } else {
+    lookupList = list2;
+    filteredList = list1;
+  }
+  return uniq(_filter(flip(_contains)(lookupList), filteredList));
+});
+module.exports = intersection;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+var _equals = /*#__PURE__*/__webpack_require__(41);
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
+
+
+var equals = /*#__PURE__*/_curry2(function equals(a, b) {
+  return _equals(a, b, [], []);
+});
+module.exports = equals;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var toString = Object.prototype.toString;
+var _isArguments = function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+};
+
+module.exports = _isArguments;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var identity = /*#__PURE__*/__webpack_require__(51);
+
+var uniqBy = /*#__PURE__*/__webpack_require__(53);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list. [`R.equals`](#equals) is used to determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniq([1, 1, 2, 1]); //=> [1, 2]
+ *      R.uniq([1, '1']);     //=> [1, '1']
+ *      R.uniq([[42], [42]]); //=> [[42]]
+ */
+
+
+var uniq = /*#__PURE__*/uniqBy(identity);
+module.exports = uniq;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(61);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(81);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(79)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\data-table.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-48d3d2c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(28);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(55);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(38)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-a22da046"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\users-selector.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a22da046", Component.options)
+  } else {
+    hotAPI.reload("data-v-a22da046", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
 /* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(39);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("fb81eb78", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAyIA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"selectUsers(getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n\r\n\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n\r\n\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n\r\n\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n        this.$emit('users-loaded', this.userList);\r\n    },\r\n\r\n\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            this.selectedAgentGroups = agentGroups;\r\n            this.selectUsers(this.filterUsersInGroup(this.userList));\r\n        },\r\n\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        },\r\n\r\n        selectUsers: function(users) {\r\n            this.$emit('select-users', users);\r\n            // Make sure these cats are in the selectedUsernames list\r\n            this.selectedUsernames = users.map((u) => u.username);\r\n        }\r\n\r\n    }\r\n\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var equals = /*#__PURE__*/__webpack_require__(33);
+
+function _indexOf(list, a, idx) {
+  var inf, item;
+  // Array.prototype.indexOf doesn't exist below IE9
+  if (typeof list.indexOf === 'function') {
+    switch (typeof a) {
+      case 'number':
+        if (a === 0) {
+          // manually crawl the list to distinguish between +0 and -0
+          inf = 1 / a;
+          while (idx < list.length) {
+            item = list[idx];
+            if (item === 0 && 1 / item === inf) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        } else if (a !== a) {
+          // NaN
+          while (idx < list.length) {
+            item = list[idx];
+            if (typeof item === 'number' && item !== item) {
+              return idx;
+            }
+            idx += 1;
+          }
+          return -1;
+        }
+        // non-zero numbers can utilise Set
+        return list.indexOf(a, idx);
+
+      // all these types can utilise Set
+      case 'string':
+      case 'boolean':
+      case 'function':
+      case 'undefined':
+        return list.indexOf(a, idx);
+
+      case 'object':
+        if (a === null) {
+          // null can utilise Set
+          return list.indexOf(a, idx);
+        }
+    }
+  }
+  // anything else not covered above, defer to R.equals
+  while (idx < list.length) {
+    if (equals(list[idx], a)) {
+      return idx;
+    }
+    idx += 1;
+  }
+  return -1;
+}
+module.exports = _indexOf;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arrayFromIterator = /*#__PURE__*/__webpack_require__(42);
+
+var _containsWith = /*#__PURE__*/__webpack_require__(43);
+
+var _functionName = /*#__PURE__*/__webpack_require__(44);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var identical = /*#__PURE__*/__webpack_require__(45);
+
+var keys = /*#__PURE__*/__webpack_require__(46);
+
+var type = /*#__PURE__*/__webpack_require__(11);
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
+
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  }
+
+  // if *a* array contains any element that is not included in *b*
+  return !_containsWith(function (b, aItem) {
+    return !_containsWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (identical(a, b)) {
+    return true;
+  }
+
+  var typeA = type(a);
+
+  if (typeA !== type(b)) {
+    return false;
+  }
+
+  if (a == null || b == null) {
+    return false;
+  }
+
+  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+  }
+
+  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
+  }
+
+  switch (typeA) {
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
+        return a === b;
+      }
+      break;
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+        return false;
+      }
+      break;
+    case 'Date':
+      if (!identical(a.valueOf(), b.valueOf())) {
+        return false;
+      }
+      break;
+    case 'Error':
+      return a.name === b.name && a.message === b.message;
+    case 'RegExp':
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
+        return false;
+      }
+      break;
+  }
+
+  var idx = stackA.length - 1;
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+    idx -= 1;
+  }
+
+  switch (typeA) {
+    case 'Map':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
+    case 'Int8Array':
+    case 'Uint8Array':
+    case 'Uint8ClampedArray':
+    case 'Int16Array':
+    case 'Uint16Array':
+    case 'Int32Array':
+    case 'Uint32Array':
+    case 'Float32Array':
+    case 'Float64Array':
+    case 'ArrayBuffer':
+      break;
+    default:
+      // Values of other types are only equal if identical.
+      return false;
+  }
+
+  var keysA = keys(a);
+  if (keysA.length !== keys(b).length) {
+    return false;
+  }
+
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
+
+  idx = keysA.length - 1;
+  while (idx >= 0) {
+    var key = keysA[idx];
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
+      return false;
+    }
+    idx -= 1;
+  }
+  return true;
+}
+module.exports = _equals;
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+function _arrayFromIterator(iter) {
+  var list = [];
+  var next;
+  while (!(next = iter.next()).done) {
+    list.push(next.value);
+  }
+  return list;
+}
+module.exports = _arrayFromIterator;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+function _containsWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+}
+module.exports = _containsWith;
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports) {
+
+function _functionName(f) {
+  // String(x => x) evaluates to "x => x", so the pattern may not match.
+  var match = String(f).match(/^function (\w*)/);
+  return match == null ? '' : match[1];
+}
+module.exports = _functionName;
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
+
+var identical = /*#__PURE__*/_curry2(function identical(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+});
+module.exports = identical;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _has = /*#__PURE__*/__webpack_require__(26);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(34);
+
+// cover IE < 9 keys issues
+
+
+var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// Safari bug
+var hasArgsEnumBug = /*#__PURE__*/function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+    idx += 1;
+  }
+  return false;
+};
+
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+} : function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+  var prop, nIdx;
+  var ks = [];
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+      nIdx -= 1;
+    }
+  }
+  return ks;
+};
+var keys = /*#__PURE__*/_curry1(_keys);
+module.exports = keys;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+function _filter(fn, list) {
+  var idx = 0;
+  var len = list.length;
+  var result = [];
+
+  while (idx < len) {
+    if (fn(list[idx])) {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+module.exports = _filter;
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var curryN = /*#__PURE__*/__webpack_require__(49);
+
+/**
+ * Returns a new function much like the supplied one, except that the first two
+ * arguments' order is reversed.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
+ * @param {Function} fn The function to invoke with its first two parameters reversed.
+ * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+ * @example
+ *
+ *      var mergeThree = (a, b, c) => [].concat(a, b, c);
+ *
+ *      mergeThree(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
+ * @symb R.flip(f)(a, b, c) = f(b, a, c)
+ */
+
+
+var flip = /*#__PURE__*/_curry1(function flip(fn) {
+  return curryN(fn.length, function (a, b) {
+    var args = Array.prototype.slice.call(arguments, 0);
+    args[0] = b;
+    args[1] = a;
+    return fn.apply(this, args);
+  });
+});
+module.exports = flip;
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(30);
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+var _curryN = /*#__PURE__*/__webpack_require__(50);
+
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      var sumArgs = (...args) => R.sum(args);
+ *
+ *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
+
+var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
+  if (length === 1) {
+    return _curry1(fn);
+  }
+  return _arity(length, _curryN(length, [], fn));
+});
+module.exports = curryN;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _arity = /*#__PURE__*/__webpack_require__(30);
+
+var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
+
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+
+function _curryN(length, received, fn) {
+  return function () {
+    var combined = [];
+    var argsIdx = 0;
+    var left = length;
+    var combinedIdx = 0;
+    while (combinedIdx < received.length || argsIdx < arguments.length) {
+      var result;
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+        result = received[combinedIdx];
+      } else {
+        result = arguments[argsIdx];
+        argsIdx += 1;
+      }
+      combined[combinedIdx] = result;
+      if (!_isPlaceholder(result)) {
+        left -= 1;
+      }
+      combinedIdx += 1;
+    }
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+  };
+}
+module.exports = _curryN;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _identity = /*#__PURE__*/__webpack_require__(52);
+
+/**
+ * A function that does nothing but return the parameter supplied to it. Good
+ * as a default or placeholder function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x The value to return.
+ * @return {*} The input value, `x`.
+ * @example
+ *
+ *      R.identity(1); //=> 1
+ *
+ *      var obj = {};
+ *      R.identity(obj) === obj; //=> true
+ * @symb R.identity(a) = a
+ */
+
+
+var identity = /*#__PURE__*/_curry1(_identity);
+module.exports = identity;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+function _identity(x) {
+  return x;
+}
+module.exports = _identity;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _Set = /*#__PURE__*/__webpack_require__(54);
+
+var _curry2 = /*#__PURE__*/__webpack_require__(13);
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied function to
+ * each list element. Prefers the first item if the supplied function produces
+ * the same value on two items. [`R.equals`](#equals) is used for comparison.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> b) -> [a] -> [a]
+ * @param {Function} fn A function used to produce a value to use during comparisons.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
+ */
+
+
+var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
+  var set = new _Set();
+  var result = [];
+  var idx = 0;
+  var appliedItem, item;
+
+  while (idx < list.length) {
+    item = list[idx];
+    appliedItem = fn(item);
+    if (set.add(appliedItem)) {
+      result.push(item);
+    }
+    idx += 1;
+  }
+  return result;
+});
+module.exports = uniqBy;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _contains = /*#__PURE__*/__webpack_require__(29);
+
+var _Set = /*#__PURE__*/function () {
+
+  function _Set() {
+    /* globals Set */
+    this._nativeSet = typeof Set === 'function' ? new Set() : null;
+    this._items = {};
+  }
+
+  // until we figure out why jsdoc chokes on this
+  // @param item The item to add to the Set
+  // @returns {boolean} true if the item did not exist prior, otherwise false
+  //
+  _Set.prototype.add = function (item) {
+    return !hasOrAdd(item, true, this);
+  };
+
+  //
+  // @param item The item to check for existence in the Set
+  // @returns {boolean} true if the item exists in the Set, otherwise false
+  //
+  _Set.prototype.has = function (item) {
+    return hasOrAdd(item, false, this);
+  };
+
+  //
+  // Combines the logic for checking whether an item is a member of the set and
+  // for adding a new item to the set.
+  //
+  // @param item       The item to check or add to the Set instance.
+  // @param shouldAdd  If true, the item will be added to the set if it doesn't
+  //                   already exist.
+  // @param set        The set instance to check or add to.
+  // @return {boolean} true if the item already existed, otherwise false.
+  //
+  return _Set;
+}();
+
+function hasOrAdd(item, shouldAdd, set) {
+  var type = typeof item;
+  var prevSize, newSize;
+  switch (type) {
+    case 'string':
+    case 'number':
+      // distinguish between +0 and -0
+      if (item === 0 && 1 / item === -Infinity) {
+        if (set._items['-0']) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items['-0'] = true;
+          }
+          return false;
+        }
+      }
+      // these types can all utilise the native Set
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = {};
+            set._items[type][item] = true;
+          }
+          return false;
+        } else if (item in set._items[type]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][item] = true;
+          }
+          return false;
+        }
+      }
+
+    case 'boolean':
+      // set._items['boolean'] holds a two element array
+      // representing [ falseExists, trueExists ]
+      if (type in set._items) {
+        var bIdx = item ? 1 : 0;
+        if (set._items[type][bIdx]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][bIdx] = true;
+          }
+          return false;
+        }
+      } else {
+        if (shouldAdd) {
+          set._items[type] = item ? [false, true] : [true, false];
+        }
+        return false;
+      }
+
+    case 'function':
+      // compare functions for reference equality
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+          set._nativeSet.add(item);
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = [item];
+          }
+          return false;
+        }
+        if (!_contains(item, set._items[type])) {
+          if (shouldAdd) {
+            set._items[type].push(item);
+          }
+          return false;
+        }
+        return true;
+      }
+
+    case 'undefined':
+      if (set._items[type]) {
+        return true;
+      } else {
+        if (shouldAdd) {
+          set._items[type] = true;
+        }
+        return false;
+      }
+
+    case 'object':
+      if (item === null) {
+        if (!set._items['null']) {
+          if (shouldAdd) {
+            set._items['null'] = true;
+          }
+          return false;
+        }
+        return true;
+      }
+    /* falls through */
+    default:
+      // reduce the search size of heterogeneous sets by creating buckets
+      // for each type.
+      type = Object.prototype.toString.call(item);
+      if (!(type in set._items)) {
+        if (shouldAdd) {
+          set._items[type] = [item];
+        }
+        return false;
+      }
+      // scan through all previously applied items
+      if (!_contains(item, set._items[type])) {
+        if (shouldAdd) {
+          set._items[type].push(item);
+        }
+        return false;
+      }
+      return true;
+  }
+}
+
+// A simple Set type that honours R.equals semantics
+module.exports = _Set;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "message" }, [
+          _c("p", [
+            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.userList.length > 0
+      ? _c("div", { staticClass: "section agent-selectors" }, [
+          _c("div", { staticClass: "agentgroup-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAgentGroups,
+                    expression: "selectedAgentGroups"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedAgentGroups = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.agentGroups, function(agentGroup, i) {
+                return _c("option", { domProps: { value: agentGroup } }, [
+                  _vm._v(
+                    "\r\n                    " +
+                      _vm._s(agentGroup) +
+                      "\r\n                "
+                  )
+                ])
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "user-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedUsernames,
+                    expression: "selectedUsernames"
+                  }
+                ],
+                attrs: { multiple: "", size: "30" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectedUsernames = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.selectUsers(_vm.getUsers(_vm.selectedUsernames))
+                    }
+                  ]
+                }
+              },
+              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
+                userAgent,
+                i
+              ) {
+                return _c(
+                  "option",
+                  { domProps: { value: userAgent.username } },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.getUserSelectionString(userAgent)) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ]),
+          _vm._v(" "),
+          _vm.showRefresh
+            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "refresh-button",
+                    on: { click: _vm.clickRefresh }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                    _vm._v(" Refresh\r\n            ")
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
+  }
+}
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(66);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['layout'],
+  components: {
+    'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */],
+    'card-editor': __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__["a" /* default */]
+  },
+  data: function () {
+    return {
+      editingCard: false,
+      editedCard: null
+    };
+  },
+  computed: {
+    columnsStyle: function () {
+      if (this.layout.columns) {
+        return `grid-template-columns: repeat(${this.layout.columns}, 1fr);`;
+      } else {
+        return '';
+      }
+    }
+  },
+  methods: {
+    // Edit or delete a card
+    editCard: function (cardId) {
+      this.editingCard = true;
+      this.editedCard = this.layout.cards.find(card => card.id == cardId); // close modal on click outside window
+
+      document.documentElement.addEventListener('click', function (ev) {
+        if (!this.$el.contains(ev.target)) this.exitEdit(false);
+      }.bind(this), false);
+    },
+    exitEdit: function (saveChanges, cardId, card) {
+      this.editingCard = false;
+      this.editedCard = '';
+      if (!saveChanges) return;
+      this.$emit('update-card', cardId, card);
+    },
+    deleteCard: function (cardId) {
+      this.exitEdit(false);
+      this.$emit('delete-card', cardId);
+    },
+
+    /**
+     * Modify a single widget.
+     * @param  {Object} newWidget object to replace old widget with
+     * @param  {String} widgetId  id of widget within card
+     * @param  {String} cardId    id of card containing widget
+     * @emits  modify-widget event to app Vue instance
+     */
+    modifyWidget: function (newWidget, widgetId, cardId) {
+      this.$emit('modify-widget', newWidget, widgetId, cardId);
+    },
+
+    /**
+     * Update all widgets. Used to change order of widgets after drag and
+     * drop actions.
+     * @param  {Array}  newWidgets all of the new widgets
+     * @param  {String} cardId     card that is being modified
+     * @emits  update-card Event to app's Vue instance
+     */
+    updateWidgets: function (newWidgets, cardId) {
+      let newCard = {};
+      Object.assign(newCard, this.layout.cards[cardId]);
+      newCard.widgets = newWidgets;
+      this.$emit('update-card', cardId, newCard);
+    },
+    // Drag and drop to move cards
+    dragoverHandler: function (event) {
+      if (!this.$store.state.editMode) return;
+      event.preventDefault();
+    },
+    dropHandler: function (event) {
+      if (!this.$store.state.editMode) return;
+      const id = event.dataTransfer.getData('text');
+      const thisCard = this.$refs[id][0];
+      let newLayout = [];
+      Object.assign(newLayout, this.layout); // Determine what order the cards should be in
+
+      let el = card => this.$refs[card.id][0].$el;
+
+      newLayout.cards.sort((a, b) => Object(__WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, id, el)); // Update the layoutOrder property for each card
+
+      newLayout.cards.forEach((card, i) => {
+        card.layoutOrder = i;
+      }); // Update the layout
+
+      this.$emit('update-layout', newLayout);
+    }
+  }
+});
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(66);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],
+  components: {
+    'single-value': __WEBPACK_IMPORTED_MODULE_3__single_value_vue__["a" /* default */],
+    'data-table': __WEBPACK_IMPORTED_MODULE_1__data_table_vue__["a" /* default */],
+    'line-graph': __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__["a" /* default */],
+    'pie-chart': __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__["a" /* default */],
+    'datasource-last-updated': __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__["a" /* default */]
+  },
+  data: function () {
+    return {
+      highlightedDate: null,
+      draggingWidget: true
+    };
+  },
+  computed: {
+    // Make CSS grid position a computed property, so that it will change
+    // when a different layout is loaded
+    gridPositioning: function () {
+      return {
+        'order': this.layoutOrder,
+        // number of columns wide
+        'grid-column': `span ${this.columns}`
+      };
+    }
+  },
+  methods: {
+    // add a new widget to the card
+    addWidget: function () {
+      let o = __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */].newObject('prompt user for widget type');
+      console.log(o);
+    },
+
+    /**
+     * Update a widget in this card
+     * @param  {Object} newWidget object to replace with
+     * @param  {String} id        for widget being modified
+     * @return
+     */
+    modifyWidget: function (newWidget, id) {
+      this.$emit('modify-widget', newWidget, id, this.id);
+    },
+    // Return widgets of a given type (data-table, line-graph, etc.)
+    widgetsOfType: function (type) {
+      return this.widgets.filter(widget => widget['component'] == type);
+    },
+    // React to user hovering over a day
+    hoverDate: function (date) {
+      this.highlightedDate = date;
+    },
+    unhoverDate: function (date) {
+      this.highlightedDate = null;
+    },
+    // Card drag and drop handling
+    dragstartHandler: function (event) {
+      if (!this.$store.state.editMode) return;
+      event.dataTransfer.setData('text/plain', this.id);
+    },
+    // Widget drag and drop handling
+    dragstartWidgetHandler: function (event, widget) {
+      if (!this.$store.state.editMode) return;
+      this.draggingWidget = true;
+      const dragData = {
+        cardId: this.id,
+        widgetId: widget.id
+      };
+      event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+    },
+    dragWidgetHandler: function (event) {
+      if (!this.$store.state.editMode) return;
+      event.preventDefault();
+    },
+
+    /**
+     * Handles dropping a widget on this card, sorting all the widgets.
+     * @param  {Event} event for window drop action
+     * @emits  update-widget event to Dashboard component
+     */
+    dropWidgetHandler: function (event) {
+      if (!this.$store.state.editMode) return;
+      let dragData;
+
+      try {
+        // Try to parse dragData as JSON and prevent other drag/drop
+        // effects
+        dragData = JSON.parse(event.dataTransfer.getData('text/plain'));
+        event.preventDefault();
+        event.stopPropagation(); // If dragData isn't JSON, move along
+      } catch (err) {
+        if (err instanceof SyntaxError) {
+          return;
+        }
+      } // If this widget is being dropped in a different card, ignore
+
+
+      if (dragData.cardId != this.id) return; // Otherwise sort widgets and update the dashboard
+
+      let newWidgets = [];
+      Object.assign(newWidgets, this.widgets);
+
+      let el = widget => this.$refs[widget.id][0].$el;
+
+      newWidgets.sort((a, b) => Object(__WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, dragData.widgetId, el)); // assign a layout order based on sort
+
+      newWidgets.forEach((widget, i) => {
+        widget.layoutOrder = i;
+      });
+      this.$emit('update-widgets', newWidgets, this.id);
+    }
+  }
+});
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(75);
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['id', 'datasource', 'filter'],
+  components: {
+    'editor': __WEBPACK_IMPORTED_MODULE_0__editor_vue__["a" /* default */]
+  },
+  methods: {
+    dragstartHandler: function (event) {
+      this.$emit('dragstart-widget', event, this.$props);
+    }
+  },
+  // Utility to return a blank widget
+  newObject: function (type) {
+    return {
+      id: 'widget:' + uuidv4(),
+      component: type,
+      title: 'Hello World',
+      fieldName: '',
+      filter: {},
+      datasource: ''
+    };
+  }
+});
+/**
+ * Returns unique ID number
+ * @return {String} 16-bit UUID
+ */
+
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(60);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // TODO: dropdown for date types
+
+const clone = __webpack_require__(7);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['initialObject'],
+  data: function () {
+    return {
+      editingNow: false,
+      newObject: {},
+      dateOptions: __WEBPACK_IMPORTED_MODULE_0__javascript_filters__["b" /* dateOptions */]()
+    };
+  },
+
+  // Create a copy of the passed-in object on creation
+  mounted() {
+    this.newObject = clone(this.initialObject);
+  },
+
+  methods: {
+    edit: function () {
+      this.editingNow = true; // close modal on click outside window
+
+      document.documentElement.addEventListener('click', function (ev) {
+        if (!this.$el.contains(ev.target)) this.exit();
+      }.bind(this), false);
+    },
+    add: function () {},
+    exit: function (saveChanges) {
+      this.editingNow = false;
+
+      if (saveChanges) {
+        this.$emit('modify-widget', this.newObject);
+      }
+    },
+    deleteObject: function () {
+      this.editingNow = false;
+      this.$emit('modify-widget', {});
+    }
+  }
+});
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = clean;
+/* harmony export (immutable) */ __webpack_exports__["b"] = dateOptions;
+/* unused harmony export prettifyDateOption */
+/* harmony export (immutable) */ __webpack_exports__["c"] = getDates;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hub__ = __webpack_require__(24);
+
+
+const clone = __webpack_require__(7);
+/**
+ * Returns a cleaned / formatted copy of widget filter to pass to server or
+ * apply to data.
+ *
+ * @param  {Object} original    filter from widget; can include generic properties
+ *                              like `<current user>` and `<month-to-date>`
+ * @return {Object}             cleaned up filter for server
+ */
+
+
+function clean(original) {
+  let filter = clone(original);
+  let users = __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentUsers; // Clean up dates
+
+  let dateKey;
+
+  if (filter.date) {
+    dateKey = 'date';
+  } else if (filter.dateDay) {
+    dateKey = 'dateDay';
+  }
+
+  if (dateKey) {
+    let dateFn = dateMatcher[filter[dateKey]];
+
+    try {
+      filter[dateKey] = dateFn();
+    } catch (err) {
+      console.log(`Invalid date filter ${filter[dateKey]}: ${err}`);
+    }
+  } // Insert actual username
+
+
+  if (filter.agentUsername && filter.agentUsername.$in && filter.agentUsername.$in.includes('<current user>')) {
+    filter.agentUsername.$in = props(users, 'username');
+  } // Insert actual full name
+
+
+  if (filter.agentName && filter.agentName.$in && filter.agentName.$in.includes("<current user's full name>")) {
+    filter.agentName.$in = users.map(user => `${user.lastName}, ${user.firstName}`);
+  } // Update appropriate skill groups
+
+
+  if (filter.skillGroup) {
+    if (filter.skillGroup.$in && filter.skillGroup.$in[0] == '<current skill group>') {
+      filter.skill = {
+        $in: __WEBPACK_IMPORTED_MODULE_0__hub__["b" /* store */].getters.currentSkills
+      };
+      delete filter.skillGroup;
+    }
+  }
+
+  return filter;
+}
+function dateOptions() {
+  return Object.keys(dateMatcher);
+}
+function prettifyDateOption(option) {
+  // remove brackets
+  option.replace(/[<|>]/, ''); // TODO: capitalize properly
+
+  return option;
+}
+function getDates(datePattern) {
+  return dateMatcher[datePattern]();
+}
+const dateMatcher = {
+  // Days
+  '<today>': function () {
+    return {
+      $gte: moment().startOf('day').toDate(),
+      $lt: moment().endOf('day').toDate()
+    };
+  },
+  '<yesterday>': function () {
+    return {
+      $gte: moment().add(-1, 'days').startOf('day').toDate(),
+      $lt: moment().startOf('day').toDate()
+    };
+  },
+  // Months
+  '<month-to-date>': function () {
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<this month>': function () {
+    // alternate name for month-to-date
+    return {
+      $gte: moment().startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last month>': function () {
+    return {
+      $gte: moment().subtract(1, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').toDate()
+    };
+  },
+  '<last 2 months>': function () {
+    return {
+      $gte: moment().subtract(2, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  '<last 3 months>': function () {
+    return {
+      $gte: moment().subtract(3, 'months').startOf('month').toDate(),
+      $lt: moment().startOf('month').add(1, 'months').toDate()
+    };
+  },
+  // Pay periods
+  '<this pay period>': function () {
+    let startDate = startOfPayPeriod(moment());
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  },
+  '<last pay period>': function () {
+    let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+    return {
+      $gte: startDate.toDate(),
+      $lt: startDate.clone().add(2, 'weeks').toDate()
+    };
+  }
+};
+/**
+ * @param  {Moment object} date to find pay period of
+ * @return {Moment object}      start of pay period that contains @param date
+ */
+
+function startOfPayPeriod(date) {
+  let startDate;
+  let sunday = date.clone().startOf('week'); // round to nearest day (avoids DST issues)
+
+  let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+  let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+  let daysSincePeriodStart = Math.round(hours / 24);
+
+  if (daysSincePeriodStart % 14 == 0) {
+    return sunday;
+  } else {
+    return sunday.subtract(1, 'weeks');
+  }
+}
+
+const payPeriodStart = moment('2018-03-11');
+/**
+ *
+ * @param  {Array of Objects} array objects to extract property from
+ * @param  {String} property name of property to extract
+ * @return {Array of values} array of values from given property
+ */
+
+function props(array, property) {
+  return array.map(element => element[property]);
+}
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_parse__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/**
+ *
+ * @prop {Array} fields to display. The first field will be the one that data
+ *               is summarized by if the `summarizeBy` prop isn't given.
+ * @prop {Array} summarizeBy - which fields to summarize data by
+ * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
+ * @prop {String} datasource - name of datasource being used
+ * @prop {Object} filter to apply to data
+ * @prop {Boolean} isChild - defaults to false
+ */
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
+  props: {
+    fields: Array,
+    summarizeBy: {
+      type: Array,
+      default: null
+    },
+    headers: Array,
+    datasource: String,
+    filter: Object,
+    summarize: {
+      type: Boolean,
+      default: true
+    },
+    isChild: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    sortByField: String,
+    sortAscending: {
+      type: Boolean,
+      default: true
+    }
+  },
+
+  data() {
+    return {
+      highlightedRow: null
+    };
+  },
+
+  /**
+   * Any time an update occurs, the headers' width needs to be matched to the
+   * body's width (because the header is contained in its own fixed div).
+   */
+  updated() {
+    this.alignColumns();
+  },
+
+  mounted() {
+    this.alignColumns();
+  },
+
+  computed: {
+    data: function () {
+      let data = this.$store.getters.getData(this.filter, this.datasource);
+
+      if (this.summarize) {
+        if (this.summarizeBy) {
+          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["e" /* summarizeByMultiple */](data, this.summarizeBy, this.fields);
+        } else {
+          // default to summarizing by first field
+          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["d" /* summarize */](data, this.fields[0], this.fields.slice(1));
+        }
+      } // TODO: take care of this case in the parse module
+
+
+      if (this.fields[0] == 'reasonCode') return getNotReadyPercentage(data).sort((a, b) => a['reasonCode'] < b['reasonCode'] ? -1 : 1); // Sort by sortByField, or first field if none given
+
+      let sortField = this.sortByField || this.fields[0];
+      data.sort((a, b) => {
+        if (this.sortAscending) return a[sortField] < b[sortField] ? -1 : 1;else return a[sortField] > b[sortField] ? -1 : 1;
+      }); // Leave only fields that are defined in widget
+
+      return data.map(__WEBPACK_IMPORTED_MODULE_1__javascript_parse__["a" /* filterFields */](this.fields));
+    },
+    displayHeaders: function () {
+      if (this.data.length == 0) return [];
+      if (this.headers) return this.headers; // Determine headers based on object keys
+
+      return Object.keys(this.data[0]).map(fieldName => {
+        let f = this.$store.getters.field(fieldName);
+        if (f && f.displayName) return f.displayName;else return fieldName;
+      });
+    }
+  },
+  methods: {
+    highlight: function (i) {
+      this.highlightedRow = i;
+    },
+    unhighlight: function () {
+      this.highlightedRow = null;
+    },
+    isHighlighted: function (i) {
+      return this.highlightedRow == i;
+    },
+    formatted: function (val, fieldName) {
+      let res = Object(__WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__["a" /* formatValue */])(val, fieldName);
+      return res;
+    },
+    alignColumns: function () {
+      if (this.data.length == 0) return;
+      let headerRow = this.$refs.headerRow;
+      let bodyRow = this.$refs.bodyRows[0].children;
+      let i = 0;
+
+      for (let cell of bodyRow) {
+        let cellStyles = getComputedStyle(cell);
+        headerRow[i].style.width = cellStyles.width;
+        i++;
+      }
+    }
+  }
+});
+
+function getNotReadyPercentage(data) {
+  let loginTimeTotal = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["c" /* sum */](data, 'loginTime');
+  return data.map(d => {
+    return {
+      'reasonCode': d.reasonCode,
+      'notReadyPercentage': d.notReadyTime / loginTimeTotal
+    };
+  }) // Remove blank reason code
+  .filter(d => d.reasonCode.trim() != '');
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+const props = {
+  fields: {
+    type: Object
+  },
+  margin: {
+    type: Object,
+    default: () => ({
+      left: 30,
+      right: 20,
+      top: 20,
+      bottom: 25
+    })
+  },
+  statsType: {
+    // `individual` or `team`
+    type: String,
+    default: 'individual'
+  },
+  summarize: {
+    // whether to summarize data in table
+    type: Boolean,
+    default: true
+  },
+  // options to pass to child data-table
+  tableOptions: {
+    type: Object,
+    default: () => ({}) // default to empty object
+
+  }
+};
+/* harmony default export */ __webpack_exports__["a"] = ({
+  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
+  name: 'line-graph',
+  props,
+  components: {
+    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
+  },
+
+  data() {
+    return {
+      showTable: false,
+      width: 0,
+      height: 0,
+      paths: {
+        area: '',
+        line: '',
+        selector: ''
+      },
+      circleRadius: 3,
+      lastHoverPoint: {},
+      scaled: {
+        x: null,
+        y: null
+      },
+      points: [],
+      circles: [],
+      // Box to display printed data points when hovering
+      infoBox: {
+        message: '',
+        x: 0,
+        y: 0
+      }
+    };
+  },
+
+  computed: {
+    data() {
+      // Get data from hub
+      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
+
+      let yFields = [this.fields.y];
+      if (this.fields.y2) yFields.push(this.fields.y2);
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */](raw, this.fields.x, yFields); // Sort along X axis
+
+      grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1); // Remove infinite or NaN values
+
+      return grouped.filter(d => {
+        return isFinite(d[this.fields.y]) && !isNaN(d[this.fields.y]);
+      });
+    },
+
+    padded() {
+      const width = this.width - this.margin.left - this.margin.right;
+      const height = this.height - this.margin.top - this.margin.bottom;
+      return {
+        width,
+        height
+      };
+    },
+
+    ceil() {
+      return d3.max(this.data, d => d[this.fields.y]);
+    },
+
+    lineColor() {
+      if (this.statsType == 'team') {
+        return 'hsl(345, 91%, 48%)';
+      } else {
+        return 'steelblue';
+      }
+    },
+
+    // Return array of fields to be displayed by data-table
+    tableFields() {
+      if (this.tableOptions.fields) return this.tableOptions.fields; // if no specific field given, default to those displayed in graph
+
+      let fields = [this.fields.x, this.fields.y];
+      if (this.fields.y2) fields.push(this.fields.y2);
+      if (this.fields.y3) fields.push(this.fields.y3);
+      return fields;
+    },
+
+    tableProps() {
+      let initialOptions = {
+        datasource: this.datasource,
+        filter: this.filter,
+        fields: this.tableFields,
+        summarize: this.summarize,
+        isChild: true
+      };
+      return Object.assign(initialOptions, this.tableOptions);
+    }
+
+  },
+
+  mounted() {
+    // Remove title tooltip, as it gets in the way of the infoBox popup
+    this.$el.removeAttribute('title'); // Update everything when screen size changes
+
+    window.addEventListener('resize', this.onResize);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  watch: {
+    width: function (newWidth) {
+      this.update();
+    },
+    data: function (newData) {
+      this.update();
+    }
+  },
+  methods: {
+    fieldDisplayName(fieldName) {
+      return this.$store.getters.field(fieldName).displayName || fieldName;
+    },
+
+    toggleTable() {
+      if (this.data.length > 0 && this.showTable == false) {
+        this.showTable = true;
+      } else {
+        this.showTable = false;
+      }
+    },
+
+    onResize() {
+      // Set width equal to card -- grandparent element
+      this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
+      this.height = this.$refs['graph-wrap'].offsetHeight;
+    },
+
+    createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
+    createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),
+
+    createValueSelector(point) {
+      return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
+    },
+
+    initialize() {
+      this.onResize();
+      this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
+      this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
+      d3.axisLeft().scale(this.scaled.x);
+      d3.axisBottom().scale(this.scaled.y);
+    },
+
+    update() {
+      this.initialize();
+
+      for (let d of this.data) {
+        d[this.fields.y] *= 1;
+        if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
+      }
+
+      this.scaled.x.domain(d3.extent(this.data, d => d[this.fields.x]));
+      this.scaled.y.domain([0, this.ceil]);
+      this.points = []; // Create graph points
+
+      for (let d of this.data) {
+        this.points.push({
+          x: this.scaled.x(d[this.fields.x]),
+          y: this.scaled.y(d[this.fields.y]),
+          max: this.height
+        });
+      } // this.paths.area = this.createArea(this.points);
+
+
+      this.paths.line = this.createLine(this.points); // draw axes
+
+      const yField = this.$store.getters.field(this.fields.y);
+      d3.select(this.$refs.yaxis).call(d3.axisLeft(this.scaled.y).tickFormat(d => Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d, yField).value)).selectAll('path, .tick line').attr('stroke', '#ccc');
+      d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
+      d3.select(this.$refs.xaxis).call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d'))).selectAll('path, .tick line').attr('stroke', '#ccc');
+      d3.select(this.$refs.xaxis).selectAll('text') // .attr('fill', '#ddd')
+      .attr('dx', '-1em').attr('transform', 'rotate(-45)');
+    },
+
+    mouseover({
+      offsetX,
+      offsetY
+    }) {
+      if (this.points.length > 0) {
+        const x = offsetX - this.margin.left;
+        const y = offsetY - this.margin.top;
+        const closestPoint = this.getClosestPoint(x);
+
+        if (this.lastHoverPoint.index !== closestPoint.index) {
+          const point = this.points[closestPoint.index];
+          this.paths.selector = this.createValueSelector([point]);
+          this.$emit('select', this.data[closestPoint.index]);
+          this.lastHoverPoint = closestPoint; // InfoBox coords are slightly to the lower-right of mouse
+
+          const dataPoint = this.data[closestPoint.index];
+          this.infoBox.message = `
+                        ${this.fieldDisplayName(this.fields.x)}: ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.x], this.fields.x).value}
+                        ${this.fieldDisplayName(this.fields.y)}: ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.y], this.fields.y).value}
+                    `;
+          this.infoBox.x = x + 30;
+          this.infoBox.y = y + 40;
+        }
+      }
+    },
+
+    mouseleave() {
+      this.paths.selector = '';
+      this.infoBox.message = '';
+    },
+
+    getClosestPoint(x) {
+      return this.points.map((point, index) => ({
+        x: point.x,
+        diff: Math.abs(point.x - x),
+        index
+      })).reduce((least, val) => least.diff < val.diff ? least : val);
+    }
+
+  }
+});
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_filters__ = __webpack_require__(60);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
+  props: ['title', 'fieldName', 'subFields'],
+  computed: {
+    field: function () {
+      return this.$store.getters.field(this.fieldName);
+    },
+    formatted: function () {
+      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
+    },
+    data: function () {
+      return this.$store.getters.getData(this.filter, this.datasource);
+    },
+    value: function () {
+      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, this.fieldName);
+    },
+    subValues: function () {
+      if (!this.subFields) return [];
+      return this.subFields.map(field => {
+        let formatted = Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(__WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, field), field);
+        return {
+          value: formatted.value,
+          styleClass: formatted.styleClass,
+          fieldName: this.$store.getters.field(field).displayName
+        };
+      });
+    },
+    // Return title showing goal and dates in value
+    hoverText: function () {
+      let dateStr = ``;
+
+      if (this.filter.date || this.filter.dateDay) {
+        let dates = Object(__WEBPACK_IMPORTED_MODULE_3__javascript_filters__["c" /* getDates */])(this.filter.date || this.filter.dateDay);
+        let start = dates.$gte || dates.$gt;
+        let interval = dates.$lt ? 'up to' : 'through';
+        let end = dates.$lte || dates.$lt;
+
+        let format = d => moment(d).format('M/D');
+
+        dateStr = `Includes ${format(start)} ${interval} ${format(end)}`;
+      }
+
+      let field = this.$store.getters.field(this.fieldName);
+      let goal = this.$store.getters.goalForField(field);
+      let goalStr = this.title;
+
+      if (goal) {
+        goalStr = `${this.title} - Goal: ${Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(goal.thresholds[0], field).value}`;
+      }
+
+      return `${goalStr}\n${dateStr}`;
+    }
+  },
+  methods: {
+    modify: function (newWidget) {
+      this.$emit('modify-widget', newWidget, this.id);
+    }
+  }
+});
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const clone = __webpack_require__(7);
+
+const reasonCodeColors = {
+  'Lunch': 'hsl(204, 54%, 52%)',
+  'One on One': 'hsl(206, 54%, 63%)',
+  'Break': 'hsl(209, 56%, 73%)',
+  'Training': 'hsl(205, 56%, 82%)',
+  'After Call Work': 'hsl(345, 85%, 51%)',
+  'Not Ready': 'hsl(345, 90%, 62%)',
+  'Outbound': 'hsl(345, 90%, 82%)'
+};
+const reasonCodeSortOrder = ['Lunch', 'One on One', 'Break', 'Training', 'After Call Work', 'Not Ready', 'Outbound'];
+const props = {
+  fields: {
+    type: Object
+  },
+  margin: {
+    type: Object,
+    default: () => ({
+      left: 30,
+      right: 20,
+      top: 0,
+      bottom: 0
+    })
+  },
+  title: {
+    type: String
+  }
+};
+/* harmony default export */ __webpack_exports__["a"] = ({
+  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
+  name: 'pie-chart',
+  props,
+  components: {
+    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
+  },
+
+  data() {
+    return {
+      showTable: false,
+      width: 180,
+      height: 180,
+      radius: 90,
+      paths: {
+        area: '',
+        line: '',
+        selector: '',
+        goalLine: ''
+      },
+      scaled: {
+        x: null,
+        y: null
+      },
+      // Box to display printed data points when hovering
+      infoBox: {
+        message: '',
+        x: 0,
+        y: 0
+      },
+      // D3 objects
+      color: null,
+      pie: null,
+      path: null,
+      label: null,
+      svg: null,
+      g: null
+    };
+  },
+
+  computed: {
+    data() {
+      // Get data from hub
+      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
+
+      let s = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */];
+      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */](raw, this.fields.groupBy, this.fields.sum);
+      return grouped;
+    },
+
+    // Data with only fields needed to display chart
+    chartData() {
+      return this.data.map(d => {
+        return {
+          [this.fields.groupBy]: d[this.fields.groupBy],
+          [this.fields.display]: d[this.fields.display]
+        };
+      }).filter(d => d[this.fields.groupBy].trim() != '');
+    },
+
+    tableHeaders() {
+      if (this.fields.groupBy != 'reasonCode') return this.data;
+      return ['Reason Code', 'Time'];
+    },
+
+    tableFields() {
+      if (this.fields.groupBy != 'reasonCode') return Object.keys(this.data[0]);
+      return ['reasonCode', 'notReadyTime', 'loginTime'];
+    },
+
+    tableFilter() {
+      return this.filter;
+    },
+
+    padded() {
+      const width = this.width - this.margin.left - this.margin.right;
+      const height = this.height - this.margin.top - this.margin.bottom;
+      return {
+        width,
+        height
+      };
+    }
+
+  },
+
+  mounted() {
+    // Remove title tooltip, as it gets in the way of the infoBox popup
+    this.$el.removeAttribute('title'); // Set up D3
+
+    this.svg = d3.select(this.$el).select('svg');
+    this.g = this.svg.append('g').attr('transform', `translate(${this.width / 2}, ${this.height / 2})`); // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);
+
+    this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);
+    this.pie = d3.pie().padAngle(.05).sort(this.sortValues).value(d => d[this.fields.display]);
+    this.path = d3.arc().outerRadius(this.radius - 10).innerRadius((this.radius - 10) * 0.6);
+    this.label = d3.arc().outerRadius(this.radius - 40).innerRadius(this.radius - 40);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  watch: {
+    width: function (newWidth) {
+      this.updateChart(this.data);
+    },
+    chartData: function (newData) {
+      this.updateChart(newData);
+    }
+  },
+  methods: {
+    toggleTable: function () {
+      if (this.data && !this.showTable) {
+        this.showTable = true;
+      } else {
+        this.showTable = false;
+      }
+    },
+    updateChart: function (data) {
+      this.g.selectAll('.arc, .path').remove().exit();
+
+      if (data.length > 0) {
+        let arc = this.g.selectAll('arc').data(this.pie(data)).enter().append('g').attr('class', 'arc').on('mouseover', this.hoverOverPieSlice).on('mouseout', this.stopHoveringOverPieSlice);
+        arc.append('path').attr('d', this.path).attr('fill', this.getColor);
+      }
+    },
+    hoverOverPieSlice: function (d, i) {
+      this.infoBox.message = `
+                ${d.data.reasonCode}:
+                ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d.data[this.fields.display], this.fields.display).value}
+            `;
+    },
+    stopHoveringOverPieSlice: function (d, i) {
+      this.infoBox.message = '';
+    },
+    getColor: function (d) {
+      // If this is a reason code pie chart, try to use custom colors
+      if (this.fields.groupBy == 'reasonCode' && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {
+        return reasonCodeColors[d.data.reasonCode]; // Default to blues scale
+      } else {
+        return this.colorScale(d.data[this.fields.groupBy]);
+      }
+    },
+    sortValues: function (a, b) {
+      if (this.fields.groupBy == 'reasonCode') {
+        return reasonCodeSortOrder.indexOf(a.reasonCode) < reasonCodeSortOrder.indexOf(b.reasonCode) ? -1 : 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['datasource'],
+
+  data() {
+    return {
+      isHighlighted: false
+    };
+  },
+
+  computed: {
+    lastUpdateMessage: function () {
+      let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;
+      if (!time) return 'Last updated time not available';
+      return `Last updated ${moment(time).format('MM/DD/YY')}`;
+    }
+  }
+});
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = sortOrder;
+/**
+ * Compares card or widget positions and determine which one should be placed first.
+ * Used when re-ordering cards/widgets after drag-and-drop operations.
+ * Objects are ordered based on their DOM elements:
+ *      1)  Top: elements higher up on page go first
+ *      2)  Left: elements on the left side go first
+ * For the object that was dropped, the mouse's Y & X values are used instead
+ * of the top & left of the associated element.
+ *
+ * @param  {Object} a       widget or card object
+ * @param  {Object} b       widget or card object
+ * @param  {String} dropId  ID of element that was dropped
+ * @param  {Function} el    takes a or b object and returns DOM element
+ * @return {Integer}        Order for sort function: -1 if a first,
+ *                          +1 if b first, 0 if tied.
+ */
+function sortOrder(a, b, event, dropId, el) {
+  let left = x => el(x).offsetLeft;
+
+  let top = x => el(x).offsetTop;
+
+  let bottom = x => top(x) + el(x).clientHeight; // If neither element is the dropped card, compare positions
+
+
+  if (a.id != dropId && b.id != dropId) {
+    if (top(a) < top(b)) {
+      return -1;
+    } else if (top(b) < top(a)) {
+      return +1;
+    }
+
+    return left(a) < left(b) ? -1 : +1;
+  } // If card `a` is selected...
+
+
+  if (a.id == dropId) {
+    // move forward if it's below the bottom of `b`
+    if (event.pageY > bottom(b)) {
+      return 1;
+    } // move forward if it's below the top of `b` and to the
+    // of `b`
+
+
+    if (event.pageY > top(b) && event.pageX > left(b)) {
+      return 1;
+    } // otherwise, let card `b` move ahead
+
+
+    return -1;
+  } // ...If card `b` was selected, do the same.
+
+
+  if (b.id == dropId) {
+    if (event.pageY > bottom(a)) {
+      return -1;
+    }
+
+    if (event.pageY > top(a) && event.pageX > left(a)) {
+      return -1;
+    }
+
+    return 1;
+  }
+}
+;
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: ['id', 'title'],
+  data: function () {
+    return {
+      newCard: {
+        id: this.id,
+        title: this.title
+      }
+    };
+  }
+});
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: {
+    messages: {
+      type: Array
+    }
+  },
+  computed: {
+    // messages sorted by time
+    messageList: function () {
+      return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);
+    }
+  },
+  methods: {
+    // Returns text for date next to message. Includes hour if within the last
+    // 24 hours
+    dateText: function (message) {
+      if (Math.abs(new Date(message.timestamp).getDate() - new Date().getDate()) < 1) {
+        return moment(message.timestamp).format('M/D h:mm A');
+      }
+
+      return moment(message.timestamp).format('M/D');
+    }
+  }
+});
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(70);
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_inbox_vue__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_users_selector_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__hub__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__scorecard_format__ = __webpack_require__(25);
+
+
+
+
+
+
+
+ // NPM libraries
+
+const isEmpty = __webpack_require__(108);
+
+const clone = __webpack_require__(7);
+
+const uniq = __webpack_require__(35);
+
+const intersection = __webpack_require__(32);
+
+const debounce = __webpack_require__(113);
+
+const store = __WEBPACK_IMPORTED_MODULE_5__hub__["b" /* store */];
+const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#app',
+  store: store,
+  data: {
+    isLoaded: false,
+    showMenu: false,
+    // show main menu
+    showMenuThemes: false,
+    // show themes submenu
+    showLinks: false,
+    // show helpful links / bookmarks
+    theme: {},
+    // Supervisor controls
+    showFilters: true,
+    datasourceMessage: '',
+    messages: [],
+    showInbox: false
+  },
+  components: {
+    'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
+    'inbox': __WEBPACK_IMPORTED_MODULE_2__components_inbox_vue__["a" /* default */],
+    'editor-table': __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__["a" /* default */],
+    'users-selector': __WEBPACK_IMPORTED_MODULE_4__components_users_selector_vue__["a" /* default */]
+  },
+
+  async beforeMount() {
+    // load user's data
+    await store.dispatch('updateUser', '');
+
+    if (this.user.isAdmin || this.user.isSupervisor) {
+      this.changeSupMode('team');
+    } // Start the data rolling
+
+
+    await store.dispatch('startProcess');
+    this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
+    // TODO: fix bug causing data to be blank after first `startProcess`
+
+    setTimeout(this.refresh.bind(this), 2500); // start checking messages every 2 minutes
+
+    setTimeout(this.messageRefreshLoop.bind(this), 120000);
+  },
+
+  computed: {
+    layout: function () {
+      return store.state.layout;
+    },
+    chosenLayoutName: {
+      get() {
+        return store.state.chosenLayoutName;
+      },
+
+      set(name) {
+        store.commit('setChosenLayoutName', name);
+      }
+
+    },
+    username: {
+      get() {
+        return store.state.currentUser;
+      },
+
+      async set(value) {
+        await store.dispatch('updateUser', value);
+        this.refresh();
+      }
+
+    },
+    user: {
+      get() {
+        return store.state.user;
+      }
+
+    },
+    // Get name of theme that isn't currently selected
+    otherTheme: function () {
+      return this.theme.color == 'dark' ? 'light' : 'dark';
+    },
+    userGreeting: function () {
+      if (this.user.firstName) {
+        return `Hi, ${this.user.firstName}!`;
+      } else {
+        return '';
+      }
+    },
+    backgroundStyles: function () {
+      let bgUrl = this.theme.color == 'dark' ? this.theme.darkBackgroundImageUrl : this.theme.lightBackgroundImageUrl;
+
+      if (this.theme.useBackgroundImage && bgUrl.length > 1) {
+        return {
+          background: `url("${bgUrl}") no-repeat center center fixed`
+        };
+      } else {
+        return {};
+      }
+    },
+    unreadMessages: function () {
+      return this.messages.filter(message => {
+        return message.to.filter(to => to.username == this.username && to.hasRead == false).length > 0;
+      });
+    }
+  },
+  watch: {
+    // When the current user changes, make any needed adjustments
+    user: {
+      handler: function (newUser) {
+        this.theme = clone(newUser.theme);
+        this.updateThemeStyles(this.theme);
+      },
+      deep: true
+    }
+  },
+  methods: {
+    ///////////////////////////
+    // UI / interactions
+    refresh: async function () {
+      this.isLoading = true;
+      await store.dispatch('forceRefresh');
+      this.isLoading = false;
+      this.messages = await this.updateMessages();
+    },
+    changeTheme: function (attribute, value) {
+      this.theme[attribute] = value;
+      this.updateThemeStyles(this.theme);
+    },
+    saveTheme: function () {
+      if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
+      store.dispatch('updateTheme', this.theme);
+      this.showMenuThemes = false;
+      this.showMenu = false;
+    },
+    openInbox: async function () {
+      this.showInbox = true;
+      this.messages = await this.updateMessages(this.showInbox);
+    },
+    closeInbox: function () {
+      this.showInbox = false;
+    },
+    updateMessages: async function (includeAll = null) {
+      if (includeAll === null) includeAll = this.showInbox;
+      if (includeAll) return __WEBPACK_IMPORTED_MODULE_6__api__["r" /* getMessages */]();else return __WEBPACK_IMPORTED_MODULE_6__api__["y" /* getUnreadMessages */]();
+    },
+    closeMessage: async function (message) {
+      await __WEBPACK_IMPORTED_MODULE_6__api__["B" /* markMessageRead */](message, true);
+      this.messages = await this.updateMessages(this.showInbox);
+    },
+    messageDate: function (message) {
+      return moment(message.timestamp).format('M/D h:mm A');
+    },
+    messageRefreshLoop: async function () {
+      this.messages = await this.updateMessages(this.showInbox);
+      setTimeout(this.messageRefreshLoop.bind(this), 120000);
+    },
+    //////////////////////////////////////////////////
+    // Supervisor view controls
+    // Select users to filter data for
+    selectUsers: async function (users) {
+      store.commit('setSelectedUsers', users);
+    },
+    // Turn sup mode on or off
+    changeSupMode: function (newMode) {
+      store.commit('setSupMode', newMode);
+    },
+    changeLayout: function (name) {
+      store.commit('setChosenLayoutName', name);
+      this.refresh();
+    },
+    // When user selector loads the users list, save it to hub for later
+    // parsing.
+    updateUserList: function (users) {
+      store.commit('setUserList', users);
+    },
+    //////////////////////////////////////////////////
+    // Handle menus and theme
+    updateThemeStyles: function (theme) {
+      document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
+    },
+    mouseleaveThemeSubMenu: function (event) {
+      if (!event.relatedTarget) return;
+      let classList = Array.from(event.relatedTarget.classList);
+
+      if (event.relatedTarget == this.$refs.themeSubMenu || classList.includes('submenu-button') || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
+        event.stopPropagation();
+        return;
+      } else {
+        this.showMenuThemes = false;
+      }
+    },
+    mouseleaveMenu: function (event) {
+      if (!event.relatedTarget) return;
+
+      if (event.relatedTarget === this.$refs.menuButton || isDescendant(this.$refs.menu, event.relatedTarget)) {
+        event.stopPropagation();
+        return;
+      } else {
+        this.showMenu = false;
+      }
+    },
+    ///////////////////////////
+    // Handle export of layout to JSON
+    exportLayout: function () {
+      download(layout, 'test.json', 'text/plain');
+    },
+    ///////////////////////////
+    // Dashboard modifications
+    addCard: function () {
+      const newCard = {
+        title: 'card:' + this.layout.cards.length,
+        id: 'card:' + this.layout.cards.length,
+        layoutOrder: -1,
+        data: [],
+        widgets: []
+      };
+      this.layout.cards.push(newCard);
+    },
+    updateLayout: function (newLayout) {
+      Object.assign(this.layout, newLayout);
+    },
+    updateCard: function (cardId, newCard) {
+      let oldCardIndex = this.layout.cards.findIndex(card => card.id == cardId);
+      let oldCard = this.layout.cards[oldCardIndex]; // Create a new card object that has all properties from the
+      // new card and the old one (to include properties that aren't
+      // defined in `newCard`)
+
+      let newCardComplete = Object.assign({}, oldCard, newCard); // Use `Vue.set` to trigger reactivity
+      // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(this.layout.cards, oldCardIndex, newCardComplete);
+    },
+    deleteCard: function (cardId) {
+      let cardIndex = this.layout.cards.findIndex(card => card.id == cardId);
+      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(this.layout.cards, cardIndex);
+    },
+
+    /**
+     * Update a widget. If newWidget is an empty object ({}), delete the
+     * old widget.
+     * @param  {Object} newWidget object to replace old widget with
+     * @param  {String} widgetId
+     * @param  {String} cardId    ID for container card
+     * @return
+     */
+    modifyWidget: function (newWidget, widgetId, cardId) {
+      let card = this.layout.cards.find(c => c.id == cardId);
+      let oldWidgetIndex = card.widgets.findIndex(w => w.id == widgetId);
+      let oldWidget = card.widgets[oldWidgetIndex];
+
+      if (isEmpty(newWidget)) {
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(card.widgets, oldWidgetIndex);
+      } else {
+        // see updateCard function for explanation
+        let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(card.widgets, oldWidgetIndex, newWidgetComplete);
+      }
+    },
+    ///////////////////////
+    // Data Sources
+    updateDatasourceMessage: function (message) {
+      console.log(`updateDatasourceMessage: ${message}`);
+      this.datasourceMessage = message;
+    },
+    datasourceLoader: function () {
+      let sources = clone(this.layout.datasources);
+
+      const str = s => JSON.stringify(s, null, 2);
+
+      const stringin = function (ds) {
+        ds.fields = str(ds.fields);
+        ds.filter = str(ds.filter);
+        ds.groupBy = str(ds.groupBy);
+        return ds;
+      };
+
+      return sources.map(stringin);
+    },
+    datasourceAdder: function () {
+      return {
+        name: '',
+        fields: '',
+        filter: '{}',
+        groupBy: '',
+        refreshRate: 10
+      };
+    },
+    datasourceUpdater: function (datasource) {
+      try {
+        let obj = parseDatasource(datasource);
+        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
+
+        if (oldIndex == -1) {
+          this.layout.datasources.push(obj);
+        } else {
+          __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(this.layout.datasources, oldIndex, obj);
+        }
+
+        this.$store.commit('changeDatasource', obj);
+      } catch (err) {
+        console.log(err);
+        this.updateDatasourceMessage(`Error parsing data source: ${err}.`);
+      }
+    },
+    datasourceRemover: function (datasource) {
+      try {
+        let obj = getVueObject(datasource);
+        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(this.layout.datasources, oldIndex);
+        this.$store.commit('deleteDatasource', obj);
+      } catch (err) {
+        this.updateDatasourceMessage(`Error removing data source: ${err}.`);
+      }
+    }
+  }
+});
+window.vm = vm;
+/*
+  Convert vue object
+*/
+
+const getVueObject = obj => {
+  return JSON.parse(JSON.stringify(obj));
+};
+
+function download(text, name, type) {
+  var a = document.createElement("a");
+  var file = new Blob([JSON.stringify(text, null, 4)], {
+    type: type
+  });
+  a.href = URL.createObjectURL(file);
+  a.download = name;
+  a.click();
+}
+
+function parseDatasource(input) {
+  function objectify(value) {
+    try {
+      return JSON.parse(value);
+    } catch (err) {
+      if (err instanceof SyntaxError) return value;else throw err;
+    }
+  }
+
+  return objectMap(input, objectify);
+}
+
+function objectMap(object, fun) {
+  return Object.keys(object).reduce((newObj, key) => {
+    newObj[key] = fun(object[key]);
+    return newObj;
+  }, {});
+}
+
+function isDescendant(parent, child) {
+  var node = child.parentNode;
+
+  while (node != null) {
+    if (node == parent) {
+      return true;
+    }
+
+    node = node.parentNode;
+  }
+
+  return false;
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(56);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(103);
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\dashboard.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c21f7d6a", Component.options)
+  } else {
+    hotAPI.reload("data-v-c21f7d6a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(57);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(98);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(73)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\card.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3bec8029", Component.options)
+  } else {
+    hotAPI.reload("data-v-3bec8029", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(74);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("1e5068c2", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue"],"names":[],"mappings":";AA2NA;IACA,cAAA;IACA,2BAAA;IACA,gBAAA;IACA,mBAAA;IACA,6BAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,iBAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <pie-chart class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('pie-chart')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></pie-chart>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n\r\n    <datasource-last-updated class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('datasource-last-updated')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></datasource-last-updated>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport PieChart from './pie-chart.vue';\r\nimport DatasourceLastUpdated from './datasource-last-updated.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph,\r\n        'pie-chart': PieChart,\r\n        'datasource-last-updated': DatasourceLastUpdated\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        // Make CSS grid position a computed property, so that it will change\r\n        // when a different layout is loaded\r\n        gridPositioning: function() {\r\n            return {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(59);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(78);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(76)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\editor.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a38dd874", Component.options)
+  } else {
+    hotAPI.reload("data-v-a38dd874", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(77);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("208c43bc", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.dateDay\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-wrapper" }, [
+    _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
+      _vm._v("☰")
+    ]),
+    _vm._v(" "),
+    _vm.editingNow
+      ? _c("div", { staticClass: "edit-form modal" }, [
+          _c("h1", [_vm._v(_vm._s(_vm.newObject.title))]),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Title")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newObject.title,
+                expression: "newObject.title"
+              }
+            ],
+            domProps: { value: _vm.newObject.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newObject, "title", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Data Source")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.datasource,
+                  expression: "newObject.datasource"
+                }
+              ],
+              attrs: { name: "datasource-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject,
+                    "datasource",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.$store.state.datasources, function(source) {
+              return _c("option", { domProps: { value: source.name } }, [
+                _vm._v(_vm._s(source.name))
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Field")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.fieldName,
+                  expression: "newObject.fieldName"
+                }
+              ],
+              attrs: { name: "field-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject,
+                    "fieldName",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.$store.state.fields, function(field) {
+              return _c("option", { domProps: { value: field.fullName } }, [
+                _vm._v(
+                  _vm._s(field.displayName || field.name) +
+                    "\n             " +
+                    _vm._s(field.source == "N/A" ? "" : " - " + field.source)
+                )
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Date")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newObject.filter.dateDay,
+                  expression: "newObject.filter.dateDay"
+                }
+              ],
+              attrs: { name: "date-dropdown" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.newObject.filter,
+                    "dateDay",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            _vm._l(_vm.dateOptions, function(option) {
+              return _c("option", { domProps: { value: option } }, [
+                _vm._v(_vm._s(option))
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "button-wrapper" }, [
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.exit(true)
+                  }
+                }
+              },
+              [_vm._v("Save")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.exit(false)
+                  }
+                }
+              },
+              [_vm._v("Cancel")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "delete", on: { click: _vm.deleteObject } },
+              [_vm._v("Delete")]
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a38dd874", esExports)
+  }
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(80);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("9c7d97ce", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "data-table-wrapper",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      !_vm.isChild && _vm.title
+        ? _c("h3", [_vm._v(_vm._s(_vm.title))])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("table", { staticClass: "data-table" }, [
+        _c("thead", [
+          _c(
+            "tr",
+            _vm._l(_vm.displayHeaders, function(header) {
+              return _c("th", { ref: "headerRow", refInFor: true }, [
+                _vm._v(_vm._s(header))
+              ])
+            })
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.data, function(datum, i) {
+            return _c(
+              "tr",
+              {
+                key: i,
+                ref: "bodyRows",
+                refInFor: true,
+                class: { highlight: _vm.isHighlighted(i) }
+              },
+              _vm._l(datum, function(val, key) {
+                return _c(
+                  "td",
+                  {
+                    class: _vm.formatted(val, key).styleClass,
+                    on: {
+                      mouseover: function($event) {
+                        _vm.highlight(i)
+                      },
+                      mouseleave: function($event) {
+                        _vm.unhighlight(i)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\r\n                    " +
+                        _vm._s(_vm.formatted(val, key).value) +
+                        "\r\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          })
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-48d3d2c4", esExports)
+  }
+}
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(62);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(85);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(83)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-21d5040e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\line-graph.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-21d5040e", Component.options)
+  } else {
+    hotAPI.reload("data-v-21d5040e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(84);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("3a8ea719", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e], .data-dropdown-title[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-21d5040e] {\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 30px;\n}\n.rotating-play-icon[data-v-21d5040e] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-21d5040e] {\n    transform: rotate(90deg);\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 99%, 80%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue"],"names":[],"mappings":";AAiTA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,kBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"line\" :d=\"paths.line\" :style=\"{ stroke: lineColor }\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                    :style=\"{ fill: lineColor }\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >\r\n            {{ infoBox.message }}\r\n        </div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        v-bind=\"tableProps\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    statsType: { // `individual` or `team`\r\n        type: String,\r\n        default: 'individual'\r\n    },\r\n    summarize: { // whether to summarize data in table\r\n        type: Boolean,\r\n        default: true\r\n    },\r\n    // options to pass to child data-table\r\n    tableOptions: {\r\n        type: Object,\r\n        default: () => ({}) // default to empty object\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let yFields = [this.fields.y];\r\n            if (this.fields.y2) yFields.push(this.fields.y2);\r\n            let grouped = parse.summarize(raw, this.fields.x, yFields);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            // Remove infinite or NaN values\r\n            return grouped.filter((d) => {\r\n                return isFinite(d[this.fields.y]) && !isNaN(d[this.fields.y]);\r\n            });\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        },\r\n        lineColor() {\r\n            if (this.statsType == 'team') {\r\n                return 'hsl(345, 91%, 48%)';\r\n            } else {\r\n                return 'steelblue';\r\n            }\r\n        },\r\n        // Return array of fields to be displayed by data-table\r\n        tableFields() {\r\n            if (this.tableOptions.fields) return this.tableOptions.fields;\r\n            // if no specific field given, default to those displayed in graph\r\n            let fields = [this.fields.x, this.fields.y];\r\n            if (this.fields.y2) fields.push(this.fields.y2);\r\n            if (this.fields.y3) fields.push(this.fields.y3);\r\n            return fields;\r\n        },\r\n        tableProps() {\r\n            let initialOptions = {\r\n                datasource: this.datasource,\r\n                filter: this.filter,\r\n                fields: this.tableFields,\r\n                summarize: this.summarize,\r\n                isChild: true,\r\n            }\r\n            return Object.assign(initialOptions, this.tableOptions);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            if (this.data.length > 0 && this.showTable == false) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.onResize();\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                // .attr('fill', '#ddd')\r\n                .attr('dx', '-1em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n    .data-dropdown-title {\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 30px;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 99%, 80%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "line-graph",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      _c(
+        "div",
+        {
+          ref: "graph-wrap",
+          staticClass: "graph-wrap",
+          on: { click: _vm.toggleTable }
+        },
+        [
+          _c(
+            "svg",
+            {
+              attrs: { width: _vm.width, height: _vm.height },
+              on: { mousemove: _vm.mouseover, mouseleave: _vm.mouseleave }
+            },
+            [
+              _c("text", { staticClass: "title", attrs: { x: 55, y: 10 } }, [
+                _vm._v(_vm._s(_vm.fieldDisplayName(_vm.fields.y)))
+              ]),
+              _vm._v(" "),
+              _c("g", {
+                ref: "yaxis",
+                staticClass: "axis",
+                style: {
+                  transform:
+                    "translate(" +
+                    _vm.margin.left +
+                    "px," +
+                    _vm.margin.top +
+                    "px)"
+                }
+              }),
+              _vm._v(" "),
+              _c("g", {
+                ref: "xaxis",
+                staticClass: "axis",
+                style: {
+                  transform:
+                    "translate(" +
+                    _vm.margin.left +
+                    "px," +
+                    (_vm.height - _vm.margin.bottom) +
+                    "px)"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "g",
+                {
+                  style: {
+                    transform:
+                      "translate(" +
+                      _vm.margin.left +
+                      "px, " +
+                      _vm.margin.top +
+                      "px)"
+                  }
+                },
+                [
+                  _c("path", {
+                    staticClass: "area",
+                    attrs: { d: _vm.paths.area }
+                  }),
+                  _vm._v(" "),
+                  _c("path", {
+                    staticClass: "line",
+                    style: { stroke: _vm.lineColor },
+                    attrs: { d: _vm.paths.line }
+                  }),
+                  _vm._v(" "),
+                  _c("path", {
+                    staticClass: "selector",
+                    attrs: { d: _vm.paths.selector }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(_vm.points, function(point) {
+                    return _c("circle", {
+                      staticClass: "data-circle",
+                      style: { fill: _vm.lineColor },
+                      attrs: { r: _vm.circleRadius, cx: point.x, cy: point.y }
+                    })
+                  })
+                ],
+                2
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "data-dropdown-title",
+              attrs: { title: "Click to show or hide data table" }
+            },
+            [
+              _c(
+                "span",
+                {
+                  staticClass: "rotating-play-icon",
+                  class: { "rotate-90deg": _vm.showTable }
+                },
+                [_vm._v("\r\n                ►\r\n            ")]
+              ),
+              _vm._v("\r\n            Data\r\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _vm.infoBox.message
+            ? _c(
+                "div",
+                {
+                  staticClass: "info-box",
+                  style: {
+                    transform:
+                      "translate(" +
+                      _vm.infoBox.x +
+                      "px, " +
+                      _vm.infoBox.y +
+                      "px)"
+                  }
+                },
+                [
+                  _vm._v(
+                    "\r\n            " +
+                      _vm._s(_vm.infoBox.message) +
+                      "\r\n        "
+                  )
+                ]
+              )
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _vm.showTable
+        ? _c("data-table", _vm._b({}, "data-table", _vm.tableProps, false))
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-21d5040e", esExports)
+  }
+}
+
+/***/ }),
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(63);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(89);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(87)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-4ae719c5"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\single-value.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4ae719c5", Component.options)
+  } else {
+    hotAPI.reload("data-v-4ae719c5", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(88);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("69ee75ae", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 110px;\n}\n.subvalue-wrapper[data-v-4ae719c5] {\r\n    display: flex;\r\n    justify-content: center;\n}\n.subvalue[data-v-4ae719c5] {\r\n    margin: 1em 1.5em 0.5em 1.5em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/single-value.vue"],"names":[],"mappings":";AAwGA;IACA,kBAAA;CACA;AACA;IACA,cAAA;IACA,wBAAA;CACA;AACA;IACA,8BAAA;CACA","file":"single-value.vue","sourcesContent":["/**\r\n * Widget that displays a single value with a title, and optionally sub-values.\r\n * @prop {String} fieldName\r\n * @prop {Array} subFields - optional\r\n * ... and other base widget props (filter, datasource,...)\r\n */\r\n<template>\r\n<div class=\"single-value\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\"\r\n    >\r\n    <h3>{{ title }}</h3>\r\n    <p class=\"metric\"\r\n      :class=\"formatted.styleClass\"\r\n      :title=\"hoverText\"\r\n    >{{ formatted.value }}\r\n    </p>\r\n\r\n    <div class=\"subvalue-wrapper\">\r\n        <p class=\"subvalue\"\r\n            v-if=\"subFields\"\r\n            v-for=\"v in subValues\"\r\n            :title=\"v.fieldName\"\r\n            :class=\"v.styleClass\"\r\n        >{{ v.value }}</p>\r\n    </div>\r\n\r\n    <editor\r\n        v-if=\"$store.state.editMode\"\r\n        :initialObject=\"$props\"\r\n        @modify-widget=\"modify\"\r\n    ></editor>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport * as parse from '../javascript/parse';\r\nimport { getDates } from '../javascript/filters';\r\n\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    props: ['title', 'fieldName', 'subFields'],\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        },\r\n        data: function() {\r\n            return this.$store.getters.getData(this.filter, this.datasource);\r\n        },\r\n        value: function() {\r\n            return parse.getValueForField(this.data, this.fieldName);\r\n        },\r\n        subValues: function() {\r\n            if (!this.subFields) return [];\r\n            return this.subFields.map((field) => {\r\n                let formatted = formatValue(\r\n                    parse.getValueForField(this.data, field),\r\n                    field\r\n                );\r\n                return {\r\n                    value: formatted.value,\r\n                    styleClass: formatted.styleClass,\r\n                    fieldName: this.$store.getters.field(field).displayName\r\n                }\r\n            });\r\n        },\r\n        // Return title showing goal and dates in value\r\n        hoverText: function() {\r\n            let dateStr = ``;\r\n            if (this.filter.date || this.filter.dateDay) {\r\n                let dates = getDates(this.filter.date || this.filter.dateDay);\r\n                let start = dates.$gte || dates.$gt;\r\n                let interval = dates.$lt ? 'up to' : 'through';\r\n                let end   = dates.$lte || dates.$lt;\r\n                let format = (d) => moment(d).format('M/D');\r\n                dateStr = `Includes ${format(start)} ${interval} ${format(end)}`;\r\n            }\r\n            let field = this.$store.getters.field(this.fieldName);\r\n            let goal = this.$store.getters.goalForField(field);\r\n            let goalStr = this.title;\r\n            if (goal) {\r\n                goalStr = `${this.title} - Goal: ${formatValue(goal.thresholds[0], field).value}`;\r\n            }\r\n            return `${goalStr}\\n${dateStr}`;\r\n        }\r\n    },\r\n    methods: {\r\n        modify: function(newWidget) {\r\n            this.$emit('modify-widget', newWidget, this.id);\r\n        }\r\n    }\r\n};\r\n\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.single-value {\r\n    min-height: 110px;\r\n}\r\n.subvalue-wrapper {\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n.subvalue {\r\n    margin: 1em 1.5em 0.5em 1.5em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "single-value",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      _c("h3", [_vm._v(_vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c(
+        "p",
+        {
+          staticClass: "metric",
+          class: _vm.formatted.styleClass,
+          attrs: { title: _vm.hoverText }
+        },
+        [_vm._v(_vm._s(_vm.formatted.value) + "\r\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "subvalue-wrapper" },
+        _vm._l(_vm.subValues, function(v) {
+          return _vm.subFields
+            ? _c(
+                "p",
+                {
+                  staticClass: "subvalue",
+                  class: v.styleClass,
+                  attrs: { title: v.fieldName }
+                },
+                [_vm._v(_vm._s(v.value))]
+              )
+            : _vm._e()
+        })
+      ),
+      _vm._v(" "),
+      _vm.$store.state.editMode
+        ? _c("editor", {
+            attrs: { initialObject: _vm.$props },
+            on: { "modify-widget": _vm.modify }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4ae719c5", esExports)
+  }
+}
+
+/***/ }),
+/* 90 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(64);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(93);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(91)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-57308e94"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\pie-chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-57308e94", Component.options)
+  } else {
+    hotAPI.reload("data-v-57308e94", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(92);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("07cfff32", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n    min-height: 180px;\n}\n.graph-wrap[data-v-57308e94]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-57308e94] {\n    height: 180px;\n    width: 100%;\n    position: relative;\n}\n.graph-wrap text[data-v-57308e94], .data-dropdown-title[data-v-57308e94] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-57308e94] {\n    position: absolute;\n    bottom: 10px;\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 1em;\n}\n.rotating-play-icon[data-v-57308e94] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-57308e94] {\n    transform: rotate(90deg);\n}\n.text-overlay[data-v-57308e94] {\n    position: absolute;\n    width: 100%;\n    font-size: 1.5em;\n    top: -1.5em;\n    font-weight: lighter;\n}\nh1[data-v-57308e94], .content[data-v-57308e94] {\n  margin-left: 20px;\n}\nlabel[data-v-57308e94] {\n  display: inline-block;\n  width: 150px;\n}\n.info-box[data-v-57308e94] {\n    display: inline-block;\n    position: absolute;\n    top: -20px;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/pie-chart.vue"],"names":[],"mappings":";AAyQA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AAEA;IACA,mBAAA;IACA,aAAA;IACA,iBAAA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAEA;IACA,mBAAA;IACA,YAAA;IACA,iBAAA;IACA,YAAA;IACA,qBAAA;CACA;AAEA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,sBAAA;IACA,mBAAA;IACA,WAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"pie-chart.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"pie-chart\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <h3>{{ title }}</h3>\r\n\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg\r\n            :width=\"width\" :height=\"height\">\r\n        </svg>\r\n\r\n        <div v-if=\"chartData.length == 0\"\r\n            :style=\"{transform: `translate(0, ${height / 2}px)`}\"\r\n            class=\"text-overlay font-color-secondary\">\r\n            N/A\r\n        </div>\r\n\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :datasource=\"datasource\"\r\n        :filter=\"tableFilter\"\r\n        :fields=\"tableFields\"\r\n        :headers=\"tableHeaders\"\r\n        :isChild=\"true\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nconst reasonCodeColors = {\r\n    'Lunch': 'hsl(204, 54%, 52%)',\r\n    'One on One': 'hsl(206, 54%, 63%)',\r\n    'Break': 'hsl(209, 56%, 73%)',\r\n    'Training': 'hsl(205, 56%, 82%)',\r\n    'After Call Work': 'hsl(345, 85%, 51%)',\r\n    'Not Ready': 'hsl(345, 90%, 62%)',\r\n    'Outbound': 'hsl(345, 90%, 82%)',\r\n};\r\nconst reasonCodeSortOrder = [\r\n    'Lunch', 'One on One', 'Break', 'Training',\r\n    'After Call Work', 'Not Ready', 'Outbound',\r\n];\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 0,\r\n            bottom: 0,\r\n        }),\r\n    },\r\n    title: {\r\n        type: String\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'pie-chart',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 180,\r\n            height: 180,\r\n            radius: 90,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            },\r\n            // D3 objects\r\n            color: null,\r\n            pie: null,\r\n            path: null,\r\n            label: null,\r\n            svg: null,\r\n            g: null\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let s = parse.summarize;\r\n            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);\r\n            return grouped;\r\n        },\r\n        // Data with only fields needed to display chart\r\n        chartData() {\r\n            return this.data\r\n                .map((d) => {\r\n                    return {\r\n                        [this.fields.groupBy]: d[this.fields.groupBy],\r\n                        [this.fields.display]: d[this.fields.display]\r\n                    }\r\n                })\r\n                .filter((d) => d[this.fields.groupBy].trim() != '');\r\n        },\r\n        tableHeaders() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            return ['Reason Code', 'Time'];\r\n        },\r\n        tableFields() {\r\n            if (this.fields.groupBy != 'reasonCode')\r\n                return Object.keys(this.data[0]);\r\n            return ['reasonCode', 'notReadyTime', 'loginTime'];\r\n        },\r\n        tableFilter() {\r\n            return this.filter;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n\r\n        // Set up D3\r\n        this.svg = d3.select(this.$el).select('svg');\r\n        this.g = this.svg.append('g').attr('transform',\r\n                                `translate(${this.width/2}, ${this.height/2})`);\r\n        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);\r\n        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);\r\n        this.pie = d3.pie()\r\n            .padAngle(.05)\r\n            .sort(this.sortValues)\r\n            .value((d) => d[this.fields.display]);\r\n        this.path = d3.arc()\r\n            .outerRadius(this.radius - 10)\r\n            .innerRadius((this.radius - 10) * 0.6);\r\n        this.label = d3.arc()\r\n            .outerRadius(this.radius - 40)\r\n            .innerRadius(this.radius - 40);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.updateChart(this.data); },\r\n        chartData: function(newData) { this.updateChart(newData); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable: function() {\r\n            if (this.data && !this.showTable) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        updateChart: function(data) {\r\n            this.g.selectAll('.arc, .path').remove().exit();\r\n\r\n            if (data.length > 0) {\r\n                let arc = this.g.selectAll('arc')\r\n                    .data(this.pie(data))\r\n                    .enter().append('g')\r\n                      .attr('class', 'arc')\r\n                      .on('mouseover', this.hoverOverPieSlice)\r\n                      .on('mouseout', this.stopHoveringOverPieSlice);\r\n                arc.append('path')\r\n                    .attr('d', this.path)\r\n                    .attr('fill', this.getColor);\r\n            }\r\n        },\r\n        hoverOverPieSlice: function(d, i) {\r\n            this.infoBox.message = `\r\n                ${d.data.reasonCode}:\r\n                ${formatValue(d.data[this.fields.display], this.fields.display).value}\r\n            `;\r\n        },\r\n        stopHoveringOverPieSlice: function(d, i) {\r\n            this.infoBox.message = '';\r\n        },\r\n        getColor: function(d) {\r\n            // If this is a reason code pie chart, try to use custom colors\r\n            if (this.fields.groupBy == 'reasonCode'\r\n                && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {\r\n                return reasonCodeColors[d.data.reasonCode]\r\n            // Default to blues scale\r\n            } else {\r\n                return this.colorScale(d.data[this.fields.groupBy]);\r\n            }\r\n        },\r\n        sortValues: function (a, b) {\r\n            if (this.fields.groupBy == 'reasonCode') {\r\n                return reasonCodeSortOrder.indexOf(a.reasonCode)\r\n                    <  reasonCodeSortOrder.indexOf(b.reasonCode)\r\n                    ?  -1 : 1\r\n            } else {\r\n                return 0;\r\n            }\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .pie-chart {\r\n        max-width: 100%;\r\n        min-height: 180px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 180px;\r\n        width: 100%;\r\n        position: relative;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n\r\n    .data-dropdown-title {\r\n        position: absolute;\r\n        bottom: 10px;\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 1em;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n    .text-overlay {\r\n        position: absolute;\r\n        width: 100%;\r\n        font-size: 1.5em;\r\n        top: -1.5em;\r\n        font-weight: lighter;\r\n    }\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: -20px;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "pie-chart",
+      attrs: { draggable: _vm.$store.state.editMode },
+      on: { dragstart: _vm.dragstartHandler }
+    },
+    [
+      _c("h3", [_vm._v(_vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          ref: "graph-wrap",
+          staticClass: "graph-wrap",
+          on: { click: _vm.toggleTable }
+        },
+        [
+          _c("svg", { attrs: { width: _vm.width, height: _vm.height } }),
+          _vm._v(" "),
+          _vm.chartData.length == 0
+            ? _c(
+                "div",
+                {
+                  staticClass: "text-overlay font-color-secondary",
+                  style: { transform: "translate(0, " + _vm.height / 2 + "px)" }
+                },
+                [_vm._v("\r\n            N/A\r\n        ")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "data-dropdown-title",
+              attrs: { title: "Click to show or hide data table" }
+            },
+            [
+              _c(
+                "span",
+                {
+                  staticClass: "rotating-play-icon",
+                  class: { "rotate-90deg": _vm.showTable }
+                },
+                [_vm._v("\r\n                ►\r\n            ")]
+              ),
+              _vm._v("\r\n            Data\r\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _vm.infoBox.message
+            ? _c(
+                "div",
+                {
+                  staticClass: "info-box",
+                  style: {
+                    transform:
+                      "translate(" +
+                      _vm.infoBox.x +
+                      "px, " +
+                      _vm.infoBox.y +
+                      "px)"
+                  }
+                },
+                [_vm._v(_vm._s(_vm.infoBox.message))]
+              )
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _vm.showTable
+        ? _c("data-table", {
+            attrs: {
+              datasource: _vm.datasource,
+              filter: _vm.tableFilter,
+              fields: _vm.tableFields,
+              headers: _vm.tableHeaders,
+              isChild: true
+            }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-57308e94", esExports)
+  }
+}
+
+/***/ }),
+/* 94 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__ = __webpack_require__(65);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(97);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(95)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-27782583"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\datasource-last-updated.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-27782583", Component.options)
+  } else {
+    hotAPI.reload("data-v-27782583", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(96);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("0b9ae522", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\ndiv[data-v-27782583] {\r\n    text-align: center;\n}\np[data-v-27782583] {\r\n    margin: 0;\r\n    font-size: 0.8em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/datasource-last-updated.vue"],"names":[],"mappings":";AAiCA;IACA,mBAAA;CACA;AACA;IACA,UAAA;IACA,iBAAA;CACA","file":"datasource-last-updated.vue","sourcesContent":["/**\r\n * Component to display a single table row of data. Child of DataTable widgets.\r\n */\r\n<template>\r\n    <div>\r\n        <p class=\"font-color-secondary\">\r\n            {{ lastUpdateMessage }}\r\n        </p>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\nimport { formatValue } from '../javascript/scorecard-format.js';\r\n\r\nexport default {\r\n    props: ['datasource'],\r\n    data () {\r\n        return {\r\n            isHighlighted: false\r\n        };\r\n    },\r\n    computed: {\r\n        lastUpdateMessage: function() {\r\n            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;\r\n            if (!time) return 'Last updated time not available';\r\n            return `Last updated ${moment(time).format('MM/DD/YY')}`;\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\ndiv {\r\n    text-align: center;\r\n}\r\np {\r\n    margin: 0;\r\n    font-size: 0.8em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("p", { staticClass: "font-color-secondary" }, [
+      _vm._v("\n        " + _vm._s(_vm.lastUpdateMessage) + "\n    ")
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-27782583", esExports)
+  }
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "card metric-wrapper stats-box",
+      style: _vm.gridPositioning,
+      attrs: { id: _vm.id },
+      on: { dragover: _vm.dragWidgetHandler, drop: _vm.dropWidgetHandler }
+    },
+    [
+      _c(
+        "h2",
+        {
+          staticClass: "title descriptor",
+          attrs: { draggable: _vm.$store.state.editMode },
+          on: { dragstart: _vm.dragstartHandler }
+        },
+        [_vm._v(_vm._s(_vm.title))]
+      ),
+      _vm._v(" "),
+      _vm.$store.state.editMode
+        ? _c(
+            "button",
+            {
+              staticClass: "edit-button",
+              on: {
+                click: function($event) {
+                  _vm.$emit("edit-card", _vm.id)
+                }
+              }
+            },
+            [_vm._v("☰")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.$store.state.editMode
+        ? _c(
+            "button",
+            { staticClass: "add-button", on: { click: _vm.addWidget } },
+            [_vm._v("+")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.widgetsOfType("single-value"), function(widget, i) {
+        return _c(
+          "single-value",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              staticClass: "widget",
+              style: { order: widget.layoutOrder },
+              on: {
+                "dragstart-widget": _vm.dragstartWidgetHandler,
+                "modify-widget": _vm.modifyWidget
+              }
+            },
+            "single-value",
+            widget,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.widgetsOfType("line-graph"), function(widget, i) {
+        return _c(
+          "line-graph",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              staticClass: "widget",
+              style: { order: widget.layoutOrder },
+              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
+            },
+            "line-graph",
+            widget,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.widgetsOfType("pie-chart"), function(widget, i) {
+        return _c(
+          "pie-chart",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              staticClass: "widget",
+              style: { order: widget.layoutOrder },
+              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
+            },
+            "pie-chart",
+            widget,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.widgetsOfType("data-table"), function(widget, i) {
+        return _c(
+          "data-table",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              staticClass: "widget",
+              style: { order: widget.layoutOrder },
+              attrs: { highlightedDate: _vm.highlightedDate },
+              on: {
+                hoverDate: _vm.hoverDate,
+                unhoverDate: _vm.unhoverDate,
+                "dragstart-widget": _vm.dragstartWidgetHandler
+              }
+            },
+            "data-table",
+            widget,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.widgetsOfType("datasource-last-updated"), function(widget, i) {
+        return _c(
+          "datasource-last-updated",
+          _vm._b(
+            {
+              key: widget.id,
+              ref: widget.id,
+              refInFor: true,
+              staticClass: "widget",
+              style: { order: widget.layoutOrder },
+              on: {
+                "dragstart-widget": _vm.dragstartWidgetHandler,
+                "modify-widget": _vm.modifyWidget
+              }
+            },
+            "datasource-last-updated",
+            widget,
+            false
+          )
+        )
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3bec8029", esExports)
+  }
+}
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(67);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(102);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(100)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\card-editor.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9d3c827e", Component.options)
+  } else {
+    hotAPI.reload("data-v-9d3c827e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(101);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("fff1ea5c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"card-editor.vue","sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal" }, [
+    _c("h1", [_vm._v(_vm._s(_vm.newCard.title))]),
+    _vm._v(" "),
+    _c("h3", [_vm._v("Title")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.newCard.title,
+          expression: "newCard.title"
+        }
+      ],
+      domProps: { value: _vm.newCard.title },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.$set(_vm.newCard, "title", $event.target.value)
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "button-wrapper" }, [
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              _vm.$emit("exit-edit", true, _vm.newCard.id, _vm.newCard)
+            }
+          }
+        },
+        [_vm._v("Save")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              _vm.$emit("exit-edit", false)
+            }
+          }
+        },
+        [_vm._v("Cancel")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "delete",
+          on: {
+            click: function($event) {
+              _vm.$emit("delete-card", _vm.id)
+            }
+          }
+        },
+        [_vm._v("Delete")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9d3c827e", esExports)
+  }
+}
+
+/***/ }),
+/* 103 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "dashboard scorecard-wrapper",
+      style: _vm.columnsStyle,
+      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
+    },
+    [
+      _vm._l(_vm.layout.cards, function(card, i) {
+        return _c(
+          "card",
+          _vm._b(
+            {
+              key: i,
+              ref: card.id,
+              refInFor: true,
+              on: {
+                "edit-card": _vm.editCard,
+                "modify-widget": _vm.modifyWidget,
+                "update-widgets": _vm.updateWidgets
+              }
+            },
+            "card",
+            card,
+            false
+          )
+        )
+      }),
+      _vm._v(" "),
+      _vm.editingCard
+        ? _c(
+            "card-editor",
+            _vm._b(
+              {
+                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
+              },
+              "card-editor",
+              _vm.editedCard,
+              false
+            )
+          )
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
+  }
+}
+
+/***/ }),
+/* 104 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_inbox_vue__ = __webpack_require__(68);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bfdd086_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_inbox_vue__ = __webpack_require__(107);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(105)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-6bfdd086"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_inbox_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bfdd086_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_inbox_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src\\public\\components\\inbox.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6bfdd086", Component.options)
+  } else {
+    hotAPI.reload("data-v-6bfdd086", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(106);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("7ec38066", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6bfdd086\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./inbox.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6bfdd086\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./inbox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.inbox-wrapper[data-v-6bfdd086] {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\n}\n.header-wrapper[data-v-6bfdd086] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\n}\nh1[data-v-6bfdd086] {\r\n    color: white;\r\n    margin: 0;\n}\n.messages-wrapper[data-v-6bfdd086] {\r\n    overflow-y: scroll;\n}\n.close-button[data-v-6bfdd086] {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\n}\n.close-button[data-v-6bfdd086]:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\n}\n.date[data-v-6bfdd086] {\r\n    width: 15%;\n}\n.from[data-v-6bfdd086] {\r\n    width: 23%;\n}\n.body[data-v-6bfdd086] {\r\n    width: 62%;\n}\n.message-wrapper-column-headers[data-v-6bfdd086] {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/inbox.vue"],"names":[],"mappings":";AAmEA;IACA,gBAAA;IACA,cAAA;IACA,uBAAA;IACA,4BAAA;IACA,yBAAA;IACA,kBAAA;IACA,aAAA;IACA,oBAAA;IACA,6CAAA;IACA,aAAA;CACA;AACA;IACA,cAAA;IACA,+BAAA;IACA,kBAAA;CACA;AACA;IACA,aAAA;IACA,UAAA;CACA;AACA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,gBAAA;IACA,aAAA;IACA,0BAAA;CACA;AACA;IACA,gBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,eAAA;CACA","file":"inbox.vue","sourcesContent":["<template>\r\n<div class=\"inbox-wrapper\">\r\n    <div class=\"header-wrapper\">\r\n        <h1><i class=\"far fa-envelope\"></i> Inbox</h1>\r\n        <button @click=\"$emit('close')\"\r\n            title=\"Close inbox\" class=\"close-button\"\r\n            ><i class=\"fas fa-times\"></i>\r\n        </button>\r\n    </div>\r\n    <div class=\"message-wrapper-column-headers\">\r\n        <p class=\"date\">\r\n            Date\r\n        </p>\r\n        <p class=\"from\">\r\n            From\r\n        </p>\r\n        <p class=\"body\">\r\n            Message\r\n        </p>\r\n    </div>\r\n    <div class=\"messages-wrapper\">\r\n        <div class=\"message-wrapper\"\r\n            v-for=\"(message, i) in messageList\">\r\n            <p class=\"date\">\r\n                {{ dateText(message) }}\r\n            </p>\r\n            <p class=\"from\">\r\n                {{ message.fromName }}\r\n            </p>\r\n            <p class=\"body\">\r\n                {{ message.body }}\r\n            </p>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: {\r\n        messages: {\r\n            type: Array\r\n        }\r\n    },\r\n    computed: {\r\n        // messages sorted by time\r\n        messageList: function() {\r\n            return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);\r\n        }\r\n    },\r\n    methods: {\r\n        // Returns text for date next to message. Includes hour if within the last\r\n        // 24 hours\r\n        dateText: function(message) {\r\n            if (Math.abs(\r\n                    new Date(message.timestamp).getDate() - new Date().getDate()\r\n                ) < 1) {\r\n                return moment(message.timestamp).format('M/D h:mm A');\r\n            }\r\n            return moment(message.timestamp).format('M/D');\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.inbox-wrapper {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\r\n}\r\n.header-wrapper {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\r\n}\r\nh1 {\r\n    color: white;\r\n    margin: 0;\r\n}\r\n.messages-wrapper {\r\n    overflow-y: scroll;\r\n}\r\n.close-button {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\r\n}\r\n.close-button:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\r\n}\r\n.date {\r\n    width: 15%;\r\n}\r\n.from {\r\n    width: 23%;\r\n}\r\n.body {\r\n    width: 62%;\r\n}\r\n.message-wrapper-column-headers {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "inbox-wrapper" }, [
+    _c("div", { staticClass: "header-wrapper" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close-button",
+          attrs: { title: "Close inbox" },
+          on: {
+            click: function($event) {
+              _vm.$emit("close")
+            }
+          }
+        },
+        [_c("i", { staticClass: "fas fa-times" })]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "messages-wrapper" },
+      _vm._l(_vm.messageList, function(message, i) {
+        return _c("div", { staticClass: "message-wrapper" }, [
+          _c("p", { staticClass: "date" }, [
+            _vm._v(
+              "\r\n                " +
+                _vm._s(_vm.dateText(message)) +
+                "\r\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "from" }, [
+            _vm._v(
+              "\r\n                " +
+                _vm._s(message.fromName) +
+                "\r\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "body" }, [
+            _vm._v(
+              "\r\n                " + _vm._s(message.body) + "\r\n            "
+            )
+          ])
+        ])
+      })
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h1", [
+      _c("i", { staticClass: "far fa-envelope" }),
+      _vm._v(" Inbox")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "message-wrapper-column-headers" }, [
+      _c("p", { staticClass: "date" }, [
+        _vm._v("\r\n            Date\r\n        ")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "from" }, [
+        _vm._v("\r\n            From\r\n        ")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "body" }, [
+        _vm._v("\r\n            Message\r\n        ")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6bfdd086", esExports)
+  }
+}
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var empty = /*#__PURE__*/__webpack_require__(109);
+
+var equals = /*#__PURE__*/__webpack_require__(33);
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
+
+
+var isEmpty = /*#__PURE__*/_curry1(function isEmpty(x) {
+  return x != null && equals(x, empty(x));
+});
+module.exports = isEmpty;
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = /*#__PURE__*/__webpack_require__(0);
+
+var _isArguments = /*#__PURE__*/__webpack_require__(34);
+
+var _isArray = /*#__PURE__*/__webpack_require__(110);
+
+var _isObject = /*#__PURE__*/__webpack_require__(111);
+
+var _isString = /*#__PURE__*/__webpack_require__(112);
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
+
+
+var empty = /*#__PURE__*/_curry1(function empty(x) {
+  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
+    return arguments;
+  }() :
+  // else
+  void 0;
+});
+module.exports = empty;
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports) {
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+module.exports = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports) {
+
+function _isObject(x) {
+  return Object.prototype.toString.call(x) === '[object Object]';
+}
+module.exports = _isObject;
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+module.exports = _isString;
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+
+module.exports = function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+
+/***/ }),
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15200,917 +20442,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var equals = /*#__PURE__*/__webpack_require__(32);
-
-function _indexOf(list, a, idx) {
-  var inf, item;
-  // Array.prototype.indexOf doesn't exist below IE9
-  if (typeof list.indexOf === 'function') {
-    switch (typeof a) {
-      case 'number':
-        if (a === 0) {
-          // manually crawl the list to distinguish between +0 and -0
-          inf = 1 / a;
-          while (idx < list.length) {
-            item = list[idx];
-            if (item === 0 && 1 / item === inf) {
-              return idx;
-            }
-            idx += 1;
-          }
-          return -1;
-        } else if (a !== a) {
-          // NaN
-          while (idx < list.length) {
-            item = list[idx];
-            if (typeof item === 'number' && item !== item) {
-              return idx;
-            }
-            idx += 1;
-          }
-          return -1;
-        }
-        // non-zero numbers can utilise Set
-        return list.indexOf(a, idx);
-
-      // all these types can utilise Set
-      case 'string':
-      case 'boolean':
-      case 'function':
-      case 'undefined':
-        return list.indexOf(a, idx);
-
-      case 'object':
-        if (a === null) {
-          // null can utilise Set
-          return list.indexOf(a, idx);
-        }
-    }
-  }
-  // anything else not covered above, defer to R.equals
-  while (idx < list.length) {
-    if (equals(list[idx], a)) {
-      return idx;
-    }
-    idx += 1;
-  }
-  return -1;
-}
-module.exports = _indexOf;
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arrayFromIterator = /*#__PURE__*/__webpack_require__(41);
-
-var _containsWith = /*#__PURE__*/__webpack_require__(42);
-
-var _functionName = /*#__PURE__*/__webpack_require__(43);
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var identical = /*#__PURE__*/__webpack_require__(44);
-
-var keys = /*#__PURE__*/__webpack_require__(45);
-
-var type = /*#__PURE__*/__webpack_require__(11);
-
-/**
- * private _uniqContentEquals function.
- * That function is checking equality of 2 iterator contents with 2 assumptions
- * - iterators lengths are the same
- * - iterators values are unique
- *
- * false-positive result will be returned for comparision of, e.g.
- * - [1,2,3] and [1,2,3,4]
- * - [1,1,1] and [1,2,3]
- * */
-
-function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
-  var a = _arrayFromIterator(aIterator);
-  var b = _arrayFromIterator(bIterator);
-
-  function eq(_a, _b) {
-    return _equals(_a, _b, stackA.slice(), stackB.slice());
-  }
-
-  // if *a* array contains any element that is not included in *b*
-  return !_containsWith(function (b, aItem) {
-    return !_containsWith(eq, aItem, b);
-  }, b, a);
-}
-
-function _equals(a, b, stackA, stackB) {
-  if (identical(a, b)) {
-    return true;
-  }
-
-  var typeA = type(a);
-
-  if (typeA !== type(b)) {
-    return false;
-  }
-
-  if (a == null || b == null) {
-    return false;
-  }
-
-  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
-    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
-  }
-
-  if (typeof a.equals === 'function' || typeof b.equals === 'function') {
-    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
-  }
-
-  switch (typeA) {
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
-        return a === b;
-      }
-      break;
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
-        return false;
-      }
-      break;
-    case 'Date':
-      if (!identical(a.valueOf(), b.valueOf())) {
-        return false;
-      }
-      break;
-    case 'Error':
-      return a.name === b.name && a.message === b.message;
-    case 'RegExp':
-      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
-        return false;
-      }
-      break;
-  }
-
-  var idx = stackA.length - 1;
-  while (idx >= 0) {
-    if (stackA[idx] === a) {
-      return stackB[idx] === b;
-    }
-    idx -= 1;
-  }
-
-  switch (typeA) {
-    case 'Map':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
-    case 'Set':
-      if (a.size !== b.size) {
-        return false;
-      }
-
-      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
-    case 'Arguments':
-    case 'Array':
-    case 'Object':
-    case 'Boolean':
-    case 'Number':
-    case 'String':
-    case 'Date':
-    case 'Error':
-    case 'RegExp':
-    case 'Int8Array':
-    case 'Uint8Array':
-    case 'Uint8ClampedArray':
-    case 'Int16Array':
-    case 'Uint16Array':
-    case 'Int32Array':
-    case 'Uint32Array':
-    case 'Float32Array':
-    case 'Float64Array':
-    case 'ArrayBuffer':
-      break;
-    default:
-      // Values of other types are only equal if identical.
-      return false;
-  }
-
-  var keysA = keys(a);
-  if (keysA.length !== keys(b).length) {
-    return false;
-  }
-
-  var extendedStackA = stackA.concat([a]);
-  var extendedStackB = stackB.concat([b]);
-
-  idx = keysA.length - 1;
-  while (idx >= 0) {
-    var key = keysA[idx];
-    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
-      return false;
-    }
-    idx -= 1;
-  }
-  return true;
-}
-module.exports = _equals;
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-function _arrayFromIterator(iter) {
-  var list = [];
-  var next;
-  while (!(next = iter.next()).done) {
-    list.push(next.value);
-  }
-  return list;
-}
-module.exports = _arrayFromIterator;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-function _containsWith(pred, x, list) {
-  var idx = 0;
-  var len = list.length;
-
-  while (idx < len) {
-    if (pred(x, list[idx])) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-}
-module.exports = _containsWith;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-function _functionName(f) {
-  // String(x => x) evaluates to "x => x", so the pattern may not match.
-  var match = String(f).match(/^function (\w*)/);
-  return match == null ? '' : match[1];
-}
-module.exports = _functionName;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-/**
- * Returns true if its arguments are identical, false otherwise. Values are
- * identical if they reference the same memory. `NaN` is identical to `NaN`;
- * `0` and `-0` are not identical.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> a -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      var o = {};
- *      R.identical(o, o); //=> true
- *      R.identical(1, 1); //=> true
- *      R.identical(1, '1'); //=> false
- *      R.identical([], []); //=> false
- *      R.identical(0, -0); //=> false
- *      R.identical(NaN, NaN); //=> true
- */
-
-
-var identical = /*#__PURE__*/_curry2(function identical(a, b) {
-  // SameValue algorithm
-  if (a === b) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return a !== 0 || 1 / a === 1 / b;
-  } else {
-    // Step 6.a: NaN == NaN
-    return a !== a && b !== b;
-  }
-});
-module.exports = identical;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _has = /*#__PURE__*/__webpack_require__(25);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(33);
-
-// cover IE < 9 keys issues
-
-
-var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
-var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-// Safari bug
-var hasArgsEnumBug = /*#__PURE__*/function () {
-  'use strict';
-
-  return arguments.propertyIsEnumerable('length');
-}();
-
-var contains = function contains(list, item) {
-  var idx = 0;
-  while (idx < list.length) {
-    if (list[idx] === item) {
-      return true;
-    }
-    idx += 1;
-  }
-  return false;
-};
-
-/**
- * Returns a list containing the names of all the enumerable own properties of
- * the supplied object.
- * Note that the order of the output array is not guaranteed to be consistent
- * across different JS platforms.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Object
- * @sig {k: v} -> [k]
- * @param {Object} obj The object to extract properties from
- * @return {Array} An array of the object's own properties.
- * @see R.keysIn, R.values
- * @example
- *
- *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
- */
-var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys(obj) {
-  return Object(obj) !== obj ? [] : Object.keys(obj);
-} : function keys(obj) {
-  if (Object(obj) !== obj) {
-    return [];
-  }
-  var prop, nIdx;
-  var ks = [];
-  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
-  for (prop in obj) {
-    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
-      ks[ks.length] = prop;
-    }
-  }
-  if (hasEnumBug) {
-    nIdx = nonEnumerableProps.length - 1;
-    while (nIdx >= 0) {
-      prop = nonEnumerableProps[nIdx];
-      if (_has(prop, obj) && !contains(ks, prop)) {
-        ks[ks.length] = prop;
-      }
-      nIdx -= 1;
-    }
-  }
-  return ks;
-};
-var keys = /*#__PURE__*/_curry1(_keys);
-module.exports = keys;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-function _filter(fn, list) {
-  var idx = 0;
-  var len = list.length;
-  var result = [];
-
-  while (idx < len) {
-    if (fn(list[idx])) {
-      result[result.length] = list[idx];
-    }
-    idx += 1;
-  }
-  return result;
-}
-module.exports = _filter;
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var curryN = /*#__PURE__*/__webpack_require__(48);
-
-/**
- * Returns a new function much like the supplied one, except that the first two
- * arguments' order is reversed.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Function
- * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
- * @param {Function} fn The function to invoke with its first two parameters reversed.
- * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
- * @example
- *
- *      var mergeThree = (a, b, c) => [].concat(a, b, c);
- *
- *      mergeThree(1, 2, 3); //=> [1, 2, 3]
- *
- *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
- * @symb R.flip(f)(a, b, c) = f(b, a, c)
- */
-
-
-var flip = /*#__PURE__*/_curry1(function flip(fn) {
-  return curryN(fn.length, function (a, b) {
-    var args = Array.prototype.slice.call(arguments, 0);
-    args[0] = b;
-    args[1] = a;
-    return fn.apply(this, args);
-  });
-});
-module.exports = flip;
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arity = /*#__PURE__*/__webpack_require__(34);
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-var _curryN = /*#__PURE__*/__webpack_require__(49);
-
-/**
- * Returns a curried equivalent of the provided function, with the specified
- * arity. The curried function has two unusual capabilities. First, its
- * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
- * following are equivalent:
- *
- *   - `g(1)(2)(3)`
- *   - `g(1)(2, 3)`
- *   - `g(1, 2)(3)`
- *   - `g(1, 2, 3)`
- *
- * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
- * "gaps", allowing partial application of any combination of arguments,
- * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
- * the following are equivalent:
- *
- *   - `g(1, 2, 3)`
- *   - `g(_, 2, 3)(1)`
- *   - `g(_, _, 3)(1)(2)`
- *   - `g(_, _, 3)(1, 2)`
- *   - `g(_, 2)(1)(3)`
- *   - `g(_, 2)(1, 3)`
- *   - `g(_, 2)(_, 3)(1)`
- *
- * @func
- * @memberOf R
- * @since v0.5.0
- * @category Function
- * @sig Number -> (* -> a) -> (* -> a)
- * @param {Number} length The arity for the returned function.
- * @param {Function} fn The function to curry.
- * @return {Function} A new, curried function.
- * @see R.curry
- * @example
- *
- *      var sumArgs = (...args) => R.sum(args);
- *
- *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
- *      var f = curriedAddFourNumbers(1, 2);
- *      var g = f(3);
- *      g(4); //=> 10
- */
-
-
-var curryN = /*#__PURE__*/_curry2(function curryN(length, fn) {
-  if (length === 1) {
-    return _curry1(fn);
-  }
-  return _arity(length, _curryN(length, [], fn));
-});
-module.exports = curryN;
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _arity = /*#__PURE__*/__webpack_require__(34);
-
-var _isPlaceholder = /*#__PURE__*/__webpack_require__(9);
-
-/**
- * Internal curryN function.
- *
- * @private
- * @category Function
- * @param {Number} length The arity of the curried function.
- * @param {Array} received An array of arguments received thus far.
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-
-
-function _curryN(length, received, fn) {
-  return function () {
-    var combined = [];
-    var argsIdx = 0;
-    var left = length;
-    var combinedIdx = 0;
-    while (combinedIdx < received.length || argsIdx < arguments.length) {
-      var result;
-      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
-        result = received[combinedIdx];
-      } else {
-        result = arguments[argsIdx];
-        argsIdx += 1;
-      }
-      combined[combinedIdx] = result;
-      if (!_isPlaceholder(result)) {
-        left -= 1;
-      }
-      combinedIdx += 1;
-    }
-    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
-  };
-}
-module.exports = _curryN;
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _identity = /*#__PURE__*/__webpack_require__(51);
-
-/**
- * A function that does nothing but return the parameter supplied to it. Good
- * as a default or placeholder function.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category Function
- * @sig a -> a
- * @param {*} x The value to return.
- * @return {*} The input value, `x`.
- * @example
- *
- *      R.identity(1); //=> 1
- *
- *      var obj = {};
- *      R.identity(obj) === obj; //=> true
- * @symb R.identity(a) = a
- */
-
-
-var identity = /*#__PURE__*/_curry1(_identity);
-module.exports = identity;
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-function _identity(x) {
-  return x;
-}
-module.exports = _identity;
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _Set = /*#__PURE__*/__webpack_require__(53);
-
-var _curry2 = /*#__PURE__*/__webpack_require__(15);
-
-/**
- * Returns a new list containing only one copy of each element in the original
- * list, based upon the value returned by applying the supplied function to
- * each list element. Prefers the first item if the supplied function produces
- * the same value on two items. [`R.equals`](#equals) is used for comparison.
- *
- * @func
- * @memberOf R
- * @since v0.16.0
- * @category List
- * @sig (a -> b) -> [a] -> [a]
- * @param {Function} fn A function used to produce a value to use during comparisons.
- * @param {Array} list The array to consider.
- * @return {Array} The list of unique items.
- * @example
- *
- *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
- */
-
-
-var uniqBy = /*#__PURE__*/_curry2(function uniqBy(fn, list) {
-  var set = new _Set();
-  var result = [];
-  var idx = 0;
-  var appliedItem, item;
-
-  while (idx < list.length) {
-    item = list[idx];
-    appliedItem = fn(item);
-    if (set.add(appliedItem)) {
-      result.push(item);
-    }
-    idx += 1;
-  }
-  return result;
-});
-module.exports = uniqBy;
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _contains = /*#__PURE__*/__webpack_require__(31);
-
-var _Set = /*#__PURE__*/function () {
-
-  function _Set() {
-    /* globals Set */
-    this._nativeSet = typeof Set === 'function' ? new Set() : null;
-    this._items = {};
-  }
-
-  // until we figure out why jsdoc chokes on this
-  // @param item The item to add to the Set
-  // @returns {boolean} true if the item did not exist prior, otherwise false
-  //
-  _Set.prototype.add = function (item) {
-    return !hasOrAdd(item, true, this);
-  };
-
-  //
-  // @param item The item to check for existence in the Set
-  // @returns {boolean} true if the item exists in the Set, otherwise false
-  //
-  _Set.prototype.has = function (item) {
-    return hasOrAdd(item, false, this);
-  };
-
-  //
-  // Combines the logic for checking whether an item is a member of the set and
-  // for adding a new item to the set.
-  //
-  // @param item       The item to check or add to the Set instance.
-  // @param shouldAdd  If true, the item will be added to the set if it doesn't
-  //                   already exist.
-  // @param set        The set instance to check or add to.
-  // @return {boolean} true if the item already existed, otherwise false.
-  //
-  return _Set;
-}();
-
-function hasOrAdd(item, shouldAdd, set) {
-  var type = typeof item;
-  var prevSize, newSize;
-  switch (type) {
-    case 'string':
-    case 'number':
-      // distinguish between +0 and -0
-      if (item === 0 && 1 / item === -Infinity) {
-        if (set._items['-0']) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items['-0'] = true;
-          }
-          return false;
-        }
-      }
-      // these types can all utilise the native Set
-      if (set._nativeSet !== null) {
-        if (shouldAdd) {
-          prevSize = set._nativeSet.size;
-          set._nativeSet.add(item);
-          newSize = set._nativeSet.size;
-          return newSize === prevSize;
-        } else {
-          return set._nativeSet.has(item);
-        }
-      } else {
-        if (!(type in set._items)) {
-          if (shouldAdd) {
-            set._items[type] = {};
-            set._items[type][item] = true;
-          }
-          return false;
-        } else if (item in set._items[type]) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items[type][item] = true;
-          }
-          return false;
-        }
-      }
-
-    case 'boolean':
-      // set._items['boolean'] holds a two element array
-      // representing [ falseExists, trueExists ]
-      if (type in set._items) {
-        var bIdx = item ? 1 : 0;
-        if (set._items[type][bIdx]) {
-          return true;
-        } else {
-          if (shouldAdd) {
-            set._items[type][bIdx] = true;
-          }
-          return false;
-        }
-      } else {
-        if (shouldAdd) {
-          set._items[type] = item ? [false, true] : [true, false];
-        }
-        return false;
-      }
-
-    case 'function':
-      // compare functions for reference equality
-      if (set._nativeSet !== null) {
-        if (shouldAdd) {
-          prevSize = set._nativeSet.size;
-          set._nativeSet.add(item);
-          newSize = set._nativeSet.size;
-          return newSize === prevSize;
-        } else {
-          return set._nativeSet.has(item);
-        }
-      } else {
-        if (!(type in set._items)) {
-          if (shouldAdd) {
-            set._items[type] = [item];
-          }
-          return false;
-        }
-        if (!_contains(item, set._items[type])) {
-          if (shouldAdd) {
-            set._items[type].push(item);
-          }
-          return false;
-        }
-        return true;
-      }
-
-    case 'undefined':
-      if (set._items[type]) {
-        return true;
-      } else {
-        if (shouldAdd) {
-          set._items[type] = true;
-        }
-        return false;
-      }
-
-    case 'object':
-      if (item === null) {
-        if (!set._items['null']) {
-          if (shouldAdd) {
-            set._items['null'] = true;
-          }
-          return false;
-        }
-        return true;
-      }
-    /* falls through */
-    default:
-      // reduce the search size of heterogeneous sets by creating buckets
-      // for each type.
-      type = Object.prototype.toString.call(item);
-      if (!(type in set._items)) {
-        if (shouldAdd) {
-          set._items[type] = [item];
-        }
-        return false;
-      }
-      // scan through all previously applied items
-      if (!_contains(item, set._items[type])) {
-        if (shouldAdd) {
-          set._items[type].push(item);
-        }
-        return false;
-      }
-      return true;
-  }
-}
-
-// A simple Set type that honours R.equals semantics
-module.exports = _Set;
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = /*#__PURE__*/__webpack_require__(0);
-
-var _isArguments = /*#__PURE__*/__webpack_require__(33);
-
-var _isArray = /*#__PURE__*/__webpack_require__(55);
-
-var _isObject = /*#__PURE__*/__webpack_require__(56);
-
-var _isString = /*#__PURE__*/__webpack_require__(57);
-
-/**
- * Returns the empty value of its argument's type. Ramda defines the empty
- * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
- * types are supported if they define `<Type>.empty`,
- * `<Type>.prototype.empty` or implement the
- * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
- *
- * Dispatches to the `empty` method of the first argument, if present.
- *
- * @func
- * @memberOf R
- * @since v0.3.0
- * @category Function
- * @sig a -> a
- * @param {*} x
- * @return {*}
- * @example
- *
- *      R.empty(Just(42));      //=> Nothing()
- *      R.empty([1, 2, 3]);     //=> []
- *      R.empty('unicorns');    //=> ''
- *      R.empty({x: 1, y: 2});  //=> {}
- */
-
-
-var empty = /*#__PURE__*/_curry1(function empty(x) {
-  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {
-    return arguments;
-  }() :
-  // else
-  void 0;
-});
-module.exports = empty;
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-/**
- * Tests whether or not an object is an array.
- *
- * @private
- * @param {*} val The object to test.
- * @return {Boolean} `true` if `val` is an array, `false` otherwise.
- * @example
- *
- *      _isArray([]); //=> true
- *      _isArray(null); //=> false
- *      _isArray({}); //=> false
- */
-module.exports = Array.isArray || function _isArray(val) {
-  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
-};
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-function _isObject(x) {
-  return Object.prototype.toString.call(x) === '[object Object]';
-}
-module.exports = _isObject;
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-}
-module.exports = _isString;
-
-/***/ }),
-/* 58 */
+/* 132 */
 /***/ (function(module, exports) {
 
 /*
@@ -16696,4301 +21028,6 @@ module.exports = _isString;
     window.sift = sift;
   }
 })();
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__ = __webpack_require__(68);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__ = __webpack_require__(88);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(86)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_data_table_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_48d3d2c4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_data_table_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\data-table.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48d3d2c4", Component.options)
-  } else {
-    hotAPI.reload("data-v-48d3d2c4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__ = __webpack_require__(35);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__ = __webpack_require__(63);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(61)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-a22da046"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_users_selector_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a22da046_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_users_selector_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\users-selector.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a22da046", Component.options)
-  } else {
-    hotAPI.reload("data-v-a22da046", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("fb81eb78", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a22da046\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./users-selector.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.message[data-v-a22da046] {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\n}\n.agent-selectors[data-v-a22da046] {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\n}\n.agent-selectors .toggle-buttons[data-v-a22da046] {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\n}\n.agent-selectors .user-list select[data-v-a22da046],\r\n.agent-selectors .agentgroup-list select[data-v-a22da046] {\r\n    width: 100%;\n}\n.agent-selectors .refresh-button-wrapper[data-v-a22da046] {\r\n    display: flex;\n}\n.agent-selectors .refresh-button[data-v-a22da046] {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\n}\n.agent-selectors .refresh-button[data-v-a22da046]:hover {\r\n    background-color: hsl(345, 100%, 42%);\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/users-selector.vue"],"names":[],"mappings":";AAyIA;IACA,uBAAA;IACA,mBAAA;IACA,YAAA;CACA;AACA;IACA,cAAA;IACA,cAAA;IACA,sCAAA;CACA;AACA;IACA,mBAAA;IACA,YAAA;IACA,YAAA;CACA;AACA;;IAEA,YAAA;CACA;AACA;IACA,cAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,eAAA;IACA,mBAAA;CACA;AACA;IACA,sCAAA;CACA","file":"users-selector.vue","sourcesContent":["<template>\r\n<div>\r\n    <div class=\"message\" v-if=\"message\">\r\n        <p>\r\n            {{ message }}\r\n        </p>\r\n    </div>\r\n    <div v-if=\"userList.length > 0\" class=\"section agent-selectors\">\r\n        <div class=\"agentgroup-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedAgentGroups\"\r\n                    @change=\"selectAgentGroups(selectedAgentGroups)\">\r\n                <option v-for=\"(agentGroup, i) in agentGroups\"\r\n                    :value=\"agentGroup\">\r\n                    {{ agentGroup }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n        <div class=\"user-list\">\r\n            <select multiple size=\"30\" v-model=\"selectedUsernames\"\r\n                @change=\"selectUsers(getUsers(selectedUsernames))\">\r\n                <option v-for=\"(userAgent, i) in filterUsersInGroup(userList)\"\r\n                    :value=\"userAgent.username\">\r\n                    {{ getUserSelectionString(userAgent) }}\r\n                </option>\r\n            </select>\r\n        </div>\r\n\r\n        <div class=\"refresh-button-wrapper\" v-if=\"showRefresh\">\r\n            <button class=\"refresh-button\" @click=\"clickRefresh\">\r\n                <i class=\"fas fa-sync-alt\"></i> Refresh\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as api from '../javascript/api';\r\nimport { extractValues } from '../javascript/hub';\r\nconst intersection = require('ramda/src/intersection');\r\n\r\nexport default {\r\n    name: 'users-selector',\r\n\r\n\r\n    props: {\r\n        showRefresh: {\r\n            default: true\r\n        }\r\n    },\r\n\r\n\r\n    data () {\r\n        return {\r\n            userList: [],\r\n            selectedUsernames: [],\r\n            selectedAgentGroups: [],\r\n            agentGroups: [],\r\n            message: ''\r\n        }\r\n    },\r\n\r\n\r\n    mounted: async function() {\r\n        this.userList = await this.loadUsersList();\r\n        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);\r\n        this.$emit('users-loaded', this.userList);\r\n    },\r\n\r\n\r\n    methods: {\r\n        clickRefresh: function() {\r\n            if (this.$store.state.supMode == 'individual'\r\n                && this.selectedUsernames.length > 1) {\r\n                this.message = `Change to TEAM mode to view multiple users, ya turkey!`\r\n            } else {\r\n                this.message = '';\r\n                this.$emit('refresh');\r\n            }\r\n        },\r\n\r\n        // Load list of users\r\n        loadUsersList: async function() {\r\n            let userList = await api.getUsers();\r\n            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);\r\n            return userList;\r\n        },\r\n\r\n        // Return users who are within the selectedAgentGroups\r\n        filterUsersInGroup: function(users) {\r\n            if (this.selectedAgentGroups.length == 0) return users;\r\n            return users.filter((user) =>\r\n                intersection(user.agentGroups, this.selectedAgentGroups).length > 0\r\n            )\r\n        },\r\n\r\n        // If a user is part of multiple groups, list them next to user's name\r\n        getUserSelectionString: function(user) {\r\n            let groupString = '';\r\n            if (user.agentGroups.length > 1) {\r\n                groupString = ` - ${user.agentGroups.join(', ')}`;\r\n            }\r\n            return `${user.lastName}, ${user.firstName}${groupString}`;\r\n        },\r\n\r\n        // From the passed-in users, return array of agent groups\r\n        getAgentGroupsFromUsers: function(users) {\r\n            return extractValues(users, 'agentGroups').sort();\r\n        },\r\n\r\n        // Filter for agents within an agent group\r\n        selectAgentGroups: async function(agentGroups) {\r\n            this.selectedAgentGroups = agentGroups;\r\n            this.selectUsers(this.filterUsersInGroup(this.userList));\r\n        },\r\n\r\n        // Get users from usernames\r\n        getUsers: function(usernames) {\r\n            return usernames.map((username) =>\r\n                this.userList.find((user) => user.username == username)\r\n            );\r\n        },\r\n\r\n        selectUsers: function(users) {\r\n            this.$emit('select-users', users);\r\n            // Make sure these cats are in the selectedUsernames list\r\n            this.selectedUsernames = users.map((u) => u.username);\r\n        }\r\n\r\n    }\r\n\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.message {\r\n    background-color: #333;\r\n    border-radius: 2px;\r\n    color: white\r\n}\r\n.agent-selectors {\r\n    display: grid;\r\n    grid-gap: 2em;\r\n    grid-template-columns: repeat(3, 1fr);\r\n}\r\n.agent-selectors .toggle-buttons {\r\n    grid-column: 2 / 4;\r\n    grid-row: 1;\r\n    margin: 1em;\r\n}\r\n.agent-selectors .user-list select,\r\n.agent-selectors .agentgroup-list select {\r\n    width: 100%;\r\n}\r\n.agent-selectors .refresh-button-wrapper {\r\n    display: flex;\r\n}\r\n.agent-selectors .refresh-button {\r\n    height: 150px;\r\n    width: 100%;\r\n    font-size: 2em;\r\n    align-self: center;\r\n}\r\n.agent-selectors .refresh-button:hover {\r\n    background-color: hsl(345, 100%, 42%);\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.message
-      ? _c("div", { staticClass: "message" }, [
-          _c("p", [
-            _vm._v("\r\n            " + _vm._s(_vm.message) + "\r\n        ")
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.userList.length > 0
-      ? _c("div", { staticClass: "section agent-selectors" }, [
-          _c("div", { staticClass: "agentgroup-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedAgentGroups,
-                    expression: "selectedAgentGroups"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedAgentGroups = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.selectAgentGroups(_vm.selectedAgentGroups)
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.agentGroups, function(agentGroup, i) {
-                return _c("option", { domProps: { value: agentGroup } }, [
-                  _vm._v(
-                    "\r\n                    " +
-                      _vm._s(agentGroup) +
-                      "\r\n                "
-                  )
-                ])
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "user-list" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedUsernames,
-                    expression: "selectedUsernames"
-                  }
-                ],
-                attrs: { multiple: "", size: "30" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedUsernames = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.selectUsers(_vm.getUsers(_vm.selectedUsernames))
-                    }
-                  ]
-                }
-              },
-              _vm._l(_vm.filterUsersInGroup(_vm.userList), function(
-                userAgent,
-                i
-              ) {
-                return _c(
-                  "option",
-                  { domProps: { value: userAgent.username } },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(_vm.getUserSelectionString(userAgent)) +
-                        "\r\n                "
-                    )
-                  ]
-                )
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _vm.showRefresh
-            ? _c("div", { staticClass: "refresh-button-wrapper" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "refresh-button",
-                    on: { click: _vm.clickRefresh }
-                  },
-                  [
-                    _c("i", { staticClass: "fas fa-sync-alt" }),
-                    _vm._v(" Refresh\r\n            ")
-                  ]
-                )
-              ])
-            : _vm._e()
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a22da046", esExports)
-  }
-}
-
-/***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card_vue__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__ = __webpack_require__(73);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['layout'],
-  components: {
-    'card': __WEBPACK_IMPORTED_MODULE_0__card_vue__["a" /* default */],
-    'card-editor': __WEBPACK_IMPORTED_MODULE_1__card_editor_vue__["a" /* default */]
-  },
-  data: function () {
-    return {
-      editingCard: false,
-      editedCard: null
-    };
-  },
-  computed: {
-    columnsStyle: function () {
-      if (this.layout.columns) {
-        return `grid-template-columns: repeat(${this.layout.columns}, 1fr);`;
-      } else {
-        return '';
-      }
-    }
-  },
-  methods: {
-    // Edit or delete a card
-    editCard: function (cardId) {
-      this.editingCard = true;
-      this.editedCard = this.layout.cards.find(card => card.id == cardId); // close modal on click outside window
-
-      document.documentElement.addEventListener('click', function (ev) {
-        if (!this.$el.contains(ev.target)) this.exitEdit(false);
-      }.bind(this), false);
-    },
-    exitEdit: function (saveChanges, cardId, card) {
-      this.editingCard = false;
-      this.editedCard = '';
-      if (!saveChanges) return;
-      this.$emit('update-card', cardId, card);
-    },
-    deleteCard: function (cardId) {
-      this.exitEdit(false);
-      this.$emit('delete-card', cardId);
-    },
-
-    /**
-     * Modify a single widget.
-     * @param  {Object} newWidget object to replace old widget with
-     * @param  {String} widgetId  id of widget within card
-     * @param  {String} cardId    id of card containing widget
-     * @emits  modify-widget event to app Vue instance
-     */
-    modifyWidget: function (newWidget, widgetId, cardId) {
-      this.$emit('modify-widget', newWidget, widgetId, cardId);
-    },
-
-    /**
-     * Update all widgets. Used to change order of widgets after drag and
-     * drop actions.
-     * @param  {Array}  newWidgets all of the new widgets
-     * @param  {String} cardId     card that is being modified
-     * @emits  update-card Event to app's Vue instance
-     */
-    updateWidgets: function (newWidgets, cardId) {
-      let newCard = {};
-      Object.assign(newCard, this.layout.cards[cardId]);
-      newCard.widgets = newWidgets;
-      this.$emit('update-card', cardId, newCard);
-    },
-    // Drag and drop to move cards
-    dragoverHandler: function (event) {
-      if (!this.$store.state.editMode) return;
-      event.preventDefault();
-    },
-    dropHandler: function (event) {
-      if (!this.$store.state.editMode) return;
-      const id = event.dataTransfer.getData('text');
-      const thisCard = this.$refs[id][0];
-      let newLayout = [];
-      Object.assign(newLayout, this.layout); // Determine what order the cards should be in
-
-      let el = card => this.$refs[card.id][0].$el;
-
-      newLayout.cards.sort((a, b) => Object(__WEBPACK_IMPORTED_MODULE_2__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, id, el)); // Update the layoutOrder property for each card
-
-      newLayout.cards.forEach((card, i) => {
-        card.layoutOrder = i;
-      }); // Update the layout
-
-      this.$emit('update-layout', newLayout);
-    }
-  }
-});
-
-/***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_table_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__single_value_vue__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__javascript_scorecard_format__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__ = __webpack_require__(73);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],
-  components: {
-    'single-value': __WEBPACK_IMPORTED_MODULE_3__single_value_vue__["a" /* default */],
-    'data-table': __WEBPACK_IMPORTED_MODULE_1__data_table_vue__["a" /* default */],
-    'line-graph': __WEBPACK_IMPORTED_MODULE_2__line_graph_vue__["a" /* default */],
-    'pie-chart': __WEBPACK_IMPORTED_MODULE_4__pie_chart_vue__["a" /* default */],
-    'datasource-last-updated': __WEBPACK_IMPORTED_MODULE_5__datasource_last_updated_vue__["a" /* default */]
-  },
-  data: function () {
-    return {
-      highlightedDate: null,
-      draggingWidget: true
-    };
-  },
-  computed: {
-    // Make CSS grid position a computed property, so that it will change
-    // when a different layout is loaded
-    gridPositioning: function () {
-      return {
-        'order': this.layoutOrder,
-        // number of columns wide
-        'grid-column': `span ${this.columns}`
-      };
-    }
-  },
-  methods: {
-    // add a new widget to the card
-    addWidget: function () {
-      let o = __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */].newObject('prompt user for widget type');
-      console.log(o);
-    },
-
-    /**
-     * Update a widget in this card
-     * @param  {Object} newWidget object to replace with
-     * @param  {String} id        for widget being modified
-     * @return
-     */
-    modifyWidget: function (newWidget, id) {
-      this.$emit('modify-widget', newWidget, id, this.id);
-    },
-    // Return widgets of a given type (data-table, line-graph, etc.)
-    widgetsOfType: function (type) {
-      return this.widgets.filter(widget => widget['component'] == type);
-    },
-    // React to user hovering over a day
-    hoverDate: function (date) {
-      this.highlightedDate = date;
-    },
-    unhoverDate: function (date) {
-      this.highlightedDate = null;
-    },
-    // Card drag and drop handling
-    dragstartHandler: function (event) {
-      if (!this.$store.state.editMode) return;
-      event.dataTransfer.setData('text/plain', this.id);
-    },
-    // Widget drag and drop handling
-    dragstartWidgetHandler: function (event, widget) {
-      if (!this.$store.state.editMode) return;
-      this.draggingWidget = true;
-      const dragData = {
-        cardId: this.id,
-        widgetId: widget.id
-      };
-      event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-    },
-    dragWidgetHandler: function (event) {
-      if (!this.$store.state.editMode) return;
-      event.preventDefault();
-    },
-
-    /**
-     * Handles dropping a widget on this card, sorting all the widgets.
-     * @param  {Event} event for window drop action
-     * @emits  update-widget event to Dashboard component
-     */
-    dropWidgetHandler: function (event) {
-      if (!this.$store.state.editMode) return;
-      let dragData;
-
-      try {
-        // Try to parse dragData as JSON and prevent other drag/drop
-        // effects
-        dragData = JSON.parse(event.dataTransfer.getData('text/plain'));
-        event.preventDefault();
-        event.stopPropagation(); // If dragData isn't JSON, move along
-      } catch (err) {
-        if (err instanceof SyntaxError) {
-          return;
-        }
-      } // If this widget is being dropped in a different card, ignore
-
-
-      if (dragData.cardId != this.id) return; // Otherwise sort widgets and update the dashboard
-
-      let newWidgets = [];
-      Object.assign(newWidgets, this.widgets);
-
-      let el = widget => this.$refs[widget.id][0].$el;
-
-      newWidgets.sort((a, b) => Object(__WEBPACK_IMPORTED_MODULE_7__drag_n_drop_sort_js__["a" /* sortOrder */])(a, b, event, dragData.widgetId, el)); // assign a layout order based on sort
-
-      newWidgets.forEach((widget, i) => {
-        widget.layoutOrder = i;
-      });
-      this.$emit('update-widgets', newWidgets, this.id);
-    }
-  }
-});
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__editor_vue__ = __webpack_require__(82);
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['id', 'datasource', 'filter'],
-  components: {
-    'editor': __WEBPACK_IMPORTED_MODULE_0__editor_vue__["a" /* default */]
-  },
-  methods: {
-    dragstartHandler: function (event) {
-      this.$emit('dragstart-widget', event, this.$props);
-    }
-  },
-  // Utility to return a blank widget
-  newObject: function (type) {
-    return {
-      id: 'widget:' + uuidv4(),
-      component: type,
-      title: 'Hello World',
-      fieldName: '',
-      filter: {},
-      datasource: ''
-    };
-  }
-});
-/**
- * Returns unique ID number
- * @return {String} 16-bit UUID
- */
-
-function uuidv4() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-}
-
-/***/ }),
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_filters__ = __webpack_require__(30);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
- // TODO: dropdown for date types
-
-const clone = __webpack_require__(5);
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['initialObject'],
-  data: function () {
-    return {
-      editingNow: false,
-      newObject: {},
-      dateOptions: __WEBPACK_IMPORTED_MODULE_0__javascript_filters__["b" /* dateOptions */]()
-    };
-  },
-
-  // Create a copy of the passed-in object on creation
-  mounted() {
-    this.newObject = clone(this.initialObject);
-  },
-
-  methods: {
-    edit: function () {
-      this.editingNow = true; // close modal on click outside window
-
-      document.documentElement.addEventListener('click', function (ev) {
-        if (!this.$el.contains(ev.target)) this.exit();
-      }.bind(this), false);
-    },
-    add: function () {},
-    exit: function (saveChanges) {
-      this.editingNow = false;
-
-      if (saveChanges) {
-        this.$emit('modify-widget', this.newObject);
-      }
-    },
-    deleteObject: function () {
-      this.editingNow = false;
-      this.$emit('modify-widget', {});
-    }
-  }
-});
-
-/***/ }),
-/* 68 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_parse__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__ = __webpack_require__(26);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/**
- *
- * @prop {Array} fields to display. The first field will be the one that data
- *               is summarized by if the `summarizeBy` prop isn't given.
- * @prop {Array} summarizeBy - which fields to summarize data by
- * @prop {Array} headers - optional headers to use. If not specified, will use keys in Object.
- * @prop {String} datasource - name of datasource being used
- * @prop {Object} filter to apply to data
- * @prop {Boolean} isChild - defaults to false
- */
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
-  props: {
-    fields: Array,
-    summarizeBy: {
-      type: Array,
-      default: null
-    },
-    headers: Array,
-    datasource: String,
-    filter: Object,
-    summarize: {
-      type: Boolean,
-      default: true
-    },
-    isChild: {
-      type: Boolean,
-      default: false
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    sortByField: String,
-    sortAscending: {
-      type: Boolean,
-      default: true
-    }
-  },
-
-  data() {
-    return {
-      highlightedRow: null
-    };
-  },
-
-  /**
-   * Any time an update occurs, the headers' width needs to be matched to the
-   * body's width (because the header is contained in its own fixed div).
-   */
-  updated() {
-    this.alignColumns();
-  },
-
-  mounted() {
-    this.alignColumns();
-  },
-
-  computed: {
-    data: function () {
-      let data = this.$store.getters.getData(this.filter, this.datasource);
-
-      if (this.summarize) {
-        if (this.summarizeBy) {
-          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["e" /* summarizeByMultiple */](data, this.summarizeBy, this.fields);
-        } else {
-          // default to summarizing by first field
-          data = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["d" /* summarize */](data, this.fields[0], this.fields.slice(1));
-        }
-      } // TODO: take care of this case in the parse module
-
-
-      if (this.fields[0] == 'reasonCode') return getNotReadyPercentage(data).sort((a, b) => a['reasonCode'] < b['reasonCode'] ? -1 : 1); // Sort by sortByField, or first field if none given
-
-      let sortField = this.sortByField || this.fields[0];
-      data.sort((a, b) => {
-        if (this.sortAscending) return a[sortField] < b[sortField] ? -1 : 1;else return a[sortField] > b[sortField] ? -1 : 1;
-      }); // Leave only fields that are defined in widget
-
-      return data.map(__WEBPACK_IMPORTED_MODULE_1__javascript_parse__["a" /* filterFields */](this.fields));
-    },
-    displayHeaders: function () {
-      if (this.data.length == 0) return [];
-      if (this.headers) return this.headers; // Determine headers based on object keys
-
-      return Object.keys(this.data[0]).map(fieldName => {
-        let f = this.$store.getters.field(fieldName);
-        if (f && f.displayName) return f.displayName;else return fieldName;
-      });
-    }
-  },
-  methods: {
-    highlight: function (i) {
-      this.highlightedRow = i;
-    },
-    unhighlight: function () {
-      this.highlightedRow = null;
-    },
-    isHighlighted: function (i) {
-      return this.highlightedRow == i;
-    },
-    formatted: function (val, fieldName) {
-      let res = Object(__WEBPACK_IMPORTED_MODULE_2__javascript_scorecard_format_js__["a" /* formatValue */])(val, fieldName);
-      return res;
-    },
-    alignColumns: function () {
-      if (this.data.length == 0) return;
-      let headerRow = this.$refs.headerRow;
-      let bodyRow = this.$refs.bodyRows[0].children;
-      let i = 0;
-
-      for (let cell of bodyRow) {
-        let cellStyles = getComputedStyle(cell);
-        headerRow[i].style.width = cellStyles.width;
-        i++;
-      }
-    }
-  }
-});
-
-function getNotReadyPercentage(data) {
-  let loginTimeTotal = __WEBPACK_IMPORTED_MODULE_1__javascript_parse__["c" /* sum */](data, 'loginTime');
-  return data.map(d => {
-    return {
-      'reasonCode': d.reasonCode,
-      'notReadyPercentage': d.notReadyTime / loginTimeTotal
-    };
-  }) // Remove blank reason code
-  .filter(d => d.reasonCode.trim() != '');
-}
-
-/***/ }),
-/* 69 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(26);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-const props = {
-  fields: {
-    type: Object
-  },
-  margin: {
-    type: Object,
-    default: () => ({
-      left: 30,
-      right: 20,
-      top: 20,
-      bottom: 25
-    })
-  },
-  statsType: {
-    // `individual` or `team`
-    type: String,
-    default: 'individual'
-  },
-  summarize: {
-    // whether to summarize data in table
-    type: Boolean,
-    default: true
-  },
-  // options to pass to child data-table
-  tableOptions: {
-    type: Object,
-    default: () => ({}) // default to empty object
-
-  }
-};
-/* harmony default export */ __webpack_exports__["a"] = ({
-  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
-  name: 'line-graph',
-  props,
-  components: {
-    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
-  },
-
-  data() {
-    return {
-      showTable: false,
-      width: 0,
-      height: 0,
-      paths: {
-        area: '',
-        line: '',
-        selector: ''
-      },
-      circleRadius: 3,
-      lastHoverPoint: {},
-      scaled: {
-        x: null,
-        y: null
-      },
-      points: [],
-      circles: [],
-      // Box to display printed data points when hovering
-      infoBox: {
-        message: '',
-        x: 0,
-        y: 0
-      }
-    };
-  },
-
-  computed: {
-    data() {
-      // Get data from hub
-      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
-
-      let yFields = [this.fields.y];
-      if (this.fields.y2) yFields.push(this.fields.y2);
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */](raw, this.fields.x, yFields); // Sort along X axis
-
-      grouped.sort((a, b) => a[this.fields.x] < b[this.fields.x] ? -1 : 1); // Remove infinite or NaN values
-
-      return grouped.filter(d => {
-        return isFinite(d[this.fields.y]) && !isNaN(d[this.fields.y]);
-      });
-    },
-
-    padded() {
-      const width = this.width - this.margin.left - this.margin.right;
-      const height = this.height - this.margin.top - this.margin.bottom;
-      return {
-        width,
-        height
-      };
-    },
-
-    ceil() {
-      return d3.max(this.data, d => d[this.fields.y]);
-    },
-
-    lineColor() {
-      if (this.statsType == 'team') {
-        return 'hsl(345, 91%, 48%)';
-      } else {
-        return 'steelblue';
-      }
-    },
-
-    // Return array of fields to be displayed by data-table
-    tableFields() {
-      if (this.tableOptions.fields) return this.tableOptions.fields; // if no specific field given, default to those displayed in graph
-
-      let fields = [this.fields.x, this.fields.y];
-      if (this.fields.y2) fields.push(this.fields.y2);
-      if (this.fields.y3) fields.push(this.fields.y3);
-      return fields;
-    },
-
-    tableProps() {
-      let initialOptions = {
-        datasource: this.datasource,
-        filter: this.filter,
-        fields: this.tableFields,
-        summarize: this.summarize,
-        isChild: true
-      };
-      return Object.assign(initialOptions, this.tableOptions);
-    }
-
-  },
-
-  mounted() {
-    // Remove title tooltip, as it gets in the way of the infoBox popup
-    this.$el.removeAttribute('title'); // Update everything when screen size changes
-
-    window.addEventListener('resize', this.onResize);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
-  watch: {
-    width: function (newWidth) {
-      this.update();
-    },
-    data: function (newData) {
-      this.update();
-    }
-  },
-  methods: {
-    fieldDisplayName(fieldName) {
-      return this.$store.getters.field(fieldName).displayName || fieldName;
-    },
-
-    toggleTable() {
-      if (this.data.length > 0 && this.showTable == false) {
-        this.showTable = true;
-      } else {
-        this.showTable = false;
-      }
-    },
-
-    onResize() {
-      // Set width equal to card -- grandparent element
-      this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;
-      this.height = this.$refs['graph-wrap'].offsetHeight;
-    },
-
-    createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),
-    createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),
-
-    createValueSelector(point) {
-      return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);
-    },
-
-    initialize() {
-      this.onResize();
-      this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);
-      this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);
-      d3.axisLeft().scale(this.scaled.x);
-      d3.axisBottom().scale(this.scaled.y);
-    },
-
-    update() {
-      this.initialize();
-
-      for (let d of this.data) {
-        d[this.fields.y] *= 1;
-        if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;
-      }
-
-      this.scaled.x.domain(d3.extent(this.data, d => d[this.fields.x]));
-      this.scaled.y.domain([0, this.ceil]);
-      this.points = []; // Create graph points
-
-      for (let d of this.data) {
-        this.points.push({
-          x: this.scaled.x(d[this.fields.x]),
-          y: this.scaled.y(d[this.fields.y]),
-          max: this.height
-        });
-      } // this.paths.area = this.createArea(this.points);
-
-
-      this.paths.line = this.createLine(this.points); // draw axes
-
-      const yField = this.$store.getters.field(this.fields.y);
-      d3.select(this.$refs.yaxis).call(d3.axisLeft(this.scaled.y).tickFormat(d => Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d, yField).value)).selectAll('path, .tick line').attr('stroke', '#ccc');
-      d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');
-      d3.select(this.$refs.xaxis).call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d'))).selectAll('path, .tick line').attr('stroke', '#ccc');
-      d3.select(this.$refs.xaxis).selectAll('text') // .attr('fill', '#ddd')
-      .attr('dx', '-1em').attr('transform', 'rotate(-45)');
-    },
-
-    mouseover({
-      offsetX,
-      offsetY
-    }) {
-      if (this.points.length > 0) {
-        const x = offsetX - this.margin.left;
-        const y = offsetY - this.margin.top;
-        const closestPoint = this.getClosestPoint(x);
-
-        if (this.lastHoverPoint.index !== closestPoint.index) {
-          const point = this.points[closestPoint.index];
-          this.paths.selector = this.createValueSelector([point]);
-          this.$emit('select', this.data[closestPoint.index]);
-          this.lastHoverPoint = closestPoint; // InfoBox coords are slightly to the lower-right of mouse
-
-          const dataPoint = this.data[closestPoint.index];
-          this.infoBox.message = `
-                        ${this.fieldDisplayName(this.fields.x)}: ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.x], this.fields.x).value}
-                        ${this.fieldDisplayName(this.fields.y)}: ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(dataPoint[this.fields.y], this.fields.y).value}
-                    `;
-          this.infoBox.x = x + 30;
-          this.infoBox.y = y + 40;
-        }
-      }
-    },
-
-    mouseleave() {
-      this.paths.selector = '';
-      this.infoBox.message = '';
-    },
-
-    getClosestPoint(x) {
-      return this.points.map((point, index) => ({
-        x: point.x,
-        diff: Math.abs(point.x - x),
-        index
-      })).reduce((least, val) => least.diff < val.diff ? least : val);
-    }
-
-  }
-});
-
-/***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_filters__ = __webpack_require__(30);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  extends: __WEBPACK_IMPORTED_MODULE_0__widget_base_vue__["a" /* default */],
-  props: ['title', 'fieldName', 'subFields'],
-  computed: {
-    field: function () {
-      return this.$store.getters.field(this.fieldName);
-    },
-    formatted: function () {
-      return Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(this.value, this.field);
-    },
-    data: function () {
-      return this.$store.getters.getData(this.filter, this.datasource);
-    },
-    value: function () {
-      return __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, this.fieldName);
-    },
-    subValues: function () {
-      if (!this.subFields) return [];
-      return this.subFields.map(field => {
-        let formatted = Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(__WEBPACK_IMPORTED_MODULE_2__javascript_parse__["b" /* getValueForField */](this.data, field), field);
-        return {
-          value: formatted.value,
-          styleClass: formatted.styleClass,
-          fieldName: this.$store.getters.field(field).displayName
-        };
-      });
-    },
-    // Return title showing goal and dates in value
-    hoverText: function () {
-      let dateStr = ``;
-
-      if (this.filter.date || this.filter.dateDay) {
-        let dates = Object(__WEBPACK_IMPORTED_MODULE_3__javascript_filters__["c" /* getDates */])(this.filter.date || this.filter.dateDay);
-        let start = dates.$gte || dates.$gt;
-        let interval = dates.$lt ? 'up to' : 'through';
-        let end = dates.$lte || dates.$lt;
-
-        let format = d => moment(d).format('M/D');
-
-        dateStr = `Includes ${format(start)} ${interval} ${format(end)}`;
-      }
-
-      let field = this.$store.getters.field(this.fieldName);
-      let goal = this.$store.getters.goalForField(field);
-      let goalStr = this.title;
-
-      if (goal) {
-        goalStr = `${this.title} - Goal: ${Object(__WEBPACK_IMPORTED_MODULE_1__javascript_scorecard_format__["a" /* formatValue */])(goal.thresholds[0], field).value}`;
-      }
-
-      return `${goalStr}\n${dateStr}`;
-    }
-  },
-  methods: {
-    modify: function (newWidget) {
-      this.$emit('modify-widget', newWidget, this.id);
-    }
-  }
-});
-
-/***/ }),
-/* 71 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_table_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__javascript_parse__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__ = __webpack_require__(26);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-const clone = __webpack_require__(5);
-
-const reasonCodeColors = {
-  'Lunch': 'hsl(204, 54%, 52%)',
-  'One on One': 'hsl(206, 54%, 63%)',
-  'Break': 'hsl(209, 56%, 73%)',
-  'Training': 'hsl(205, 56%, 82%)',
-  'After Call Work': 'hsl(345, 85%, 51%)',
-  'Not Ready': 'hsl(345, 90%, 62%)',
-  'Outbound': 'hsl(345, 90%, 82%)'
-};
-const reasonCodeSortOrder = ['Lunch', 'One on One', 'Break', 'Training', 'After Call Work', 'Not Ready', 'Outbound'];
-const props = {
-  fields: {
-    type: Object
-  },
-  margin: {
-    type: Object,
-    default: () => ({
-      left: 30,
-      right: 20,
-      top: 0,
-      bottom: 0
-    })
-  },
-  title: {
-    type: String
-  }
-};
-/* harmony default export */ __webpack_exports__["a"] = ({
-  extends: __WEBPACK_IMPORTED_MODULE_1__widget_base_vue__["a" /* default */],
-  name: 'pie-chart',
-  props,
-  components: {
-    'data-table': __WEBPACK_IMPORTED_MODULE_0__data_table_vue__["a" /* default */]
-  },
-
-  data() {
-    return {
-      showTable: false,
-      width: 180,
-      height: 180,
-      radius: 90,
-      paths: {
-        area: '',
-        line: '',
-        selector: '',
-        goalLine: ''
-      },
-      scaled: {
-        x: null,
-        y: null
-      },
-      // Box to display printed data points when hovering
-      infoBox: {
-        message: '',
-        x: 0,
-        y: 0
-      },
-      // D3 objects
-      color: null,
-      pie: null,
-      path: null,
-      label: null,
-      svg: null,
-      g: null
-    };
-  },
-
-  computed: {
-    data() {
-      // Get data from hub
-      let raw = this.$store.getters.getData(this.filter, this.datasource); // Summarize by displayed field(s)
-
-      let s = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */];
-      let grouped = __WEBPACK_IMPORTED_MODULE_2__javascript_parse__["d" /* summarize */](raw, this.fields.groupBy, this.fields.sum);
-      return grouped;
-    },
-
-    // Data with only fields needed to display chart
-    chartData() {
-      return this.data.map(d => {
-        return {
-          [this.fields.groupBy]: d[this.fields.groupBy],
-          [this.fields.display]: d[this.fields.display]
-        };
-      }).filter(d => d[this.fields.groupBy].trim() != '');
-    },
-
-    tableHeaders() {
-      if (this.fields.groupBy != 'reasonCode') return this.data;
-      return ['Reason Code', 'Time'];
-    },
-
-    tableFields() {
-      if (this.fields.groupBy != 'reasonCode') return Object.keys(this.data[0]);
-      return ['reasonCode', 'notReadyTime', 'loginTime'];
-    },
-
-    tableFilter() {
-      return this.filter;
-    },
-
-    padded() {
-      const width = this.width - this.margin.left - this.margin.right;
-      const height = this.height - this.margin.top - this.margin.bottom;
-      return {
-        width,
-        height
-      };
-    }
-
-  },
-
-  mounted() {
-    // Remove title tooltip, as it gets in the way of the infoBox popup
-    this.$el.removeAttribute('title'); // Set up D3
-
-    this.svg = d3.select(this.$el).select('svg');
-    this.g = this.svg.append('g').attr('transform', `translate(${this.width / 2}, ${this.height / 2})`); // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);
-
-    this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);
-    this.pie = d3.pie().padAngle(.05).sort(this.sortValues).value(d => d[this.fields.display]);
-    this.path = d3.arc().outerRadius(this.radius - 10).innerRadius((this.radius - 10) * 0.6);
-    this.label = d3.arc().outerRadius(this.radius - 40).innerRadius(this.radius - 40);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
-  watch: {
-    width: function (newWidth) {
-      this.updateChart(this.data);
-    },
-    chartData: function (newData) {
-      this.updateChart(newData);
-    }
-  },
-  methods: {
-    toggleTable: function () {
-      if (this.data && !this.showTable) {
-        this.showTable = true;
-      } else {
-        this.showTable = false;
-      }
-    },
-    updateChart: function (data) {
-      this.g.selectAll('.arc, .path').remove().exit();
-
-      if (data.length > 0) {
-        let arc = this.g.selectAll('arc').data(this.pie(data)).enter().append('g').attr('class', 'arc').on('mouseover', this.hoverOverPieSlice).on('mouseout', this.stopHoveringOverPieSlice);
-        arc.append('path').attr('d', this.path).attr('fill', this.getColor);
-      }
-    },
-    hoverOverPieSlice: function (d, i) {
-      this.infoBox.message = `
-                ${d.data.reasonCode}:
-                ${Object(__WEBPACK_IMPORTED_MODULE_3__javascript_scorecard_format__["a" /* formatValue */])(d.data[this.fields.display], this.fields.display).value}
-            `;
-    },
-    stopHoveringOverPieSlice: function (d, i) {
-      this.infoBox.message = '';
-    },
-    getColor: function (d) {
-      // If this is a reason code pie chart, try to use custom colors
-      if (this.fields.groupBy == 'reasonCode' && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {
-        return reasonCodeColors[d.data.reasonCode]; // Default to blues scale
-      } else {
-        return this.colorScale(d.data[this.fields.groupBy]);
-      }
-    },
-    sortValues: function (a, b) {
-      if (this.fields.groupBy == 'reasonCode') {
-        return reasonCodeSortOrder.indexOf(a.reasonCode) < reasonCodeSortOrder.indexOf(b.reasonCode) ? -1 : 1;
-      } else {
-        return 0;
-      }
-    }
-  }
-});
-
-/***/ }),
-/* 72 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascript_scorecard_format_js__ = __webpack_require__(26);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['datasource'],
-
-  data() {
-    return {
-      isHighlighted: false
-    };
-  },
-
-  computed: {
-    lastUpdateMessage: function () {
-      let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;
-      if (!time) return 'Last updated time not available';
-      return `Last updated ${moment(time).format('MM/DD/YY')}`;
-    }
-  }
-});
-
-/***/ }),
-/* 73 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = sortOrder;
-/**
- * Compares card or widget positions and determine which one should be placed first.
- * Used when re-ordering cards/widgets after drag-and-drop operations.
- * Objects are ordered based on their DOM elements:
- *      1)  Top: elements higher up on page go first
- *      2)  Left: elements on the left side go first
- * For the object that was dropped, the mouse's Y & X values are used instead
- * of the top & left of the associated element.
- *
- * @param  {Object} a       widget or card object
- * @param  {Object} b       widget or card object
- * @param  {String} dropId  ID of element that was dropped
- * @param  {Function} el    takes a or b object and returns DOM element
- * @return {Integer}        Order for sort function: -1 if a first,
- *                          +1 if b first, 0 if tied.
- */
-function sortOrder(a, b, event, dropId, el) {
-  let left = x => el(x).offsetLeft;
-
-  let top = x => el(x).offsetTop;
-
-  let bottom = x => top(x) + el(x).clientHeight; // If neither element is the dropped card, compare positions
-
-
-  if (a.id != dropId && b.id != dropId) {
-    if (top(a) < top(b)) {
-      return -1;
-    } else if (top(b) < top(a)) {
-      return +1;
-    }
-
-    return left(a) < left(b) ? -1 : +1;
-  } // If card `a` is selected...
-
-
-  if (a.id == dropId) {
-    // move forward if it's below the bottom of `b`
-    if (event.pageY > bottom(b)) {
-      return 1;
-    } // move forward if it's below the top of `b` and to the
-    // of `b`
-
-
-    if (event.pageY > top(b) && event.pageX > left(b)) {
-      return 1;
-    } // otherwise, let card `b` move ahead
-
-
-    return -1;
-  } // ...If card `b` was selected, do the same.
-
-
-  if (b.id == dropId) {
-    if (event.pageY > bottom(a)) {
-      return -1;
-    }
-
-    if (event.pageY > top(a) && event.pageX > left(a)) {
-      return -1;
-    }
-
-    return 1;
-  }
-}
-;
-
-/***/ }),
-/* 74 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: ['id', 'title'],
-  data: function () {
-    return {
-      newCard: {
-        id: this.id,
-        title: this.title
-      }
-    };
-  }
-});
-
-/***/ }),
-/* 75 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: {
-    messages: {
-      type: Array
-    }
-  },
-  computed: {
-    // messages sorted by time
-    messageList: function () {
-      return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);
-    }
-  },
-  methods: {
-    // Returns text for date next to message. Includes hour if within the last
-    // 24 hours
-    dateText: function (message) {
-      if (Math.abs(new Date(message.timestamp).getDate() - new Date().getDate()) < 1) {
-        return moment(message.timestamp).format('M/D h:mm A');
-      }
-
-      return moment(message.timestamp).format('M/D');
-    }
-  }
-});
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(77);
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_inbox_vue__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_users_selector_vue__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__hub__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__api__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__scorecard_format__ = __webpack_require__(26);
-
-
-
-
-
-
-
- // NPM libraries
-
-const isEmpty = __webpack_require__(36);
-
-const clone = __webpack_require__(5);
-
-const uniq = __webpack_require__(28);
-
-const intersection = __webpack_require__(27);
-
-const debounce = __webpack_require__(115);
-
-const store = __WEBPACK_IMPORTED_MODULE_5__hub__["b" /* store */];
-const vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#app',
-  store: store,
-  data: {
-    isLoaded: false,
-    showMenu: false,
-    // show main menu
-    showMenuThemes: false,
-    // show themes submenu
-    showLinks: false,
-    // show helpful links / bookmarks
-    theme: {},
-    // Supervisor controls
-    showFilters: true,
-    datasourceMessage: '',
-    messages: [],
-    showInbox: false,
-    chosenLayoutName: ''
-  },
-  components: {
-    'dashboard': __WEBPACK_IMPORTED_MODULE_1__components_dashboard_vue__["a" /* default */],
-    'inbox': __WEBPACK_IMPORTED_MODULE_2__components_inbox_vue__["a" /* default */],
-    'editor-table': __WEBPACK_IMPORTED_MODULE_3__components_editor_table_vue__["a" /* default */],
-    'users-selector': __WEBPACK_IMPORTED_MODULE_4__components_users_selector_vue__["a" /* default */]
-  },
-
-  async beforeMount() {
-    // load user's data
-    await store.dispatch('updateUser', '');
-
-    if (this.user.isAdmin || this.user.isSupervisor) {
-      this.changeSupMode('team');
-    } // Start the data rolling
-
-
-    await store.dispatch('startProcess');
-    this.chosenLayoutName = this.layout.name;
-    this.isLoaded = true; // Hack to make sure data loads in cases where first round is blank
-    // TODO: fix bug causing data to be blank after first `startProcess`
-
-    setTimeout(this.refresh.bind(this), 2500); // start checking messages every minute
-
-    setTimeout(this.messageRefreshLoop.bind(this), 60000);
-  },
-
-  computed: {
-    layout: function () {
-      return store.state.layout;
-    },
-    username: {
-      get() {
-        return store.state.currentUser;
-      },
-
-      async set(value) {
-        await store.dispatch('updateUser', value);
-        this.refresh();
-      }
-
-    },
-    user: {
-      get() {
-        return store.state.user;
-      }
-
-    },
-    // Get name of theme that isn't currently selected
-    otherTheme: function () {
-      return this.theme.color == 'dark' ? 'light' : 'dark';
-    },
-    userGreeting: function () {
-      if (this.user.firstName) {
-        return `Hi, ${this.user.firstName}!`;
-      } else {
-        return '';
-      }
-    },
-    backgroundStyles: function () {
-      let bgUrl = this.theme.color == 'dark' ? this.theme.darkBackgroundImageUrl : this.theme.lightBackgroundImageUrl;
-
-      if (this.theme.useBackgroundImage && bgUrl.length > 1) {
-        return {
-          background: `url("${bgUrl}") no-repeat center center fixed`
-        };
-      } else {
-        return {};
-      }
-    },
-    unreadMessages: function () {
-      return this.messages.filter(message => {
-        return message.to.filter(to => to.username == this.username && to.hasRead == false).length > 0;
-      });
-    }
-  },
-  watch: {
-    // When the current user changes, make any needed adjustments
-    user: {
-      handler: function (newUser) {
-        this.theme = clone(newUser.theme);
-        this.updateThemeStyles(this.theme);
-      },
-      deep: true
-    }
-  },
-  methods: {
-    ///////////////////////////
-    // Refresh layout and data
-    refresh: async function (layout = null) {
-      this.isLoading = true;
-      await store.dispatch('forceRefresh', layout);
-      this.isLoading = false;
-      this.messages = await this.updateMessages();
-    },
-    //////////////////////////////////////////////////
-    // Supervisor view controls
-    // Select a new layout type
-    changeLayout: function (name) {
-      this.refresh(store.getters.layout(name));
-    },
-    // Select users to filter data for
-    selectUsers: async function (users) {
-      store.commit('setSelectedUsers', users);
-    },
-    // Turn sup mode on or off
-    changeSupMode: function (newMode) {
-      store.commit('setSupMode', newMode);
-    },
-    // When user selector loads the users list, save it to hub for later
-    // parsing.
-    updateUserList: function (users) {
-      store.commit('setUserList', users);
-    },
-    //////////////////////////////////////////////////
-    // Handle menus and theme
-    mouseleaveMenu: function (event) {
-      if (!event.relatedTarget) return;
-
-      if (event.relatedTarget === this.$refs.menuButton || isDescendant(this.$refs.menu, event.relatedTarget)) {
-        event.stopPropagation();
-        return;
-      } else {
-        this.showMenu = false;
-      }
-    },
-    mouseleaveThemeSubMenu: function (event) {
-      if (!event.relatedTarget) return;
-      let classList = Array.from(event.relatedTarget.classList);
-
-      if (event.relatedTarget == this.$refs.themeSubMenu || classList.includes('submenu-button') || isDescendant(this.$refs.themeSubMenu, event.relatedTarget)) {
-        event.stopPropagation();
-        return;
-      } else {
-        this.showMenuThemes = false;
-      }
-    },
-    changeTheme: function (attribute, value) {
-      this.theme[attribute] = value;
-      this.updateThemeStyles(this.theme);
-    },
-    updateThemeStyles: function (theme) {
-      document.getElementById('theme_css').href = `styles/theme-${theme.color}.css`;
-    },
-    saveTheme: function () {
-      if (this.theme.useBackgroundImage === undefined) throw new Error('saving theme with undefined useBackgroundImage!');
-      store.dispatch('updateTheme', this.theme);
-      this.showMenuThemes = false;
-      this.showMenu = false;
-    },
-    //////////////////////////////////////////////////
-    // Messages
-    openInbox: async function () {
-      this.showInbox = true;
-      this.messages = await this.updateMessages(this.showInbox);
-    },
-    closeInbox: function () {
-      this.showInbox = false;
-    },
-    updateMessages: async function (includeAll = null) {
-      if (includeAll === null) includeAll = this.showInbox;
-      if (includeAll) return __WEBPACK_IMPORTED_MODULE_6__api__["r" /* getMessages */]();else return __WEBPACK_IMPORTED_MODULE_6__api__["y" /* getUnreadMessages */]();
-    },
-    closeMessage: async function (message) {
-      await __WEBPACK_IMPORTED_MODULE_6__api__["B" /* markMessageRead */](message, true);
-      this.messages = await this.updateMessages(this.showInbox);
-    },
-    messageDate: function (message) {
-      return moment(message.timestamp).format('M/D h:mm A');
-    },
-    messageRefreshLoop: async function () {
-      this.messages = await this.updateMessages(this.showInbox);
-      setTimeout(this.messageRefreshLoop.bind(this), 60000);
-    },
-    ///////////////////////////
-    // Handle export of layout to JSON
-    exportLayout: function () {
-      download(layout, 'test.json', 'text/plain');
-    },
-    ///////////////////////////
-    // Dashboard modifications
-    addCard: function () {
-      const newCard = {
-        title: 'card:' + this.layout.cards.length,
-        id: 'card:' + this.layout.cards.length,
-        layoutOrder: -1,
-        data: [],
-        widgets: []
-      };
-      this.layout.cards.push(newCard);
-    },
-    updateLayout: function (newLayout) {
-      Object.assign(this.layout, newLayout);
-    },
-    updateCard: function (cardId, newCard) {
-      let oldCardIndex = this.layout.cards.findIndex(card => card.id == cardId);
-      let oldCard = this.layout.cards[oldCardIndex]; // Create a new card object that has all properties from the
-      // new card and the old one (to include properties that aren't
-      // defined in `newCard`)
-
-      let newCardComplete = Object.assign({}, oldCard, newCard); // Use `Vue.set` to trigger reactivity
-      // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
-
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(this.layout.cards, oldCardIndex, newCardComplete);
-    },
-    deleteCard: function (cardId) {
-      let cardIndex = this.layout.cards.findIndex(card => card.id == cardId);
-      __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(this.layout.cards, cardIndex);
-    },
-
-    /**
-     * Update a widget. If newWidget is an empty object ({}), delete the
-     * old widget.
-     * @param  {Object} newWidget object to replace old widget with
-     * @param  {String} widgetId
-     * @param  {String} cardId    ID for container card
-     * @return
-     */
-    modifyWidget: function (newWidget, widgetId, cardId) {
-      let card = this.layout.cards.find(c => c.id == cardId);
-      let oldWidgetIndex = card.widgets.findIndex(w => w.id == widgetId);
-      let oldWidget = card.widgets[oldWidgetIndex];
-
-      if (isEmpty(newWidget)) {
-        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(card.widgets, oldWidgetIndex);
-      } else {
-        // see updateCard function for explanation
-        let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
-        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(card.widgets, oldWidgetIndex, newWidgetComplete);
-      }
-    },
-    ///////////////////////
-    // Data Sources
-    updateDatasourceMessage: function (message) {
-      console.log(`updateDatasourceMessage: ${message}`);
-      this.datasourceMessage = message;
-    },
-    datasourceLoader: function () {
-      let sources = clone(this.layout.datasources);
-
-      const str = s => JSON.stringify(s, null, 2);
-
-      const stringin = function (ds) {
-        ds.fields = str(ds.fields);
-        ds.filter = str(ds.filter);
-        ds.groupBy = str(ds.groupBy);
-        return ds;
-      };
-
-      return sources.map(stringin);
-    },
-    datasourceAdder: function () {
-      return {
-        name: '',
-        fields: '',
-        filter: '{}',
-        groupBy: '',
-        refreshRate: 10
-      };
-    },
-    datasourceUpdater: function (datasource) {
-      try {
-        let obj = parseDatasource(datasource);
-        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
-
-        if (oldIndex == -1) {
-          this.layout.datasources.push(obj);
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_vue___default.a.set(this.layout.datasources, oldIndex, obj);
-        }
-
-        this.$store.commit('changeDatasource', obj);
-      } catch (err) {
-        console.log(err);
-        this.updateDatasourceMessage(`Error parsing data source: ${err}.`);
-      }
-    },
-    datasourceRemover: function (datasource) {
-      try {
-        let obj = getVueObject(datasource);
-        let oldIndex = this.layout.datasources.findIndex(ds => ds.name == obj.name);
-        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.delete(this.layout.datasources, oldIndex);
-        this.$store.commit('deleteDatasource', obj);
-      } catch (err) {
-        this.updateDatasourceMessage(`Error removing data source: ${err}.`);
-      }
-    }
-  }
-});
-window.vm = vm;
-/*
-  Convert vue object
-*/
-
-const getVueObject = obj => {
-  return JSON.parse(JSON.stringify(obj));
-};
-
-function download(text, name, type) {
-  var a = document.createElement("a");
-  var file = new Blob([JSON.stringify(text, null, 4)], {
-    type: type
-  });
-  a.href = URL.createObjectURL(file);
-  a.download = name;
-  a.click();
-}
-
-function parseDatasource(input) {
-  function objectify(value) {
-    try {
-      return JSON.parse(value);
-    } catch (err) {
-      if (err instanceof SyntaxError) return value;else throw err;
-    }
-  }
-
-  return objectMap(input, objectify);
-}
-
-function objectMap(object, fun) {
-  return Object.keys(object).reduce((newObj, key) => {
-    newObj[key] = fun(object[key]);
-    return newObj;
-  }, {});
-}
-
-function isDescendant(parent, child) {
-  var node = child.parentNode;
-
-  while (node != null) {
-    if (node == parent) {
-      return true;
-    }
-
-    node = node.parentNode;
-  }
-
-  return false;
-}
-
-/***/ }),
-/* 78 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__ = __webpack_require__(64);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__ = __webpack_require__(110);
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_dashboard_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c21f7d6a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_dashboard_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\dashboard.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c21f7d6a", Component.options)
-  } else {
-    hotAPI.reload("data-v-c21f7d6a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 79 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__ = __webpack_require__(65);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__ = __webpack_require__(105);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(80)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3bec8029_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\card.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3bec8029", Component.options)
-  } else {
-    hotAPI.reload("data-v-3bec8029", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(81);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("1e5068c2", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3bec8029\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\n}\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/card.vue"],"names":[],"mappings":";AA2NA;IACA,cAAA;IACA,2BAAA;IACA,gBAAA;IACA,mBAAA;IACA,6BAAA;CACA;;AAEA;;EAEA;AACA;IACA,gBAAA;CACA;AACA;IACA,mBAAA;IACA,iBAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"card.vue","sourcesContent":["/**\r\n * Container for widget components.\r\n * Contains various functionality:\r\n *  - Handles drag and drop events for each widget within it\r\n *  - Can be dragged around other cards by dragging the title h2 (this is handled\r\n *      in the Dashboard component, Card's parent)\r\n *  - When widgets are modified, Card receives `modify-widget` events and bubbles\r\n *      them up to the parent Dashboard\r\n */\r\n\r\n<template>\r\n<div class=\"card metric-wrapper stats-box\"\r\n    :id=\"id\"\r\n    :style=\"gridPositioning\"\r\n    @dragover=\"dragWidgetHandler\" @drop=\"dropWidgetHandler\">\r\n\r\n    <!-- Card is draggable by the title -->\r\n    <h2 class=\"title descriptor\"\r\n        :draggable=\"$store.state.editMode\"\r\n        @dragstart=\"dragstartHandler\">{{ title }}</h2>\r\n\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"edit-button\"\r\n        @click=\"$emit('edit-card', id)\"\r\n    >&#9776;</button>\r\n    <button v-if=\"$store.state.editMode\"\r\n        class=\"add-button\"\r\n        @click=\"addWidget\"\r\n    >+</button>\r\n\r\n\r\n    <!-- Widget components -->\r\n    <single-value class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('single-value')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></single-value>\r\n\r\n    <line-graph class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('line-graph')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></line-graph>\r\n\r\n    <pie-chart class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('pie-chart')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></pie-chart>\r\n\r\n    <data-table class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('data-table')\"\r\n        v-bind=\"widget\"\r\n        :highlightedDate=\"highlightedDate\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @hoverDate=\"hoverDate\"\r\n        @unhoverDate=\"unhoverDate\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n    ></data-table>\r\n\r\n    <datasource-last-updated class=\"widget\"\r\n        v-for=\"(widget, i) in widgetsOfType('datasource-last-updated')\"\r\n        v-bind=\"widget\"\r\n        :key=\"widget.id\"\r\n        :ref=\"widget.id\"\r\n        :style=\"{ order: widget.layoutOrder }\"\r\n        @dragstart-widget=\"dragstartWidgetHandler\"\r\n        @modify-widget=\"modifyWidget\"\r\n    ></datasource-last-updated>\r\n</div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\nimport DataTable from './data-table.vue';\r\nimport LineGraph from './line-graph.vue';\r\nimport SingleValue from './single-value.vue';\r\nimport PieChart from './pie-chart.vue';\r\nimport DatasourceLastUpdated from './datasource-last-updated.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport { sortOrder } from './drag-n-drop-sort.js';\r\n\r\nexport default {\r\n    props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],\r\n    components: {\r\n        'single-value': SingleValue,\r\n        'data-table': DataTable,\r\n        'line-graph': LineGraph,\r\n        'pie-chart': PieChart,\r\n        'datasource-last-updated': DatasourceLastUpdated\r\n    },\r\n    data: function() {\r\n        return {\r\n            highlightedDate: null,\r\n            draggingWidget: true,\r\n        }\r\n    },\r\n\r\n    computed: {\r\n        // Make CSS grid position a computed property, so that it will change\r\n        // when a different layout is loaded\r\n        gridPositioning: function() {\r\n            return {\r\n                'order': this.layoutOrder,\r\n                // number of columns wide\r\n                'grid-column': `span ${this.columns}`\r\n            }\r\n        }\r\n    },\r\n\r\n    methods: {\r\n        // add a new widget to the card\r\n        addWidget: function() {\r\n            let o = WidgetBase.newObject('prompt user for widget type');\r\n            console.log(o);\r\n        },\r\n        /**\r\n         * Update a widget in this card\r\n         * @param  {Object} newWidget object to replace with\r\n         * @param  {String} id        for widget being modified\r\n         * @return\r\n         */\r\n        modifyWidget: function(newWidget, id) {\r\n            this.$emit('modify-widget', newWidget, id, this.id);\r\n        },\r\n        // Return widgets of a given type (data-table, line-graph, etc.)\r\n        widgetsOfType: function(type) {\r\n            return this.widgets.filter((widget) => widget['component'] == type);\r\n        },\r\n\r\n        // React to user hovering over a day\r\n        hoverDate: function(date) {\r\n            this.highlightedDate = date;\r\n        },\r\n        unhoverDate: function(date) {\r\n            this.highlightedDate = null;\r\n        },\r\n\r\n        // Card drag and drop handling\r\n        dragstartHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.dataTransfer.setData('text/plain', this.id);\r\n        },\r\n\r\n        // Widget drag and drop handling\r\n        dragstartWidgetHandler: function(event, widget) {\r\n            if (!this.$store.state.editMode) return;\r\n            this.draggingWidget = true;\r\n            const dragData = {\r\n                cardId: this.id,\r\n                widgetId: widget.id\r\n            };\r\n            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));\r\n        },\r\n        dragWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            event.preventDefault();\r\n        },\r\n\r\n        /**\r\n         * Handles dropping a widget on this card, sorting all the widgets.\r\n         * @param  {Event} event for window drop action\r\n         * @emits  update-widget event to Dashboard component\r\n         */\r\n        dropWidgetHandler: function(event) {\r\n            if (!this.$store.state.editMode) return;\r\n            let dragData;\r\n            try {\r\n                // Try to parse dragData as JSON and prevent other drag/drop\r\n                // effects\r\n                dragData = JSON.parse(\r\n                    event.dataTransfer.getData('text/plain'));\r\n                event.preventDefault();\r\n                event.stopPropagation();\r\n            // If dragData isn't JSON, move along\r\n            } catch (err) {\r\n                if (err instanceof SyntaxError) {\r\n                    return;\r\n                }\r\n            }\r\n\r\n            // If this widget is being dropped in a different card, ignore\r\n            if (dragData.cardId != this.id) return;\r\n\r\n            // Otherwise sort widgets and update the dashboard\r\n            let newWidgets = [];\r\n            Object.assign(newWidgets, this.widgets);\r\n\r\n            let el = (widget) => this.$refs[widget.id][0].$el;\r\n            newWidgets.sort((a, b) =>\r\n                sortOrder(a, b, event, dragData.widgetId, el)\r\n            );\r\n            // assign a layout order based on sort\r\n            newWidgets.forEach((widget, i) => {\r\n                widget.layoutOrder = i;\r\n            });\r\n\r\n            this.$emit('update-widgets', newWidgets, this.id);\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.card {\r\n    display: grid;\r\n    grid-template-columns: 1fr;\r\n    grid-gap: 2.5em;\r\n    border-radius: 2px;\r\n    align-content: space-between;\r\n}\r\n\r\n/* Since the card's grid determines margins, remove margins from the first\r\n * child of each widget.\r\n*/\r\n.card > .widget > *:first-child {\r\n    margin-top: 0em;\r\n}\r\n.card {\r\n    transition: all 1s;\r\n    padding: 0.5em 0;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.card .edit-button,\r\n.card .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.card .edit-button:hover,\r\n.card .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.card .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.card .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__ = __webpack_require__(67);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__ = __webpack_require__(85);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(83)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_editor_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a38dd874_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_editor_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\editor.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a38dd874", Component.options)
-  } else {
-    hotAPI.reload("data-v-a38dd874", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(84);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("208c43bc", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a38dd874\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./editor.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\n}\n.edit-form {\r\n    top: -100px;\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\n}\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\n}\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\n}\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/editor.vue"],"names":[],"mappings":";AA8GA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,YAAA;CACA;AAEA;IACA,YAAA;CACA;;AAEA,6CAAA;AACA;;IAEA,gBAAA;IACA,sBAAA;IACA,mBAAA;IACA,kBAAA;IACA,YAAA;IACA,WAAA;IACA,WAAA;IACA,YAAA;IACA,sBAAA;IACA,wBAAA;IACA,wCAAA;IACA,mBAAA;CACA;AACA;;IAEA,wCAAA;CACA;AACA;IACA,OAAA;IACA,QAAA;CACA;AACA;IACA,OAAA;IACA,SAAA;CACA","file":"editor.vue","sourcesContent":["/**\r\n * Editor for widgets.\r\n */\r\n<template>\r\n    <div class=\"modal-wrapper\">\r\n        <!-- Buttons to begin editing -->\r\n        <button\r\n            class=\"edit-button\"\r\n            @click=\"edit\"\r\n        >&#9776;</button>\r\n\r\n        <!-- Modal form to modify the object -->\r\n        <div class=\"edit-form modal\"\r\n            v-if=\"editingNow\">\r\n\r\n            <h1>{{ newObject.title }}</h1>\r\n            <h3>Title</h3>\r\n            <input v-model=\"newObject.title\" />\r\n\r\n            <h3>Data Source</h3>\r\n            <select name=\"datasource-dropdown\"\r\n                v-model=\"newObject.datasource\">\r\n                <option\r\n                    v-for=\"source in $store.state.datasources\"\r\n                    :value=\"source.name\"\r\n                >{{ source.name }}</option>\r\n            </select>\r\n\r\n            <h3>Field</h3>\r\n            <select name=\"field-dropdown\"\r\n                v-model=\"newObject.fieldName\">\r\n                <option\r\n                    v-for=\"field in $store.state.fields\"\r\n                    :value=\"field.fullName\"\r\n                >{{ field.displayName || field.name }}\r\n                 {{ field.source=='N/A' ? '' : ` - ${field.source}`}}</option>\r\n            </select>\r\n\r\n            <h3>Date</h3>\r\n            <select name=\"date-dropdown\"\r\n                v-model=\"newObject.filter.dateDay\">\r\n                <option\r\n                    v-for=\"option in dateOptions\"\r\n                    :value=\"option\"\r\n                >{{ option }}</option>\r\n            </select>\r\n\r\n            <div class=\"button-wrapper\">\r\n                <button\r\n                    @click=\"exit(true)\"\r\n                >Save</button>\r\n\r\n                <button\r\n                    @click=\"exit(false)\"\r\n                >Cancel</button>\r\n\r\n                <button\r\n                    class=\"delete\"\r\n                    @click=\"deleteObject\"\r\n                >Delete</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n\r\n<script>\r\nimport * as filters from '../javascript/filters'; // TODO: dropdown for date types\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nexport default {\r\n    props: ['initialObject'],\r\n    data: function() {\r\n        return {\r\n            editingNow: false,\r\n            newObject: {},\r\n            dateOptions: filters.dateOptions()\r\n        }\r\n    },\r\n    // Create a copy of the passed-in object on creation\r\n    mounted() {\r\n        this.newObject = clone(this.initialObject);\r\n    },\r\n    methods: {\r\n        edit: function() {\r\n            this.editingNow = true;\r\n            // close modal on click outside window\r\n            document.documentElement.addEventListener('click', function(ev) {\r\n                if (!this.$el.contains(ev.target)) this.exit();\r\n            }.bind(this), false);\r\n        },\r\n        add: function() {\r\n        },\r\n        exit: function(saveChanges) {\r\n            this.editingNow = false;\r\n            if (saveChanges) {\r\n                this.$emit('modify-widget', this.newObject);\r\n            }\r\n        },\r\n        deleteObject: function() {\r\n            this.editingNow = false;\r\n            this.$emit('modify-widget', {});\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style>\r\n.modal-wrapper {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n\r\n.edit-form {\r\n    top: -100px;\r\n}\r\n\r\n/* Buttons to edit card and/or add widgets */\r\n.modal-wrapper .edit-button,\r\n.modal-wrapper .add-button {\r\n    display: inline;\r\n    text-decoration: none;\r\n    position: absolute;\r\n    font-size: 1.25em;\r\n    color: #fff;\r\n    margin: 4%;\r\n    width: 2em;\r\n    height: 2em;\r\n    align-content: center;\r\n    justify-content: center;\r\n    background-color: rgba(100,100,100,0.5);\r\n    border-radius: 2em;\r\n}\r\n.modal-wrapper .edit-button:hover,\r\n.modal-wrapper .add-button:hover {\r\n    background-color: rgba(100,100,100,0.3);\r\n}\r\n.modal-wrapper .edit-button {\r\n    top: 0;\r\n    left: 0;\r\n}\r\n.modal-wrapper .add-button {\r\n    top: 0;\r\n    right: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal-wrapper" }, [
-    _c("button", { staticClass: "edit-button", on: { click: _vm.edit } }, [
-      _vm._v("☰")
-    ]),
-    _vm._v(" "),
-    _vm.editingNow
-      ? _c("div", { staticClass: "edit-form modal" }, [
-          _c("h1", [_vm._v(_vm._s(_vm.newObject.title))]),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Title")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newObject.title,
-                expression: "newObject.title"
-              }
-            ],
-            domProps: { value: _vm.newObject.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.newObject, "title", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Data Source")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.datasource,
-                  expression: "newObject.datasource"
-                }
-              ],
-              attrs: { name: "datasource-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "datasource",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.datasources, function(source) {
-              return _c("option", { domProps: { value: source.name } }, [
-                _vm._v(_vm._s(source.name))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Field")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.fieldName,
-                  expression: "newObject.fieldName"
-                }
-              ],
-              attrs: { name: "field-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject,
-                    "fieldName",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.$store.state.fields, function(field) {
-              return _c("option", { domProps: { value: field.fullName } }, [
-                _vm._v(
-                  _vm._s(field.displayName || field.name) +
-                    "\n             " +
-                    _vm._s(field.source == "N/A" ? "" : " - " + field.source)
-                )
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("h3", [_vm._v("Date")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newObject.filter.dateDay,
-                  expression: "newObject.filter.dateDay"
-                }
-              ],
-              attrs: { name: "date-dropdown" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.newObject.filter,
-                    "dateDay",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            _vm._l(_vm.dateOptions, function(option) {
-              return _c("option", { domProps: { value: option } }, [
-                _vm._v(_vm._s(option))
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "button-wrapper" }, [
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(true)
-                  }
-                }
-              },
-              [_vm._v("Save")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    _vm.exit(false)
-                  }
-                }
-              },
-              [_vm._v("Cancel")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "delete", on: { click: _vm.deleteObject } },
-              [_vm._v("Delete")]
-            )
-          ])
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a38dd874", esExports)
-  }
-}
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(87);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("9c7d97ce", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48d3d2c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./data-table.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"data-table.vue","sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "data-table-wrapper",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      !_vm.isChild && _vm.title
-        ? _c("h3", [_vm._v(_vm._s(_vm.title))])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("table", { staticClass: "data-table" }, [
-        _c("thead", [
-          _c(
-            "tr",
-            _vm._l(_vm.displayHeaders, function(header) {
-              return _c("th", { ref: "headerRow", refInFor: true }, [
-                _vm._v(_vm._s(header))
-              ])
-            })
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.data, function(datum, i) {
-            return _c(
-              "tr",
-              {
-                key: i,
-                ref: "bodyRows",
-                refInFor: true,
-                class: { highlight: _vm.isHighlighted(i) }
-              },
-              _vm._l(datum, function(val, key) {
-                return _c(
-                  "td",
-                  {
-                    class: _vm.formatted(val, key).styleClass,
-                    on: {
-                      mouseover: function($event) {
-                        _vm.highlight(i)
-                      },
-                      mouseleave: function($event) {
-                        _vm.unhighlight(i)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\r\n                    " +
-                        _vm._s(_vm.formatted(val, key).value) +
-                        "\r\n                "
-                    )
-                  ]
-                )
-              })
-            )
-          })
-        )
-      ])
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-48d3d2c4", esExports)
-  }
-}
-
-/***/ }),
-/* 89 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__ = __webpack_require__(69);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__ = __webpack_require__(92);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(90)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-21d5040e"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_line_graph_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_21d5040e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_line_graph_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\line-graph.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-21d5040e", Component.options)
-  } else {
-    hotAPI.reload("data-v-21d5040e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(91);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("3a8ea719", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21d5040e\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-graph.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.line-graph[data-v-21d5040e] {\n    max-width: 100%;\n    min-height: 200px;\n}\n.graph-wrap[data-v-21d5040e]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-21d5040e] {\n    height: 175px;\n    width: 100%;\n}\n.graph-wrap text[data-v-21d5040e], .data-dropdown-title[data-v-21d5040e] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-21d5040e] {\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 30px;\n}\n.rotating-play-icon[data-v-21d5040e] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-21d5040e] {\n    transform: rotate(90deg);\n}\nh1[data-v-21d5040e], .content[data-v-21d5040e] {\n  margin-left: 20px;\n}\nlabel[data-v-21d5040e] {\n  display: inline-block;\n  width: 150px;\n}\n.line[data-v-21d5040e] {\n    fill: none;\n    stroke-linejoin: round;\n    stroke-linecap: round;\n    stroke-width: 1.5;\n}\n.axis[data-v-21d5040e] {\n    font-size: 0.5em;\n}\n.selector[data-v-21d5040e] {\n    stroke: hsla(207, 99%, 80%, 0.7);\n    stroke-width: 1.0;\n    fill: none;\n}\n.info-box[data-v-21d5040e] {\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/line-graph.vue"],"names":[],"mappings":";AAiTA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AACA;IACA,iBAAA;IACA,iBAAA;IACA,kBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAGA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,WAAA;IACA,uBAAA;IACA,sBAAA;IACA,kBAAA;CACA;AACA;IACA,iBAAA;CACA;AACA;IACA,iCAAA;IACA,kBAAA;IACA,WAAA;CACA;AACA;IACA,sBAAA;IACA,mBAAA;IACA,OAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"line-graph.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\n */\r\n\r\n<template>\r\n<div class=\"line-graph\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg @mousemove=\"mouseover\" @mouseleave=\"mouseleave\"\r\n                :width=\"width\" :height=\"height\">\r\n            <text class=\"title\" :x=\"55\" :y=\"10\">{{ fieldDisplayName(fields.y) }}</text>\r\n            <g class=\"axis\" ref=\"yaxis\" :style=\"{transform: `translate(${margin.left}px,${margin.top}px)`}\"></g>\r\n            <g class=\"axis\" ref=\"xaxis\" :style=\"{transform: `translate(${margin.left}px,${height-margin.bottom}px)`}\"></g>\r\n            <g :style=\"{transform: `translate(${margin.left}px, ${margin.top}px)`}\">\r\n                <path class=\"area\" :d=\"paths.area\" />\r\n                <path class=\"line\" :d=\"paths.line\" :style=\"{ stroke: lineColor }\" />\r\n                <path class=\"selector\" :d=\"paths.selector\" />\r\n                <circle v-for=\"point in points\"\r\n                    class=\"data-circle\"\r\n                    :r=\"circleRadius\"\r\n                    :cx=\"point.x\"\r\n                    :cy=\"point.y\"\r\n                    :style=\"{ fill: lineColor }\"\r\n                ></circle>\r\n            </g>\r\n        </svg>\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >\r\n            {{ infoBox.message }}\r\n        </div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        v-bind=\"tableProps\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 20,\r\n            bottom: 25,\r\n        }),\r\n    },\r\n    statsType: { // `individual` or `team`\r\n        type: String,\r\n        default: 'individual'\r\n    },\r\n    summarize: { // whether to summarize data in table\r\n        type: Boolean,\r\n        default: true\r\n    },\r\n    // options to pass to child data-table\r\n    tableOptions: {\r\n        type: Object,\r\n        default: () => ({}) // default to empty object\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'line-graph',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 0,\r\n            height: 0,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: ''\r\n            },\r\n            circleRadius: 3,\r\n            lastHoverPoint: {},\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            points: [],\r\n            circles: [],\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            }\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let yFields = [this.fields.y];\r\n            if (this.fields.y2) yFields.push(this.fields.y2);\r\n            let grouped = parse.summarize(raw, this.fields.x, yFields);\r\n            // Sort along X axis\r\n            grouped.sort((a, b) =>\r\n                a[this.fields.x] < b[this.fields.x] ? -1 : 1\r\n            );\r\n            // Remove infinite or NaN values\r\n            return grouped.filter((d) => {\r\n                return isFinite(d[this.fields.y]) && !isNaN(d[this.fields.y]);\r\n            });\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n        ceil() {\r\n            return d3.max(this.data, (d) => d[this.fields.y]);\r\n        },\r\n        lineColor() {\r\n            if (this.statsType == 'team') {\r\n                return 'hsl(345, 91%, 48%)';\r\n            } else {\r\n                return 'steelblue';\r\n            }\r\n        },\r\n        // Return array of fields to be displayed by data-table\r\n        tableFields() {\r\n            if (this.tableOptions.fields) return this.tableOptions.fields;\r\n            // if no specific field given, default to those displayed in graph\r\n            let fields = [this.fields.x, this.fields.y];\r\n            if (this.fields.y2) fields.push(this.fields.y2);\r\n            if (this.fields.y3) fields.push(this.fields.y3);\r\n            return fields;\r\n        },\r\n        tableProps() {\r\n            let initialOptions = {\r\n                datasource: this.datasource,\r\n                filter: this.filter,\r\n                fields: this.tableFields,\r\n                summarize: this.summarize,\r\n                isChild: true,\r\n            }\r\n            return Object.assign(initialOptions, this.tableOptions);\r\n        }\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n        // Update everything when screen size changes\r\n        window.addEventListener('resize', this.onResize);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.update(); },\r\n        data: function(newData) { this.update(); }\r\n    },\r\n\r\n    methods: {\r\n        fieldDisplayName(fieldName) {\r\n            return this.$store.getters.field(fieldName).displayName\r\n                || fieldName;\r\n        },\r\n        toggleTable() {\r\n            if (this.data.length > 0 && this.showTable == false) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        onResize() {\r\n            // Set width equal to card -- grandparent element\r\n            this.width = this.$refs['graph-wrap'].parentElement.parentElement.offsetWidth;\r\n            this.height = this.$refs['graph-wrap'].offsetHeight;\r\n        },\r\n        createArea: d3.area().x(d => d.x).y0(d => d.max).y1(d => d.y),\r\n        createLine: d3.line().x(d => d.x).y(d => d.y).curve(d3.curveMonotoneX),\r\n        createValueSelector(point) {\r\n            return d3.area().x(d => d.x).y0(this.padded.height).y1(0)(point);\r\n        },\r\n        initialize() {\r\n            this.onResize();\r\n            this.scaled.x = d3.scaleTime().rangeRound([0, this.padded.width]);\r\n            this.scaled.y = d3.scaleLinear().range([this.padded.height, 0]);\r\n            d3.axisLeft().scale(this.scaled.x);\r\n            d3.axisBottom().scale(this.scaled.y);\r\n        },\r\n        update() {\r\n            this.initialize();\r\n            for (let d of this.data) {\r\n                d[this.fields.y] *= 1;\r\n                if (isNaN(d[this.fields.y])) d[this.fields.y] = 0;\r\n            }\r\n\r\n            this.scaled.x.domain(d3.extent(this.data, (d) => d[this.fields.x]));\r\n            this.scaled.y.domain([0, this.ceil]);\r\n            this.points = [];\r\n\r\n            // Create graph points\r\n            for (let d of this.data) {\r\n                this.points.push({\r\n                    x: this.scaled.x(d[this.fields.x]),\r\n                    y: this.scaled.y(d[this.fields.y]),\r\n                    max: this.height,\r\n                });\r\n            }\r\n            // this.paths.area = this.createArea(this.points);\r\n            this.paths.line = this.createLine(this.points);\r\n\r\n            // draw axes\r\n            const yField = this.$store.getters.field(this.fields.y);\r\n            d3.select(this.$refs.yaxis)\r\n                .call(d3.axisLeft(this.scaled.y)\r\n                        .tickFormat((d) => formatValue(d, yField).value))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.yaxis).selectAll('text').attr('fill', '#ddd');\r\n            d3.select(this.$refs.xaxis)\r\n                .call(d3.axisBottom(this.scaled.x).tickFormat(d3.timeFormat('%m-%d')))\r\n                .selectAll('path, .tick line')\r\n                .attr('stroke', '#ccc');\r\n            d3.select(this.$refs.xaxis)\r\n                .selectAll('text')\r\n                // .attr('fill', '#ddd')\r\n                .attr('dx', '-1em')\r\n                .attr('transform', 'rotate(-45)');\r\n        },\r\n\r\n        mouseover({ offsetX, offsetY }) {\r\n            if (this.points.length > 0) {\r\n                const x = offsetX - this.margin.left;\r\n                const y = offsetY - this.margin.top;\r\n                const closestPoint = this.getClosestPoint(x);\r\n\r\n                if (this.lastHoverPoint.index !== closestPoint.index) {\r\n                    const point = this.points[closestPoint.index];\r\n                    this.paths.selector = this.createValueSelector([point]);\r\n                    this.$emit('select', this.data[closestPoint.index]);\r\n                    this.lastHoverPoint = closestPoint;\r\n                    // InfoBox coords are slightly to the lower-right of mouse\r\n                    const dataPoint = this.data[closestPoint.index];\r\n                    this.infoBox.message = `\r\n                        ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}\r\n                        ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}\r\n                    `;\r\n                    this.infoBox.x = x + 30;\r\n                    this.infoBox.y = y + 40;\r\n                }\r\n            }\r\n        },\r\n        mouseleave() {\r\n            this.paths.selector = '';\r\n            this.infoBox.message = '';\r\n        },\r\n        getClosestPoint(x) {\r\n            return this.points\r\n                .map((point, index) => ({\r\n                    x: point.x,\r\n                    diff: Math.abs(point.x - x),\r\n                    index,\r\n                }))\r\n                .reduce((least, val) => (least.diff < val.diff ? least : val));\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .line-graph {\r\n        max-width: 100%;\r\n        min-height: 200px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 175px;\r\n        width: 100%;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n    .data-dropdown-title {\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 30px;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .line {\r\n        fill: none;\r\n        stroke-linejoin: round;\r\n        stroke-linecap: round;\r\n        stroke-width: 1.5;\r\n    }\r\n    .axis {\r\n        font-size: 0.5em;\r\n    }\r\n    .selector {\r\n        stroke: hsla(207, 99%, 80%, 0.7);\r\n        stroke-width: 1.0;\r\n        fill: none;\r\n    }\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "line-graph",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c(
-        "div",
-        {
-          ref: "graph-wrap",
-          staticClass: "graph-wrap",
-          on: { click: _vm.toggleTable }
-        },
-        [
-          _c(
-            "svg",
-            {
-              attrs: { width: _vm.width, height: _vm.height },
-              on: { mousemove: _vm.mouseover, mouseleave: _vm.mouseleave }
-            },
-            [
-              _c("text", { staticClass: "title", attrs: { x: 55, y: 10 } }, [
-                _vm._v(_vm._s(_vm.fieldDisplayName(_vm.fields.y)))
-              ]),
-              _vm._v(" "),
-              _c("g", {
-                ref: "yaxis",
-                staticClass: "axis",
-                style: {
-                  transform:
-                    "translate(" +
-                    _vm.margin.left +
-                    "px," +
-                    _vm.margin.top +
-                    "px)"
-                }
-              }),
-              _vm._v(" "),
-              _c("g", {
-                ref: "xaxis",
-                staticClass: "axis",
-                style: {
-                  transform:
-                    "translate(" +
-                    _vm.margin.left +
-                    "px," +
-                    (_vm.height - _vm.margin.bottom) +
-                    "px)"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "g",
-                {
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.margin.left +
-                      "px, " +
-                      _vm.margin.top +
-                      "px)"
-                  }
-                },
-                [
-                  _c("path", {
-                    staticClass: "area",
-                    attrs: { d: _vm.paths.area }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "line",
-                    style: { stroke: _vm.lineColor },
-                    attrs: { d: _vm.paths.line }
-                  }),
-                  _vm._v(" "),
-                  _c("path", {
-                    staticClass: "selector",
-                    attrs: { d: _vm.paths.selector }
-                  }),
-                  _vm._v(" "),
-                  _vm._l(_vm.points, function(point) {
-                    return _c("circle", {
-                      staticClass: "data-circle",
-                      style: { fill: _vm.lineColor },
-                      attrs: { r: _vm.circleRadius, cx: point.x, cy: point.y }
-                    })
-                  })
-                ],
-                2
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "data-dropdown-title",
-              attrs: { title: "Click to show or hide data table" }
-            },
-            [
-              _c(
-                "span",
-                {
-                  staticClass: "rotating-play-icon",
-                  class: { "rotate-90deg": _vm.showTable }
-                },
-                [_vm._v("\r\n                ►\r\n            ")]
-              ),
-              _vm._v("\r\n            Data\r\n        ")
-            ]
-          ),
-          _vm._v(" "),
-          _vm.infoBox.message
-            ? _c(
-                "div",
-                {
-                  staticClass: "info-box",
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.infoBox.x +
-                      "px, " +
-                      _vm.infoBox.y +
-                      "px)"
-                  }
-                },
-                [
-                  _vm._v(
-                    "\r\n            " +
-                      _vm._s(_vm.infoBox.message) +
-                      "\r\n        "
-                  )
-                ]
-              )
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _vm.showTable
-        ? _c("data-table", _vm._b({}, "data-table", _vm.tableProps, false))
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-21d5040e", esExports)
-  }
-}
-
-/***/ }),
-/* 93 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__ = __webpack_require__(70);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__ = __webpack_require__(96);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(94)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-4ae719c5"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_single_value_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4ae719c5_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_single_value_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\single-value.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4ae719c5", Component.options)
-  } else {
-    hotAPI.reload("data-v-4ae719c5", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(95);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("69ee75ae", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4ae719c5\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./single-value.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.single-value[data-v-4ae719c5] {\r\n    min-height: 110px;\n}\n.subvalue-wrapper[data-v-4ae719c5] {\r\n    display: flex;\r\n    justify-content: center;\n}\n.subvalue[data-v-4ae719c5] {\r\n    margin: 1em 1.5em 0.5em 1.5em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/single-value.vue"],"names":[],"mappings":";AAwGA;IACA,kBAAA;CACA;AACA;IACA,cAAA;IACA,wBAAA;CACA;AACA;IACA,8BAAA;CACA","file":"single-value.vue","sourcesContent":["/**\r\n * Widget that displays a single value with a title, and optionally sub-values.\r\n * @prop {String} fieldName\r\n * @prop {Array} subFields - optional\r\n * ... and other base widget props (filter, datasource,...)\r\n */\r\n<template>\r\n<div class=\"single-value\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\"\r\n    >\r\n    <h3>{{ title }}</h3>\r\n    <p class=\"metric\"\r\n      :class=\"formatted.styleClass\"\r\n      :title=\"hoverText\"\r\n    >{{ formatted.value }}\r\n    </p>\r\n\r\n    <div class=\"subvalue-wrapper\">\r\n        <p class=\"subvalue\"\r\n            v-if=\"subFields\"\r\n            v-for=\"v in subValues\"\r\n            :title=\"v.fieldName\"\r\n            :class=\"v.styleClass\"\r\n        >{{ v.value }}</p>\r\n    </div>\r\n\r\n    <editor\r\n        v-if=\"$store.state.editMode\"\r\n        :initialObject=\"$props\"\r\n        @modify-widget=\"modify\"\r\n    ></editor>\r\n</div>\r\n</template>\r\n\r\n<script>\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport { formatValue } from '../javascript/scorecard-format';\r\nimport * as parse from '../javascript/parse';\r\nimport { getDates } from '../javascript/filters';\r\n\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    props: ['title', 'fieldName', 'subFields'],\r\n    computed: {\r\n        field: function() {\r\n            return this.$store.getters.field(this.fieldName);\r\n        },\r\n        formatted: function() {\r\n            return formatValue(this.value, this.field);\r\n        },\r\n        data: function() {\r\n            return this.$store.getters.getData(this.filter, this.datasource);\r\n        },\r\n        value: function() {\r\n            return parse.getValueForField(this.data, this.fieldName);\r\n        },\r\n        subValues: function() {\r\n            if (!this.subFields) return [];\r\n            return this.subFields.map((field) => {\r\n                let formatted = formatValue(\r\n                    parse.getValueForField(this.data, field),\r\n                    field\r\n                );\r\n                return {\r\n                    value: formatted.value,\r\n                    styleClass: formatted.styleClass,\r\n                    fieldName: this.$store.getters.field(field).displayName\r\n                }\r\n            });\r\n        },\r\n        // Return title showing goal and dates in value\r\n        hoverText: function() {\r\n            let dateStr = ``;\r\n            if (this.filter.date || this.filter.dateDay) {\r\n                let dates = getDates(this.filter.date || this.filter.dateDay);\r\n                let start = dates.$gte || dates.$gt;\r\n                let interval = dates.$lt ? 'up to' : 'through';\r\n                let end   = dates.$lte || dates.$lt;\r\n                let format = (d) => moment(d).format('M/D');\r\n                dateStr = `Includes ${format(start)} ${interval} ${format(end)}`;\r\n            }\r\n            let field = this.$store.getters.field(this.fieldName);\r\n            let goal = this.$store.getters.goalForField(field);\r\n            let goalStr = this.title;\r\n            if (goal) {\r\n                goalStr = `${this.title} - Goal: ${formatValue(goal.thresholds[0], field).value}`;\r\n            }\r\n            return `${goalStr}\\n${dateStr}`;\r\n        }\r\n    },\r\n    methods: {\r\n        modify: function(newWidget) {\r\n            this.$emit('modify-widget', newWidget, this.id);\r\n        }\r\n    }\r\n};\r\n\r\n</script>\r\n\r\n\r\n<style scoped>\r\n.single-value {\r\n    min-height: 110px;\r\n}\r\n.subvalue-wrapper {\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n.subvalue {\r\n    margin: 1em 1.5em 0.5em 1.5em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 96 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "single-value",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("h3", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c(
-        "p",
-        {
-          staticClass: "metric",
-          class: _vm.formatted.styleClass,
-          attrs: { title: _vm.hoverText }
-        },
-        [_vm._v(_vm._s(_vm.formatted.value) + "\r\n    ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "subvalue-wrapper" },
-        _vm._l(_vm.subValues, function(v) {
-          return _vm.subFields
-            ? _c(
-                "p",
-                {
-                  staticClass: "subvalue",
-                  class: v.styleClass,
-                  attrs: { title: v.fieldName }
-                },
-                [_vm._v(_vm._s(v.value))]
-              )
-            : _vm._e()
-        })
-      ),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c("editor", {
-            attrs: { initialObject: _vm.$props },
-            on: { "modify-widget": _vm.modify }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ae719c5", esExports)
-  }
-}
-
-/***/ }),
-/* 97 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__ = __webpack_require__(71);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__ = __webpack_require__(100);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(98)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-57308e94"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_pie_chart_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_57308e94_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_pie_chart_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\pie-chart.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-57308e94", Component.options)
-  } else {
-    hotAPI.reload("data-v-57308e94", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(99);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("07cfff32", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-57308e94\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./pie-chart.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.pie-chart[data-v-57308e94] {\n    max-width: 100%;\n    min-height: 180px;\n}\n.graph-wrap[data-v-57308e94]:hover {\n    cursor: pointer;\n}\n.graph-wrap[data-v-57308e94] {\n    height: 180px;\n    width: 100%;\n    position: relative;\n}\n.graph-wrap text[data-v-57308e94], .data-dropdown-title[data-v-57308e94] {\n    text-anchor: middle;\n    font-size: 0.8em;\n}\n.data-dropdown-title[data-v-57308e94] {\n    position: absolute;\n    bottom: 10px;\n    font-size: 0.6em;\n    text-align: left;\n    margin-left: 1em;\n}\n.rotating-play-icon[data-v-57308e94] {\n    font-size: 0.75em;\n    display: inline-block;\n    transition: 0.2s all ease-in;\n}\n.rotating-play-icon.rotate-90deg[data-v-57308e94] {\n    transform: rotate(90deg);\n}\n.text-overlay[data-v-57308e94] {\n    position: absolute;\n    width: 100%;\n    font-size: 1.5em;\n    top: -1.5em;\n    font-weight: lighter;\n}\nh1[data-v-57308e94], .content[data-v-57308e94] {\n  margin-left: 20px;\n}\nlabel[data-v-57308e94] {\n  display: inline-block;\n  width: 150px;\n}\n.info-box[data-v-57308e94] {\n    display: inline-block;\n    position: absolute;\n    top: -20px;\n    left: 0;\n    color: inherit;\n    border-radius: 2px;\n    padding: 0.5em;\n    z-index: 100000;\n}\n\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/pie-chart.vue"],"names":[],"mappings":";AAyQA;IACA,gBAAA;IACA,kBAAA;CACA;AACA;IACA,gBAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,mBAAA;CACA;AACA;IACA,oBAAA;IACA,iBAAA;CACA;AAEA;IACA,mBAAA;IACA,aAAA;IACA,iBAAA;IACA,iBAAA;IACA,iBAAA;CACA;AACA;IACA,kBAAA;IACA,sBAAA;IACA,6BAAA;CACA;AACA;IACA,yBAAA;CACA;AAEA;IACA,mBAAA;IACA,YAAA;IACA,iBAAA;IACA,YAAA;IACA,qBAAA;CACA;AAEA;EACA,kBAAA;CACA;AACA;EACA,sBAAA;EACA,aAAA;CACA;AAEA;IACA,sBAAA;IACA,mBAAA;IACA,WAAA;IACA,QAAA;IACA,eAAA;IACA,mBAAA;IACA,eAAA;IACA,gBAAA;CACA","file":"pie-chart.vue","sourcesContent":["/**\r\nLine graph widget. Uses D3 to render an SVG based on data and fields props.\r\n\r\nAccepts data prop with structure:\r\n{\r\n  'yyyy-mm-dd': 1,\r\n  'yyyy-mm-dd': 2, ...\r\n}\r\n */\r\n\r\n<template>\r\n<div class=\"pie-chart\"\r\n    :draggable=\"$store.state.editMode\"\r\n    @dragstart=\"dragstartHandler\">\r\n    <h3>{{ title }}</h3>\r\n\r\n    <div @click=\"toggleTable\" ref=\"graph-wrap\" class=\"graph-wrap\">\r\n        <svg\r\n            :width=\"width\" :height=\"height\">\r\n        </svg>\r\n\r\n        <div v-if=\"chartData.length == 0\"\r\n            :style=\"{transform: `translate(0, ${height / 2}px)`}\"\r\n            class=\"text-overlay font-color-secondary\">\r\n            N/A\r\n        </div>\r\n\r\n        <!-- \"Play\" symbol &#9658; -->\r\n        <div class=\"data-dropdown-title\"\r\n            title=\"Click to show or hide data table\">\r\n            <span class=\"rotating-play-icon\"\r\n                :class=\"{ 'rotate-90deg': showTable }\"\r\n            >\r\n                &#9658;\r\n            </span>\r\n            Data\r\n        </div>\r\n\r\n        <div v-if=\"infoBox.message\" class=\"info-box\"\r\n            :style=\"{transform: `translate(${infoBox.x}px, ${infoBox.y}px)`}\"\r\n        >{{ infoBox.message }}</div>\r\n    </div>\r\n\r\n    <data-table\r\n        v-if=\"showTable\"\r\n        :datasource=\"datasource\"\r\n        :filter=\"tableFilter\"\r\n        :fields=\"tableFields\"\r\n        :headers=\"tableHeaders\"\r\n        :isChild=\"true\"\r\n    ></data-table>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nimport DataTable from './data-table.vue';\r\nimport WidgetBase from './widget-base.vue';\r\n\r\nimport * as parse from '../javascript/parse';\r\nimport { formatValue } from '../javascript/scorecard-format';\r\n\r\nconst clone = require('ramda/src/clone');\r\n\r\nconst reasonCodeColors = {\r\n    'Lunch': 'hsl(204, 54%, 52%)',\r\n    'One on One': 'hsl(206, 54%, 63%)',\r\n    'Break': 'hsl(209, 56%, 73%)',\r\n    'Training': 'hsl(205, 56%, 82%)',\r\n    'After Call Work': 'hsl(345, 85%, 51%)',\r\n    'Not Ready': 'hsl(345, 90%, 62%)',\r\n    'Outbound': 'hsl(345, 90%, 82%)',\r\n};\r\nconst reasonCodeSortOrder = [\r\n    'Lunch', 'One on One', 'Break', 'Training',\r\n    'After Call Work', 'Not Ready', 'Outbound',\r\n];\r\n\r\nconst props = {\r\n    fields: {\r\n        type: Object\r\n    },\r\n    margin: {\r\n        type: Object,\r\n        default: () => ({\r\n            left: 30,\r\n            right: 20,\r\n            top: 0,\r\n            bottom: 0,\r\n        }),\r\n    },\r\n    title: {\r\n        type: String\r\n    }\r\n};\r\n\r\nexport default {\r\n    extends: WidgetBase,\r\n    name: 'pie-chart',\r\n\r\n    props,\r\n\r\n    components: {\r\n        'data-table': DataTable\r\n    },\r\n\r\n    data () {\r\n        return {\r\n            showTable: false,\r\n            width: 180,\r\n            height: 180,\r\n            radius: 90,\r\n            paths: {\r\n                area: '',\r\n                line: '',\r\n                selector: '',\r\n                goalLine: ''\r\n            },\r\n            scaled: {\r\n                x: null,\r\n                y: null,\r\n            },\r\n            // Box to display printed data points when hovering\r\n            infoBox: {\r\n                message: '',\r\n                x: 0,\r\n                y: 0\r\n            },\r\n            // D3 objects\r\n            color: null,\r\n            pie: null,\r\n            path: null,\r\n            label: null,\r\n            svg: null,\r\n            g: null\r\n        };\r\n    },\r\n\r\n    computed: {\r\n        data() {\r\n            // Get data from hub\r\n            let raw = this.$store.getters.getData(this.filter, this.datasource);\r\n            // Summarize by displayed field(s)\r\n            let s = parse.summarize;\r\n            let grouped = parse.summarize(raw, this.fields.groupBy, this.fields.sum);\r\n            return grouped;\r\n        },\r\n        // Data with only fields needed to display chart\r\n        chartData() {\r\n            return this.data\r\n                .map((d) => {\r\n                    return {\r\n                        [this.fields.groupBy]: d[this.fields.groupBy],\r\n                        [this.fields.display]: d[this.fields.display]\r\n                    }\r\n                })\r\n                .filter((d) => d[this.fields.groupBy].trim() != '');\r\n        },\r\n        tableHeaders() {\r\n            if (this.fields.groupBy != 'reasonCode') return this.data;\r\n            return ['Reason Code', 'Time'];\r\n        },\r\n        tableFields() {\r\n            if (this.fields.groupBy != 'reasonCode')\r\n                return Object.keys(this.data[0]);\r\n            return ['reasonCode', 'notReadyTime', 'loginTime'];\r\n        },\r\n        tableFilter() {\r\n            return this.filter;\r\n        },\r\n        padded() {\r\n            const width = this.width - this.margin.left - this.margin.right;\r\n            const height = this.height - this.margin.top - this.margin.bottom;\r\n            return { width, height };\r\n        },\r\n    },\r\n\r\n    mounted() {\r\n        // Remove title tooltip, as it gets in the way of the infoBox popup\r\n        this.$el.removeAttribute('title');\r\n\r\n        // Set up D3\r\n        this.svg = d3.select(this.$el).select('svg');\r\n        this.g = this.svg.append('g').attr('transform',\r\n                                `translate(${this.width/2}, ${this.height/2})`);\r\n        // this.colorScale = d3.scaleOrdinal(d3.schemeDark2);\r\n        this.colorScale = d3.scaleOrdinal(d3.schemeBlues[8]);\r\n        this.pie = d3.pie()\r\n            .padAngle(.05)\r\n            .sort(this.sortValues)\r\n            .value((d) => d[this.fields.display]);\r\n        this.path = d3.arc()\r\n            .outerRadius(this.radius - 10)\r\n            .innerRadius((this.radius - 10) * 0.6);\r\n        this.label = d3.arc()\r\n            .outerRadius(this.radius - 40)\r\n            .innerRadius(this.radius - 40);\r\n    },\r\n\r\n    beforeDestroy() {\r\n        window.removeEventListener('resize', this.onResize);\r\n    },\r\n\r\n    watch: {\r\n        width: function(newWidth) { this.updateChart(this.data); },\r\n        chartData: function(newData) { this.updateChart(newData); }\r\n    },\r\n\r\n    methods: {\r\n        toggleTable: function() {\r\n            if (this.data && !this.showTable) {\r\n                this.showTable = true;\r\n            } else {\r\n                this.showTable = false;\r\n            }\r\n        },\r\n        updateChart: function(data) {\r\n            this.g.selectAll('.arc, .path').remove().exit();\r\n\r\n            if (data.length > 0) {\r\n                let arc = this.g.selectAll('arc')\r\n                    .data(this.pie(data))\r\n                    .enter().append('g')\r\n                      .attr('class', 'arc')\r\n                      .on('mouseover', this.hoverOverPieSlice)\r\n                      .on('mouseout', this.stopHoveringOverPieSlice);\r\n                arc.append('path')\r\n                    .attr('d', this.path)\r\n                    .attr('fill', this.getColor);\r\n            }\r\n        },\r\n        hoverOverPieSlice: function(d, i) {\r\n            this.infoBox.message = `\r\n                ${d.data.reasonCode}:\r\n                ${formatValue(d.data[this.fields.display], this.fields.display).value}\r\n            `;\r\n        },\r\n        stopHoveringOverPieSlice: function(d, i) {\r\n            this.infoBox.message = '';\r\n        },\r\n        getColor: function(d) {\r\n            // If this is a reason code pie chart, try to use custom colors\r\n            if (this.fields.groupBy == 'reasonCode'\r\n                && reasonCodeColors.hasOwnProperty(d.data.reasonCode)) {\r\n                return reasonCodeColors[d.data.reasonCode]\r\n            // Default to blues scale\r\n            } else {\r\n                return this.colorScale(d.data[this.fields.groupBy]);\r\n            }\r\n        },\r\n        sortValues: function (a, b) {\r\n            if (this.fields.groupBy == 'reasonCode') {\r\n                return reasonCodeSortOrder.indexOf(a.reasonCode)\r\n                    <  reasonCodeSortOrder.indexOf(b.reasonCode)\r\n                    ?  -1 : 1\r\n            } else {\r\n                return 0;\r\n            }\r\n        }\r\n    }\r\n};\r\n</script>\r\n\r\n\r\n<style scoped>\r\n    .pie-chart {\r\n        max-width: 100%;\r\n        min-height: 180px;\r\n    }\r\n    .graph-wrap:hover {\r\n        cursor: pointer;\r\n    }\r\n    .graph-wrap {\r\n        height: 180px;\r\n        width: 100%;\r\n        position: relative;\r\n    }\r\n    .graph-wrap text, .data-dropdown-title {\r\n        text-anchor: middle;\r\n        font-size: 0.8em;\r\n    }\r\n\r\n    .data-dropdown-title {\r\n        position: absolute;\r\n        bottom: 10px;\r\n        font-size: 0.6em;\r\n        text-align: left;\r\n        margin-left: 1em;\r\n    }\r\n    .rotating-play-icon {\r\n        font-size: 0.75em;\r\n        display: inline-block;\r\n        transition: 0.2s all ease-in;\r\n    }\r\n    .rotating-play-icon.rotate-90deg {\r\n        transform: rotate(90deg);\r\n    }\r\n\r\n    .text-overlay {\r\n        position: absolute;\r\n        width: 100%;\r\n        font-size: 1.5em;\r\n        top: -1.5em;\r\n        font-weight: lighter;\r\n    }\r\n\r\n    h1, .content {\r\n      margin-left: 20px;\r\n    }\r\n    label {\r\n      display: inline-block;\r\n      width: 150px;\r\n    }\r\n\r\n    .info-box {\r\n        display: inline-block;\r\n        position: absolute;\r\n        top: -20px;\r\n        left: 0;\r\n        color: inherit;\r\n        border-radius: 2px;\r\n        padding: 0.5em;\r\n        z-index: 100000;\r\n    }\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 100 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "pie-chart",
-      attrs: { draggable: _vm.$store.state.editMode },
-      on: { dragstart: _vm.dragstartHandler }
-    },
-    [
-      _c("h3", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          ref: "graph-wrap",
-          staticClass: "graph-wrap",
-          on: { click: _vm.toggleTable }
-        },
-        [
-          _c("svg", { attrs: { width: _vm.width, height: _vm.height } }),
-          _vm._v(" "),
-          _vm.chartData.length == 0
-            ? _c(
-                "div",
-                {
-                  staticClass: "text-overlay font-color-secondary",
-                  style: { transform: "translate(0, " + _vm.height / 2 + "px)" }
-                },
-                [_vm._v("\r\n            N/A\r\n        ")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "data-dropdown-title",
-              attrs: { title: "Click to show or hide data table" }
-            },
-            [
-              _c(
-                "span",
-                {
-                  staticClass: "rotating-play-icon",
-                  class: { "rotate-90deg": _vm.showTable }
-                },
-                [_vm._v("\r\n                ►\r\n            ")]
-              ),
-              _vm._v("\r\n            Data\r\n        ")
-            ]
-          ),
-          _vm._v(" "),
-          _vm.infoBox.message
-            ? _c(
-                "div",
-                {
-                  staticClass: "info-box",
-                  style: {
-                    transform:
-                      "translate(" +
-                      _vm.infoBox.x +
-                      "px, " +
-                      _vm.infoBox.y +
-                      "px)"
-                  }
-                },
-                [_vm._v(_vm._s(_vm.infoBox.message))]
-              )
-            : _vm._e()
-        ]
-      ),
-      _vm._v(" "),
-      _vm.showTable
-        ? _c("data-table", {
-            attrs: {
-              datasource: _vm.datasource,
-              filter: _vm.tableFilter,
-              fields: _vm.tableFields,
-              headers: _vm.tableHeaders,
-              isChild: true
-            }
-          })
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-57308e94", esExports)
-  }
-}
-
-/***/ }),
-/* 101 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__ = __webpack_require__(72);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__ = __webpack_require__(104);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(102)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-27782583"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_datasource_last_updated_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_27782583_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_datasource_last_updated_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\datasource-last-updated.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-27782583", Component.options)
-  } else {
-    hotAPI.reload("data-v-27782583", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(103);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("0b9ae522", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-27782583\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./datasource-last-updated.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\ndiv[data-v-27782583] {\r\n    text-align: center;\n}\np[data-v-27782583] {\r\n    margin: 0;\r\n    font-size: 0.8em;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/datasource-last-updated.vue"],"names":[],"mappings":";AAiCA;IACA,mBAAA;CACA;AACA;IACA,UAAA;IACA,iBAAA;CACA","file":"datasource-last-updated.vue","sourcesContent":["/**\r\n * Component to display a single table row of data. Child of DataTable widgets.\r\n */\r\n<template>\r\n    <div>\r\n        <p class=\"font-color-secondary\">\r\n            {{ lastUpdateMessage }}\r\n        </p>\r\n    </div>\r\n</template>\r\n\r\n<script>\r\nimport { formatValue } from '../javascript/scorecard-format.js';\r\n\r\nexport default {\r\n    props: ['datasource'],\r\n    data () {\r\n        return {\r\n            isHighlighted: false\r\n        };\r\n    },\r\n    computed: {\r\n        lastUpdateMessage: function() {\r\n            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;\r\n            if (!time) return 'Last updated time not available';\r\n            return `Last updated ${moment(time).format('MM/DD/YY')}`;\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n<style scoped>\r\ndiv {\r\n    text-align: center;\r\n}\r\np {\r\n    margin: 0;\r\n    font-size: 0.8em;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 104 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("p", { staticClass: "font-color-secondary" }, [
-      _vm._v("\n        " + _vm._s(_vm.lastUpdateMessage) + "\n    ")
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-27782583", esExports)
-  }
-}
-
-/***/ }),
-/* 105 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "card metric-wrapper stats-box",
-      style: _vm.gridPositioning,
-      attrs: { id: _vm.id },
-      on: { dragover: _vm.dragWidgetHandler, drop: _vm.dropWidgetHandler }
-    },
-    [
-      _c(
-        "h2",
-        {
-          staticClass: "title descriptor",
-          attrs: { draggable: _vm.$store.state.editMode },
-          on: { dragstart: _vm.dragstartHandler }
-        },
-        [_vm._v(_vm._s(_vm.title))]
-      ),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c(
-            "button",
-            {
-              staticClass: "edit-button",
-              on: {
-                click: function($event) {
-                  _vm.$emit("edit-card", _vm.id)
-                }
-              }
-            },
-            [_vm._v("☰")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.$store.state.editMode
-        ? _c(
-            "button",
-            { staticClass: "add-button", on: { click: _vm.addWidget } },
-            [_vm._v("+")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("single-value"), function(widget, i) {
-        return _c(
-          "single-value",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: {
-                "dragstart-widget": _vm.dragstartWidgetHandler,
-                "modify-widget": _vm.modifyWidget
-              }
-            },
-            "single-value",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("line-graph"), function(widget, i) {
-        return _c(
-          "line-graph",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
-            },
-            "line-graph",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("pie-chart"), function(widget, i) {
-        return _c(
-          "pie-chart",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: { "dragstart-widget": _vm.dragstartWidgetHandler }
-            },
-            "pie-chart",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("data-table"), function(widget, i) {
-        return _c(
-          "data-table",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              attrs: { highlightedDate: _vm.highlightedDate },
-              on: {
-                hoverDate: _vm.hoverDate,
-                unhoverDate: _vm.unhoverDate,
-                "dragstart-widget": _vm.dragstartWidgetHandler
-              }
-            },
-            "data-table",
-            widget,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm._l(_vm.widgetsOfType("datasource-last-updated"), function(widget, i) {
-        return _c(
-          "datasource-last-updated",
-          _vm._b(
-            {
-              key: widget.id,
-              ref: widget.id,
-              refInFor: true,
-              staticClass: "widget",
-              style: { order: widget.layoutOrder },
-              on: {
-                "dragstart-widget": _vm.dragstartWidgetHandler,
-                "modify-widget": _vm.modifyWidget
-              }
-            },
-            "datasource-last-updated",
-            widget,
-            false
-          )
-        )
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3bec8029", esExports)
-  }
-}
-
-/***/ }),
-/* 106 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__ = __webpack_require__(74);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__ = __webpack_require__(109);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(107)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_card_editor_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9d3c827e_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_card_editor_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\card-editor.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9d3c827e", Component.options)
-  } else {
-    hotAPI.reload("data-v-9d3c827e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(108);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("fff1ea5c", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-9d3c827e\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./card-editor.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"card-editor.vue","sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal" }, [
-    _c("h1", [_vm._v(_vm._s(_vm.newCard.title))]),
-    _vm._v(" "),
-    _c("h3", [_vm._v("Title")]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.newCard.title,
-          expression: "newCard.title"
-        }
-      ],
-      domProps: { value: _vm.newCard.title },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.newCard, "title", $event.target.value)
-        }
-      }
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "button-wrapper" }, [
-      _c(
-        "button",
-        {
-          on: {
-            click: function($event) {
-              _vm.$emit("exit-edit", true, _vm.newCard.id, _vm.newCard)
-            }
-          }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          on: {
-            click: function($event) {
-              _vm.$emit("exit-edit", false)
-            }
-          }
-        },
-        [_vm._v("Cancel")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "delete",
-          on: {
-            click: function($event) {
-              _vm.$emit("delete-card", _vm.id)
-            }
-          }
-        },
-        [_vm._v("Delete")]
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9d3c827e", esExports)
-  }
-}
-
-/***/ }),
-/* 110 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "dashboard scorecard-wrapper",
-      style: _vm.columnsStyle,
-      on: { dragover: _vm.dragoverHandler, drop: _vm.dropHandler }
-    },
-    [
-      _vm._l(_vm.layout.cards, function(card, i) {
-        return _c(
-          "card",
-          _vm._b(
-            {
-              key: i,
-              ref: card.id,
-              refInFor: true,
-              on: {
-                "edit-card": _vm.editCard,
-                "modify-widget": _vm.modifyWidget,
-                "update-widgets": _vm.updateWidgets
-              }
-            },
-            "card",
-            card,
-            false
-          )
-        )
-      }),
-      _vm._v(" "),
-      _vm.editingCard
-        ? _c(
-            "card-editor",
-            _vm._b(
-              {
-                on: { "exit-edit": _vm.exitEdit, "delete-card": _vm.deleteCard }
-              },
-              "card-editor",
-              _vm.editedCard,
-              false
-            )
-          )
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c21f7d6a", esExports)
-  }
-}
-
-/***/ }),
-/* 111 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_inbox_vue__ = __webpack_require__(75);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bfdd086_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_inbox_vue__ = __webpack_require__(114);
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(112)
-}
-var normalizeComponent = __webpack_require__(1)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-6bfdd086"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_inbox_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bfdd086_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_inbox_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src\\public\\components\\inbox.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6bfdd086", Component.options)
-  } else {
-    hotAPI.reload("data-v-6bfdd086", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(113);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("7ec38066", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6bfdd086\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./inbox.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6bfdd086\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./inbox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(true);
-// imports
-
-
-// module
-exports.push([module.i, "\n.inbox-wrapper[data-v-6bfdd086] {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\n}\n.header-wrapper[data-v-6bfdd086] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\n}\nh1[data-v-6bfdd086] {\r\n    color: white;\r\n    margin: 0;\n}\n.messages-wrapper[data-v-6bfdd086] {\r\n    overflow-y: scroll;\n}\n.close-button[data-v-6bfdd086] {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\n}\n.close-button[data-v-6bfdd086]:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\n}\n.date[data-v-6bfdd086] {\r\n    width: 15%;\n}\n.from[data-v-6bfdd086] {\r\n    width: 23%;\n}\n.body[data-v-6bfdd086] {\r\n    width: 62%;\n}\n.message-wrapper-column-headers[data-v-6bfdd086] {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\n}\r\n", "", {"version":3,"sources":["C:/Users/nclonts/Documents/Rise/dashboard/five9-call-dashboard/src/public/components/src/public/components/inbox.vue"],"names":[],"mappings":";AAmEA;IACA,gBAAA;IACA,cAAA;IACA,uBAAA;IACA,4BAAA;IACA,yBAAA;IACA,kBAAA;IACA,aAAA;IACA,oBAAA;IACA,6CAAA;IACA,aAAA;CACA;AACA;IACA,cAAA;IACA,+BAAA;IACA,kBAAA;CACA;AACA;IACA,aAAA;IACA,UAAA;CACA;AACA;IACA,mBAAA;CACA;AACA;IACA,eAAA;IACA,gBAAA;IACA,aAAA;IACA,0BAAA;CACA;AACA;IACA,gBAAA;IACA,YAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,WAAA;CACA;AACA;IACA,cAAA;IACA,YAAA;IACA,+BAAA;IACA,oBAAA;IACA,eAAA;CACA","file":"inbox.vue","sourcesContent":["<template>\r\n<div class=\"inbox-wrapper\">\r\n    <div class=\"header-wrapper\">\r\n        <h1><i class=\"far fa-envelope\"></i> Inbox</h1>\r\n        <button @click=\"$emit('close')\"\r\n            title=\"Close inbox\" class=\"close-button\"\r\n            ><i class=\"fas fa-times\"></i>\r\n        </button>\r\n    </div>\r\n    <div class=\"message-wrapper-column-headers\">\r\n        <p class=\"date\">\r\n            Date\r\n        </p>\r\n        <p class=\"from\">\r\n            From\r\n        </p>\r\n        <p class=\"body\">\r\n            Message\r\n        </p>\r\n    </div>\r\n    <div class=\"messages-wrapper\">\r\n        <div class=\"message-wrapper\"\r\n            v-for=\"(message, i) in messageList\">\r\n            <p class=\"date\">\r\n                {{ dateText(message) }}\r\n            </p>\r\n            <p class=\"from\">\r\n                {{ message.fromName }}\r\n            </p>\r\n            <p class=\"body\">\r\n                {{ message.body }}\r\n            </p>\r\n        </div>\r\n    </div>\r\n</div>\r\n</template>\r\n\r\n<script>\r\n\r\nexport default {\r\n    props: {\r\n        messages: {\r\n            type: Array\r\n        }\r\n    },\r\n    computed: {\r\n        // messages sorted by time\r\n        messageList: function() {\r\n            return this.messages.sort((a, b) => a.timestamp > b.timestamp ? -1 : 1);\r\n        }\r\n    },\r\n    methods: {\r\n        // Returns text for date next to message. Includes hour if within the last\r\n        // 24 hours\r\n        dateText: function(message) {\r\n            if (Math.abs(\r\n                    new Date(message.timestamp).getDate() - new Date().getDate()\r\n                ) < 1) {\r\n                return moment(message.timestamp).format('M/D h:mm A');\r\n            }\r\n            return moment(message.timestamp).format('M/D');\r\n        }\r\n    }\r\n}\r\n</script>\r\n\r\n<style scoped>\r\n.inbox-wrapper {\r\n    position: fixed;\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: calc(100vh - 100px);\r\n    width: calc(100vw - 3em);\r\n    margin: 0.5em 1em;\r\n    padding: 1em;\r\n    border-radius: 12px;\r\n    background-color: hsla(207, 100%, 50%, 0.92);\r\n    z-index: 100;\r\n}\r\n.header-wrapper {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin: 0 0 2em 0;\r\n}\r\nh1 {\r\n    color: white;\r\n    margin: 0;\r\n}\r\n.messages-wrapper {\r\n    overflow-y: scroll;\r\n}\r\n.close-button {\r\n    font-size: 2em;\r\n    display: inline;\r\n    color: white;\r\n    background-color: inherit;\r\n}\r\n.close-button:hover {\r\n    cursor: pointer;\r\n    color: #ddd;\r\n}\r\n.date {\r\n    width: 15%;\r\n}\r\n.from {\r\n    width: 23%;\r\n}\r\n.body {\r\n    width: 62%;\r\n}\r\n.message-wrapper-column-headers {\r\n    display: flex;\r\n    width: 100%;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: #eaeaea;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-/* 114 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "inbox-wrapper" }, [
-    _c("div", { staticClass: "header-wrapper" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close-button",
-          attrs: { title: "Close inbox" },
-          on: {
-            click: function($event) {
-              _vm.$emit("close")
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-times" })]
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "messages-wrapper" },
-      _vm._l(_vm.messageList, function(message, i) {
-        return _c("div", { staticClass: "message-wrapper" }, [
-          _c("p", { staticClass: "date" }, [
-            _vm._v(
-              "\r\n                " +
-                _vm._s(_vm.dateText(message)) +
-                "\r\n            "
-            )
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "from" }, [
-            _vm._v(
-              "\r\n                " +
-                _vm._s(message.fromName) +
-                "\r\n            "
-            )
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "body" }, [
-            _vm._v(
-              "\r\n                " + _vm._s(message.body) + "\r\n            "
-            )
-          ])
-        ])
-      })
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h1", [
-      _c("i", { staticClass: "far fa-envelope" }),
-      _vm._v(" Inbox")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "message-wrapper-column-headers" }, [
-      _c("p", { staticClass: "date" }, [
-        _vm._v("\r\n            Date\r\n        ")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "from" }, [
-        _vm._v("\r\n            From\r\n        ")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "body" }, [
-        _vm._v("\r\n            Message\r\n        ")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6bfdd086", esExports)
-  }
-}
-
-/***/ }),
-/* 115 */
-/***/ (function(module, exports) {
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-
-module.exports = function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
-};
 
 
 /***/ })
