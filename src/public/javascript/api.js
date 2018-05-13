@@ -43,6 +43,17 @@ export async function getLogs(query) {
     return await response.json();
 }
 
+/**
+ * Add entry to sales tracker. Entry will be recorded under the logged-in user.
+ * @param {Object} entry          object to save to tracker
+ * @param {String} [type='sales'] Which tracker to save to?
+ * @return {Promise} resolves on completion
+ */
+export async function addToTracker(entry, type='sales') {
+    let response = await request({ entry }, `tracker/${type}`);
+    return await response.text();
+}
+
 ///////////////////////////////////////////////////////////////////////
 // Users
 /**

@@ -20,6 +20,8 @@ const queue  = require('./queue-stats'); // real-time queue feeds
 const custom = require('./custom-upload');
 // Five9 models
 const models = require('./five9-models'); // data feeds for SL & calls
+// Manual Trackers
+const sales = require('./sales-tracker');
 
 
 /**
@@ -118,6 +120,8 @@ function getModelFromSourceName(sourceName) {
             return queue.QueueStats;
         case 'ChatData':
             return models.ChatData;
+        case 'SalesTracker':
+            return sales.SalesTracker;
         // If it's not one of the above sources, assume it's a custom model
         default:
             return custom.CustomData;

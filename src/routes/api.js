@@ -24,6 +24,7 @@ const five9Update = require('../datasources/five9-update'); // five9 update proc
 const layouts = require('../layouts/layouts'); // dashboard layouts
 const queue  = require('../datasources/queue-stats'); // real-time queue feeds
 const customers = require('../datasources/customers'); // customer database
+const salesTracker = require('../datasources/sales-tracker'); //
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
 
@@ -104,6 +105,13 @@ router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
         res.set('Content-Type', 'application/text');
         res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
     }
+});
+
+// Add an entry to the sales tracker
+router.post('/tracker/sales', verify.apiMiddleware(), async (req, res) => {
+    let entry = req.body.entry;
+    await salesTracker.add(req.user.username, entry.saleMade, entry.dtvSaleMade);
+    res.status(200).send(`Sales entry added successfully.`);
 });
 
 //////////////////////////////////////
@@ -219,7 +227,7 @@ router.get('/users/data/:username?', verify.apiMiddleware(), async (req, res) =>
 
 
 /**
- * Change a user's theme. Admin's can change any user's theme, while non-admin's
+ * Change a user's theme. Admins can change any user's theme, while non-admin's
  * can only change their own themes.
  * @param {String} username user to update
  * @param {Object} newTheme new theme object to assign
@@ -255,7 +263,7 @@ router.get('/users', verify.apiMiddleware('supervisor'), async (req, res) => {
     }
 });
 
-// Notify server that a 502 has occurred
+// Notify server that a 504 has occurred
 router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {
     res.set('Content-Type', 'application/text');
     try {
