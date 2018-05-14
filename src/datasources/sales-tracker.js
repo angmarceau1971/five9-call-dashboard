@@ -9,7 +9,6 @@ const log = require('../utility/log');
 
 
 const salesTracker = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     // User who made sale
     username: {
         type: String,
