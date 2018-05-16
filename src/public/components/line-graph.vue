@@ -123,6 +123,13 @@ export default {
         };
     },
 
+    mounted() {
+        // Remove title tooltip, as it gets in the way of the infoBox popup
+        this.$el.removeAttribute('title');
+        // Update everything when screen size changes
+        window.addEventListener('resize', this.onResize);
+    },
+
     computed: {
         data() {
             // Get data from hub
@@ -174,13 +181,6 @@ export default {
             }
             return Object.assign(initialOptions, this.tableOptions);
         }
-    },
-
-    mounted() {
-        // Remove title tooltip, as it gets in the way of the infoBox popup
-        this.$el.removeAttribute('title');
-        // Update everything when screen size changes
-        window.addEventListener('resize', this.onResize);
     },
 
     beforeDestroy() {

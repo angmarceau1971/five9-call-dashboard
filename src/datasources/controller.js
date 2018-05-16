@@ -171,22 +171,31 @@ function createFilter(obj) {
 
 // create $group-ings off the fields in the groupBy array
 function createGroup(groupBy, fields) {
+    // Summarize based on groupBy fields
     let group = {
         _id: groupBy.reduce((result, field) => {
                 result[field] = `$${field}`;
                 return result;
             }, {})
     };
+    // Create accumulators for fields based on type
+    // Currently, can only use one type for a given request
     if (fields.sum)
         group = fields.sum.reduce((result, field) => {
             result[field] = { $sum: `$${field}` };
             return result;
         }, group);
-    if (fields.push)
+    else if (fields.push)
         group = fields.push.reduce((result, field) => {
             result[field] = { $push: `$${field}` };
             return result;
         }, group);
+    else if (fields.sumBoolean)
+        group = fields.sumBoolean.reduce((result, field) => {
+            result[field] = { $sum: { $cond: [`$${field}`, 1, 0] } };
+            return result;
+        }, group);
+
     return group;
 }
 

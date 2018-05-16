@@ -4,7 +4,11 @@
  * This widget allows manually-entering items to a tracker -- such as sales
  * or retentions trackers.
  *
- * Entries are posted via the API to be saved on the server database.
+ * Tracker accepts a prop called `visible` that determines whether the modal /
+ * pop-up form is visible. An `exit` event is emitted when the user exits (via
+ * save or cancel) the form.
+ *
+ * Entries are posted to the server, where they are saved in the database.
  */
 <template>
 <div
@@ -14,10 +18,10 @@
 
     <div class="tracker-form-wrapper"
         :style="positionStyle"
-        v-if="visible"
+        v-show="visible"
     >
         <form class="tracker-form">
-            <h1>Sales Tracker</h1>
+            <h1>Add a Sale</h1>
             <p v-if="message">{{ message }}</p>
 
             <input v-model="accountNumber" placeholder="Account Number"
@@ -49,7 +53,6 @@
 <script>
 'use strict';
 import WidgetBase from './widget-base.vue';
-
 import * as api from '../javascript/api';
 
 export default {
@@ -130,13 +133,13 @@ export default {
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    background-color: hsla(0, 0%, 73%, 0.8);
+    background-color: hsla(0, 0%, 73%, 0.4);
 }
 .tracker-form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: hsla(207, 100%, 50%, 0.92);
+    background-color: hsla(207, 100%, 50%, 0.9);
     width: 500px;
     height: 80%;
     margin: 3rem auto;
@@ -169,11 +172,12 @@ export default {
 }
 .tracker-form button.save {
     background-color: hsl(120, 100%, 52%);
-    color: hsl(0, 0%, 38%);
+    color: hsl(0, 0%, 20%);
 }
 .tracker-form button:hover {
     filter: drop-shadow(0 5px 20px aliceblue) brightness(1.2);
 }
+/* Border for filled-in fields */
 .complete {
     border: 2px solid hsl(120, 100%, 52%);
 }

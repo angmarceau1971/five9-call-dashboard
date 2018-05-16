@@ -80,15 +80,15 @@
         @modify-widget="modifyWidget"
     ></datasource-last-updated>
 
-    <tracker class="tracker"
-        v-for="(widget, i) in widgetsOfType('tracker')"
+    <leaderboard class="leaderboard"
+        v-for="(widget, i) in widgetsOfType('leaderboard')"
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
         :style="{ order: widget.layoutOrder }"
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
-    ></tracker>
+    ></leaderboard>
 </div>
 </template>
 
@@ -100,7 +100,7 @@ import LineGraph from './line-graph.vue';
 import SingleValue from './single-value.vue';
 import PieChart from './pie-chart.vue';
 import DatasourceLastUpdated from './datasource-last-updated.vue';
-import Tracker from './tracker.vue';
+import Leaderboard from './leaderboard.vue';
 
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
@@ -113,7 +113,7 @@ export default {
         'line-graph': LineGraph,
         'pie-chart': PieChart,
         'datasource-last-updated': DatasourceLastUpdated,
-        'tracker': Tracker
+        'leaderboard': Leaderboard
     },
     data: function() {
         return {

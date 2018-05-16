@@ -36,8 +36,11 @@ const salesTracker = mongoose.Schema({
         type: Boolean,
         required: true
     },
-}, { // options: timestamp will add 'createdAt' and 'updatedAt' fields
-    timestamps: true
+    // when was the order tracked?
+    date: {
+        type: Date,
+        required: true
+    }
 });
 
 const SalesTracker = mongoose.model('SalesTracker', salesTracker);
@@ -55,7 +58,8 @@ function add(username, accountNumber, saleType, dtvSaleMade) {
     let sale = new SalesTracker({
         username: username, accountNumber: accountNumber,
         saleType: saleType, dtvSaleMade: dtvSaleMade,
-        saleMade: isSale(saleType)
+        saleMade: isSale(saleType),
+        date: new Date()
     });
     return sale.save();
 }

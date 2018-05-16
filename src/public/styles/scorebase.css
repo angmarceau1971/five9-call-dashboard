@@ -66,6 +66,7 @@ button {
     letter-spacing: 3px;
     transition: all 200ms linear;
     color: #333;
+    border-radius: 2px;
 }
 
 a {
