@@ -14,17 +14,28 @@ const salesTracker = mongoose.Schema({
         type: String,
         required: true
     },
-    // Was the sale closed?
-    saleMade: {
-        type: Boolean,
+    accountNumber: {
+        type: String,
+        required: true
+    },
+    // Types of sales
+    saleType: {
+        type: String,
         required: true,
-        default: false
+        enum: [
+            'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
+            'UP - Upgrade', 'VO - Video Only'
+        ]
     },
     dtvSaleMade: {
         type: Boolean,
-        required: true,
         default: false
-    }
+    },
+    // calculated field (added on save) depending on saleType
+    saleMade: {
+        type: Boolean,
+        required: true
+    },
 }, { // options: timestamp will add 'createdAt' and 'updatedAt' fields
     timestamps: true
 });
@@ -33,9 +44,18 @@ const SalesTracker = mongoose.model('SalesTracker', salesTracker);
 module.exports.SalesTracker = SalesTracker;
 
 
-function add(username, saleMade, dtvSaleMade) {
+/**
+ * Save an entry to the tracker.
+ * @param {String} username      user who's recording sale
+ * @param {String} accountNumber new account number
+ * @param {String} saleType
+ * @param {Boolean} dtvSaleMade  true if sold
+ */
+function add(username, accountNumber, saleType, dtvSaleMade) {
     let sale = new SalesTracker({
-        username, saleMade, dtvSaleMade
+        username: username, accountNumber: accountNumber,
+        saleType: saleType, dtvSaleMade: dtvSaleMade,
+        saleMade: isSale(saleType)
     });
     return sale.save();
 }
@@ -45,3 +65,10 @@ function get(query) {
     return SalesTracker.find(query).lean().exec();
 }
 module.exports.get = get;
+
+
+let commissionable = ['NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer']
+
+function isSale(saleType) {
+    return commissionableTypes.includes(saleType);
+}

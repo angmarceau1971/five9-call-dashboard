@@ -110,7 +110,9 @@ router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
 // Add an entry to the sales tracker
 router.post('/tracker/sales', verify.apiMiddleware(), async (req, res) => {
     let entry = req.body.entry;
-    await salesTracker.add(req.user.username, entry.saleMade, entry.dtvSaleMade);
+    await salesTracker.add(req.user.username, entry.accountNumber,
+        entry.saleType, entry.dtvSaleMade
+    );
     res.status(200).send(`Sales entry added successfully.`);
 });
 

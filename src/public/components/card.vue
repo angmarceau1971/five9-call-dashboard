@@ -276,5 +276,4 @@ export default {
     top: 0;
     right: 0;
 }
-
 </style>
