@@ -11,15 +11,37 @@
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler"
 >
-    <label class="checkbox-wrapper">Sale Made
-        <input type="checkbox" />
-        <span class="checkmark"></span>
-    </label>
-    <br />
-    <label class="checkbox-wrapper">DTV Sale Made
-        <input type="checkbox" />
-        <span class="checkmark"></span>
-    </label>
+
+    <div class="tracker-form-wrapper"
+        :style="positionStyle"
+    >
+        <form class="tracker-form">
+            <h1>Sales Tracker</h1>
+            <p v-if="message">{{ message }}</p>
+
+            <input v-model="accountNumber" placeholder="Account Number"
+                :class="{complete: accountNumber}"
+            />
+
+            <select v-model="saleType" :class="{complete: saleType}">
+                <option disabled value="">Sale Type</option>
+                <option v-for="type in saleTypes" :value="type">{{ type }}</option>
+            </select>
+
+            <select v-model="dtvSaleMade" :class="{complete: dtvSaleMade!==''}">
+                <option disabled value="">DTV Sale Made</option>
+                <-- bind false/true to use actual Boolean values, not strings -->
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+            </select>
+
+            <div class="button-wrapper">
+                <button class="save" @click="save">Save</button>
+                <button class="cancel" @click="cancel">Cancel</button>
+            </div>
+        </form>
+
+    </div>
 </div>
 </template>
 
@@ -31,10 +53,60 @@ import * as api from '../javascript/api';
 export default {
     extends: WidgetBase,
     props: ['type'],
+    data: function() {
+        return {
+            // Default all fields to empty string, for later validation
+            accountNumber: '',
+            saleType: '',
+            dtvSaleMade: '',
+            // List of possible sale types
+            saleTypes: [
+                'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
+                'UP - Upgrade', 'VO - Video Only'
+            ],
+            message: ''
+        }
+    },
+    computed: {
+        positionStyle: function() {
+            return this.position
+                ? { top: -this.position.top +'px',
+                    left: -this.position.left + 'px' }
+                : { };
+        }
+    },
     methods: {
-        save: async function() {
-            let response = await api.addToTracker();
+        save: async function(event) {
+            event.preventDefault();
+
+
+            if (!this.accountNumber || !this.saleType
+                || this.dtvSaleMade === '') {
+                let field = !this.accountNumber ? 'Account Number'
+                            : !this.saleType ? 'Sale Type'
+                            : 'DTV Sale Made';
+                this.message = `Please enter a value for ${field}. :)`;
+                return;
+            }
+            this.message = 'Saving...'
+            let response = await api.addToTracker({
+                accountNumber: this.accountNumber,
+                saleType: this.saleType,
+                dtvSaleMade: this.dtvSaleMade || false
+            });
+            this.message = '';
             console.log(response);
+            this.clearForm();
+        },
+        cancel: function(event) {
+            event.preventDefault();
+            this.clearForm();
+        },
+        clearForm: function() {
+            this.accountNumber = '';
+            this.saleType = '';
+            this.dtvSaleMade = '';
+            this.message = '';
         }
     }
 }
@@ -46,81 +118,60 @@ export default {
 .tracker {
     display: flex;
     flex-direction: column;
-    height: 400px;
 }
 
-.checkbox-wrapper {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 22px;
-    user-select: none;
-}
-
-.checkbox-wrapper input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.checkbox-wrapper label {
-    font-size: 1.5rem;
-}
-
-.checkbox-wrapper .checkmark {
-    position: absolute;
+.tracker-form-wrapper {
+    position: fixed;
     top: 0;
     left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    background-color: hsla(0, 0%, 73%, 0.92);
+}
+.tracker-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: hsla(207, 100%, 50%, 0.92);
+    width: 500px;
+    height: 80%;
+    margin: 3rem auto;
+    border-radius: 4px;
+}
+.tracker-form > * {
+    margin: auto;
+    width: 85%;
 }
 
-.checkbox-wrapper:hover input ~ .checkmark {
-    background-color: #ccc;
+.tracker-form h1 {
+    color: aliceblue;
 }
-.checkbox-wrapper input:checked ~ .checkmark {
-    background-color: hsl(115, 100%, 47%);
-}
-.checkbox-wrapper .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-.checkbox-wrapper input:checked ~ .checkmark:after {
-    display: block;
-}
-.checkbox-wrapper .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
-}
-
-/* .checkbox-wrapper {
-    width: 30px;
-    height: 30px;
-    background: #ddd;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.checkbox-wrapper label {
-    display: block;
-    width: 25px;
-    height: 25px;
-    border-radius: 100px;
+.tracker-form input, .tracker-form select, .tracker-form button {
+    font-size: 1.5rem;
+    height: 3.3rem;
     cursor: pointer;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    z-index: 1;
-    background: #333;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-} */
+    transition: 0.25s all;
+    border-radius: 4px;
+}
+.tracker-form input:focus, .tracker-form select:focus {
+    filter: drop-shadow(0 5px 10px aliceblue);
+}
+.tracker-form .button-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.tracker-form button {
+    width: 45%;
+}
+.tracker-form button.save {
+    background-color: hsl(120, 100%, 52%);
+    color: hsl(207, 80%, 34%);
+}
+.tracker-form button:hover {
+    filter: drop-shadow(0 5px 20px aliceblue) brightness(1.2);
+}
+.complete {
+    border: 2px solid hsl(120, 100%, 52%);
+}
 </style>

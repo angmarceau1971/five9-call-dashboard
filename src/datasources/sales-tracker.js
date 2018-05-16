@@ -67,8 +67,15 @@ function get(query) {
 module.exports.get = get;
 
 
-let commissionable = ['NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer']
+let commissionableTypes = [
+    'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer'
+];
 
+/**
+ * Returns true if the given type counts as a sale.
+ * @param  {String}  saleType
+ * @return {Boolean}
+ */
 function isSale(saleType) {
     return commissionableTypes.includes(saleType);
 }
