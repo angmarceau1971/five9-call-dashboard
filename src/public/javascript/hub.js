@@ -111,7 +111,8 @@ export const store = new Vuex.Store({
         },
         nameFromUsername: (state) => (username) => {
             let user = state.userList.find((u) => u.username == username);
-            return `${user.firstName} ${user.lastName}`;
+            if (user) return `${user.firstName} ${user.lastName}`;
+            return username;
         },
         // Determine what layout should be displayed
         getCurrentLayout: (state) => {

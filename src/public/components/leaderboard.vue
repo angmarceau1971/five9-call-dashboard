@@ -2,7 +2,7 @@
  * -- Currently Sales leaderboard only --
  */
 <template>
-    <div>
+    <div class="leaderboard">
         <button @click="openTracker">Add a Sale</button>
         <tracker
             :visible="showTracker"
@@ -23,7 +23,7 @@ import Tracker from './tracker.vue';
 
 export default {
     extends: WidgetBase,
-    props: [],
+    props: ['datasourceSales', 'datasourceCalls'],
     components: {
         'tracker': Tracker,
         'data-table': DataTable
@@ -35,10 +35,23 @@ export default {
     },
     computed: {
         tableProps: function() {
+            // Combine sales tracker data with ACD log data
+            let sales = this.$store.getters.getData({}, this.datasourceSales);
+            let calls = this.$store.getters.getData({}, this.datasourceCalls);
+            let data = calls
+                .map((datum) => {
+                    datum.username = datum.agentUsername;
+                    return datum;
+                })
+                .concat(sales);
+
+            // Pass to table
             return {
-                datasource: this.datasource,
-                filter: this.filter,
-                fields: ['']
+                dataFromParent: data,
+                sortByField: 'estimatedCloseRate',
+                fields: ['username', 'saleMade', 'calls', 'estimatedCloseRate', 'dtvSaleMade'],
+                filter: {},
+                sortAscending: false // sort highest to lowest
             }
         }
     },
@@ -54,4 +67,7 @@ export default {
 </script>
 
 <style scoped>
+.leaderboard {
+    height: 600px;
+}
 </style>

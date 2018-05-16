@@ -50,6 +50,9 @@ function process(data, field) {
     else if (fieldName == 'closeRate') {
         return sum(data, 'orders') / sum(data, 'calls');
     }
+    else if (fieldName == 'estimatedCloseRate') {
+        return sum(data, 'saleMade') / sum(data, 'calls');
+    }
     else if (fieldName == 'notReadyPercentage') {
         return sum(data, 'notReadyTime') / sum(data, 'loginTime');
     }
@@ -85,7 +88,7 @@ export function summarize(data, summaryField, valueFields) {
     if (summaryField == 'dateDay' || summaryField == 'date') {
         parseKey = (key) => new Date(key);
     }
-    else if (summaryField == 'agentUsername') {
+    else if (summaryField == 'agentUsername' || summaryField == 'username') {
         parseKey = (key) => hub.store.getters.nameFromUsername(key);
     }
 
@@ -98,7 +101,7 @@ export function summarize(data, summaryField, valueFields) {
 }
 
 
-
+// TODO: get this working properly
 export function summarizeByMultiple(datas, summaryFields, valueFields) {
     let data = clone(datas);
 
@@ -161,7 +164,7 @@ export function filterFields(includeFields) {
  * @return {Number}
  */
 export function sum(arr, key) {
-    return arr.reduce((total, item) => total + item[key], 0);
+    return arr.reduce((total, item) => total + (item[key] || 0), 0);
 }
 
 /**

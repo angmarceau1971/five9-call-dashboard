@@ -53,6 +53,10 @@ export default {
     extends: WidgetBase,
     props: {
         fields: Array,
+        summarize: {
+            type: Boolean,
+            default: true
+        },
         summarizeBy: {
             type: Array,
             default: null
@@ -60,10 +64,6 @@ export default {
         headers: Array,
         datasource: String,
         filter: Object,
-        summarize: {
-            type: Boolean,
-            default: true
-        },
         isChild: {
             type: Boolean,
             default: false
@@ -76,6 +76,12 @@ export default {
         sortAscending: {
             type: Boolean,
             default: true
+        },
+        // Optional data from parent to be used instead of retrieving data via
+        // filters & datasource
+        dataFromParent: {
+            type: Array,
+            default: null
         }
     },
 
@@ -98,8 +104,15 @@ export default {
 
     computed: {
         data: function() {
-            let data = this.$store.getters.getData(this.filter, this.datasource);
-            if (this.summarize) {
+            // Get data from hub unlessed passed in by parent
+            let data;
+            if (!this.dataFromParent) {
+                data = this.$store.getters.getData(this.filter, this.datasource);
+            } else {
+                data = this.dataFromParent;
+            }
+            // Summarize
+            if (this.summarize == true) {
                 if (this.summarizeBy) {
                     data = parse.summarizeByMultiple(data, this.summarizeBy, this.fields);
                 } else { // default to summarizing by first field
