@@ -14,6 +14,7 @@
 
     <div class="tracker-form-wrapper"
         :style="positionStyle"
+        v-if="visible"
     >
         <form class="tracker-form">
             <h1>Sales Tracker</h1>
@@ -46,13 +47,14 @@
 </template>
 
 <script>
+'use strict';
 import WidgetBase from './widget-base.vue';
 
 import * as api from '../javascript/api';
 
 export default {
     extends: WidgetBase,
-    props: ['type'],
+    props: ['type', 'visible'],
     data: function() {
         return {
             // Default all fields to empty string, for later validation
@@ -62,7 +64,7 @@ export default {
             // List of possible sale types
             saleTypes: [
                 'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
-                'UP - Upgrade', 'VO - Video Only'
+                'UP - Upgrade', 'VO - Video Only', 'Reseller'
             ],
             message: ''
         }
@@ -96,17 +98,18 @@ export default {
             });
             this.message = '';
             console.log(response);
-            this.clearForm();
+            this.clearAndExit();
         },
         cancel: function(event) {
             event.preventDefault();
-            this.clearForm();
+            this.clearAndExit();
         },
-        clearForm: function() {
+        clearAndExit: function() {
             this.accountNumber = '';
             this.saleType = '';
             this.dtvSaleMade = '';
             this.message = '';
+            this.$emit('exit');
         }
     }
 }
@@ -127,7 +130,7 @@ export default {
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    background-color: hsla(0, 0%, 73%, 0.92);
+    background-color: hsla(0, 0%, 73%, 0.8);
 }
 .tracker-form {
     display: flex;
@@ -154,8 +157,8 @@ export default {
     transition: 0.25s all;
     border-radius: 4px;
 }
-.tracker-form input:focus, .tracker-form select:focus {
-    filter: drop-shadow(0 5px 10px aliceblue);
+.tracker-form input:focus, .tracker-form select:focus, .tracker-form button:focus {
+    filter: drop-shadow(0 3px 10px aliceblue);
 }
 .tracker-form .button-wrapper {
     display: flex;
@@ -166,7 +169,7 @@ export default {
 }
 .tracker-form button.save {
     background-color: hsl(120, 100%, 52%);
-    color: hsl(207, 80%, 34%);
+    color: hsl(0, 0%, 38%);
 }
 .tracker-form button:hover {
     filter: drop-shadow(0 5px 20px aliceblue) brightness(1.2);

@@ -24,7 +24,7 @@ const salesTracker = mongoose.Schema({
         required: true,
         enum: [
             'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
-            'UP - Upgrade', 'VO - Video Only'
+            'UP - Upgrade', 'VO - Video Only', 'Reseller'
         ]
     },
     dtvSaleMade: {
