@@ -11,10 +11,11 @@
         <thead>
             <tr>
                 <th v-for="header in displayHeaders"
-                    ref="headerRow"
+                ref="headerRow"
                 >{{ header }}</th>
             </tr>
         </thead>
+
         <tbody>
             <tr ref="bodyRows"
                 v-for="(datum, i) in data"
@@ -41,7 +42,6 @@ import * as parse from '../javascript/parse';
 import { formatValue } from '../javascript/scorecard-format.js';
 
 /**
- *
  * @prop {Array} fields to display. The first field will be the one that data
  *               is summarized by if the `summarizeBy` prop isn't given.
  * @prop {Array} summarizeBy - which fields to summarize data by
@@ -197,5 +197,5 @@ function getNotReadyPercentage(data) {
 
 </script>
 
-<style>
+<style scoped>
 </style>

@@ -9,10 +9,13 @@
 
         <div class="top-row-wrapper">
             <single-value class="overall-value" v-bind="overallProps"></single-value>
-            <button class="open-tracker" @click="openTracker">Add a Sale</button>
+            <button v-if="showTrackerButton"
+                class="open-tracker" @click="openTracker"
+            >Add a Sale</button>
         </div>
 
         <tracker
+            v-if="showTrackerButton"
             :visible="showTracker"
             @message="updateMessage"
             @exit="closeTracker"
@@ -33,7 +36,22 @@ import Tracker from './tracker.vue';
 
 export default {
     extends: WidgetBase,
-    props: ['datasourceSales', 'datasourceCalls'],
+    props: {
+        // Names of datasources for sales (sales tracker) and calls
+        'datasourceSales': String,
+        'datasourceCalls': String,
+        // Optional parameters to pass to table, such as styles or sortByField
+        'tableOptions': {
+            type: Object,
+            default: () => { return {} }
+        },
+        // Show button for tracker to add sales entries: generally true for
+        // agents, false for sup display
+        'showTrackerButton': {
+            type: Boolean,
+            default: true
+        }
+    },
     components: {
         'tracker': Tracker,
         'data-table': DataTable,
@@ -59,16 +77,14 @@ export default {
         },
         tableProps: function() {
             // Pass data to table
-            return {
+            let defaultOptions = {
                 dataFromParent: this.data,
                 sortByField: 'estimatedCloseRate',
                 fields: ['username', 'saleMade', 'calls', 'estimatedCloseRate', 'dtvSaleMade'],
                 filter: {},
-                sortAscending: false, // sort highest to lowest
-                styles: {
-                    'max-height': '100%'
-                }
+                sortAscending: false // sort highest to lowest
             };
+            return Object.assign(defaultOptions, this.tableOptions);
         },
         overallProps: function() {
             return {
@@ -99,9 +115,9 @@ export default {
 function goodJobPhrase() {
     let phrases = [
         'Good job!', 'Nice work!', 'Well done!', 'Perfecto!', `You're on fuego!`,
-        '🐱', 'Far out!', 'Great work!', 'Your wallet thanks you!',
+        '🐱', '😸', '😻', 'Far out!', 'Great work!', 'Your wallet thanks you!',
         'Add that to the savings account!', 'Cha-ching!',
-        "Dollar dollar bill y'all!", '😸', '😻', '🐲', '🐶'
+        "Dollar dollar bill y'all!"
     ];
     let i = Math.floor(Math.random() * phrases.length);
     return phrases[i];
@@ -115,6 +131,7 @@ function goodJobPhrase() {
 .top-row-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
 }
 .overall-value {
     width: 50%;

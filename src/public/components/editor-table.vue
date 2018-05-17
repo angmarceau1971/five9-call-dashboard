@@ -25,9 +25,9 @@
                         ref="headerRow">
                         {{ header }}
                     </th>
-
                 </tr>
             </thead>
+
             <div class="table-body-wrapper">
                 <tr class="row" v-for="(item, i) in items" ref="bodyRows">
                     <slot name="item" :item="item">

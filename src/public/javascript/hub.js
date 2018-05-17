@@ -116,8 +116,10 @@ export const store = new Vuex.Store({
         },
         // Determine what layout should be displayed
         getCurrentLayout: (state) => {
-            if (state.chosenLayoutName == 'Over-View') {
-                return state.layouts.find(l => l.name == 'Over-View');
+            // If a layout has been selected, return it
+            if (state.chosenLayoutName != '') {
+                return state.layouts.find(l => l.name == state.chosenLayoutName);
+            // Default to first layout in list
             } else {
                 return state.layouts[0];
             }
