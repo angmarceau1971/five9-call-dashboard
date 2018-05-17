@@ -43,7 +43,7 @@ import { getDates } from '../javascript/filters';
 
 export default {
     extends: WidgetBase,
-    props: ['title', 'fieldName', 'subFields'],
+    props: ['title', 'fieldName', 'subFields', 'dataFromParent'],
     computed: {
         field: function() {
             return this.$store.getters.field(this.fieldName);
@@ -52,7 +52,8 @@ export default {
             return formatValue(this.value, this.field, this.skillGroup(this.filter));
         },
         data: function() {
-            return this.$store.getters.getData(this.filter, this.datasource);
+            return this.dataFromParent
+                || this.$store.getters.getData(this.filter, this.datasource);
         },
         value: function() {
             return parse.getValueForField(this.data, this.fieldName);

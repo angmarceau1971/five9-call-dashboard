@@ -5,7 +5,18 @@
 import Editor from './editor.vue';
 
 export default {
-    props: ['id', 'datasource', 'filter'],
+    props: {
+        'id': {
+            type: String
+        },
+        'datasource': {
+            type: String
+        },
+        'filter': {
+            type: Object,
+            default: () => { return {} }
+        }
+    },
     components: {
         'editor': Editor
     },

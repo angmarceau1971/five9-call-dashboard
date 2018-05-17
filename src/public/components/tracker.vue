@@ -24,9 +24,10 @@
             <h1>Add a Sale</h1>
             <p v-if="message">{{ message }}</p>
 
-            <input v-model="accountNumber" placeholder="Account Number"
-                :class="{complete: accountNumber}"
-            />
+            <div class="button-wrapper">
+                <button class="save" @click="save">Save</button>
+                <button class="cancel" @click="cancel">Cancel</button>
+            </div>
 
             <select v-model="saleType" :class="{complete: saleType}">
                 <option disabled value="">Sale Type</option>
@@ -40,10 +41,9 @@
                 <option :value="true">Yes</option>
             </select>
 
-            <div class="button-wrapper">
-                <button class="save" @click="save">Save</button>
-                <button class="cancel" @click="cancel">Cancel</button>
-            </div>
+            <input v-model="accountNumber" placeholder="Account Number"
+                :class="{complete: accountNumber}"
+            />
         </form>
 
     </div>

@@ -3,6 +3,7 @@
  */
 <template>
 <div class="data-table-wrapper"
+    :style="styles"
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler">
     <h3 v-if="!isChild && title">{{ title }}</h3>
@@ -82,6 +83,11 @@ export default {
         dataFromParent: {
             type: Array,
             default: null
+        },
+        // Additional CSS styling
+        styles: {
+            type: Object,
+            default: () => { return {} }
         }
     },
 
