@@ -100,7 +100,8 @@ function goodJobPhrase() {
     let phrases = [
         'Good job!', 'Nice work!', 'Well done!', 'Perfecto!', `You're on fuego!`,
         '🐱', 'Far out!', 'Great work!', 'Your wallet thanks you!',
-        'Adding to that savings account!', 'Cha-ching!'
+        'Add that to the savings account!', 'Cha-ching!',
+        "Dollar dollar bill y'all!", '😸', '😻', '🐲', '🐶'
     ];
     let i = Math.floor(Math.random() * phrases.length);
     return phrases[i];
@@ -133,6 +134,14 @@ button.open-tracker:hover {
 }
 .leaderboard .message {
     color: hsl(123, 100%, 50%);
+    margin: 0;
+    font-size: 1.2rem;
+}
+</style>
+
+<style> /* Not scoped */
+/* Overall value header doesn't need a full top margin */
+.leaderboard .top-row-wrapper .overall-value h3 {
     margin-top: 0;
 }
 </style>

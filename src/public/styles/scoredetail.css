@@ -238,7 +238,7 @@ h2, h3 {
 /*  Data table formatting  */
 .data-table-wrapper {
     margin: 1em;
-    max-height: 15em;
+    max-height: 25rem;
     overflow: auto;
     max-width: 100%;
 }
