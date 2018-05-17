@@ -457,7 +457,9 @@ async function request(parameters, url='statistics', method='POST') {
             if (response.status == 504) notifyServer504(parameters, url); // debugging
             if (!response.ok) {
                 let bodyText = await response.text();
-                throw new Error(`Server responded with ${response.status} ${response.statusText}: ${bodyText}`);
+                let msg = `${bodyText} (status ${response.status}).`;
+                console.log(msg);
+                throw new Error(msg);
             }
             return response;
         });

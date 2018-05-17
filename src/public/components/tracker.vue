@@ -6,7 +6,8 @@
  *
  * Tracker accepts a prop called `visible` that determines whether the modal /
  * pop-up form is visible. An `exit` event is emitted when the user exits (via
- * save or cancel) the form.
+ * save or cancel) the form. `message` events are emitted to signal successful
+ * saves to the server.
  *
  * Entries are posted to the server, where they are saved in the database.
  */
@@ -94,13 +95,16 @@ export default {
                 return;
             }
             this.message = 'Saving...'
-            let response = await api.addToTracker({
-                accountNumber: this.accountNumber,
-                saleType: this.saleType,
-                dtvSaleMade: this.dtvSaleMade || false
-            });
-            this.message = '';
-            console.log(response);
+            try {
+                let response = await api.addToTracker({
+                    accountNumber: this.accountNumber,
+                    saleType: this.saleType,
+                    dtvSaleMade: this.dtvSaleMade || false
+                });
+                this.$emit('message', response);
+            } catch (err) {
+                this.$emit('message', err.message);
+            }
             this.clearAndExit();
         },
         cancel: function(event) {

@@ -22,6 +22,7 @@ const datasource = require('../datasources/controller');
 const five9Models = require('../datasources/five9-models'); // five9 data feeds
 const five9Update = require('../datasources/five9-update'); // five9 update process
 const layouts = require('../layouts/layouts'); // dashboard layouts
+const m = require('./middleware'); // error catching
 const queue  = require('../datasources/queue-stats'); // real-time queue feeds
 const customers = require('../datasources/customers'); // customer database
 const salesTracker = require('../datasources/sales-tracker'); //
@@ -35,28 +36,24 @@ const skillGroup = require('../datasources/skill-group');
 // Include endpoints defined in other files
 const addAdminRoutes = require('./administrative').addTo(router);
 
+/**
+ * Main endpoint to retrieve scorecard statistics for metric dashboard.
+ */
 router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
-    async (req, res) => {
+    m.err(async (req, res) => {
         five9Update.onReady(async () => {
-            let data;
-            try {
-                let dataPromises = req.body.map(async (ds) => {
-                    let stats = await datasource.getScorecardStatistics(ds);
-                    return {
-                        data: stats.data,
-                        meta: stats.meta,
-                        source: ds
-                    };
-                });
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(await Promise.all(dataPromises)));
-            } catch (err) {
-                log.error(`Error during scorecard retrieval: ${err}`);
-                res.set('Content-Type', 'application/text');
-                res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
-            }
+            let dataPromises = req.body.map(async (ds) => {
+                let stats = await datasource.getScorecardStatistics(ds);
+                return {
+                    data: stats.data,
+                    meta: stats.meta,
+                    source: ds
+                };
+            });
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(await Promise.all(dataPromises)));
         })
-    }
+    })
 );
 
 // Five9 current queue statistics (ACDStatus endpoint at Five9)
@@ -93,43 +90,31 @@ router.post('/reports/maps', verify.apiMiddleware(), (req, res) => {
 });
 
 // Request customer counts by zip code for maps page
-router.post('/reports/customers', verify.apiMiddleware(), async (req, res) => {
-    try {
-        // Send data
-        const data = await customers.getData();
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(data));
-
-    } catch (err) {
-        log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when retrieving report information: ${err}`);
-    }
-});
+router.post('/reports/customers', verify.apiMiddleware(), m.err(async (req, res) => {
+    // Send data
+    const data = await customers.getData();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(data));
+}));
 
 // Add an entry to the sales tracker
-router.post('/tracker/sales', verify.apiMiddleware(), async (req, res) => {
+router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => {
     let entry = req.body.entry;
     await salesTracker.add(req.user.username, entry.accountNumber,
         entry.saleType, entry.dtvSaleMade
     );
-    res.status(200).send(`Sales entry added successfully.`);
-});
+    res.status(200).send(`✓ Sale added to tracker.`);
+}));
 
 //////////////////////////////////////
 // Messaging
-router.post('/message/send', verify.apiMiddleware('supervisor'), async (req, res) => {
-    try {
-        let msg = req.body.message;
-        msg.from = req.user.username;
-        await message.send(msg);
-        res.status(200).send(`Message sent successfully.`);
-    } catch (err) {
-        log.error(`Error during message send: ` + JSON.stringify(err));
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when sending message: ${err}`);
-    }
-});
+router.post('/message/send', verify.apiMiddleware('supervisor'),
+            m.err(async (req, res) => {
+    let msg = req.body.message;
+    msg.from = req.user.username;
+    await message.send(msg);
+    res.status(200).send(`Message sent successfully.`);
+}));
 
 // Return messages sent to current user
 // Optionally include @param hasRead; if false, will only return messages that

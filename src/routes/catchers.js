@@ -14,7 +14,7 @@ module.exports.addTo = function(app) {
 
     // Error handler
     app.use(function(err, req, res, next) {
-        log.error(`Uncaught error: ${err}.\n\n    Error stack: ${err.stack}`);
-        res.status(500).send(`An error occurred on the server: ${err}.`);
+        log.error(`Server error: ${err}.\n\n    Error stack: ${err.stack}`);
+        res.status(500).send(`${err}`);
     });
 }
