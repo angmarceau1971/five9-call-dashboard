@@ -91,7 +91,7 @@ export default {
                 dataFromParent: this.data,
                 fieldName: 'estimatedCloseRate',
                 subFields: ['saleMade', 'calls'],
-                title: 'Overall Close Rate'
+                title: 'Estimated Team Close %'
             };
         }
     },
@@ -139,7 +139,7 @@ function goodJobPhrase() {
 button.open-tracker {
     width: 15rem;
     height: 4rem;
-    margin: auto 0;
+    margin: auto;
     font-size: 1.25rem;
     background-color: hsl(207, 60%, 41%);
     color: white;

@@ -117,7 +117,7 @@ export const store = new Vuex.Store({
         // Determine what layout should be displayed
         getCurrentLayout: (state) => {
             // If a layout has been selected, return it
-            if (state.chosenLayoutName != '') {
+            if (state.supMode == 'team' && state.chosenLayoutName != '') {
                 return state.layouts.find(l => l.name == state.chosenLayoutName);
             // Default to first layout in list
             } else {

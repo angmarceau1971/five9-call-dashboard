@@ -42,8 +42,8 @@
                 <option :value="true">Yes</option>
             </select>
 
-            <input v-model="accountNumber" placeholder="Account Number"
-                :class="{complete: accountNumber}"
+            <input v-model="accountNumber" placeholder="Account Number (Optional)"
+                :class="{complete: true}"
             />
         </form>
 
@@ -86,11 +86,8 @@ export default {
             event.preventDefault();
 
 
-            if (!this.accountNumber || !this.saleType
-                || this.dtvSaleMade === '') {
-                let field = !this.accountNumber ? 'Account Number'
-                            : !this.saleType ? 'Sale Type'
-                            : 'DTV Sale Made';
+            if (!this.saleType || this.dtvSaleMade === '') {
+                let field = !this.saleType ? 'Sale Type' : 'DTV Sale Made';
                 this.message = `Please enter a value for ${field}. :)`;
                 return;
             }
@@ -143,7 +140,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: hsla(207, 100%, 50%, 0.9);
+    background-color: hsla(206, 39%, 14%, 0.97);
     width: 500px;
     height: 80%;
     margin: 3rem auto;

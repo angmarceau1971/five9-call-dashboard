@@ -14,9 +14,10 @@ const salesTracker = mongoose.Schema({
         type: String,
         required: true
     },
+    // optional account number
     accountNumber: {
         type: String,
-        required: true
+        required: false
     },
     // Types of sales
     saleType: {
