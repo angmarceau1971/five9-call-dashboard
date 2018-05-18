@@ -108,7 +108,7 @@ import { sortOrder } from './drag-n-drop-sort.js';
 export default {
     props: {
         title: String,
-        widgets: Object,
+        widgets: Array,
         layoutOrder: Number,
         id: String,
         columns: Number,
