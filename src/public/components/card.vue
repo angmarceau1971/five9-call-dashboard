@@ -11,7 +11,7 @@
 <template>
 <div class="card metric-wrapper stats-box"
     :id="id"
-    :style="gridPositioning"
+    :style="calculatedStyles"
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
 
     <!-- Card is draggable by the title -->
@@ -106,7 +106,17 @@ import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
 
 export default {
-    props: ['title', 'widgets', 'layoutOrder', 'id', 'columns'],
+    props: {
+        title: String,
+        widgets: Object,
+        layoutOrder: Number,
+        id: String,
+        columns: Number,
+        styles: {
+            type: Object,
+            default: () => { return {} }
+        }
+    },
     components: {
         'single-value': SingleValue,
         'data-table': DataTable,
@@ -123,6 +133,10 @@ export default {
     },
 
     computed: {
+        // Return styles given as parameters, as well as position within grid
+        calculatedStyles: function() {
+            return Object.assign({}, this.styles, this.gridPositioning);
+        },
         // Make CSS grid position a computed property, so that it will change
         // when a different layout is loaded
         gridPositioning: function() {
