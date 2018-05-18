@@ -24,16 +24,16 @@ export function getValueForField(data, field) {
 function process(data, field) {
     let fieldName = fieldNameFromString(field);
     if (fieldName == 'aht') {
-        return sum(data, 'handleTime') / sum(data, 'calls');
+        return sum(data, 'handleTime') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'talk') {
-        return sum(data, 'talkTime') / sum(data, 'calls');
+        return sum(data, 'talkTime') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'acw') {
-        return sum(data, 'acwTime') / sum(data, 'calls');
+        return sum(data, 'acwTime') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'hold') {
-        return sum(data, 'holdTime') / sum(data, 'calls');
+        return sum(data, 'holdTime') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'serviceLevel') {
         return sum(data, 'serviceLevel') / sum(data, 'calls');
@@ -48,13 +48,16 @@ function process(data, field) {
         return data[0]['code'];
     }
     else if (fieldName == 'closeRate') {
-        return sum(data, 'orders') / sum(data, 'calls');
+        return sum(data, 'orders') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'estimatedCloseRate') {
-        return sum(data, 'saleMade') / sum(data, 'calls');
+        return sum(data, 'saleMade') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'notReadyPercentage') {
         return sum(data, 'notReadyTime') / sum(data, 'loginTime');
+    }
+    else if (fieldName == 'callsHandled') {
+        return sum(data, 'calls') - sum(data, 'abandons');
     }
     else if (fieldName == 'sameDayAndNextDayOrders') {
         return sum(data, 'sameDayOrders') + sum(data, 'nextDayOrders');

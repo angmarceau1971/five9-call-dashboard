@@ -90,7 +90,7 @@ export default {
             return {
                 dataFromParent: this.data,
                 fieldName: 'estimatedCloseRate',
-                subFields: ['saleMade', 'calls'],
+                subFields: ['saleMade', 'callsHandled'],
                 title: 'Estimated Team Close %'
             };
         }
