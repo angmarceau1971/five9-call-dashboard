@@ -256,6 +256,7 @@ h2, h3 {
 .data-table th {
     background-color: #efefef;
     font-weight: normal;
+    border: solid 2px hsl(207, 100%, 72%);
 }
 .data-table tr {
     width: 100%;
@@ -271,7 +272,7 @@ h2, h3 {
     min-width: 7em;
 }
 .data-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #666;
 }
 .data-table tbody {
     display: block;
