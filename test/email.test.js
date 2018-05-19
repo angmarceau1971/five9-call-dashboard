@@ -18,6 +18,7 @@ describe('Send an email', function() {
         };
         let res = await email.send(options);
         console.log(res);
-        expect(true).to.be.true;
+        expect(res.accepted).to.be.an('array').that.is.not.empty;
+        expect(res.rejected).to.be.an('array').that.is.empty;
     });
 });
