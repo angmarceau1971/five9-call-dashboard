@@ -214,8 +214,20 @@ export const store = new Vuex.Store({
         async startProcess(context) {
             // Load configuration and set layout
             await context.dispatch('loadAssets');
-            context.dispatch('updateLayout', context.state.layouts[0]);
-            context.commit('setChosenLayoutName', context.state.layouts[0].name);
+            // determine initial layout
+            let layout;
+            let format = (name) => name.replace(/ /g, '-').toLowerCase();
+            let name = getInitialLayout();
+            if (name) {
+                let matches = context.state.layouts.filter((l) => {
+                    return format(l.name) == format(name);
+                });
+                layout = matches[0] || context.state.layouts[0];
+            } else {
+                layout = context.state.layouts[0];
+            }
+            context.dispatch('updateLayout', layout);
+            context.commit('setChosenLayoutName', layout.name);
             // Start updating based on data sources
             context.dispatch('nextUpdate');
         },
@@ -337,6 +349,11 @@ function getParams(datasource) {
     return params;
 }
 
+/**
+ * Get data from server.
+ * @param  {Array} params list of requests
+ * @return {Array} array of data (including metadata about sources)
+ */
 export async function loadData(params) {
     let res = await api.getStatistics(params);
     // convert date strings to values
@@ -351,6 +368,12 @@ export async function loadData(params) {
     return res;
 }
 
+/**
+ * Given a list of users, return array of all skills that are within their groups.
+ * @param  {Array} skillGroups array of skillGroup definitions
+ * @param  {Array} users
+ * @return {Array} list of skills taken by anyone in @param users
+ */
 function usersToSkills(skillGroups, users) {
     let agentGroups = extractValues(users, 'agentGroups');
     return extractValues(
@@ -372,4 +395,17 @@ export function extractValues(objectArray, prop) {
     return uniq(
         objectArray.reduce((resultArr, el) => resultArr.concat(el[prop]), [])
     );
+}
+
+/**
+ * Return initial layout if passed in as a URL parameter. Otherwise, blank string.
+ * @return {String}
+ */
+export function getInitialLayout() {
+    let q = document.location.search.replace('?', '');
+    return q.split('&').reduce((layout, current) => {
+        let [key, val] = current.split('=');
+        if (key == 'layout') return val;
+        return layout;
+    }, '');
 }
