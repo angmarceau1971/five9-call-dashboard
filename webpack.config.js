@@ -6,14 +6,14 @@ module.exports = {
     context: __dirname,
 
     entry: {
-        scorecard: ['./src/public/javascript/scorecard.js'],
-        'scorecard-admin': ['./src/public/javascript/scorecard-admin.js'],
-        skill: ['./src/public/javascript/skill-admin.js'],
-        queues: ['./src/public/javascript/queue-dashboard.js'],
-        map: ['./src/public/javascript/maps-dashboard.js'],
-        admin: ['./src/public/javascript/admin.js'],
-        upload: ['./src/public/javascript/upload.js'],
-        'message-panel': ['./src/public/javascript/message-panel.js']
+        scorecard: ['babel-polyfill', './src/public/javascript/scorecard.js'],
+        'scorecard-admin': ['babel-polyfill', './src/public/javascript/scorecard-admin.js'],
+        skill: ['babel-polyfill', './src/public/javascript/skill-admin.js'],
+        queues: ['babel-polyfill', './src/public/javascript/queue-dashboard.js'],
+        map: ['babel-polyfill', './src/public/javascript/maps-dashboard.js'],
+        admin: ['babel-polyfill', './src/public/javascript/admin.js'],
+        upload: ['babel-polyfill', './src/public/javascript/upload.js'],
+        'message-panel': ['babel-polyfill', './src/public/javascript/message-panel.js']
     },
 
     output: {
@@ -42,9 +42,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: [
-                     'babel-loader'
-                ]
+                loader: "babel-loader"
             }
         ]
     },
