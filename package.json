@@ -63,6 +63,7 @@
     "vue-template-compiler": "^2.5.13",
     "vuex": "^3.0.1",
     "webpack": "^3.11.0",
+    "whatwg-fetch": "^2.0.4",
     "xml": "^1.0.1",
     "xml2js": "^0.4.19"
   }

@@ -6,7 +6,7 @@ module.exports = {
     context: __dirname,
 
     entry: {
-        scorecard: ['babel-polyfill', './src/public/javascript/scorecard.js'],
+        scorecard: ['babel-polyfill', 'whatwg-fetch', './src/public/javascript/scorecard.js'],
         'scorecard-admin': ['babel-polyfill', './src/public/javascript/scorecard-admin.js'],
         skill: ['babel-polyfill', './src/public/javascript/skill-admin.js'],
         queues: ['babel-polyfill', './src/public/javascript/queue-dashboard.js'],
