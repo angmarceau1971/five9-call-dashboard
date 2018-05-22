@@ -3,10 +3,12 @@ import Dashboard from '../components/dashboard.vue';
 import Inbox from '../components/inbox.vue';
 import EditorTable from '../components/editor-table.vue';
 import UsersSelector from '../components/users-selector.vue';
+import Profile from '../components/profile.vue';
 import * as hub from './hub';
 import * as api from './api';
 import { formatValue } from './scorecard-format';
 
+const store = hub.store;
 
 // NPM libraries
 const isEmpty = require('ramda/src/isEmpty');
@@ -16,11 +18,18 @@ const intersection = require('ramda/src/intersection');
 const debounce = require('debounce');
 
 
-const store = hub.store;
+// Define & fire up application
 const vm = new Vue({
+    ///////////////////////////////////////////////////////////////////////////
+    // HTML ID for Vue application
     el: '#app',
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Vuex store with all the data
     store: store,
 
+    ///////////////////////////////////////////////////////////////////////////
+    // State to control interface
     data: {
         isLoaded: false,
         showMenu: false, // show main menu
@@ -34,13 +43,18 @@ const vm = new Vue({
         showInbox: false
     },
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Register components so they can be used as `HTML` elements
     components: {
         'dashboard': Dashboard,
         'inbox': Inbox,
         'editor-table': EditorTable,
-        'users-selector': UsersSelector
+        'users-selector': UsersSelector,
+        'profile': 'Profile'
     },
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Load data when page loads
     async beforeMount() {
         // load user's data
         await store.dispatch('updateUser', '');
@@ -58,6 +72,8 @@ const vm = new Vue({
         setTimeout(this.messageRefreshLoop.bind(this), 120000);
     },
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Calculated variables
     computed: {
         layout: function() {
             return store.state.layout;
@@ -117,6 +133,8 @@ const vm = new Vue({
         }
     },
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Actions to perform when variables change
     watch: {
         // When the current user changes, make any needed adjustments
         user: {
@@ -128,8 +146,10 @@ const vm = new Vue({
         },
     },
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Functions available to app
     methods: {
-        ///////////////////////////
+        //////////////////////////////////////////////////
         // UI / interactions
         refresh: async function() {
             this.isLoading = true;
@@ -226,14 +246,15 @@ const vm = new Vue({
             }
         },
 
-        ///////////////////////////
+        //////////////////////////////////////////////////
         // Handle export of layout to JSON
         exportLayout: function() {
             download(layout, 'test.json', 'text/plain');
         },
 
-        ///////////////////////////
+        //////////////////////////////////////////////////
         // Dashboard modifications
+        // TODO: implement these so they can be saved for personalized layouts.
         addCard: function() {
             const newCard = {
                 title: 'card:' + this.layout.cards.length,
@@ -286,91 +307,22 @@ const vm = new Vue({
                 let newWidgetComplete = Object.assign({}, oldWidget, newWidget);
                 Vue.set(card.widgets, oldWidgetIndex, newWidgetComplete);
             }
-        },
-        ///////////////////////
-        // Data Sources
-        updateDatasourceMessage: function(message) {
-            console.log(`updateDatasourceMessage: ${message}`);
-            this.datasourceMessage = message;
-        },
-        datasourceLoader: function() {
-            let sources = clone(this.layout.datasources);
-            const str = (s) => JSON.stringify(s, null, 2);
-            const stringin = function(ds) {
-                ds.fields = str(ds.fields);
-                ds.filter = str(ds.filter);
-                ds.groupBy = str(ds.groupBy);
-                return ds;
-            }
-            return sources.map(stringin);
-        },
-        datasourceAdder: function() {
-            return {
-                name: '',
-                fields: '',
-                filter: '{}',
-                groupBy: '',
-                refreshRate: 10
-            };
-        },
-        datasourceUpdater: function(datasource) {
-            try {
-                let obj = parseDatasource(datasource);
-
-                let oldIndex = this.layout.datasources.findIndex((ds) =>
-                                                ds.name == obj.name);
-                if (oldIndex == -1) {
-                    this.layout.datasources.push(obj);
-                } else {
-                    Vue.set(this.layout.datasources, oldIndex, obj);
-                }
-                this.$store.commit('changeDatasource', obj);
-            } catch (err) {
-                console.log(err);
-                this.updateDatasourceMessage(`Error parsing data source: ${err}.`);
-            }
-        },
-        datasourceRemover: function(datasource) {
-            try {
-                let obj = getVueObject(datasource);
-                let oldIndex = this.layout.datasources.findIndex((ds) =>
-                                                ds.name == obj.name);
-                Vue.delete(this.layout.datasources, oldIndex);
-                this.$store.commit('deleteDatasource', obj);
-            } catch (err) {
-                this.updateDatasourceMessage(`Error removing data source: ${err}.`);
-            }
         }
     }
 });
 
 
+// Make Vue application accessible to console
 window.vm = vm;
-/*
-  Convert vue object
-*/
-const getVueObject = obj => {
-  return JSON.parse(JSON.stringify(obj));
-};
 
+
+// Misc utilities
 function download(text, name, type) {
     var a = document.createElement("a");
     var file = new Blob([JSON.stringify(text, null, 4)], {type: type});
     a.href = URL.createObjectURL(file);
     a.download = name;
     a.click();
-}
-
-function parseDatasource(input) {
-    function objectify(value) {
-        try {
-            return JSON.parse(value);
-        } catch (err) {
-            if (err instanceof SyntaxError) return value;
-            else throw err;
-        }
-    }
-    return objectMap(input, objectify);
 }
 
 function objectMap(object, fun) {
