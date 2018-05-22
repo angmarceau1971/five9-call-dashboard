@@ -29,6 +29,7 @@ const salesTracker = require('../datasources/sales-tracker'); //
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
 
+const fortune = require('../game/fortune-cookies');
 const message = require('../message/message');
 const uploader = require('../datasources/custom-upload');
 const skillGroup = require('../datasources/skill-group');
@@ -149,16 +150,22 @@ router.patch('/message/mark-read', verify.apiMiddleware(), async (req, res) => {
 });
 
 // Returns messages sent by current user
-router.get('/message/sent', verify.apiMiddleware(), async (req, res) => {
-    try {
-        let msgs = await message.getSent(req.user.username);
-        res.send(JSON.stringify(msgs));
-    } catch (err) {
-        log.error(`Error during message get: ` + JSON.stringify(err));
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when retrieving messages: ${err}`);
-    }
-})
+router.get('/message/sent', verify.apiMiddleware(), m.err(async (req, res) => {
+    let msgs = await message.getSent(req.user.username);
+    res.send(JSON.stringify(msgs));
+}));
+
+
+//////////////////////////////////////
+// Game Elements
+// Return current user's fortune cookies
+router.get('/fortune-cookie', verify.apiMiddleware(),
+            m.err(async (req, res) => {
+    let cookies = await fortune.get(
+        req.user.username, req.query.unreadOnly || false
+    );
+    res.send(JSON.stringify(cookies));
+}));
 
 
 //////////////////////////////////////
@@ -173,19 +180,13 @@ router.get('/states', verify.apiMiddleware(), async (req, res) => {
 });
 
 // Return scorecard layout based on user's department
-router.post('/layout', verify.apiMiddleware(), async (req, res) => {
-    try {
-        let groups = req.body.agentGroups;
-        let type = req.body.type;
-        let layoutList = await layouts.getLayoutsForAgentGroups(groups, type);
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(layoutList || {}));
-    } catch (err) {
-        log.error(`Error while retrieving layouts: ${err}`);
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when retrieving layouts: ${err}`);
-    }
-});
+router.post('/layout', verify.apiMiddleware(), m.err(async (req, res) => {
+    let groups = req.body.agentGroups;
+    let type = req.body.type;
+    let layoutList = await layouts.getLayoutsForAgentGroups(groups, type);
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(layoutList || {}));
+}));
 
 
 
@@ -194,23 +195,18 @@ router.post('/layout', verify.apiMiddleware(), async (req, res) => {
 //////////////////////////////////////
 // Get information stored on a user based on username
 // If no username is supplied, returns data for currently logged-in user
-router.get('/users/data/:username?', verify.apiMiddleware(), async (req, res) => {
-    try {
-        let username = req.params.username
-                       ? req.params.username : req.user.username;
-        const user = await users.getUserInformation(username);
-        if (user) {
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(user));
-        }
-        else {
-            throw new Error();
-        }
-    } catch (err) {
-        res.set('Content-Type', 'application/text');
-        res.status(400).send(`User "${req.params.username}" not found.`);
+router.get('/users/data/:username?', verify.apiMiddleware(), m.err(async (req, res) => {
+    let username = req.params.username
+                   ? req.params.username : req.user.username;
+    const user = await users.getUserInformation(username);
+    if (user) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(user));
     }
-});
+    else {
+        throw new Error(`User with username ${username} not found.`);
+    }
+}));
 
 
 /**
@@ -220,75 +216,55 @@ router.get('/users/data/:username?', verify.apiMiddleware(), async (req, res) =>
  * @param {Object} newTheme new theme object to assign
  * @return {String} success or error message
  */
-router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
-    res.set('Content-Type', 'application/text');
-    try {
-        let userIsAdmin = await users.isAdmin(req.user.username);
-        if (req.user.username != req.body.username && !userIsAdmin) {
-            let msg = `Current user ${req.user.username} is trying to change theme for other user "${req.body.username}", but is not admin.`;
-            log.error(msg);
-            throw new Error(msg);
-        }
-        await users.updateTheme(req.body.username, req.body.newTheme);
-        res.send(`Theme updated successfully.`);
-    } catch (err) {
-        res.status(500).send(`An error occurred while changing themes: ${err}`);
+router.patch('/users/theme', verify.apiMiddleware(), m.err(async (req, res) => {
+    let userIsAdmin = await users.isAdmin(req.user.username);
+    if (req.user.username != req.body.username && !userIsAdmin) {
+        let msg = `Current user ${req.user.username} is trying to change theme for other user "${req.body.username}", but is not admin.`;
+        log.error(msg);
+        throw new Error(msg);
     }
-});
+    await users.updateTheme(req.body.username, req.body.newTheme);
+    res.set('Content-Type', 'application/text');
+    res.send(`Theme updated successfully.`);
+}));
 
 /**
  * Retrieve array of all users in system. Only includes basic info fields:
  *  username, lastName, firstName, and agentGroups
  */
-router.get('/users', verify.apiMiddleware(), async (req, res) => {
-    try {
-        const userList = await users.getUsers();
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(userList));
-    } catch (err) {
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred while getting users: ${err}`);
-    }
-});
+router.get('/users', verify.apiMiddleware(), m.err(async (req, res) => {
+    const userList = await users.getUsers();
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(userList));
+}));
 
 // Notify server that a 504 has occurred
-router.get('/notify-504', verify.apiMiddleware(), async (req, res) => {
+router.get('/notify-504', verify.apiMiddleware(), m.err(async (req, res) => {
+    log.error(`504 reported by client!`);
     res.set('Content-Type', 'application/text');
-    try {
-        log.error(`--------LOGGER: 504 reported by client`);
-        res.status(200).send('Thanks for the message!');
-    } catch (err) {
-        res.status(500).send('An error occurred on the server while being notified of 504.');
-    }
-});
+    res.status(200).send('Thanks for the message!');
+}));
 
 // Reboot the server
-router.post('/reboot-server', verify.apiMiddleware('admin'), async (req, res) => {
+router.post('/reboot-server', verify.apiMiddleware('admin'),
+            m.err(async (req, res) => {
+    log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
     res.set('Content-Type', 'application/text');
-    try {
-        log.error(`--------LOGGER: reboot requested by client at ${moment()}.`);
-        res.status(200).send('About to reboot! Closing Express server -- should be restarted by PM2 :)');
-        pm2.restart('app', (err) => log.error(`pm2 restart error ${err}`));
-    } catch (err) {
-        res.status(500).send('An error occurred on the server while attempting reboot.');
-    }
-});
+    res.status(200).send('About to reboot! Closing Express server -- should be restarted by PM2 :)');
+    pm2.restart('app', (err) => log.error(`pm2 restart error ${err}`));
+}));
 
 // Update data in a given range
-router.post('/reload-data', verify.apiMiddleware('admin'), async (req, res) => {
+router.post('/reload-data', verify.apiMiddleware('admin'),
+            m.err(async (req, res) => {
+    let times = req.body['time'];
+    log.message(`---- Reports database reload requested by client for ${JSON.stringify(times)} ----`);
+
+    await reloadReports(times);
+
     res.set('Content-Type', 'application/text');
-    try {
-        let times = req.body['time'];
-
-        log.message(`---- Reports database reload requested by client for ${JSON.stringify(times)} ----`);
-
-        await reloadReports(times);
-        res.status(200).send(`Report data reloaded for ${JSON.stringify(times)}`);
-
-    } catch (err) {
-        res.status(500).send(`An error occurred on the server while attempting data reload: ${err}.`);
-    }
-});
+    res.status(200).send(`Report data reloaded for ${JSON.stringify(times)}`);
+}));
 
 
 //////////////////////////////////////
@@ -319,16 +295,11 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
 
 
 // Get skill group data
-router.get('/skill-group', verify.apiMiddleware(), async (req, res) => {
-    try {
-        let data = await skillGroup.getAll();
-        res.set('Content-Type', 'application/json');
-        res.status(200).send(JSON.stringify(data));
-    } catch (err) {
-        res.set('Content-Type', 'application/text');
-        res.status(500).send(`${err}`);
-    }
-});
+router.get('/skill-group', verify.apiMiddleware(), m.err(async (req, res) => {
+    let data = await skillGroup.getAll();
+    res.set('Content-Type', 'application/json');
+    res.status(200).send(JSON.stringify(data));
+}));
 
 
 

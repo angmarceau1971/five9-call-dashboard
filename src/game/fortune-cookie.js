@@ -19,6 +19,10 @@ const fortuneCookieSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    // Image associated with this cookie
+    imageUrl: {
+        type: String
+    },
     // Time created / awarded
     timestamp: {
         type: Date
@@ -41,6 +45,28 @@ async function add(username) {
 }
 module.exports.add = add;
 
+/**
+ * Get fortune cookies belonging to the given user.
+ * @param  {String} username
+ * @param  {Boolean} unreadOnly to return only unread fortunes
+ * @return {Promise -> [FortuneCookie]}          
+ */
+function get(username, unreadOnly=false) {
+    return FortuneCookie.find({ username }).lean().exec();
+}
+module.exports.get = get;
+
+async function remove(id) {
+    return FortuneCookie.remove({ _id: id });
+}
+module.exports.remove = remove;
+
+
+/**
+ * Retrieve a randomized `proverb` to put in the fortune cookie.
+ * @param  {[type]} category not implemented
+ * @return {Promise -> String}          proverb
+ */
 async function getRandomProverb(category) {
     let res = await fetch('http://www.yerkee.com/api/fortune/wisdom');
     let proverb = (await res.json())['fortune'];
@@ -48,9 +74,3 @@ async function getRandomProverb(category) {
     return proverb.replace(/\n|\t/g, ' ');
 }
 module.exports.getRandomProverb = getRandomProverb;
-
-
-async function remove(id) {
-    return FortuneCookie.remove({ _id: id });
-}
-module.exports.remove = remove;

@@ -172,6 +172,15 @@ export async function markMessageRead(message, hasRead=true) {
 }
 
 ///////////////////////////////////////////////////////////////////////
+// Game Elements
+export async function getFortuneCookies(unreadOnly=false) {
+    let response = await request({},
+        `fortune-cookie?unreadOnly=${unreadOnly}`,
+        'GET');
+    return response.json();
+}
+
+///////////////////////////////////////////////////////////////////////
 // Fields
 /**
  * List of available fields for widgets.
