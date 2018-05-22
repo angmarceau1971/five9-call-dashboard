@@ -262,23 +262,31 @@ export default {
                 .attr('transform', 'rotate(-45)');
         },
 
-        mouseover({ offsetX, offsetY }) {
+        // When hovering over graph, display a line at the point nearest to the
+        // mouse position. Also, show `infobox` with relevent data.
+        mouseover({ offsetX, offsetY, clientX, screenX }) {
             if (this.points.length > 0) {
-                const x = offsetX - this.margin.left;
-                const y = offsetY - this.margin.top;
-                const closestPoint = this.getClosestPoint(x);
+                let x = offsetX - this.margin.left;
+                let y = offsetY - this.margin.top;
+                let closestPoint = this.getClosestPoint(x);
 
                 if (this.lastHoverPoint.index !== closestPoint.index) {
-                    const point = this.points[closestPoint.index];
+                    let point = this.points[closestPoint.index];
                     this.paths.selector = this.createValueSelector([point]);
                     this.$emit('select', this.data[closestPoint.index]);
                     this.lastHoverPoint = closestPoint;
                     // InfoBox coords are slightly to the lower-right of mouse
-                    const dataPoint = this.data[closestPoint.index];
+                    let dataPoint = this.data[closestPoint.index];
                     this.infoBox.message = `
                         ${this.fieldDisplayName(this.fields.x)}: ${formatValue(dataPoint[this.fields.x], this.fields.x).value}
                         ${this.fieldDisplayName(this.fields.y)}: ${formatValue(dataPoint[this.fields.y], this.fields.y).value}
                     `;
+                    // Put infobox at mouse x & y. If x would hang off edge of
+                    // screen, scoot it left by 400px.
+                    if (this.$el.getBoundingClientRect().left + x + 400
+                        > screen.width) {
+                        x -= 250;
+                    }
                     this.infoBox.x = x + 30;
                     this.infoBox.y = y + 40;
                 }

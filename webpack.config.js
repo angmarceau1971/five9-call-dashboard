@@ -1,7 +1,7 @@
-// Define API's host URL - dev or production
 var path = require('path');
 var webpack = require('webpack');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     context: __dirname,
@@ -55,9 +55,17 @@ module.exports = {
     },
 
     plugins: [
+        // Set NODE_ENV variable to `production`
         new webpack.DefinePlugin({
             'process.env': { NODE_ENV: JSON.stringify('production') }
         }),
-        new UglifyJsPlugin({ sourceMap: true })
+        // Minimize JavaScript output
+        new UglifyJsPlugin({
+            sourceMap: true,
+            parallel: true,
+            cache: true
+        }),
+        // Cache processed files to reduce build time
+        new HardSourceWebpackPlugin(),
     ]
 }

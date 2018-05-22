@@ -41,6 +41,7 @@
     "debounce": "^1.1.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "hard-source-webpack-plugin": "^0.6.9",
     "helmet": "^3.8.1",
     "json2csv": "^4.0.2",
     "mocha": "^3.5.0",
@@ -57,6 +58,7 @@
     "serve-favicon": "^2.4.5",
     "sift": "^5.0.0",
     "topojson": "^3.0.2",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "vue": "^2.5.13",
     "vue-js-toggle-button": "^1.2.2",
     "vue-loader": "^13.7.1",
@@ -65,7 +67,6 @@
     "webpack": "^3.11.0",
     "whatwg-fetch": "^2.0.4",
     "xml": "^1.0.1",
-    "xml2js": "^0.4.19",
-    "uglifyjs-webpack-plugin": "^1.2.5"
+    "xml2js": "^0.4.19"
   }
 }
