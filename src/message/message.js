@@ -7,10 +7,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const messageSchema = mongoose.Schema({
-    // subject: {
-    //     type: String,
-    //     default: ''
-    // },
     body: {
         type: String,
         default: ''
