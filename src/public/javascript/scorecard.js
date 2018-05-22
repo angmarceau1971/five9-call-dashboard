@@ -18,7 +18,8 @@ const intersection = require('ramda/src/intersection');
 const debounce = require('debounce');
 
 
-// Define & fire up application
+/*****************************************************************************/
+/* Define & fire up application                                             */
 const vm = new Vue({
     ///////////////////////////////////////////////////////////////////////////
     // HTML ID for Vue application
@@ -40,7 +41,8 @@ const vm = new Vue({
         showFilters: true,
         datasourceMessage: '',
         messages: [],
-        showInbox: false
+        showInbox: false,
+        showProfile: false
     },
 
     ///////////////////////////////////////////////////////////////////////////
@@ -50,7 +52,7 @@ const vm = new Vue({
         'inbox': Inbox,
         'editor-table': EditorTable,
         'users-selector': UsersSelector,
-        'profile': 'Profile'
+        'profile': Profile
     },
 
     ///////////////////////////////////////////////////////////////////////////
@@ -170,6 +172,7 @@ const vm = new Vue({
             this.showMenu = false;
         },
 
+        // Message / Inbox handling
         openInbox: async function() {
             this.showInbox = true;
             this.messages = await this.updateMessages(this.showInbox);
@@ -192,6 +195,14 @@ const vm = new Vue({
         messageRefreshLoop: async function() {
             this.messages = await this.updateMessages(this.showInbox);
             setTimeout(this.messageRefreshLoop.bind(this), 120000);
+        },
+
+        // Profile
+        openProfile: async function() {
+            this.showProfile = true;
+        },
+        closeProfile: async function() {
+            this.showProfile = false;
         },
 
         //////////////////////////////////////////////////
@@ -311,11 +322,11 @@ const vm = new Vue({
     }
 });
 
-
 // Make Vue application accessible to console
 window.vm = vm;
 
 
+//////////////////////////////////////////
 // Misc utilities
 function download(text, name, type) {
     var a = document.createElement("a");

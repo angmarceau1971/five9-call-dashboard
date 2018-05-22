@@ -29,7 +29,7 @@ const salesTracker = require('../datasources/sales-tracker'); //
 const users = require('../authentication/users'); // stores usernames to check auth
 const verify = require('../authentication/verify'); // check user permissions
 
-const fortune = require('../game/fortune-cookies');
+const fortune = require('../game/fortune-cookie');
 const message = require('../message/message');
 const uploader = require('../datasources/custom-upload');
 const skillGroup = require('../datasources/skill-group');

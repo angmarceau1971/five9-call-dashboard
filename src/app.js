@@ -75,7 +75,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(verify.authenticate));
-// TODO: add Accounts module for authentication & authorization mgmt.
 passport.serializeUser((user, done) => { done(null, user.username) });
 passport.deserializeUser((username, done) => { done(null, {username:username}) });
 
@@ -86,9 +85,9 @@ app.use(function(req, res, next) {
 });
 
 // Add in the routes
-app.use('/api', apiRoutes);
+app.use('/api', apiRoutes); // API endpoints start with /api
 app.use('/', viewRoutes);
-require('./routes/catchers').addTo(app);
+require('./routes/catchers').addTo(app); // 404 and error handler
 
 
 ///////////////////////////

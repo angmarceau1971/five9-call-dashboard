@@ -25,7 +25,7 @@
                 ref="menuButton"
             >&#9776;
             </button>
-            <div v-if="showMenu && !isLoading" class="dropdown-content"
+            <div v-if="showMenu && isLoaded" class="dropdown-content"
                 @mouseleave="mouseleaveMenu" ref="menu" v-cloak
             >
                 <button class="insidedrop submenu-button"
@@ -119,6 +119,11 @@
                     <i class="far fa-envelope"></i> Inbox
                 </button>
 
+                <button class="insidedrop"
+                    @click="openProfile">
+                    <i class="fas fa-trophy"></i> Profile
+                </button>
+
                 <a target="_blank" href="https://jabbroadband.sharepoint.com/sites/Corporate/ContactCenterOperations/Lists/Dashboard Feedback/overview.aspx">
                     <button class="insidedrop feedback-button">
                         <i class="fas fa-comment"></i> Feedback
@@ -181,6 +186,11 @@
             :messages="messages"
             @close="closeInbox"
         ></inbox>
+
+        <!-- Profile -->
+        <profile v-if="showProfile"
+            @close="closeProfile"
+        ></profile>
 
         <!-- Main content -->
         <div class="content-wrapper"
