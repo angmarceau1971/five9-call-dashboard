@@ -237,9 +237,10 @@ router.patch('/users/theme', verify.apiMiddleware(), async (req, res) => {
 });
 
 /**
- * Retrieve array of all users in system
+ * Retrieve array of all users in system. Only includes basic info fields:
+ *  username, lastName, firstName, and agentGroups
  */
-router.get('/users', verify.apiMiddleware('supervisor'), async (req, res) => {
+router.get('/users', verify.apiMiddleware(), async (req, res) => {
     try {
         const userList = await users.getUsers();
         res.set('Content-Type', 'application/json');

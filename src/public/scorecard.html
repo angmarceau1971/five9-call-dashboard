@@ -215,6 +215,7 @@
                         </button>
                     </div>
                     <users-selector v-show="showFilters"
+                        :user-list="$store.state.userList"
                         @select-users="selectUsers"
                         @refresh="refresh"
                         @users-loaded="updateUserList"

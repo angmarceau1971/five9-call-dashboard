@@ -105,10 +105,11 @@ export async function updateSupervisorUser(user) {
     return response.text();
 }
 
-// Get list of all users
+// Get list of all users, sorted by last name
 export async function getUsers() {
     let response = await request({}, 'users', 'GET');
-    return response.json();
+    let userList = await response.json();
+    return userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
 }
 
 /**

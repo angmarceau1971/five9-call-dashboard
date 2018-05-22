@@ -4,7 +4,8 @@
  * This module controls interaction with the server.
  *
  * Data is made accessible through the `store` Vuex object, which all Vue
- * components can access.
+ * components can access. The `getData` "getter" method returns data based on a
+ * given filter & datasource requested.
  */
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -243,6 +244,8 @@ export const store = new Vuex.Store({
             context.commit('setLinks', await api.getLinkList());
             // load in goals
             context.dispatch('updateGoals');
+            // load user list
+            context.commit('setUserList', await api.getUsers());
         },
 
         // Refresh data and layout. Used after changing agent selection in sup

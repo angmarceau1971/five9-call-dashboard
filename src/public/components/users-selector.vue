@@ -38,22 +38,26 @@
 <script>
 import * as api from '../javascript/api';
 import { extractValues } from '../javascript/hub';
+const clone = require('ramda/src/clone');
 const intersection = require('ramda/src/intersection');
+
 
 export default {
     name: 'users-selector',
 
-
     props: {
+        userList: {
+            type: Array,
+            default: null
+        },
         showRefresh: {
+            type: Boolean,
             default: true
         }
     },
 
-
     data () {
         return {
-            userList: [],
             selectedUsernames: [],
             selectedAgentGroups: [],
             agentGroups: [],
@@ -61,11 +65,14 @@ export default {
         }
     },
 
-
     mounted: async function() {
-        this.userList = await this.loadUsersList();
-        this.agentGroups = this.getAgentGroupsFromUsers(this.userList);
-        this.$emit('users-loaded', this.userList);
+        // Load user list if not passed in
+        let users = clone(this.userList);
+        if (!this.userList) {
+            users = await this.loadUsersList();
+            this.$emit('users-loaded', users);
+        }
+        this.agentGroups = this.getAgentGroupsFromUsers(users);
     },
 
 
@@ -81,10 +88,8 @@ export default {
         },
 
         // Load list of users
-        loadUsersList: async function() {
-            let userList = await api.getUsers();
-            userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
-            return userList;
+        loadUsersList: function() {
+            return api.getUsers();
         },
 
         // Return users who are within the selectedAgentGroups
