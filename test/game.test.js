@@ -15,11 +15,12 @@ let cookie = null;
 // Test it!
 describe('Create FortuneCookie', function() {
     database.connect();
-    this.timeout(5000); // allow 5 seconds to complete test
-    it('should return document', async function() {
+    this.timeout(3000); // allow 3 seconds to complete test
+    it('should return document with correct user', async function() {
         cookie = await fortune.add('test-user');
         console.log(cookie);
         expect(cookie).to.be.an('object');
+        expect(cookie.proverb).to.be.an('string');
         expect(cookie.username).to.equal('test-user');
     });
 

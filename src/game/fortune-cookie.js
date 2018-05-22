@@ -7,7 +7,8 @@ mongoose.Promise = global.Promise;
 const fortuneCookieSchema = mongoose.Schema({
     // Owner of cookie
     username: {
-
+        type: String,
+        required: true
     },
     // Text
     proverb: {
@@ -26,6 +27,11 @@ const fortuneCookieSchema = mongoose.Schema({
     // Time created / awarded
     timestamp: {
         type: Date
+    },
+    // Why was this awarded?
+    reason: {
+        type: String,
+        default: 'Your AHT in April was 8:31 minutes, below the goal of 10:00 minutes!'
     }
 });
 
@@ -49,7 +55,7 @@ module.exports.add = add;
  * Get fortune cookies belonging to the given user.
  * @param  {String} username
  * @param  {Boolean} unreadOnly to return only unread fortunes
- * @return {Promise -> [FortuneCookie]}          
+ * @return {Promise -> [FortuneCookie]}
  */
 function get(username, unreadOnly=false) {
     return FortuneCookie.find({ username }).lean().exec();
@@ -70,7 +76,7 @@ module.exports.remove = remove;
 async function getRandomProverb(category) {
     let res = await fetch('http://www.yerkee.com/api/fortune/wisdom');
     let proverb = (await res.json())['fortune'];
-    // Replace newline & tab with a space
-    return proverb.replace(/\n|\t/g, ' ');
+    // Replace newline, tab, and double-space with a space
+    return proverb.replace(/\n|\t|  /g, ' ');
 }
 module.exports.getRandomProverb = getRandomProverb;

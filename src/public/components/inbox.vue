@@ -7,6 +7,7 @@
             ><i class="fas fa-times"></i>
         </button>
     </div>
+
     <div class="message-wrapper-column-headers">
         <p class="date">
             Date

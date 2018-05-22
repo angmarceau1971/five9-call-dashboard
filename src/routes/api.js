@@ -167,6 +167,13 @@ router.get('/fortune-cookie', verify.apiMiddleware(),
     res.send(JSON.stringify(cookies));
 }));
 
+router.patch('/fortune-cookie', verify.apiMiddleware(),
+            m.err(async (req, res) => {
+    let cookie = req.body;
+    await fortune.update(cookie);
+    res.send(`Fortune updated!`);
+}));
+
 
 //////////////////////////////////////
 // Return ZIP3 JSON
