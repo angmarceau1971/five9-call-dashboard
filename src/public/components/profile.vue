@@ -11,6 +11,8 @@
         <hr />
 
         <div class="profile-content">
+            <p v-if="fortuneCookies.length == 0">There are currently no trophies in this cabinet. Check back soon!</p>
+
             <div class="fortune-wrapper">
                 <div v-for="(fortune, i) in fortuneCookies">
                     <!-- Hide fortune if it hasn't been read yet -->
