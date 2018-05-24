@@ -141,8 +141,8 @@ function startOfPayPeriod(date) {
     let startDate;
     let sunday = date.clone().startOf('week');
     // round to nearest day (avoids DST issues)
-    let timeSincePeriod = moment.duration(sunday.diff(payPeriodStart));
-    let hours = timeSincePeriod.days() * 24 + timeSincePeriod.hours();
+    let msSincePeriod = moment.duration(sunday.diff(payPeriodStart));
+    let hours = msSincePeriod / 1000 / 3600;
     let daysSincePeriodStart = Math.round(hours / 24);
     if (daysSincePeriodStart % 14 == 0) {
         return sunday;
@@ -150,7 +150,7 @@ function startOfPayPeriod(date) {
         return sunday.subtract(1, 'weeks');
     }
 }
-const payPeriodStart = moment('2018-03-11');
+let payPeriodStart = moment('2018-03-11');
 
 /**
  *
