@@ -153,6 +153,9 @@ function startOfPayPeriod(date) {
 let payPeriodStart = moment('2018-03-11');
 
 /**
+ * Used to get a list of property values from a list of objects. For example,
+ * given an array of user objects and the @param property 'username', will
+ * return an array of usernames.
  *
  * @param  {Array of Objects} array objects to extract property from
  * @param  {String} property name of property to extract
