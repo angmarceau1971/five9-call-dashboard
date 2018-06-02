@@ -252,7 +252,7 @@ function parseRow(model, row) {
         p.transfers = row.transfers * 1;
     }
     else if (model == models.ChatData) {
-        datestring = row.date + ' ' + row['CREATE QUARTER HOUR'];
+        datestring = row.date + ' ' + row['QUARTER HOUR'];
         p.agentUsername = row.agentUsername;
         p.agentName = row.agentName;
         p.agentGroup = row.agentGroup;
