@@ -234,9 +234,11 @@
                         @users-loaded="updateUserList"
                     ></users-selector>
                     <!-- "As of" Date filter -->
-                    <div>
+                    <div v-show="showFilters">
                         <label for="date-selector">As Of Date</label>
-                        <input id="date-selector" type="date" @change="changeDate" />
+                        <input id="date-selector" type="date"
+                            @change="changeDate"
+                        />
                     </div>
                 </div>
 
