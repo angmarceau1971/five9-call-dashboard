@@ -62,6 +62,7 @@
 
 
 <script>
+import Vue from 'vue';
 const clone = require('ramda/src/clone');
 
 export default {

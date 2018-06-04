@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+var { VueLoaderPlugin } = require('vue-loader');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     context: __dirname,
@@ -29,43 +31,60 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-            },
-            {
-                test: /\.scss$/,
-                use: [{
-                    loader: 'style-loader',
-                }, {
-                    loader: 'css-loader'
-                }, {
-                    loader: 'sass-loader'
-                }]
+                options: {
+                    loaders: {
+                        js: 'babel-loader'
+                    }
+                }
             },
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
-                loader: "babel-loader"
+                loader: "babel-loader",
+                exclude: file => {
+                    /node_modules/.test(file) &&
+                    !/\.vue\.js/.test(file)
+                }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
+                // use: ExtractTextPlugin.extract({
+                //     fallback: 'style-loader',
+                //     use: ['css-loader']
+                // })
             }
         ]
     },
 
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.min.js'
         }
     },
 
     plugins: [
+        new VueLoaderPlugin(),
+        // new ExtractTextPlugin()
         // Set NODE_ENV variable to `production`
-        new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: JSON.stringify('production') }
-        }),
-        // Minimize JavaScript output
-        new UglifyJsPlugin({
-            sourceMap: true,
-            parallel: true,
-            cache: true
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env': { NODE_ENV: JSON.stringify('production') }
+        // }),
+
         // Cache processed files to reduce build time
-        new HardSourceWebpackPlugin(),
-    ]
+        // new HardSourceWebpackPlugin(),
+    ],
+
+    // optimization: {
+    //     minimizer: [
+    //         // Minimize JavaScript output
+    //         new UglifyJsPlugin({
+    //             sourceMap: true,
+    //             parallel: true,
+    //             cache: true
+    //         })
+    //     ]
+    // }
 }
