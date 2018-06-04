@@ -1,4 +1,8 @@
 #!/usr/bin/env nodejs
+
+// Load .env file to process.env
+require('dotenv').config({path: __dirname+'/./../.env'});
+
 ///////////////////////////
 // Import libraries
 const bodyParser = require('body-parser'); // parse JSON requests

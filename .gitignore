@@ -6,3 +6,4 @@ secure_settings.*
 *.csv*
 *.tsv*
 assets/
+.env
