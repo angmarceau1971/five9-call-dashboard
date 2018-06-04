@@ -224,6 +224,10 @@ const vm = new Vue({
         updateUserList: function(users) {
             store.commit('setUserList', users);
         },
+        changeDate: function(event) {
+            let dateString = event.currentTarget.value;
+            store.commit('setSelectedDate', dateString);
+        },
 
         //////////////////////////////////////////////////
         // Handle menus and theme

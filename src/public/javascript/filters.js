@@ -74,63 +74,71 @@ const dateMatcher = {
     // Days
     '<today>': function() {
         return {
-            $gte: moment().startOf('day').toDate(),
-            $lt:  moment().endOf('day').toDate()
+            $gte: today().startOf('day').toDate(),
+            $lt:  today().endOf('day').toDate()
         }
     },
     '<yesterday>': function() {
         return {
-            $gte: moment().add(-1, 'days').startOf('day').toDate(),
-            $lt:  moment().startOf('day').toDate()
+            $gte: today().add(-1, 'days').startOf('day').toDate(),
+            $lt:  today().startOf('day').toDate()
         }
     },
     // Months
     '<month-to-date>': function() {
         return {
-            $gte: moment().startOf('month').toDate(),
-            $lt:  moment().startOf('month').add(1, 'months').toDate()
+            $gte: today().startOf('month').toDate(),
+            $lt:  today().startOf('month').add(1, 'months').toDate()
         }
     },
     '<this month>': function() { // alternate name for month-to-date
         return {
-            $gte: moment().startOf('month').toDate(),
-            $lt:  moment().startOf('month').add(1, 'months').toDate()
+            $gte: today().startOf('month').toDate(),
+            $lt:  today().startOf('month').add(1, 'months').toDate()
         }
     },
     '<last month>': function() {
         return {
-            $gte: moment().subtract(1, 'months').startOf('month').toDate(),
-            $lt:  moment().startOf('month').toDate()
+            $gte: today().subtract(1, 'months').startOf('month').toDate(),
+            $lt:  today().startOf('month').toDate()
         }
     },
     '<last 2 months>': function() {
         return {
-            $gte: moment().subtract(2, 'months').startOf('month').toDate(),
-            $lt:  moment().startOf('month').add(1, 'months').toDate()
+            $gte: today().subtract(2, 'months').startOf('month').toDate(),
+            $lt:  today().startOf('month').add(1, 'months').toDate()
         }
     },
     '<last 3 months>': function() {
         return {
-            $gte: moment().subtract(3, 'months').startOf('month').toDate(),
-            $lt:  moment().startOf('month').add(1, 'months').toDate()
+            $gte: today().subtract(3, 'months').startOf('month').toDate(),
+            $lt:  today().startOf('month').add(1, 'months').toDate()
         }
     },
     // Pay periods
     '<this pay period>': function() {
-        let startDate = startOfPayPeriod(moment());
+        let startDate = startOfPayPeriod(today());
         return {
             $gte: startDate.toDate(),
             $lt: startDate.clone().add(2, 'weeks').toDate()
         };
     },
     '<last pay period>': function() {
-        let startDate = startOfPayPeriod(moment().subtract(2, 'weeks'));
+        let startDate = startOfPayPeriod(today().subtract(2, 'weeks'));
         return {
             $gte: startDate.toDate(),
             $lt: startDate.clone().add(2, 'weeks').toDate()
         };
     }
 };
+
+/**
+ * Returns current date, or "as of" data if user is looking at a a different month.
+ * @return {Moment} date of today or user's selected "as of" date.
+ */
+function today() {
+    return hub.store.getters.getSelectedDate() || moment();
+}
 
 
 /**

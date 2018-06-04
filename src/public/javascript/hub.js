@@ -16,6 +16,7 @@ import * as filters from './filters';
 const clone = require('ramda/src/clone');
 const intersection = require('ramda/src/intersection');
 const isEmpty = require('ramda/src/isEmpty');
+const moment = require('moment');
 const uniq = require('ramda/src/uniq');
 const sift = require('sift');
 
@@ -46,7 +47,8 @@ export const store = new Vuex.Store({
         userList: [], // list of all users for supervisor views
         layouts: [], // list of available layouts
         layout: {}, // currently selected layout
-        chosenLayoutName: ''
+        chosenLayoutName: '',
+        selectedDate: ''
     },
 
     // Helper functions to retrieve data
@@ -124,6 +126,10 @@ export const store = new Vuex.Store({
             } else {
                 return state.layouts[0];
             }
+        },
+        // Returns user's selected "as of" date, or null if none has been chosen
+        getSelectedDate: (state) => () => {
+            return state.selectedDate ? moment(state.selectedDate) : null;
         }
     },
 
@@ -200,6 +206,15 @@ export const store = new Vuex.Store({
                 newObj[source.id] = source;
                 return newObj;
             }, {});
+        },
+        //
+        /**
+         * Select a given date
+         * @param {Object} state
+         * @param {String} date in `yyyy-mm-dd` format
+         */
+        setSelectedDate(state, date) {
+            state.selectedDate = date;
         }
     },
 

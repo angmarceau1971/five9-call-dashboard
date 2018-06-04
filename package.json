@@ -17,7 +17,7 @@
     "url": "https://github.com/kokopelli314/five9-call-dashboard"
   },
   "nodemonConfig": {
-    "verbose": true,
+    "verbose": false,
     "ignore": [
       "src/public/*"
     ]
