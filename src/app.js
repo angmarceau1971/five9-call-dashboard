@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 
 // Load .env file to process.env
-require('dotenv').config({path: __dirname+'/./../.env'});
+require('dotenv').config({ path: __dirname + '/./../.env' });
 
 ///////////////////////////
 // Import libraries
@@ -10,6 +10,7 @@ const compression = require('compression'); // compress file to GZIP
 const cors = require('cors'); // CORS middleware
 const express = require('express');
 const favicon = require('serve-favicon');
+const fork = require('child_process').fork; // spawn child node process
 const helmet = require('helmet'); // security
 const moment = require('moment'); // dates/times
 const passport = require('passport'); // user authentication
@@ -39,6 +40,13 @@ const verify = require('./authentication/verify'); // check user permissions
 // Routes
 const apiRoutes = require('./routes/api');
 const viewRoutes = require('./routes/views');
+
+///////////////////////////
+// Gamification App - create the child process
+let gameProcess;
+if (process.env.GAME_APP_PATH) {
+    gameProcess = fork(process.env.GAME_APP_PATH);
+}
 
 
 ///////////////////////////

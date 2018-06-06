@@ -16,7 +16,7 @@ module.exports = {
         map: ['babel-polyfill', './src/public/javascript/maps-dashboard.js'],
         admin: ['babel-polyfill', './src/public/javascript/admin.js'],
         upload: ['babel-polyfill', './src/public/javascript/upload.js'],
-        'message-panel': ['babel-polyfill', './src/public/javascript/message-panel.js']
+        'message-panel': ['babel-polyfill', 'whatwg-fetch', './src/public/javascript/message-panel.js']
     },
 
     output: {
@@ -57,7 +57,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.min.js'
+            vue: vueScript()
         }
     },
 
@@ -79,3 +79,10 @@ module.exports = {
         ]
     }
 };
+
+
+function vueScript() {
+    return process.env.NODE_ENV === 'production'
+        ? 'vue/dist/vue.min.js'
+        : 'vue/dist/vue.js';
+}

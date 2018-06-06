@@ -20,7 +20,9 @@
         <div class="section">
             <users-selector
                 :show-refresh="false"
+                :user-list="userList"
                 @select-users="selectUsers"
+                @users-loaded="updateUserList"
             ></users-selector>
         </div>
 

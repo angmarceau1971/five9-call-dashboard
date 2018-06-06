@@ -15,7 +15,8 @@ const vm = new Vue({
         subject: '',
         body: '',
         usersTo: [],
-        sentMessages: []
+        sentMessages: [],
+        userList: null
     },
 
     mounted: async function() {
@@ -33,6 +34,9 @@ const vm = new Vue({
     methods: {
         selectUsers: function(users) {
             this.usersTo = users;
+        },
+        updateUserList: function(users) {
+            this.userList = users;
         },
         send: async function (toString, subject, body) {
             let users = this.usersTo.map(user => {

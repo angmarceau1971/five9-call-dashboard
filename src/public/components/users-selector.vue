@@ -5,7 +5,7 @@
             {{ message }}
         </p>
     </div>
-    <div v-if="userList.length > 0" class="section agent-selectors">
+    <div v-if="userList" class="section agent-selectors">
         <div class="agentgroup-list">
             <select multiple size="30" v-model="selectedAgentGroups"
                     @change="selectAgentGroups(selectedAgentGroups)">
