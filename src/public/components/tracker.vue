@@ -43,7 +43,7 @@
             </select>
 
             <input v-model="accountNumber" placeholder="Account Number (Optional)"
-                :class="{complete: true}"
+                :class="{ complete: true }"
             />
         </form>
 

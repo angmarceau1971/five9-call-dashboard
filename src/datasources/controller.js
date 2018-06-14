@@ -211,16 +211,27 @@ function createGroup(groupBy, fields) {
  */
 async function scheduleLookerUpdates(interval) {
     log.info(`Updating custom Looker data`);
-    let authToken = await looker.getAuthToken();
+    // Get Look authentication token
+    let authToken;
+    try {
+        authToken = await looker.getAuthToken();
+    } catch (err) {
+        log.error(`Error while retrieving Looker authentication token: ${err}.`);
+    }
+    // Check each Customer Datasource that is Looker-based, updating from Looker
     let sources = await custom.CustomDatasource.find({ fromLooker: true })
-                                                .lean().exec();
+                                               .lean().exec();
     for (let source of sources) {
-        let raw = await looker.getJsonData(authToken, source.lookerLookId);
-        let data = formatFieldNames(raw, source.lookerFieldLookup);
-        let clean = data.map(custom.rowParser(source));
-        let deleted = await clearOldData(source, clean);
-        custom.setDatasourceLastUpdated(source, new Date());
-        await custom.CustomData.collection.insert(clean);
+        try {
+            let raw = await looker.getJsonData(authToken, source.lookerLookId);
+            let data = formatFieldNames(raw, source.lookerFieldLookup);
+            let clean = data.map(custom.rowParser(source));
+            let deleted = await clearOldData(source, clean);
+            custom.setDatasourceLastUpdated(source, new Date());
+            await custom.CustomData.collection.insert(clean);
+        } catch (err) {
+            log.error(`Error while updating Looker datasource ${source.name}: ${err}`);
+        }
     }
     return setTimeout(() => scheduleLookerUpdates(interval), interval);
 }

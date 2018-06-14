@@ -243,11 +243,11 @@ function nonSchemaFields(datasource, data) {
 /**
  * Convert CSV data string into Array of objects.
  * @param  {String} csvString
- * @param  {Function} rowProcessor accepting Object that represents each row for
- *                      additional processing; should return processed Object.
+ * @param  {Function} rowProcessor should accept an Object that represents a row
+ *                      of the data, then return parsed row.
  * @return {Promise} resolves to Array of data
  */
-async function parseCsv(csvString, rowProcessor=(x)=>x){
+async function parseCsv(csvString, rowProcessor = (x)=>x) {
     // Parse CSV data into `data` array
     const data = [];
 
