@@ -84,6 +84,12 @@ const dateMatcher = {
             $lt:  today().startOf('day').toDate()
         }
     },
+    '<last 5 days>': function() {
+        return {
+            $gte: today().add(-5, 'days').startOf('day').toDate(),
+            $lt:  today().endOf('day').toDate()
+        }
+    },
     // Months
     '<month-to-date>': function() {
         return {
