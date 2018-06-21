@@ -132,7 +132,7 @@ async function update(datasource) {
 module.exports.update = update;
 
 function remove(datasource) {
-    log.message(`Deleting goal ${datasource.name}.`);
+    log.message(`Deleting datasource ${datasource.name}.`);
     const oid = mongoose.Types.ObjectId(datasource._id);
     return CustomDatasource.remove({ _id: oid }).exec();
 }
@@ -165,6 +165,8 @@ module.exports.setDatasourceLastUpdated = setDatasourceLastUpdated;
  * @return {Promise} resolves to new documents
  */
 async function upload(datasourceName, csvData, updateType='addTo') {
+    log.info(`Uploading to datasource ${datasourceName}.`);
+
     if (updateType != 'addTo' && updateType != 'overwrite') {
         throw new Error(`updateType ${updateType} not recognized.`);
     }
@@ -203,8 +205,12 @@ function rowParser(datasource) {
     let converters = {
         'Number': (x) => x * 1,
         'String': (x) => String(x),
-        'Date':   (x) => moment.tz(x, null, 'America/Denver')
-                               .toDate()
+        'Date':   (x) => {
+                    if (!formatIsGood(x))
+                        throw new Error(`Date value "${x}" isn't in a valid format. Be sure to use YYYY-MM-DD formats only.`);
+                    return moment.tz(x, null, 'America/Denver')
+                          .toDate();
+              }
     };
     let fieldConverter = datasource.fields.reduce((o, field) => {
         o[field.name] = converters[field.fieldType];
@@ -220,6 +226,19 @@ function rowParser(datasource) {
     }
 }
 module.exports.rowParser = rowParser;
+
+/**
+ * Checkes that date matches YYYY-MM-DD format
+ * @param  {String} dateString
+ * @return {Boolean}
+ */
+function formatIsGood(dateString) {
+    return (
+        /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/g.exec(dateString)
+        !=
+        null
+    );
+}
 
 /**
  * Check that @param datasource includes all the fields in @param data.

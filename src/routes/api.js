@@ -296,7 +296,7 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
         }
         res.status(200).send(`Data uploaded successfully to ${req.body.datasourceName}.`);
     } catch (err) {
-        res.status(500).send(`${err}.\nCheck that column headers and value formats are correct.`);
+        res.status(500).send(`${err}\nCheck that column headers and value formats are correct.`);
     }
 });
 
@@ -379,7 +379,7 @@ async function sendPublicFile(fileName, req, res) {
         res.sendFile(dir);
     } catch (err) {
         res.set('Content-Type', 'application/text');
-        res.status(500).send(`An error occurred on the server when getting ${fileName} data: ${err}.`);
+        res.status(500).send(`An error occurred on the server when getting ${fileName} data: ${err}`);
     }
 }
 
