@@ -5,6 +5,7 @@
     "env" : {
       "NODE_ENV": "production"
     },
-    "cron_restart"	: "0 */4 * * *"
+    "cron_restart"	: "0 */4 * * *",
+    "autorestart": true
   }]
 }
