@@ -2,10 +2,10 @@ html {
     background: hsl(240, 6%, 9%);
 }
 body, body button  {
-    color: #ddd;
+    color: white;
 }
 button {
-    background-color: #777;
+    background-color: hsl(210, 100%, 67%);
 }
 
 .top-bar {

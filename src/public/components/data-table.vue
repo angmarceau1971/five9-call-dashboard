@@ -4,10 +4,16 @@
 <template>
 <div class="data-table-wrapper"
     :style="styles"
-    :draggable="$store.state.editMode"
-    @dragstart="dragstartHandler">
 
-    <button
+    :draggable="$store.state.editMode"
+    @dragstart="dragstartHandler"
+
+    @mouseover="userIsHovering = true"
+    @mouseleave="userIsHovering = false"
+    >
+
+    <button v-if="userIsHovering"
+        class="download"
         title="Download data as CSV"
         @click="downloadData">
         <i class="fas fa-download"></i>
@@ -101,7 +107,10 @@ export default {
 
     data () {
         return {
-            highlightedRow: null
+            // which row is highlighted by user hoving over it?
+            highlightedRow: null,
+            // is user hovering over this widget in general?
+            userIsHovering: false
         };
     },
 
@@ -209,4 +218,11 @@ function getNotReadyPercentage(data) {
 </script>
 
 <style scoped>
+button .download {
+    background-color: hsl(210, 100%, 67%);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 2rem;
+}
 </style>
