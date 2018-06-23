@@ -218,11 +218,12 @@ function getNotReadyPercentage(data) {
 </script>
 
 <style scoped>
-button .download {
+button.download {
     background-color: hsl(210, 100%, 67%);
     color: white;
     cursor: pointer;
     font-size: 1rem;
+    height: 1rem;
     width: 2rem;
 }
 </style>
