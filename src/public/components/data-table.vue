@@ -10,7 +10,8 @@
 
     @mouseover="userIsHovering = true"
     @mouseleave="userIsHovering = false"
-    >
+>
+    <h3 v-if="showTitle">{{ title }}</h3>
 
     <button v-if="userIsHovering"
         class="download"
@@ -19,7 +20,6 @@
         <i class="fas fa-download"></i>
     </button>
 
-    <h3 v-if="showTitle">{{ title }}</h3>
     <table class="data-table">
         <thead>
             <tr>
@@ -126,14 +126,16 @@ export default {
     },
 
     computed: {
+        rawData: function() {
+            if (this.dataFromParent) {
+                return this.dataFromParent;
+            } else {
+                return this.$store.getters.getData(this.filter, this.datasource);
+            }
+        },
         data: function() {
             // Get data from hub unless passed in by parent
-            let data;
-            if (!this.dataFromParent) {
-                data = this.$store.getters.getData(this.filter, this.datasource);
-            } else {
-                data = this.dataFromParent;
-            }
+            let data = this.rawData;
             // Summarize
             if (this.summarize == true) {
                 if (this.summarizeBy) {

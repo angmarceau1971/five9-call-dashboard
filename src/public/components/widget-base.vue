@@ -35,14 +35,12 @@ export default {
             return filter.skillGroup || null;
         },
         downloadData: function() {
-            console.log(`DOWNLOAD TIME!!!`);
-
-            if (this.data) {
-                console.log(this.data);
-                util.downloadJsonAsCsv(this.data, 'dash-download.csv');
+            // Attempt to use 'rawData' field; default to 'data' field if not.
+            let data = this.rawData || this.data;
+            if (data) {
+                console.log(data);
+                util.downloadJsonAsCsv(data, 'dash-download.csv');
             }
-            console.log(`DOWNLOAD TIME!!!  done`);
-
         }
     },
     // Utility to return a blank widget

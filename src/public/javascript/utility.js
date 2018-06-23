@@ -36,7 +36,7 @@ export function downloadJson(json, name) {
 }
 
 export function downloadJsonAsCsv(json, name) {
-    download(json2csv(json, {flatten: true}), 'test.csv', 'text/csv');
+    download(json2csv(json, {flatten: true, eol: '\r\n'}), name, 'text/csv');
 }
 
 function download(text, name, type) {
