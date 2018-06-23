@@ -1,8 +1,15 @@
 /**
  * Base Component that should be extended by all widgets.
+ *
+ * Allows users to download "data" attribute of child components in a CSV file.
+ *
+ * @TODO: Implement drag & drop functionality.
+ *
  */
 <script>
+'use strict';
 import Editor from './editor.vue';
+import * as util from '../javascript/utility';
 
 export default {
     props: {
@@ -26,6 +33,16 @@ export default {
         },
         skillGroup: function(filter) {
             return filter.skillGroup || null;
+        },
+        downloadData: function() {
+            console.log(`DOWNLOAD TIME!!!`);
+
+            if (this.data) {
+                console.log(this.data);
+                util.downloadJsonAsCsv(this.data, 'dash-download.csv');
+            }
+            console.log(`DOWNLOAD TIME!!!  done`);
+
         }
     },
     // Utility to return a blank widget

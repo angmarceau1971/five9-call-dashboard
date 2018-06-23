@@ -1,3 +1,6 @@
+'use strict';
+const json2csv = require('json2csv').parse;
+
 
 // Send out an error alert in console and on the page.
 export function error(err, message='') {
@@ -25,4 +28,21 @@ export function formatAMPM(date) {
     seconds = seconds < 10 ? '0'+seconds : seconds;
     let strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
     return strTime;
+}
+
+
+export function downloadJson(json, name) {
+    download(JSON.stringify(json, null, 4), name, 'text/plain');
+}
+
+export function downloadJsonAsCsv(json, name) {
+    download(json2csv(json, {flatten: true}), 'test.csv', 'text/csv');
+}
+
+function download(text, name, type) {
+    let a = document.createElement('a');
+    let file = new Blob([text], { type: type });
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click();
 }

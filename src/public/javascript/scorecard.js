@@ -7,6 +7,7 @@ import Profile from '../components/profile.vue';
 import * as hub from './hub';
 import * as api from './api';
 import { formatValue } from './scorecard-format';
+import * as util from './utility';
 
 const store = hub.store;
 
@@ -264,7 +265,7 @@ const vm = new Vue({
         //////////////////////////////////////////////////
         // Handle export of layout to JSON
         exportLayout: function() {
-            download(layout, 'test.json', 'text/plain');
+            util.downloadJson(layout, 'test.json', 'text/plain');
         },
 
         //////////////////////////////////////////////////
@@ -332,14 +333,6 @@ window.vm = vm;
 
 //////////////////////////////////////////
 // Misc utilities
-function download(text, name, type) {
-    var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(text, null, 4)], {type: type});
-    a.href = URL.createObjectURL(file);
-    a.download = name;
-    a.click();
-}
-
 function objectMap(object, fun) {
     return Object.keys(object).reduce((newObj, key) => {
         newObj[key] = fun(object[key]);

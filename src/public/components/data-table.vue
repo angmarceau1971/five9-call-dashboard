@@ -6,7 +6,14 @@
     :style="styles"
     :draggable="$store.state.editMode"
     @dragstart="dragstartHandler">
-    <h3 v-if="!isChild && title">{{ title }}</h3>
+
+    <button
+        title="Download data as CSV"
+        @click="downloadData">
+        <i class="fas fa-download"></i>
+    </button>
+
+    <h3 v-if="showTitle">{{ title }}</h3>
     <table class="data-table">
         <thead>
             <tr>
@@ -36,8 +43,9 @@
 </template>
 
 <script>
-import WidgetBase from './widget-base.vue';
+'use strict';
 
+import WidgetBase from './widget-base.vue';
 import * as parse from '../javascript/parse';
 import { formatValue } from '../javascript/scorecard-format.js';
 
@@ -110,7 +118,7 @@ export default {
 
     computed: {
         data: function() {
-            // Get data from hub unlessed passed in by parent
+            // Get data from hub unless passed in by parent
             let data;
             if (!this.dataFromParent) {
                 data = this.$store.getters.getData(this.filter, this.datasource);
@@ -150,6 +158,9 @@ export default {
                         else return fieldName;
                     }
                 );
+        },
+        showTitle: function() {
+            return (!this.isChild && this.title);
         }
     },
 
