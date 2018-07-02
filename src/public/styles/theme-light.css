@@ -1,11 +1,13 @@
 html {
     background: linear-gradient(to right, hsl(32, 35%, 92%), hsl(144, 0%, 94%));
 }
-body, body button  {
-    color: white;
+
+body {
+    color: #333;
 }
+
 button {
-    background-color: hsl(210, 100%, 67%);
+    background-color: hsl(210, 100%, 84%);
 }
 
 .top-bar {
