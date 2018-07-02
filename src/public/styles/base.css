@@ -192,6 +192,7 @@ button {
     height: 50px;
     letter-spacing: 3px;
     transition: all 200ms linear;
+    cursor: pointer;
 }
 
 .btn {

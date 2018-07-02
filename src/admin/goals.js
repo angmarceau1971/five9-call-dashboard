@@ -70,7 +70,7 @@ async function update(goal) {
         goal
     );
     if (response.n > 0) {
-        log.message(`Field ${goal.name} has been modified.`);
+        log.message(`Goal ${goal.name} has been modified.`);
         return response;
     }
     log.message(`No match for goal ID. Adding new goal ${goal.name}.`);

@@ -174,13 +174,13 @@ td input[type="number"] {
     border: 4px solid #444;
     border-radius: 6px;
     min-width: 80px;
+    cursor: pointer;
 }
 .editor-wrapper button:hover {
-    background-color: white;
+    filter: brightness(120%);
 }
 .editor-wrapper .add-button {
     font-size: 2em;
     font-weight: lighter;
-    color: hsl(208, 72%, 72%);
 }
 </style>

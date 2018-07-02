@@ -121,7 +121,7 @@ async function update(datasource) {
             datasource
         );
         if (response.n > 0) {
-            log.message(`Field ${datasource.name} has been modified.`);
+            log.message(`Datasource ${datasource.name} has been modified.`);
             return response;
         }
     }

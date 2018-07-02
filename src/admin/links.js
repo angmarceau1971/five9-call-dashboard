@@ -30,7 +30,7 @@ async function update(link) {
         link
     );
     if (response.n > 0) {
-        log.message(`Field ${link.name} has been modified.`);
+        log.message(`Link ${link.name} has been modified.`);
         return response;
     }
     log.message(`No match for link ID. Adding new link ${link.name}.`);
