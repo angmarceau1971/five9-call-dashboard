@@ -107,35 +107,6 @@ export function summarize(data, summaryField, valueFields) {
 }
 
 
-// TODO: get this working properly
-export function summarizeByMultiple(datas, summaryFields, valueFields) {
-    let data = clone(datas);
-
-    // Empty base object with given valueFields
-    let baseDatum = valueFields.reduce((r, field) => {
-        r[field] = 0;
-        return r;
-    }, {});
-
-    // Get key string for an object, based on @param summaryFields
-    function getKey(datum) {
-        return summaryFields.map((field) => datum[field]).join('-')
-    }
-
-    let grouped = data.reduce((r, o) => {
-        let key = getKey(o);
-        let keyedData = r.get(key) || [];
-        keyedData.push(o);
-        return r.set(key, keyedData);
-    }, new Map);
-
-    // TODO: spread back to proper format
-    throw new Error(`summarizeByMultiple() called but not implemented`)
-    let result = grouped;
-
-    return result;
-}
-
 /**
  * Return field name without source.
  * @param  {String} field in `source.field` or just `field` format
@@ -195,15 +166,4 @@ function requiredFields(exp) {
 
 function expressionForField(field) {
     return field.calculation;
-}
-
-export function fieldsToServer(fields) {
-    return fields.reduce((list, field) => {
-        let [source, name] = field.fullName.split('.');
-        if (source == 'Calculated') {
-            const f = requiredFields(expressionForField(field));
-            return list.concat(f.map((n) => n.split('.')[1]));
-        }
-        return list.concat(name);
-    }, []);
 }
