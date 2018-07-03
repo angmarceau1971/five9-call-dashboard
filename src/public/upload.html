@@ -25,20 +25,36 @@
 
         <div class="section data-upload">
             <h3>Upload new data</h3>
-                <input v-model="selectedDatasourceName" placeholder="Custom datasource name" />
-                <select v-model="updateType">
-                    <option value="addTo">
-                        Add to data
-                    </option>
-                    <option value="overwrite">
-                        Overwrite all existing data
-                    </option>
-                </select>
-                <input type="file" accept=".csv" name="Data Upload"
-                    ref="fileInput"
-                    @change="uploadFile"
-                />
-                <div>Any Date fields should be in the format YYYY-MM-DD.</div>
+            <input v-model="selectedDatasourceName" placeholder="Custom datasource name" />
+            <select v-model="updateType">
+                <option value="addTo">
+                    Add to data
+                </option>
+                <option value="overwrite">
+                    Overwrite all existing data
+                </option>
+            </select>
+            <input type="file" accept=".csv" name="Data Upload"
+                ref="fileInput"
+                @change="uploadFile"
+            />
+            <div>Any Date fields should be in the format YYYY-MM-DD.</div>
+            <br />
+            <hr />
+
+            <h4>Clear Data</h4>
+            <p>Remove existing data in a date range.</p>
+            <div>
+                <input v-model="clearDatasourceName" placeholder="Datasource to delete" type="text" />
+                <label for="clear-start-date">Start Date</label>
+                <input v-model="clearStartDate" type="date" id="clear-start-date" />
+                <label for="clear-stop-date">Stop Date (inclusive)</label>
+                <input v-model="clearStopDate" type="date" id="clear-stop-date" />
+            </div>
+            <button title="Delete data for selected dates"
+                @click="clearData"
+            >Delete
+            </button>
         </div>
 
         <div class="section custom-sources">

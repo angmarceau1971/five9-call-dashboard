@@ -78,6 +78,8 @@ a:visited {
 
 hr {
     width: 100%;
+    border-color: #aaa;
+    background-color: #aaa;
 }
 
 /***************/

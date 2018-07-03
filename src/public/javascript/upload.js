@@ -12,11 +12,16 @@ const vm = new Vue({
     },
 
     data: {
+        // Manual uploads & data removal
         message: '',
         selectedDatasourceName: '',
         updateType: '',
+        clearDatasourceName: '',
+        clearStartDate: '',
+        clearStopDate: '',
+        // Looker test
         lookerTestId: '',
-        lookerTestData: {}
+        lookerTestData: {},
     },
 
     computed: {
@@ -26,10 +31,23 @@ const vm = new Vue({
     },
 
     methods: {
+        // Manual data updates
         updateMessage: function(msg) {
             this.message = msg;
         },
 
+        uploadFile: async function(event) {
+            return this.handleFileUpload(event, this.selectedDatasourceName,
+                this.updateType
+            );
+        },
+
+        clearData: async function() {
+            console.log(`Clearing data for ${this.clearStartDate} through
+                ${this.clearStopDate}.`);
+        },
+
+        // Looker test
         pullLookerData: async function(lookId) {
             let data = await api.getLookerData(lookId);
             this.lookerTestData = data;
@@ -69,11 +87,6 @@ const vm = new Vue({
         },
 
         // Utility functions
-        uploadFile: async function(event) {
-            return this.handleFileUpload(event, this.selectedDatasourceName,
-                this.updateType
-            );
-        },
         uploadSkillGroupFile: async function(event) {
             return this.handleFileUpload(event, 'SkillGroup', 'overwrite');
         },
