@@ -45,6 +45,13 @@ const vm = new Vue({
         clearData: async function() {
             console.log(`Clearing data for ${this.clearStartDate} through
                 ${this.clearStopDate}.`);
+            let message = await api.clearCustomData({
+                datasourceName: this.clearDatasourceName,
+                clearStartDate: this.clearStartDate,
+                clearStopDate:  this.clearStopDate
+            });
+            console.log(message);
+            this.message = message;
         },
 
         // Looker test

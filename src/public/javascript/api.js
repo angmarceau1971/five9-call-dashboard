@@ -422,7 +422,19 @@ export async function uploadData(params) {
     }
 }
 
-
+/**
+ * Delete custom data over a given date range.
+ * @param  {Object} params  with fields datasourceName, clearStartDate, and clearStopDate
+ * @return {Promise -> String} server response message
+ */
+export async function clearCustomData(params) {
+    try {
+        const response = await request(params, 'custom-data', 'DELETE');
+        return await response.text();
+    } catch (err) {
+        return err.message;
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////
 // Request helpers

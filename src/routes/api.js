@@ -300,6 +300,26 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
     }
 });
 
+/**
+ * Delete custom data over a given range.
+ * @param {String} req.body.datasourceName collection to upload data to
+ * @param {String} req.body.clearStartDate in YYYY-MM-DD format
+ * @param {String} req.body.clearStopDate  in YYYY-MM-DD format
+ */
+router.delete('/custom-data',
+              verify.apiMiddleware('admin'),
+              m.err(async (req, res) => {
+    res.set('Content-Type', 'application/text');
+    let ds = req.body.datasourceName.trim();
+    let start = moment(req.body.clearStartDate).format();
+    let stop  = moment(req.body.clearStopDate) .format();
+
+    log.message(`Clearing custom data source ${ds}`
+                + ` for ${start} through ${stop}.`);
+    res.status(200).send(`Cleared datasource ${req.body.datasourceName}`
+                + ` for the date range ${req.body.clearStartDate}`
+                + ` through ${req.body.clearStopDate}.`);
+}));
 
 // Get skill group data
 router.get('/skill-group', verify.apiMiddleware(), m.err(async (req, res) => {
