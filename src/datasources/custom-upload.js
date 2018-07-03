@@ -196,6 +196,34 @@ async function upload(datasourceName, csvData, updateType='addTo') {
 module.exports.upload = upload;
 
 /**
+ * Delete data in the given range.
+ * @param  {String} datasourceName [description]
+ * @param  {String} start   start date/time for removal in YYYY-MM-DD
+ * @param  {String} stop    end date/time in YYYY-MM-DD
+ * @return {Promise}
+ */
+async function clear(datasourceName, start, stop) {
+    if (!formatIsGood(start))
+        throw new Error(`Start date is invalid: ${start}. Should be in YYYY-MM-DD format.`);
+    if (!formatIsGood(stop))
+        throw new Error(`Stop date is invalid: ${stop}. Should be in YYYY-MM-DD format.`);
+
+    // Convert to UTC date
+    function format(dateStr) {
+        return new Date(moment.utc(dateStr).format());
+    }
+
+    return CustomData.remove({
+        _datasourceName: datasourceName,
+        date: {
+            $gte: format(start),
+            $lte: format(stop)
+        }
+    });
+}
+module.exports.clear = clear;
+
+/**
  * Returns a function that takes a row of data, and applies formatting based on
  * the datasource that it rolls into.
  * @param  {Object} datasource that data will be added to

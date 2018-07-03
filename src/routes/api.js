@@ -311,14 +311,16 @@ router.delete('/custom-data',
               m.err(async (req, res) => {
     res.set('Content-Type', 'application/text');
     let ds = req.body.datasourceName.trim();
-    let start = moment(req.body.clearStartDate).format();
-    let stop  = moment(req.body.clearStopDate) .format();
+    let start = req.body.clearStartDate;
+    let stop  = req.body.clearStopDate;
+    log.info(`Clearing custom data source ${ds} for ${start} through ${stop}.`,
+             'custom data', { username: req.user.username }
+    );
+    let response = await uploader.clear(ds, start, stop);
 
-    log.message(`Clearing custom data source ${ds}`
-                + ` for ${start} through ${stop}.`);
     res.status(200).send(`Cleared datasource ${req.body.datasourceName}`
-                + ` for the date range ${req.body.clearStartDate}`
-                + ` through ${req.body.clearStopDate}.`);
+                + ` for the date range ${start}`
+                + ` through ${stop}.`);
 }));
 
 // Get skill group data
