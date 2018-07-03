@@ -1,3 +1,10 @@
+/**
+ * API endpoints available to administrative users to change system settings.
+ *
+ * Includes methods to change user permissions, fields, goals, links, datasources,
+ * and skilling jobs.
+ */
+
 const verify = require('../authentication/verify'); // check user permissions
 const fields = require('../admin/fields');
 const goals = require('../admin/goals');
