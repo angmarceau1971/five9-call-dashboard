@@ -62,6 +62,9 @@ function process(data, field) {
     else if (fieldName == 'sameDayAndNextDayOrders') {
         return sum(data, 'sameDayOrders') + sum(data, 'nextDayOrders');
     }
+    else if (fieldName == 'connectRate') {
+        return sum(data, 'ordersInstalled') / sum(data, 'ordersEntered');
+    }
     else return sum(data, fieldName);
 }
 
