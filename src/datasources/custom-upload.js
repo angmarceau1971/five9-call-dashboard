@@ -208,16 +208,12 @@ async function clear(datasourceName, start, stop) {
     if (!formatIsGood(stop))
         throw new Error(`Stop date is invalid: ${stop}. Should be in YYYY-MM-DD format.`);
 
-    // Convert to UTC date
-    function format(dateStr) {
-        return new Date(moment.utc(dateStr).format());
-    }
-
     return CustomData.remove({
         _datasourceName: datasourceName,
         date: {
-            $gte: format(start),
-            $lte: format(stop)
+            // Convert to UTC dates
+            $gte: new Date(moment.utc(dateStr).format()),
+            $lte: new Date(moment.utc(dateStr).endOf('day').format())
         }
     });
 }
