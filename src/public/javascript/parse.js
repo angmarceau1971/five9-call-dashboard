@@ -135,8 +135,8 @@ export function filterFields(includeFields) {
 
 
 /**
- * Takes sum of array of objects based on the given key.
- * @param  {Array} arr of objects
+ * Given an array of objects, returns the sum of the chosen field / @param key.
+ * @param  {[Object]} arr of objects
  * @param  {String} key property to sum
  * @return {Number}
  */

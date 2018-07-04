@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const queueStatsSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     SkillName: { type: String, default: 'N/A' },
-    AgentsLoggedIn: { type: String, default: '0 (0)' },
+    AgentsLoggedIn: { type: Number, default: 0 },
     AgentsNotReadyForCalls: { type: Number, default: 0 },
     AgentsOnCall: { type: Number, default: 0 },
     AgentsReadyForCalls: { type: Number, default: 0 },
@@ -102,13 +102,21 @@ function jsonToViewData(json,
         // For each of the included fields, format as `column: value` data
         for (let j=0; j < includeFields.length; j++) {
             let field = includeFields[j];
-            newRow[field] = row[columns.indexOf(field)];
+            let rawRow = row[columns.indexOf(field)];
 
             // trim extra 0's to convert longest queue time to seconds from ms
-            if (field == 'CurrentLongestQueueTime' && newRow[field].length > 3)
-                newRow[field] = newRow[field].slice(0, -3);
+            if (field == 'CurrentLongestQueueTime' && rawRow.length > 3) {
+                newRow[field] = rawRow.slice(0, -3);
+            }
+            // Turn AgentsLoggedIn into numeric from `X (X)` string format
+            else if (field == 'AgentsLoggedIn') {
+                newRow[field] = rawRow.split(' ')[0] * 1;
+            // Other fields don't need further string processing
+            } else {
+                newRow[field] = rawRow;
+            }
 
-            // Convert to number if needed in Schema
+            // Finally, convert to number if this is a numeric field
             if (!QueueStats.schema.paths[field]) {
                 log.error(`could not find statistics field ${field}`);
             }

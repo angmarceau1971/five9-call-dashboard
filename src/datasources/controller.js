@@ -10,7 +10,7 @@
 // data table.
 //
 ///////////////////////////
-
+'use strict';
 const moment = require('moment-timezone'); // dates/times
 
 const log = require('../utility/log'); // recording updates
@@ -52,9 +52,7 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
     if (groupBy.length > 0) {
         let aggregation = [
             {
-                $match: {
-                    $and: cleanFilter
-                }
+                $match: cleanFilter
             }, {
                 $addFields: {
                     // Add day field
@@ -73,7 +71,7 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
         data = await getStatisticsFrom(model, aggregation);
     // If data isn't being grouped, just return raw matching documents
     } else {
-        data = await model.find({ $and: cleanFilter }).lean().exec();
+        data = await model.find(cleanFilter).lean().exec();
     }
 
     let finalData = mergeIdToData(data);
@@ -110,6 +108,8 @@ function mergeIdToData(data) {
  */
 function getModelFromSourceName(sourceName) {
     switch (sourceName) {
+        case 'QueueStats':
+            return queue.QueueStats;
         case 'AcdFeed':
             return models.AcdFeed;
         case 'AgentLogin':
@@ -153,7 +153,7 @@ async function getStatisticsFrom(model, aggregation) {
 // transform filter object into MongoDB-style $match
 function createFilter(obj) {
     // remove dates - parsed separately
-    const filter = Object.keys(obj)
+    let filter = Object.keys(obj)
         .filter((key) => key != 'date')
         .map((key) => {
                 return { [key]: obj[key] };
@@ -166,6 +166,14 @@ function createFilter(obj) {
             }
         });
     }
+
+    // Turn the list of filters into object using $and -- or just an empty ol' object.
+    if (filter.length > 0) {
+        filter = { $and: filter };
+    } else {
+        filter = { };
+    }
+
     return filter;
 }
 

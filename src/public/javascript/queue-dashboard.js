@@ -140,7 +140,7 @@ function refreshView(data, serviceLevelData) {
                 // Real-time queue metrics
                 callsInQueue += queue['CallsInQueue'];
                 maxWait = Math.max(maxWait, queue['CurrentLongestQueueTime']);
-                agentsLoggedIn = Math.max(agentsLoggedIn, queue['AgentsLoggedIn'].split(' ')[0]*1);
+                agentsLoggedIn = Math.max(agentsLoggedIn, queue['AgentsLoggedIn']);
                 agentsNotReady = Math.max(agentsNotReady, queue['AgentsNotReadyForCalls']);
                 agentsOnCall = Math.max(agentsOnCall, queue['AgentsOnCall']);
                 agentsReady = Math.max(agentsReady, queue['AgentsReadyForCalls']);
