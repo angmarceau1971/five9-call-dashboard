@@ -38,6 +38,9 @@ function process(data, field) {
     else if (fieldName == 'serviceLevel') {
         return sum(data, 'serviceLevel') / sum(data, 'calls');
     }
+    else if (fieldName == 'abandonRate') {
+        return sum(data, 'abandons') / sum(data, 'calls');
+    }
     else if (fieldName == 'score') {
         return average(data, 'score');
     }
