@@ -1,7 +1,7 @@
 /**
  * Handle expression parsing for calculated fields.
  */
-
+'use strict';
 import * as hub from './hub';
 const clone = require('ramda/src/clone');
 
@@ -17,6 +17,9 @@ export function getValueForField(data, field) {
 
 /**
  * Extract overall value from a given set of data.
+ *
+ * TODO: Clean this shit up!
+ *
  * @param  {Array} data
  * @param  {String} field full field name ("source.field" format)
  * @return {Number} value

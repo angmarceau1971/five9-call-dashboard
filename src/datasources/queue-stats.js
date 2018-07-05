@@ -1,7 +1,7 @@
 const five9 = require('../utility/five9-interface');
 const log = require('../utility/log');
 const mongoose = require('mongoose');
-
+const skillGroup = require('./skill-group.js');
 
 //////////////////////////////////////////
 // MongoDB database definitions
@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 // Schema for queue data
 const queueStatsSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
+    // Five9 response fields
     SkillName: { type: String, default: 'N/A' },
     AgentsLoggedIn: { type: Number, default: 0 },
     AgentsNotReadyForCalls: { type: Number, default: 0 },
@@ -21,7 +22,9 @@ const queueStatsSchema = mongoose.Schema({
     QueueCallbacks: { type: Number, default: 0 },
     TotalVMs: { type: Number, default: 0 },
     VMsInProgress: { type: Number, default: 0 },
-    VMsInQueue: { type: Number, default: 0 }
+    VMsInQueue: { type: Number, default: 0 },
+    // alias for SkillName to ease filtering
+    skill: { type: String, default: 'N/A'},
 });
 
 // Stats model
@@ -107,10 +110,14 @@ function jsonToViewData(json,
             // trim extra 0's to convert longest queue time to seconds from ms
             if (field == 'CurrentLongestQueueTime' && rawRow.length > 3) {
                 newRow[field] = rawRow.slice(0, -3);
-            }
             // Turn AgentsLoggedIn into numeric from `X (X)` string format
-            else if (field == 'AgentsLoggedIn') {
+            } else if (field == 'AgentsLoggedIn') {
                 newRow[field] = rawRow.split(' ')[0] * 1;
+            // save skill name as "skill" also
+            } else if (field == 'SkillName') {
+                newRow['SkillName'] = rawRow;
+                newRow['skill'] = rawRow;
+                newRow['skillGroup'] = skillGroup.getSkillGroup(rawRow);
             // Other fields don't need further string processing
             } else {
                 newRow[field] = rawRow;
