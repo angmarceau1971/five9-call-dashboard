@@ -19,7 +19,7 @@ button {
                 0 5px 10px 5px rgba(0, 0, 0, 0.17);
 }
 
-.stats-box {
+.stats-box, .control-panel {
     background-color: hsla(240, 2%, 22%, 0.89);
 }
 .dropdown-button, .insidedrop, .submenu, .top-bar {

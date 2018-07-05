@@ -219,7 +219,6 @@ h2, h3 {
 .control-panel {
     padding: 1em;
     margin-bottom: 1em;
-    background-color: hsla(0, 0%, 27%, 0.55);
     border-radius: 2px;
 }
 .control-panel .filters-header-wrapper {

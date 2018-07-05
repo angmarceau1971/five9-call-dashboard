@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    color: #333;
+    color: #666;
 }
 
 button {
@@ -21,7 +21,7 @@ button {
                 0 1px 1px rgba(12,13,14,0.025);
 }
 
-.stats-box {
+.stats-box, .control-panel {
     background-color: hsla(36, 100%, 98%, 0.92);
 }
 .dropdown-button, .insidedrop, .submenu, .top-bar {

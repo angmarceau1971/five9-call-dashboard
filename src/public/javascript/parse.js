@@ -41,8 +41,19 @@ function process(data, field) {
     else if (fieldName == 'serviceLevel') {
         return sum(data, 'serviceLevel') / sum(data, 'calls');
     }
+    else if (fieldName == 'inServiceLevel') {
+        return sum(data, 'serviceLevel');
+    }
+    else if (fieldName == 'outOfServiceLevel') {
+        return sum(data, 'calls') - sum(data, 'serviceLevel');
+    }
     else if (fieldName == 'abandonRate') {
         return sum(data, 'abandons') / sum(data, 'calls');
+    }
+    else if (fieldName == 'AgentsLoggedIn' || fieldName == 'AgentsOnCall'
+            || fieldName == 'AgentsNotReadyForCalls'
+            || fieldName == 'AgentsReadyForCalls') {
+        return max(data, fieldName);
     }
     else if (fieldName == 'score') {
         return average(data, 'score');
@@ -158,6 +169,16 @@ export function sum(arr, key) {
  */
 function average(arr, key) {
     return sum(arr, key) / arr.length;
+}
+
+/**
+ * Returns maximum of given field in array of objects.
+ * @param  {Array} arr of objects
+ * @param  {String} key property to find maximum of
+ * @return {Number}
+ */
+function max(arr, key) {
+    return arr.reduce((high, item) => Math.max(high, item[key] || 0), -Infinity);
 }
 
 /**
