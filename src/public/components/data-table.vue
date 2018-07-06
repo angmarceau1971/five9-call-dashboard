@@ -221,11 +221,17 @@ function getNotReadyPercentage(data) {
 
 <style scoped>
 button.download {
-    background-color: hsl(210, 100%, 67%);
+    background-color: hsla(210, 100%, 70%, 0.25);
     color: white;
     cursor: pointer;
     font-size: 1rem;
     height: 1rem;
     width: 2rem;
+    /* Position to left of table */
+    position: absolute;
+    left: 0.25rem;
+}
+button.download:hover {
+    background-color: hsla(210, 100%, 75%, 1.0);
 }
 </style>

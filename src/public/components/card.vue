@@ -108,6 +108,7 @@
 
 
 <script>
+'use strict';
 import WidgetBase from './widget-base.vue';
 import DataTable from './data-table.vue';
 import LineGraph from './line-graph.vue';
