@@ -84,6 +84,18 @@ const dateMatcher = {
             $lt:  today().startOf('day').toDate()
         }
     },
+    '<last 2 days>': function() {
+        return {
+            $gte: today().add(-2, 'days').startOf('day').toDate(),
+            $lt:  today().endOf('day').toDate()
+        }
+    },
+    '<last 3 days>': function() {
+        return {
+            $gte: today().add(-3, 'days').startOf('day').toDate(),
+            $lt:  today().endOf('day').toDate()
+        }
+    },
     '<last 5 days>': function() {
         return {
             $gte: today().add(-5, 'days').startOf('day').toDate(),

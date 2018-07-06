@@ -134,7 +134,7 @@ export default {
         },
         styleClasses: {
             type: Array,
-            default: []
+            default: () => { return [] }
         },
         // styles to apply to widgets
         widgetStyles: {
