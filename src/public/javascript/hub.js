@@ -274,9 +274,9 @@ export const store = new Vuex.Store({
         },
 
         async updateGoals(context) {
-            // Load goals for current agent groups -- or all goals for "Over-View"
+            // Load all goals for team views, or filter by agent group for individuals
             let goals;
-            if (context.state.chosenLayoutName == 'Over-View') {
+            if (context.state.layout.layoutType == 'team') {
                 goals = await api.getGoalList();
             } else {
                 let groups = extractValues(context.getters.currentUsers, 'agentGroups');
