@@ -35,7 +35,7 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
     ></single-value>
@@ -45,7 +45,7 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
@@ -54,7 +54,7 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @dragstart-widget="dragstartWidgetHandler"
     ></pie-chart>
 
@@ -64,7 +64,7 @@
         :highlightedDate="highlightedDate"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @hoverDate="hoverDate"
         @unhoverDate="unhoverDate"
         @dragstart-widget="dragstartWidgetHandler"
@@ -75,7 +75,7 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
     ></datasource-last-updated>
@@ -85,7 +85,7 @@
         v-bind="widget"
         :key="widget.id"
         :ref="widget.id"
-        :style="{ order: widget.layoutOrder }"
+        :style="getWidgetStyles(widget)"
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
     ></leaderboard>
@@ -112,7 +112,13 @@ export default {
         layoutOrder: Number,
         id: String,
         columns: Number,
+        // styles to apply to card
         styles: {
+            type: Object,
+            default: () => { return {} }
+        },
+        // styles to apply to widgets
+        widgetStyles: {
             type: Object,
             default: () => { return {} }
         }
@@ -166,6 +172,14 @@ export default {
         // Return widgets of a given type (data-table, line-graph, etc.)
         widgetsOfType: function(type) {
             return this.widgets.filter((widget) => widget['component'] == type);
+        },
+
+        // Returns object of CSS styles (such as layout position) for the widget
+        getWidgetStyles: function(widget) {
+            return Object.assign(
+                { order: widget.layoutOrder },
+                this.widgetStyles
+            );
         },
 
         // React to user hovering over a day
