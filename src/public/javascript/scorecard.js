@@ -39,7 +39,7 @@ const vm = new Vue({
         showLinks: false, // show helpful links / bookmarks
         theme: {},
         // Supervisor controls
-        showFilters: true,
+        showFilters: false,
         datasourceMessage: '',
         messages: [],
         showInbox: false,

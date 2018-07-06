@@ -7,6 +7,7 @@
  * components can access. The `getData` "getter" method returns data based on a
  * given filter & datasource requested.
  */
+'use strict';
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
@@ -230,7 +231,7 @@ export const store = new Vuex.Store({
         async startProcess(context) {
             // Load configuration and set layout
             await context.dispatch('loadAssets');
-            // determine initial layout
+            // determine initial layout from URL parameter, if any
             let layout;
             let format = (name) => name.replace(/ /g, '-').toLowerCase();
             let name = getInitialLayout();
@@ -239,7 +240,7 @@ export const store = new Vuex.Store({
                     return format(l.name) == format(name);
                 });
                 layout = matches[0] || context.state.layouts[0];
-            } else {
+            } else { // if no parameter given, use default
                 layout = context.state.layouts[0];
             }
             context.dispatch('updateLayout', layout);
