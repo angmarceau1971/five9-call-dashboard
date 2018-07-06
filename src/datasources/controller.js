@@ -40,11 +40,9 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
 
     // Custom models should be filtered for datasource
     if (isCustomData) {
-        cleanFilter.push({
-            _datasourceName: {
-                $eq: source
-            }
-        });
+        cleanFilter._datasourceName = {
+            $eq: source
+        };
     }
 
     let data;
