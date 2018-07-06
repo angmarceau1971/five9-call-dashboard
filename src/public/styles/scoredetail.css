@@ -145,8 +145,8 @@ h2, h3 {
     font-size: 1.25em;
     text-transform: capitalize;
     background: transparent;
-    color: hsl(240, 7%, 1%);
-    text-shadow: 0px 1px 1px hsl(208, 39%, 71%), 0px 1px 5px hsla(208, 33%, 69%, 0.57);
+    color: hsl(210, 100%, 73%);
+    text-shadow: 0px 1px 1px hsl(0, 0%, 0%), 0px 1px 5px hsla(208, 100%, 38%, 0.57);
     border: none;
     -webkit-appearance: none;
     appearance: none;
