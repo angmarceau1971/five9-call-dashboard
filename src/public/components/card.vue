@@ -10,6 +10,7 @@
 
 <template>
 <div class="card metric-wrapper stats-box"
+    :class="styleClasses"
     :id="id"
     :style="calculatedStyles"
     @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
@@ -116,6 +117,10 @@ export default {
         styles: {
             type: Object,
             default: () => { return {} }
+        },
+        styleClasses: {
+            type: Array,
+            default: []
         },
         // styles to apply to widgets
         widgetStyles: {
@@ -303,5 +308,18 @@ export default {
 .card .add-button {
     top: 0;
     right: 0;
+}
+
+/******************/
+/* Special styles */
+.card.compact {
+    grid-gap: 2.0em;
+}
+.card.compact > .widget {
+    min-height: auto;
+}
+.card.compact > .widget > h3 {
+    font-weight: normal;
+    font-size: 1em;
 }
 </style>
