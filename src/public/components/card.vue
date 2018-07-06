@@ -1,11 +1,13 @@
 /**
  * Container for widget components.
  * Contains various functionality:
- *  - Handles drag and drop events for each widget within it
+ *  - Custom styling for widgets through props `styles`, `styleClasses`, and
+ *      `widgetStyles`.
+ *  - Handles drag and drop events for each widget within it.
  *  - Can be dragged around other cards by dragging the title h2 (this is handled
- *      in the Dashboard component, Card's parent)
+ *      in the Dashboard component, Card's parent).
  *  - When widgets are modified, Card receives `modify-widget` events and bubbles
- *      them up to the parent Dashboard
+ *      them up to the parent Dashboard.
  */
 
 <template>
@@ -31,6 +33,7 @@
 
 
     <!-- Widget components -->
+    <!-- TODO: make less repetitive! -->
     <single-value class="widget"
         v-for="(widget, i) in widgetsOfType('single-value')"
         v-bind="widget"
@@ -90,6 +93,16 @@
         @dragstart-widget="dragstartWidgetHandler"
         @modify-widget="modifyWidget"
     ></leaderboard>
+
+    <queue-list class="queue-list"
+        v-for="(widget, i) in widgetsOfType('queue-list')"
+        v-bind="widget"
+        :key="widget.id"
+        :ref="widget.id"
+        :style="getWidgetStyles(widget)"
+        @dragstart-widget="dragstartWidgetHandler"
+        @modify-widget="modifyWidget"
+    ></queue-list>
 </div>
 </template>
 
@@ -102,6 +115,7 @@ import SingleValue from './single-value.vue';
 import PieChart from './pie-chart.vue';
 import DatasourceLastUpdated from './datasource-last-updated.vue';
 import Leaderboard from './leaderboard.vue';
+import QueueList from './queue-list.vue';
 
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
@@ -134,7 +148,8 @@ export default {
         'line-graph': LineGraph,
         'pie-chart': PieChart,
         'datasource-last-updated': DatasourceLastUpdated,
-        'leaderboard': Leaderboard
+        'leaderboard': Leaderboard,
+        'queue-list': QueueList
     },
     data: function() {
         return {
@@ -310,8 +325,8 @@ export default {
     right: 0;
 }
 
-/******************/
-/* Special styles */
+/********************************************/
+/* Special styles from custom style classes */
 .card.compact {
     grid-gap: 2.0em;
 }
