@@ -212,8 +212,8 @@ async function clear(datasourceName, start, stop) {
         _datasourceName: datasourceName,
         date: {
             // Convert to UTC dates
-            $gte: new Date(moment.utc(dateStr).format()),
-            $lte: new Date(moment.utc(dateStr).endOf('day').format())
+            $gte: new Date(moment.utc(start).format()),
+            $lte: new Date(moment.utc(stop) .endOf('day').format())
         }
     });
 }
