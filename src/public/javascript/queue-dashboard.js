@@ -24,7 +24,7 @@ async function startItUp() {
             timeout = null;
             $('.play-pause').html('&#9658;'); // show play button
             // Remind user that they're paused
-            $('.message').text(`Dashboard paused since ${moment()}.`);
+            $('.message').text(`Dashboard paused since ${moment().toDate()}.`);
         }
         // Not running? Start it up
         else {

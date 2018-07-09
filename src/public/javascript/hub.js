@@ -8,6 +8,7 @@
  * given filter & datasource requested.
  */
 'use strict';
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
@@ -208,7 +209,6 @@ export const store = new Vuex.Store({
                 return newObj;
             }, {});
         },
-        //
         /**
          * Select a given date
          * @param {Object} state
@@ -227,6 +227,7 @@ export const store = new Vuex.Store({
             context.commit('setUser', user);
             context.dispatch('updateGoals');
         },
+
         // Load the dashboard up. Assumes `updateUser` has already completed.
         async startProcess(context) {
             // Load configuration and set layout
@@ -249,6 +250,8 @@ export const store = new Vuex.Store({
             context.dispatch('nextUpdate');
         },
 
+        // (Re-) Load agent groups, layouts, skills, links, fields, goals, and
+        // users from server
         async loadAssets(context) {
             // load layout
             let agentGroups = extractValues(context.getters.currentUsers, 'agentGroups');
@@ -274,6 +277,7 @@ export const store = new Vuex.Store({
             context.dispatch('nextUpdate');
         },
 
+        // Reload Goals from server
         async updateGoals(context) {
             // Load all goals for team views, or filter by agent group for individuals
             let goals;
@@ -286,6 +290,17 @@ export const store = new Vuex.Store({
             context.commit('setGoals', goals);
         },
 
+        // Save user's theme settings to server
+        async updateTheme(context, newTheme) {
+            await api.updateUserTheme(context.state.currentUser, newTheme);
+            let updatedUser = clone(context.state.user);
+            updatedUser.theme = newTheme;
+            context.commit('setUser', updatedUser);
+        },
+
+        /**
+         * Set layout and datasources to @param layout
+         */
         updateLayout(context, layout) {
             // Then update to the passed-in layout
             context.commit('setLayout', layout);
@@ -296,7 +311,7 @@ export const store = new Vuex.Store({
         // This will trigger all the widgets to refreshing, hitting the getData
         // method of the "hub".
         async nextUpdate(context, refreshRateMs=290000) {
-            console.log(`Refresh at ${moment()}`);
+            console.log(`Refresh at ${moment().toDate()}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
@@ -344,14 +359,6 @@ export const store = new Vuex.Store({
             }, refreshRateMs);
             context.commit('setTimeoutId', timeout);
         },
-
-        // Save a new theme to server
-        async updateTheme(context, newTheme) {
-            await api.updateUserTheme(context.state.currentUser, newTheme);
-            let updatedUser = clone(context.state.user);
-            updatedUser.theme = newTheme;
-            context.commit('setUser', updatedUser);
-        }
     }
 });
 
