@@ -2,7 +2,7 @@ html {
     background: hsl(240, 6%, 9%);
 }
 body, body button  {
-    color: white;
+    color: #f9f9f9;
 }
 button {
     background-color: hsl(210, 100%, 67%);
@@ -49,13 +49,13 @@ svg text {
 }
 
 .green {
-    color: hsl(120, 100%, 47%);
+    color: hsl(120, 100%, 52%);
 }
 .yellow {
-    color: hsl(61, 100%, 67%);
+    color: hsl(61, 100%, 70%);
 }
 .red {
-    color: hsl(345, 97%, 72%);
+    color: hsl(345, 100%, 75%);
 }
 
 .font-color-secondary {
