@@ -75,8 +75,9 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
     let finalData = mergeIdToData(data);
     let meta = {};
     if (isCustomData) {
-        meta.lastUpdated =
-            (await custom.getDatasourceByName(source)).lastUpdated;
+        let ds = await custom.getDatasourceByName(source);
+        if (!ds) throw new Error(`Custom data source '${source}' not found!`);
+        meta.lastUpdated = ds.lastUpdated;
     }
     return {
         data: finalData,

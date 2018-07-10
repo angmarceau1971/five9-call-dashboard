@@ -42,7 +42,7 @@ const addAdminRoutes = require('./administrative').addTo(router);
  */
 router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
     m.err(async (req, res) => {
-        five9Update.onReady(async () => {
+        await five9Update.onReady(async () => {
             let dataPromises = req.body.map(async (ds) => {
                 let stats = await datasource.getScorecardStatistics(ds);
                 return {

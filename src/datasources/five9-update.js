@@ -299,7 +299,7 @@ async function onReady(fun) {
         waited += 1000;
         await wait(1000);
     }
-    fun();
+    return fun();
 }
 
 

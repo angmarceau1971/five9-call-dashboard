@@ -52,7 +52,8 @@ function process(data, field) {
     }
     else if (fieldName == 'AgentsLoggedIn' || fieldName == 'AgentsOnCall'
             || fieldName == 'AgentsNotReadyForCalls'
-            || fieldName == 'AgentsReadyForCalls') {
+            || fieldName == 'AgentsReadyForCalls'
+            || fieldName == 'CurrentLongestQueueTime') {
         return max(data, fieldName);
     }
     else if (fieldName == 'score') {
