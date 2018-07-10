@@ -20,6 +20,7 @@ const callLogSchema = mongoose.Schema({
     zipCode: String,
     date: Date, // Date and time
     calls: { type: Number, default: 0 },
+    // number of calls answered within SL
     serviceLevel: { type: Number, default: 0 },
     abandons: { type: Number, default: 0 }
 });
@@ -42,6 +43,7 @@ const acdFeedSchema = mongoose.Schema({
     acwTime: Number,
     speedOfAnswer: Number,
     abandons: Number,
+    // number of calls answered within SL
     serviceLevel: { type: Number, default: 0 }
 });
 // Schema for agent login data
@@ -76,6 +78,7 @@ const chatDataSchema = mongoose.Schema({
     handleTime: Number,
     speedOfAnswer: Number,
     abandons: Number,
+    // number of chats answered within SL
     serviceLevel: { type: Number, default: 0 },
     mediaType: String
 });
