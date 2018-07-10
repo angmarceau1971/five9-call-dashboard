@@ -1,4 +1,5 @@
 /**
+ *  - DataManager Class -
  * Manage datasources and timing of data updates.
  *
  * Datasource objects are saved as JSON in Layouts. Upon page load, the hub.js
@@ -35,13 +36,13 @@ const clone = require('ramda/src/clone');
 const moment = require('moment');
 
 
-
 export class DataManager {
     constructor() {
         this.subscribers = [];
         console.log('new DataManager!')
     }
 
+    // Subscribe a datasource object to begin being refreshed periodically.
     subscribe(datasource) {
         this.subscribers.push({
             datasource: datasource,
@@ -49,6 +50,7 @@ export class DataManager {
         });
     }
 
+    // Clear all subscribed datasources.
     clearSubscribers() {
         this.subscribers = [];
     }
@@ -63,11 +65,14 @@ export class DataManager {
         return matches[0].datasource;
     }
 
+    // Returns true if the subscribed datasource needs an update.
     needsUpdate(subscriber) {
         return (new Date() - subscriber.lastRefresh)/1000
             >  (subscriber.datasource.refreshRate - 5);
     }
 
+    // Each time this is called, it will update any datasources that are ready
+    // to be refreshed and return the updated datasets.
     async tick() {
         let subsToRefresh = this.subscribers.filter(this.needsUpdate);
         let datasources =
@@ -86,15 +91,13 @@ export class DataManager {
         );
 
         if (parametersList.length == 0) return [];
-
         console.log(`Refreshing ${parametersList.map((p) => p.frontendSourceName)}`)
 
         // Load data from server
         try {
             let response = await loadData(parametersList);
-            // record updates to subscribers and datasources
-            for (let sub of subsToRefresh)
-                sub.lastRefresh = new Date();
+            // record updates to subscribers
+            for (let sub of subsToRefresh) sub.lastRefresh = new Date();
             // Return data
             return response;
         } catch (err) {
@@ -123,7 +126,12 @@ export async function loadData(params) {
     return res;
 }
 
-
+/**
+ * For a given datasource object, returns the parameters that can be sent to the
+ * server in the request for actual data.
+ * @param  {Object} datasource
+ * @return {Object}
+ */
 function getParams(datasource) {
     const params = {
         filter: filters.clean(datasource.filter),
