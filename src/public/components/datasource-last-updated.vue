@@ -1,5 +1,7 @@
 /**
- * Component to display a single table row of data. Child of DataTable widgets.
+ * WIdget that shows the date a datasource was last updated.
+ *
+ * Useful for custom data sources that may have a variable update rate.
  */
 <template>
     <div>

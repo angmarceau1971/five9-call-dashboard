@@ -13,7 +13,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 import * as api from './api';
-import * as filters from './filters';
+import { DataManager } from './datasource';
 
 const clone = require('ramda/src/clone');
 const intersection = require('ramda/src/intersection');
@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
     state: {
         data: {},
         datasources: {},
+        dataManager: new DataManager(),
         editMode: false,
         fields: [],
         goals: [],
@@ -74,11 +75,11 @@ export const store = new Vuex.Store({
         },
         getData: (state) => (filter, datasource) => {
             if (!state.data[datasource]) {
-                console.log(`getData: datasource ${datasource} doesn't exist.`);
+                console.log(`getData: There is no data for datasource ${datasource}.`);
                 return [];
             }
             if (!filter) {
-                console.log(`getData: filter not defined.`);
+                console.log(`getData: 'filter' not defined.`);
                 return [];
             }
             const filt = filters.clean(filter, state.currentUser);
@@ -310,54 +311,32 @@ export const store = new Vuex.Store({
             context.commit('setDatasources', layout.datasources);
         },
 
-        // Refresh data based on current datasources every 290 seconds.
+        // Refresh data based on current datasources every 10 seconds.
         // This will trigger all the widgets to refreshing, hitting the getData
         // method of the "hub".
-        async nextUpdate(context, refreshRateMs=290000) {
+        async nextUpdate(context, refreshRateMs=10000) {
             console.log(`Refresh at ${moment().toDate()}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
             }
+            // Get any new data that is needed. Returns array containing objects
+            // with fields `data`, `source` and `meta`.
+            let newData = context.state.dataManager.tick();
 
-            // Create list of parameters and datasource information for requests
-            // to server
-            let parametersList = Object.entries(context.state.datasources).map(
-                ([id, datasource]) => {
-                    return Object.assign(
-                        { frontendSourceName: datasource.name },
-                        clone(datasource),
-                        getParams(datasource)
-                    );
-                }
-            );
-
-            // Load data from server
-            try {
-                let response = await loadData(parametersList);
-                // update the datas real quick
-                for (let dataset of response) {
-                    context.commit('updateData', {
-                        newData: dataset.data,
-                        frontendDatasourceName: dataset.source.frontendSourceName
+            // update the data
+            for (let dataset of newData) {
+                context.commit('updateData', {
+                    newData: dataset.data,
+                    frontendDatasourceName: dataset.source.frontendSourceName
+                });
+                if (!isEmpty(dataset.meta)) {
+                    context.commit('changeDatasourceLastUpdated', {
+                        datasourceId: dataset.source.id,
+                        lastUpdated: dataset.meta.lastUpdated
                     });
-                    if (!isEmpty(dataset.meta)) {
-                        context.commit('changeDatasourceLastUpdated', {
-                            datasourceId: dataset.source.id, lastUpdated: dataset.meta.lastUpdated
-                        });
-                    }
                 }
-            } catch (err) {
-                console.log(`Error while loading data: ${err}`);
             }
-
-            // And schedule the next update
-            // clear timeout to prevent duplicate updates
-            clearTimeout(context.state.timeoutId);
-            let timeout = setTimeout(function next() {
-                context.dispatch('nextUpdate', refreshRateMs);
-            }, refreshRateMs);
-            context.commit('setTimeoutId', timeout);
         },
     }
 });
@@ -365,34 +344,6 @@ export const store = new Vuex.Store({
 export const getField = store.getters.field;
 
 
-function getParams(datasource) {
-    const params = {
-        filter: filters.clean(datasource.filter, store.state.currentUser),
-        fields: datasource.fields,
-        groupBy: datasource.groupBy,
-        source: datasource.source
-    };
-    return params;
-}
-
-/**
- * Get data from server.
- * @param  {Array} params list of requests
- * @return {Array} array of data (including metadata about sources)
- */
-export async function loadData(params) {
-    let res = await api.getStatistics(params);
-    // convert date strings to values
-    res = res.map((set) => {
-        set.data = set.data.map((d) => {
-            if (d['dateDay']) d['dateDay'] = moment(d['dateDay']).toDate();
-            if (d['date']) d['date'] = moment(d['date']).toDate();
-            return d;
-        });
-        return set;
-    });
-    return res;
-}
 
 /**
  * Given a list of users, return array of all skills that are within their groups.
