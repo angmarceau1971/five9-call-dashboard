@@ -88,6 +88,8 @@ export const store = new Vuex.Store({
                 return datum;
             });
         },
+        // For the given Field object and (optional) skill group, returns the
+        // first matching Goal object.
         goalForField: (state) => (field, skillGroup=null) => {
             function match(goal) {
                 if (skillGroup) {
@@ -97,7 +99,8 @@ export const store = new Vuex.Store({
                     return (goal.field == field.name);
                 }
             }
-            return state.goals.filter(match)[0];
+            let matches = state.goals.filter(match);
+            return matches[0];
         },
         getDatasource: (state) => (datasourceName) => {
             let ds = Object.entries(state.datasources).find(([id, ds]) => {
@@ -317,10 +320,6 @@ export const store = new Vuex.Store({
                 return;
             }
 
-            // Array of result objects with keys `data`, `meta`, and
-            // `datasourceName`
-            let newData = [];
-
             // Create list of parameters and datasource information for requests
             // to server
             let parametersList = Object.entries(context.state.datasources).map(
@@ -352,7 +351,8 @@ export const store = new Vuex.Store({
                 console.log(`Error while loading data: ${err}`);
             }
 
-            // and schedule the next update
+            // And schedule the next update
+            // clear timeout to prevent duplicate updates
             clearTimeout(context.state.timeoutId);
             let timeout = setTimeout(function next() {
                 context.dispatch('nextUpdate', refreshRateMs);
