@@ -28,9 +28,11 @@
  */
 'use strict';
 
+import * as api from './api';
 import * as filters from './filters';
 
 const moment = require('moment');
+const clone = require('ramda/src/clone');
 
 
 export class DataManager {
@@ -46,13 +48,26 @@ export class DataManager {
         });
     }
 
+    clearSubscribers() {
+        this.subscribers = [];
+    }
+
+    getDatasource(datasourceName) {
+        let matches = this.subscribers
+            .filter((sub) => {
+                return sub.datasource.name == datasourceName;
+            });
+        if (matches.length == 0)
+            throw new Error (`No datasource matching ${datasourceName}`);
+        return matches[0].datasource;
+    }
+
     needsUpdate(subscriber) {
         return (new Date() - subscriber.lastRefresh)/1000
-            >  (subscriber.datasource.refreshRate);
+            >  (subscriber.datasource.refreshRate - 5);
     }
 
     async tick() {
-        console.log(`TICK TOCK`);
         let subsToRefresh = this.subscribers.filter(this.needsUpdate);
         let datasources =
             subsToRefresh.map((subscriber) => subscriber.datasource);
@@ -68,6 +83,10 @@ export class DataManager {
                 );
             }
         );
+
+        if (parametersList.length == 0) return [];
+
+        console.log(`Refreshing ${parametersList.map((p) => p.frontendSourceName)}`)
 
         // Load data from server
         try {
@@ -105,7 +124,7 @@ export async function loadData(params) {
 
 function getParams(datasource) {
     const params = {
-        filter: filters.clean(datasource.filter, store.state.currentUser),
+        filter: filters.clean(datasource.filter),
         fields: datasource.fields,
         groupBy: datasource.groupBy,
         source: datasource.source

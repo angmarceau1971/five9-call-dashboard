@@ -13,6 +13,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 import * as api from './api';
+import * as filters from './filters';
 import { DataManager } from './datasource';
 
 const clone = require('ramda/src/clone');
@@ -35,7 +36,6 @@ const sift = require('sift');
 export const store = new Vuex.Store({
     state: {
         data: {},
-        datasources: {},
         dataManager: new DataManager(),
         editMode: false,
         fields: [],
@@ -82,7 +82,7 @@ export const store = new Vuex.Store({
                 console.log(`getData: 'filter' not defined.`);
                 return [];
             }
-            const filt = filters.clean(filter, state.currentUser);
+            const filt = filters.clean(filter);
             let data = sift(filt, state.data[datasource]);
             return data.map((datum) => {
                 delete datum._id;
@@ -104,10 +104,7 @@ export const store = new Vuex.Store({
             return matches[0];
         },
         getDatasource: (state) => (datasourceName) => {
-            let ds = Object.entries(state.datasources).find(([id, ds]) => {
-                return ds.name == datasourceName;
-            })[1];
-            return ds;
+            return state.dataManager.getDatasource(datasourceName);
         },
         // Returns current user for agent, or selected users in supervisor team
         // mode
@@ -197,21 +194,22 @@ export const store = new Vuex.Store({
             state.chosenLayoutName = name;
         },
         changeDatasourceLastUpdated(state, { datasourceId, lastUpdated }) {
-            let ds = clone(state.datasources[datasourceId]);
-            ds.lastUpdated = lastUpdated;
-            Vue.set(state.datasources, datasourceId, ds);
+            // TODO: implement
+            console.log(`changeDatasourceLastUpdated not implemented!!!`);
+            // let ds = clone(state.datasources[datasourceId]);
+            // ds.lastUpdated = lastUpdated;
+            // Vue.set(state.datasources, datasourceId, ds);
         },
         /**
-         * Store datasources. Saved in { id: {Object} } form, in contrast to array of
-         * datasource objects stored in database.
+         * Store datasources.
          * @param {Object} state
          * @param {Array}  datasources array of datasource objects from server
          */
         setDatasources(state, datasources) {
-            state.datasources = clone(datasources).reduce((newObj, source) => {
-                newObj[source.id] = source;
-                return newObj;
-            }, {});
+            state.dataManager.clearSubscribers();
+            for (let ds of datasources) {
+                state.dataManager.subscribe(ds);
+            }
         },
         /**
          * Select a given date
@@ -315,14 +313,14 @@ export const store = new Vuex.Store({
         // This will trigger all the widgets to refreshing, hitting the getData
         // method of the "hub".
         async nextUpdate(context, refreshRateMs=10000) {
-            console.log(`Refresh at ${moment().toDate()}`);
+            console.log(`Tick at ${moment().toDate()}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
             }
             // Get any new data that is needed. Returns array containing objects
             // with fields `data`, `source` and `meta`.
-            let newData = context.state.dataManager.tick();
+            let newData = await context.state.dataManager.tick();
 
             // update the data
             for (let dataset of newData) {
@@ -337,6 +335,13 @@ export const store = new Vuex.Store({
                     });
                 }
             }
+
+            // and schedule the next update
+            clearTimeout(context.state.timeoutId);
+            let timeout = setTimeout(function next() {
+                context.dispatch('nextUpdate', refreshRateMs);
+            }, refreshRateMs);
+            context.commit('setTimeoutId', timeout);
         },
     }
 });

@@ -23,7 +23,7 @@ body * {
 }
 
 .content-wrapper {
-    padding: 2%;
+    padding: 1.25em;
     min-height: calc(100vh - 50px);
 }
 
