@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
     state: {
         data: {},
         dataManager: new DataManager(),
+        datasourcesLastUpdated: {},
         editMode: false,
         fields: [],
         goals: [],
@@ -103,8 +104,8 @@ export const store = new Vuex.Store({
             let matches = state.goals.filter(match);
             return matches[0];
         },
-        getDatasource: (state) => (datasourceName) => {
-            return state.dataManager.getDatasource(datasourceName);
+        getDatasourceLastUpdated: (state) => (datasourceName) => {
+            return state.datasourcesLastUpdated[datasourceName];
         },
         // Returns current user for agent, or selected users in supervisor team
         // mode
@@ -193,13 +194,6 @@ export const store = new Vuex.Store({
         setChosenLayoutName(state, name) {
             state.chosenLayoutName = name;
         },
-        changeDatasourceLastUpdated(state, { datasourceId, lastUpdated }) {
-            // TODO: implement
-            console.log(`changeDatasourceLastUpdated not implemented!!!`);
-            // let ds = clone(state.datasources[datasourceId]);
-            // ds.lastUpdated = lastUpdated;
-            // Vue.set(state.datasources, datasourceId, ds);
-        },
         /**
          * Store datasources.
          * @param {Object} state
@@ -210,6 +204,9 @@ export const store = new Vuex.Store({
             for (let ds of datasources) {
                 state.dataManager.subscribe(ds);
             }
+        },
+        changeDatasourceLastUpdated(state, { datasourceName, lastUpdated }) {
+            Vue.set(state.datasourcesLastUpdated, datasourceName, lastUpdated);
         },
         /**
          * Select a given date
@@ -324,13 +321,14 @@ export const store = new Vuex.Store({
 
             // update the data
             for (let dataset of newData) {
+                let sourceName = dataset.source.frontendSourceName;
                 context.commit('updateData', {
                     newData: dataset.data,
-                    frontendDatasourceName: dataset.source.frontendSourceName
+                    frontendDatasourceName: sourceName
                 });
                 if (!isEmpty(dataset.meta)) {
                     context.commit('changeDatasourceLastUpdated', {
-                        datasourceId: dataset.source.id,
+                        datasourceName: dataset.source.name,
                         lastUpdated: dataset.meta.lastUpdated
                     });
                 }

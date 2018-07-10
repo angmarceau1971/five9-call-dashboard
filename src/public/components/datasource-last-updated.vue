@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         lastUpdateMessage: function() {
-            let time = this.$store.getters.getDatasource(this.datasource).lastUpdated;
+            let time = this.$store.getters.getDatasourceLastUpdated(this.datasource);
             if (!time) return 'Last updated time not available';
             return `Last updated ${moment(time).format('MM/DD/YY')}`;
         }

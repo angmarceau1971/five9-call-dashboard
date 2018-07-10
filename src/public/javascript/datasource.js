@@ -31,8 +31,9 @@
 import * as api from './api';
 import * as filters from './filters';
 
-const moment = require('moment');
 const clone = require('ramda/src/clone');
+const moment = require('moment');
+
 
 
 export class DataManager {
@@ -91,8 +92,9 @@ export class DataManager {
         // Load data from server
         try {
             let response = await loadData(parametersList);
-            // record updates to subscribers
-            for (let sub of subsToRefresh) sub.lastRefresh = new Date();
+            // record updates to subscribers and datasources
+            for (let sub of subsToRefresh)
+                sub.lastRefresh = new Date();
             // Return data
             return response;
         } catch (err) {
