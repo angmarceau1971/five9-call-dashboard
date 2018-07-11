@@ -48,7 +48,9 @@ export default {
     computed: {
         data: function() {
             let data = this.$store.getters.getData(this.filter, this.datasource);
-            return data.filter((d) => d.CurrentLongestQueueTime > 0);
+            return data.filter(function hasCalls(q) {
+                return q.CurrentLongestQueueTime > 0 || q.CallsInQueue > 0;
+            });
         },
 
         tableProps: function() {
@@ -57,6 +59,10 @@ export default {
                 fields: ['SkillName', 'CallsInQueue', 'CurrentLongestQueueTime'],
                 sortByField: 'CurrentLongestQueueTime',
                 sortAscending: false,
+                styles: {
+                    margin: '0',
+                    'font-size': '0.8em'
+                }
             }, this.tableOptions);
         }
     },
@@ -71,8 +77,13 @@ export default {
 </script>
 
 <style scoped>
+.queue-list {
+    margin-top: -1em;
+    margin-bottom: -0.5em;
+}
 button.list-toggle {
-    height: 1em;
+    height: 1.5em;
+    min-height: auto;
 }
 .list-toggle {
     margin: 0 auto;

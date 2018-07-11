@@ -252,8 +252,8 @@ h2, h3 {
     color: #fff;
 }
 .data-table td, .data-table th {
-    padding: 0 0.5em;
-    min-width: 7em;
+    /* padding: 0 0.5em; */
+    min-width: 4em;
 }
 .data-table td {
     border: 1px solid #666;
