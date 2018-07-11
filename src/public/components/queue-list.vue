@@ -81,11 +81,10 @@ export default {
     margin-top: -1em;
     margin-bottom: -0.5em;
 }
-button.list-toggle {
-    height: 1.5em;
-    min-height: auto;
-}
 .list-toggle {
+    height: 1.25em;
+    min-height: auto;
+    width: 50%;
     margin: 0 auto;
     color: #888;
     background-color: transparent;
@@ -93,7 +92,7 @@ button.list-toggle {
     cursor: pointer;
 }
 .list-toggle-selected {
-    filter: invert(100%);
-    background-color: rgba(250, 250, 250, 0.5);
+    color: #eee;
+    background-color: rgba(172, 172, 172, 0.5);
 }
 </style>
