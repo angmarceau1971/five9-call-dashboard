@@ -32,7 +32,8 @@ export default {
             this.$emit('dragstart-widget', event, this.$props);
         },
         skillGroup: function(filter) {
-            return filter.skillGroup || null;
+            if (!filter || !filter.skillGroup) return null;
+            return filter.skillGroup;
         },
         downloadData: function() {
             // Attempt to use 'rawData' field; default to 'data' field if not.

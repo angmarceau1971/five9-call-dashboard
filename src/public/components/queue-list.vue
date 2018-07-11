@@ -12,7 +12,8 @@
     >Queue List</button>
 
     <data-table
-    v-if="showTable"
+        v-if="showTable"
+        v-bind="tableProps"
     ></data-table>
 </div>
 </template>
@@ -26,7 +27,13 @@ export default {
     extends: WidgetBase,
     name: 'queue-list',
 
-    props: ['filter'],
+    props: {
+        filter: Object,
+        tableOptions: {
+            type: Object,
+            default: () => { return {} }
+        }
+    },
 
     components: {
         'data-table': DataTable
@@ -36,6 +43,22 @@ export default {
         return {
             showTable: false
         };
+    },
+
+    computed: {
+        data: function() {
+            let data = this.$store.getters.getData(this.filter, this.datasource);
+            return data.filter((d) => d.CurrentLongestQueueTime > 0);
+        },
+
+        tableProps: function() {
+            return Object.assign({
+                dataFromParent: this.data,
+                fields: ['SkillName', 'CallsInQueue', 'CurrentLongestQueueTime'],
+                sortByField: 'CurrentLongestQueueTime',
+                sortAscending: false,
+            }, this.tableOptions);
+        }
     },
 
     methods: {

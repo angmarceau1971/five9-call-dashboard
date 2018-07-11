@@ -224,6 +224,7 @@ h2, h3 {
     max-height: 25rem;
     overflow: auto;
     max-width: 100%;
+    border-radius: 2px;
 }
 .data-table {
     table-layout: fixed;
