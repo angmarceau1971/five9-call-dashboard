@@ -55,9 +55,6 @@ async function scheduleUpdate(interval) {
 async function refreshDatabase() {
     let params, response, data;
 
-    // Remove all old data
-    await QueueStats.remove({});
-
     try {
         // Pull in the new stuff
         params = five9.getParameters('getStatistics');
@@ -67,10 +64,15 @@ async function refreshDatabase() {
         // for each document
         data = jsonToViewData(response);
 
-        // add to database
-        return QueueStats.collection.insert(data, (err, docs) => {
-            if (err) log.error(`Error inserting data in report model: ${err}`);
-        });
+        if (data.length > 0) {
+            // Remove all old data
+            await QueueStats.remove({});
+
+            // add to database
+            return QueueStats.collection.insert(data, (err, docs) => {
+                if (err) log.error(`Error inserting data in report model: ${err}`);
+            });
+        }
     } catch (err) {
         log.error(`Error during QueueStats update. Error: ${err.toString()}; `
                   + `Data: ${JSON.stringify(data)}; `
