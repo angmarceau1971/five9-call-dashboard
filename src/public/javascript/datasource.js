@@ -39,7 +39,6 @@ const moment = require('moment');
 export class DataManager {
     constructor() {
         this.subscribers = [];
-        console.log('new DataManager!')
     }
 
     // Subscribe a datasource object to begin being refreshed periodically.
@@ -91,7 +90,7 @@ export class DataManager {
         );
 
         if (parametersList.length == 0) return [];
-        console.log(`Refreshing ${parametersList.map((p) => p.frontendSourceName)}`)
+        // console.log(`Refreshing ${parametersList.map((p) => p.frontendSourceName)}`)
 
         // Load data from server
         try {
