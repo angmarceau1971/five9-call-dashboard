@@ -102,6 +102,7 @@ export class DataManager {
             return response;
         } catch (err) {
             console.log(`Error while loading data: ${err}`);
+            return [];
         }
     }
 }
