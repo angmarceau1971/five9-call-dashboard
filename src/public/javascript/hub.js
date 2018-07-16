@@ -310,7 +310,6 @@ export const store = new Vuex.Store({
         // This will trigger all the widgets to refreshing, hitting the getData
         // method of the "hub".
         async nextUpdate(context, refreshRateMs=10000) {
-            console.log(`Tick at ${moment().toDate()}`);
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
                 return;
