@@ -306,9 +306,8 @@ export const store = new Vuex.Store({
             context.commit('setDatasources', layout.datasources);
         },
 
-        // Refresh data based on current datasources every 10 seconds.
-        // This will trigger all the widgets to refreshing, hitting the getData
-        // method of the "hub".
+        // Every 10 seconds, trigger the DataManager class to check if any data-
+        // sources need to be refreshed.
         async nextUpdate(context, refreshRateMs=10000) {
             if (!context.state.currentUser) {
                 console.log('No current user assigned. Skipping update.');
@@ -318,7 +317,7 @@ export const store = new Vuex.Store({
             // with fields `data`, `source` and `meta`.
             let newData = await context.state.dataManager.tick();
 
-            // update the data
+            // update any new data
             for (let dataset of newData) {
                 let sourceName = dataset.source.frontendSourceName;
                 context.commit('updateData', {
