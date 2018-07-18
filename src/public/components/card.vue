@@ -14,23 +14,7 @@
 <div class="card metric-wrapper stats-box"
     :class="styleClasses"
     :id="id"
-    :style="calculatedStyles"
-    @dragover="dragWidgetHandler" @drop="dropWidgetHandler">
-
-    <!-- Card is draggable by the title -->
-    <h2 class="title descriptor"
-        :draggable="$store.state.editMode"
-        @dragstart="dragstartHandler">{{ title }}</h2>
-
-    <button v-if="$store.state.editMode"
-        class="edit-button"
-        @click="$emit('edit-card', id)"
-    >&#9776;</button>
-    <button v-if="$store.state.editMode"
-        class="add-button"
-        @click="addWidget"
-    >+</button>
-
+    :style="calculatedStyles">
 
     <!-- Widget components -->
     <!-- TODO: make less repetitive! -->
@@ -40,8 +24,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
-        @modify-widget="modifyWidget"
     ></single-value>
 
     <line-graph class="widget"
@@ -50,7 +32,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
     ></line-graph>
 
     <pie-chart class="widget"
@@ -59,7 +40,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
     ></pie-chart>
 
     <data-table class="widget"
@@ -71,7 +51,6 @@
         :style="getWidgetStyles(widget)"
         @hoverDate="hoverDate"
         @unhoverDate="unhoverDate"
-        @dragstart-widget="dragstartWidgetHandler"
     ></data-table>
 
     <datasource-last-updated class="widget"
@@ -80,8 +59,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
-        @modify-widget="modifyWidget"
     ></datasource-last-updated>
 
     <leaderboard class="leaderboard"
@@ -90,8 +67,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
-        @modify-widget="modifyWidget"
     ></leaderboard>
 
     <queue-list class="queue-list"
@@ -100,8 +75,6 @@
         :key="widget.id"
         :ref="widget.id"
         :style="getWidgetStyles(widget)"
-        @dragstart-widget="dragstartWidgetHandler"
-        @modify-widget="modifyWidget"
     ></queue-list>
 </div>
 </template>
@@ -176,20 +149,6 @@ export default {
     },
 
     methods: {
-        // add a new widget to the card
-        addWidget: function() {
-            let o = WidgetBase.newObject('prompt user for widget type');
-            console.log(o);
-        },
-        /**
-         * Update a widget in this card
-         * @param  {Object} newWidget object to replace with
-         * @param  {String} id        for widget being modified
-         * @return
-         */
-        modifyWidget: function(newWidget, id) {
-            this.$emit('modify-widget', newWidget, id, this.id);
-        },
         // Return widgets of a given type (data-table, line-graph, etc.)
         widgetsOfType: function(type) {
             return this.widgets.filter((widget) => widget['component'] == type);
@@ -210,68 +169,6 @@ export default {
         unhoverDate: function(date) {
             this.highlightedDate = null;
         },
-
-        // Card drag and drop handling
-        dragstartHandler: function(event) {
-            if (!this.$store.state.editMode) return;
-            event.dataTransfer.setData('text/plain', this.id);
-        },
-
-        // Widget drag and drop handling
-        dragstartWidgetHandler: function(event, widget) {
-            if (!this.$store.state.editMode) return;
-            this.draggingWidget = true;
-            const dragData = {
-                cardId: this.id,
-                widgetId: widget.id
-            };
-            event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-        },
-        dragWidgetHandler: function(event) {
-            if (!this.$store.state.editMode) return;
-            event.preventDefault();
-        },
-
-        /**
-         * Handles dropping a widget on this card, sorting all the widgets.
-         * @param  {Event} event for window drop action
-         * @emits  update-widget event to Dashboard component
-         */
-        dropWidgetHandler: function(event) {
-            if (!this.$store.state.editMode) return;
-            let dragData;
-            try {
-                // Try to parse dragData as JSON and prevent other drag/drop
-                // effects
-                dragData = JSON.parse(
-                    event.dataTransfer.getData('text/plain'));
-                event.preventDefault();
-                event.stopPropagation();
-            // If dragData isn't JSON, move along
-            } catch (err) {
-                if (err instanceof SyntaxError) {
-                    return;
-                }
-            }
-
-            // If this widget is being dropped in a different card, ignore
-            if (dragData.cardId != this.id) return;
-
-            // Otherwise sort widgets and update the dashboard
-            let newWidgets = [];
-            Object.assign(newWidgets, this.widgets);
-
-            let el = (widget) => this.$refs[widget.id][0].$el;
-            newWidgets.sort((a, b) =>
-                sortOrder(a, b, event, dragData.widgetId, el)
-            );
-            // assign a layout order based on sort
-            newWidgets.forEach((widget, i) => {
-                widget.layoutOrder = i;
-            });
-
-            this.$emit('update-widgets', newWidgets, this.id);
-        }
     }
 }
 </script>
