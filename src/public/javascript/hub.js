@@ -63,8 +63,11 @@ export const store = new Vuex.Store({
          * @return {Object}  field object
          */
         field: (state) => (fieldName) => {
-            return state.fields.find((f) => f.fullName == fieldName)
+            let field = state.fields.find((f) => f.fullName == fieldName)
                 || state.fields.find((f) => f.name == fieldName);
+
+            if (!field) throw new Error(`Field "${fieldName}" not found.`);
+            return field;
         },
         layout: (state) => (layoutName) => {
             return state.layouts.find((l) => l.name == layoutName);
