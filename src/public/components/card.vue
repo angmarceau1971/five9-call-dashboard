@@ -1,13 +1,5 @@
 /**
  * Container for widget components.
- * Contains various functionality:
- *  - Custom styling for widgets through props `styles`, `styleClasses`, and
- *      `widgetStyles`.
- *  - Handles drag and drop events for each widget within it.
- *  - Can be dragged around other cards by dragging the title h2 (this is handled
- *      in the Dashboard component, Card's parent).
- *  - When widgets are modified, Card receives `modify-widget` events and bubbles
- *      them up to the parent Dashboard.
  */
 
 <template>
