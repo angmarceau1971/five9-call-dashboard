@@ -15,7 +15,7 @@ Real-time dashboards using Five9 APIs.
 :earth_americas:
 
 ##### Scorecard
-* In-progress, Vue-based dashboard to display agent and team metrics.
+* Dashboard displaying agent and team metrics. Allows custom data to be uploaded from flat files (CSV) or Looker.
 
 This uses Express as an intermediate server to get Five9 data and store it in MongoDB, then pass it along to the client. Vue, jQuery and a tasteful amount VanillaJS are used on the client side for updating the view.
 
@@ -69,12 +69,12 @@ And fire up the server:
 npm start
 ```
 
-Travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser. Happy queue-watching!
+Travel to `localhost:3000` in your browser. Polyfills haven't been implemented yet, so you'll need a modern browser.
 
 To access some administrative pages and endpoints, you will need to update the `users` collection to set the isAdmin attribute for your user to `true`. You can do this in the command line with this helper script:
 
 ```
-node src/authentication/add-admin-user.script.js your_email@example.com
+node src/authentication/add-admin-user.script.js your_five9_username
 ```
 
 
