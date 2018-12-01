@@ -31,7 +31,7 @@ Create a file `src/public/javascript/local_settings.js` defining our API URL:
 
 ```
 // Express API URL - development setting
-const API_URL = 'http://localhost:3000/api/';
+export const API_URL = 'http://localhost:3000/api/';
 ```
 
 For data retrieval from Five9, create a file `src/secure_settings.js`:
@@ -74,7 +74,7 @@ Travel to `localhost:3000` in your browser. Polyfills haven't been implemented y
 To access some administrative pages and endpoints, you will need to update the `users` collection to set the isAdmin attribute for your user to `true`. You can do this in the command line with this helper script:
 
 ```
-node src/authentication/add-admin-user.script.js your_five9_username
+node src/setup/add-admin-user.script.js your_five9_username
 ```
 
 
