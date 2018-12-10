@@ -22,8 +22,8 @@ let currentlyUpdatingData = false;
 async function scheduleUpdate(interval) {
     currentlyUpdatingData = true;
     const time = {};
-    time.start = moment().format('YYYY-MM-DD') + 'T00:00:00';
-    time.end   = moment().format('YYYY-MM-DD') + 'T23:59:59';
+    time.start = moment().tz("America/Denver").format('YYYY-MM-DD') + 'T00:00:00';
+    time.end   = moment().tz("America/Denver").format('YYYY-MM-DD') + 'T23:59:59';
 
     // update from Five9
     try {
