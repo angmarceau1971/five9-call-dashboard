@@ -7,3 +7,4 @@ secure_settings.*
 *.tsv*
 assets/
 .env
+.vscode
