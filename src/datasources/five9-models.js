@@ -186,7 +186,7 @@ async function getLastLoggedInTime(username) {
         return null
     }
     const login = logins[0]
-    return new Date(login.date.getTime() + login.loginTime);
+    return new Date(login.date.getTime() + login.loginTime*1000);
 }
 
 
