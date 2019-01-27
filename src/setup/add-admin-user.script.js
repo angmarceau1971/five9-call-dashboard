@@ -8,9 +8,7 @@ mongoose.Promise = global.Promise;
 
 async function updateStatus(username) {
     if (username) {
-        await mongoose.connect(secure.MONGODB_URI, {
-           useMongoClient: true,
-        });
+        await mongoose.connect(secure.MONGODB_URI);
 
         await users.updateAdminStatus(username, true);
         console.log(`User "${username}" is now marked as an admin user.`);

@@ -8,9 +8,7 @@ const secure = require('../secure_settings');
 mongoose.Promise = global.Promise;
 
 async function rename(oldName, newName) {
-    await mongoose.connect(secure.MONGODB_URI, {
-       useMongoClient: true,
-    });
+    await mongoose.connect(secure.MONGODB_URI);
 
     mongoose.connection.db.collection(oldName).rename(newName)
         .then(() => console.log('rename successful'))

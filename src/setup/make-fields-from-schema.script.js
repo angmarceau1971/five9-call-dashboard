@@ -10,9 +10,7 @@ const secure = require('../secure_settings');
 mongoose.Promise = global.Promise;
 
 async function updateFields() {
-    await mongoose.connect(secure.MONGODB_URI, {
-       useMongoClient: true,
-    });
+    await mongoose.connect(secure.MONGODB_URI);
 
     let tables = [
         {
