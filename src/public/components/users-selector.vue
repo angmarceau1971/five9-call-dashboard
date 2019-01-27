@@ -70,7 +70,7 @@ export default {
     mounted: async function() {
         // Load user list if not passed in
         let users = clone(this.userList);
-        if (!this.userList) {
+        if (!this.userList || this.userList.length === 0) {
             users = await this.loadUsersList();
             this.$emit('users-loaded', users);
         }

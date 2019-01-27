@@ -266,7 +266,7 @@ export const store = new Vuex.Store({
             // load in goals
             context.dispatch('updateGoals');
             // load user list
-            context.commit('setUserList', await api.getUsers());
+            context.dispatch('updateUsers');
         },
 
         // Refresh data and layout. Used after changing agent selection in sup
@@ -290,6 +290,11 @@ export const store = new Vuex.Store({
                 goals = await api.getGoalsForAgentGroups(groups);
             }
             context.commit('setGoals', goals);
+        },
+
+        // Load users list
+        async updateUsers(context) {
+            context.commit('setUserList', await api.getUsers(context.state.selectedDate));
         },
 
         // Save user's theme settings to server

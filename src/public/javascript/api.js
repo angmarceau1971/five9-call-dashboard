@@ -85,7 +85,6 @@ export async function updateUserTheme(username, newTheme) {
 export async function getAdminUsers() {
     let response = await request({}, 'users/admin', 'GET');
     let users = await response.json();
-    console.log(users)
     return users;
 }
 export async function updateAdminUser(user) {
@@ -97,7 +96,6 @@ export async function updateAdminUser(user) {
 export async function getSupervisorUsers() {
     let response = await request({}, 'users/supervisor', 'GET');
     let users = await response.json();
-    console.log(users)
     return users;
 }
 export async function updateSupervisorUser(user) {
@@ -105,9 +103,11 @@ export async function updateSupervisorUser(user) {
     return response.text();
 }
 
-// Get list of all users, sorted by last name
-export async function getUsers() {
-    let response = await request({}, 'users', 'GET');
+// Get list of all users, sorted by last name. Includes users active in the same
+// month as `selectedDate`, or later.
+export async function getUsers(selectedDate='') {
+    const params = selectedDate === '' ? {} : { date: selectedDate };
+    let response = await request(params, 'users', 'GET');
     let userList = await response.json();
     return userList.sort((a, b) => a.lastName < b.lastName ? -1 : +1);
 }
@@ -460,7 +460,7 @@ async function getData(parameters, endpoint) {
  * @return {Promise} response from server
  */
 async function request(parameters, url='statistics', method='POST') {
-    const apiURL = API_URL + url; // defined in api_url.js
+    const apiURL = constructURL(parameters, url, method);
 
     const requestOptions = {
         method: method,
@@ -470,7 +470,7 @@ async function request(parameters, url='statistics', method='POST') {
         },
         credentials: 'include'
     }
-    if (method != 'GET') {
+    if (method.toUpperCase() !== 'GET') {
         requestOptions.body = JSON.stringify(parameters);
     }
 
@@ -485,6 +485,17 @@ async function request(parameters, url='statistics', method='POST') {
             }
             return response;
         });
+}
+
+function constructURL(parameters, relativeURL, method) {
+    let url = new URL(relativeURL, API_URL); // `API_URL` defined in api_url.js
+    // append parameters to GET URLs
+    if (method.toUpperCase() === 'GET') {
+        Object.keys(parameters).forEach((key) => {
+            url.searchParams.append(key, parameters[key]);
+        });
+    }
+    return url
 }
 
 async function notifyServer504() {

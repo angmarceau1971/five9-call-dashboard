@@ -136,6 +136,7 @@
                     <select v-model="chosenLayoutName"
                         @change="changeLayout(chosenLayoutName)">
                         <option v-for="(layout, i) in $store.state.layouts"
+                            :key="layout.name"
                         >
                             {{ layout.name }}
                         </option>
