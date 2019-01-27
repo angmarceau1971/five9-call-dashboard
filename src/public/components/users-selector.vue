@@ -9,8 +9,9 @@
         <div class="agentgroup-list">
             <select multiple size="30" v-model="selectedAgentGroups"
                     @change="selectAgentGroups(selectedAgentGroups)">
-                <option v-for="(agentGroup, i) in agentGroups"
-                    :value="agentGroup">
+                <option v-for="agentGroup in agentGroups"
+                    :value="agentGroup"
+                    :key="agentGroup">
                     {{ agentGroup }}
                 </option>
             </select>
@@ -18,8 +19,9 @@
         <div class="user-list">
             <select multiple size="30" v-model="selectedUsernames"
                 @change="selectUsers(getUsers(selectedUsernames))">
-                <option v-for="(userAgent, i) in filterUsersInGroup(userList)"
-                    :value="userAgent.username">
+                <option v-for="userAgent in filterUsersInGroup(userList)"
+                    :value="userAgent.username"
+                    :key="userAgent.username">
                     {{ getUserSelectionString(userAgent) }}
                 </option>
             </select>

@@ -240,7 +240,8 @@ router.patch('/users/theme', verify.apiMiddleware(), m.err(async (req, res) => {
  *  username, lastName, firstName, and agentGroups
  */
 router.get('/users', verify.apiMiddleware(), m.err(async (req, res) => {
-    const userList = await users.getUsers();
+    let lastActiveDate = moment().startOf('month').subtract({ days: 2 }).toDate()
+    const userList = await users.getUsersActiveSince(lastActiveDate);
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(userList));
 }));

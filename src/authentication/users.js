@@ -171,6 +171,17 @@ async function getUsers() {
 }
 module.exports.getUsers = getUsers;
 
+/**
+ * Returns Array of users who have logged in since `date`
+ */
+async function getUsersActiveSince(date) {
+    return await Users.find(
+        { lastLoggedInTime: { $gte: date } },
+        'username lastName firstName agentGroups',
+    ).lean().exec();
+}
+module.exports.getUsersActiveSince = getUsersActiveSince;
+
 async function getAdminUsers() {
     return await Users.find({ isAdmin: true }).lean().exec();
 }
