@@ -66,10 +66,10 @@ async function refreshDatabase() {
 
         if (data.length > 0) {
             // Remove all old data
-            await QueueStats.remove({});
+            await QueueStats.deleteMany({});
 
             // add to database
-            return QueueStats.collection.insert(data, (err, docs) => {
+            return QueueStats.collection.insertMany(data, (err, docs) => {
                 if (err) log.error(`Error inserting data in report model: ${err}`);
             });
         }

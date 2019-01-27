@@ -41,9 +41,9 @@ async function scheduleUpdate(interval) {
 
     // Remove old data and add the new
     // Wrapped in Promise for easy awaits in calling function
-    await Customers.remove({});
+    await Customers.deleteMany({});
     return new Promise ((resolve, reject) => {
-        Customers.collection.insert(data, (err, docs) => {
+        Customers.collection.insertMany(data, (err, docs) => {
             // Repeat function after interval
             setTimeout(() => scheduleUpdate(interval), interval);
             if (err) {

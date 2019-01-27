@@ -63,7 +63,7 @@ function get(username, unreadOnly=false) {
 module.exports.get = get;
 
 async function remove(id) {
-    return FortuneCookie.remove({ _id: id });
+    return FortuneCookie.deleteOne({ _id: id });
 }
 module.exports.remove = remove;
 

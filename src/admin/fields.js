@@ -44,7 +44,7 @@ async function update(field) {
         return response;
     }
     log.message(`No match for field ID. Adding new field ${field.name}.`);
-    return FieldList.collection.insert(field);
+    return FieldList.collection.insertOne(field);
 }
 module.exports.update = update;
 
@@ -99,7 +99,7 @@ async function initializeList(paths, source) {
 
             // Add to collection
             if (!fields || !fields.length) resolve(null);
-            FieldList.collection.insert(fields, (err, docs) => {
+            FieldList.collection.insertMany(fields, (err, docs) => {
                 if (err) reject(err);
                 resolve(docs);
             })

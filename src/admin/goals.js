@@ -74,7 +74,7 @@ async function update(goal) {
         return response;
     }
     log.message(`No match for goal ID. Adding new goal ${goal.name}.`);
-    return Goal.collection.insert(goal);
+    return Goal.collection.insertOne(goal);
 }
 module.exports.update = update;
 
@@ -87,6 +87,6 @@ module.exports.getAll = getAll;
 function remove(goal) {
     log.message(`Deleting goal ${goal.name}.`);
     const oid = mongoose.Types.ObjectId(goal._id);
-    return Goal.remove({ _id: oid }).exec();
+    return Goal.deleteOne({ _id: oid }).exec();
 }
 module.exports.remove = remove;

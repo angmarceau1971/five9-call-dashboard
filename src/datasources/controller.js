@@ -235,7 +235,7 @@ async function scheduleLookerUpdates(interval) {
             let clean = data.map(custom.rowParser(source));
             let deleted = await clearOldData(source, clean);
             custom.setDatasourceLastUpdated(source, new Date());
-            await custom.CustomData.collection.insert(clean);
+            await custom.CustomData.collection.insertMany(clean);
         } catch (err) {
             log.error(`Error while updating Looker datasource ${source.name}: ${err}`);
         }
@@ -279,7 +279,7 @@ async function clearOldData(datasource, newData) {
         };
     }, { min: Infinity, max: -Infinity });
     // delete former data
-    return await custom.CustomData.remove({
+    return await custom.CustomData.deleteMany({
         $and: [
             { _datasourceName: datasource.name },
             { date: {

@@ -34,7 +34,7 @@ async function update(link) {
         return response;
     }
     log.message(`No match for link ID. Adding new link ${link.name}.`);
-    return Link.collection.insert(link);
+    return Link.collection.insertOne(link);
 }
 module.exports.update = update;
 
@@ -47,6 +47,6 @@ module.exports.getAll = getAll;
 function remove(link) {
     log.message(`Deleting link ${link.name}.`);
     const oid = mongoose.Types.ObjectId(link._id);
-    return Link.remove({ _id: oid }).exec();
+    return Link.deleteOne({ _id: oid }).exec();
 }
 module.exports.remove = remove;

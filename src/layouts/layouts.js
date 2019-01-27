@@ -123,7 +123,7 @@ async function update(layoutObject) {
         return response;
     }
     log.message(`No match for layout ID. Adding new layout ${layout.name}.`);
-    return Layouts.collection.insert(layout);
+    return Layouts.collection.insertOne(layout);
 }
 module.exports.update = update;
 
@@ -136,6 +136,6 @@ module.exports.getAll = getAll;
 function remove(layout) {
     log.message(`Deleting layout ${layout.name}.`);
     const oid = mongoose.Types.ObjectId(layout._id);
-    return Layouts.remove({ _id: oid }).exec();
+    return Layouts.deleteOne({ _id: oid }).exec();
 }
 module.exports.remove = remove;

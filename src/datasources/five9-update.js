@@ -156,7 +156,7 @@ async function refreshDatabase(time, reportModel, reportName) {
 
     // Remove today's old data. (Wrapped in Promise to use await)
     await new Promise ((resolve, reject) => {
-        reportModel.remove({
+        reportModel.deleteMany({
             date: {
                 $gte: time.start,
                 $lte: time.end
@@ -174,7 +174,7 @@ async function refreshDatabase(time, reportModel, reportName) {
     // Insert the new data
     if (data.length == 0) return;
     return new Promise ((resolve, reject) => {
-        reportModel.collection.insert(data, (err, docs) => {
+        reportModel.collection.insertMany(data, (err, docs) => {
             if (err) {
                 log.error(`Error inserting data in report model: ${err}`);
                 reject(err);

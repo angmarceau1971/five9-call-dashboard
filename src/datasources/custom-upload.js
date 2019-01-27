@@ -127,14 +127,14 @@ async function update(datasource) {
     }
     // If this datasource doesn't exist, create a new collection for it
     log.message(`No match for datasource ID. Adding new datasource ${datasource.name}.`);
-    return CustomDatasource.collection.insert(datasource);
+    return CustomDatasource.collection.insertOne(datasource);
 }
 module.exports.update = update;
 
 function remove(datasource) {
     log.message(`Deleting datasource ${datasource.name}.`);
     const oid = mongoose.Types.ObjectId(datasource._id);
-    return CustomDatasource.remove({ _id: oid }).exec();
+    return CustomDatasource.deleteOne({ _id: oid }).exec();
 }
 module.exports.remove = remove;
 
@@ -187,11 +187,11 @@ async function upload(datasourceName, csvData, updateType='addTo') {
 
     // If overwriting existing data, clear it all
     if (updateType == 'overwrite') {
-        await CustomData.remove({ _datasourceName: datasourceName });
+        await CustomData.deleteMany({ _datasourceName: datasourceName });
     }
     // Save it
     setDatasourceLastUpdated(datasource, new Date());
-    return CustomData.collection.insert(data);
+    return CustomData.collection.insertMany(data);
 }
 module.exports.upload = upload;
 
@@ -208,7 +208,7 @@ async function clear(datasourceName, start, stop) {
     if (!formatIsGood(stop))
         throw new Error(`Stop date is invalid: ${stop}. Should be in YYYY-MM-DD format.`);
 
-    return CustomData.remove({
+    return CustomData.deleteMany({
         _datasourceName: datasourceName,
         date: {
             // Convert to UTC dates

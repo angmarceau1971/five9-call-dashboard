@@ -67,9 +67,9 @@ mongoose.connection.on('connected', generateLookup);
  */
 async function upload(data) {
     return new Promise((resolve, reject) => {
-        SkillGroup.remove({}, (err, success) => {
+        SkillGroup.deleteMany({}, (err, success) => {
             if (err) reject(`skill-group.upload removal: ${err}`);
-            SkillGroup.collection.insert(data, (err, docs) => {
+            SkillGroup.collection.insertMany(data, (err, docs) => {
                 if (err) reject(`skill-group.upload insertion: ${err}`);
                 generateLookup();
                 resolve(docs);
