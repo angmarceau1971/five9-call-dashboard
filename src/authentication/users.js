@@ -6,9 +6,18 @@ const log = require('../utility/log');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+const models = require('../datasources/five9-models');
+
 // Lookup to determine which skills this agent should be taking
 const skillGroup = require('../datasources/skill-group.js');
 
+// Default user theme
+const DefaultTheme = {
+    color: 'dark',
+    lightBackgroundImageUrl: '',
+    darkBackgroundImageUrl: '',
+    useBackgroundImage: false,
+};
 
 //////////////////////////////////////////
 // MongoDB database definitions
@@ -18,7 +27,7 @@ const usersSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     username: {
         type: String,
-        unique: true
+        unique: true,
     },
     active: Boolean,
     isAdmin: { type: Boolean, default: false },
@@ -32,25 +41,29 @@ const usersSchema = mongoose.Schema({
     theme: {
         color: { // dark or light theme
             type: String,
-            default: 'dark'
+            default: DefaultTheme.color,
         },
         lightBackgroundImageUrl: {
             type: String,
-            default: ''
+            default: DefaultTheme.lightBackgroundImageUrl,
         },
         darkBackgroundImageUrl: {
             type: String,
-            default: ''
+            default: DefaultTheme.darkBackgroundImageUrl,
         },
         useBackgroundImage: {
             type: Boolean,
-            default: false
-        }
+            default: DefaultTheme.useBackgroundImage,
+        },
     },
     // Last time that user accessed page or API
     lastActive: {
-        type: Date
-    }
+        type: Date,
+    },
+    // Last time user was logged in to Five9
+    lastLoggedInTime: {
+        type: Date,
+    },
 });
 
 // Model to store users
@@ -282,8 +295,8 @@ async function refreshUserDatabase(usersModel) {
         return;
     }
 
-    // Iterate over data
-    let cleanData = data.map((d, i) => {
+    // Iterate over data and update DB
+    let cleanData = await Promise.all(data.map(async (d, i) => {
         // Only leave the fields needed
         let newUser = {
             username: d.userName[0],
@@ -298,12 +311,14 @@ async function refreshUserDatabase(usersModel) {
         // add it
         let oldUser = originalUsers.find((user) => user.username == newUser.username);
         if (!oldUser || !oldUser.theme) {
-            newUser.theme = {
-                color: 'dark',
-                lightBackgroundImageUrl: '',
-                darkBackgroundImageUrl: '',
-                useBackgroundImage: ''
-            };
+            newUser.theme = DefaultTheme;
+        }
+
+        // Update last Five9 login time
+        try {
+            newUser.lastLoggedInTime = await models.getLastLoggedInTime(newUser.username);
+        } catch (err) {
+            console.error(err)
         }
 
         // Update or add each Five9 user to database
@@ -318,7 +333,7 @@ async function refreshUserDatabase(usersModel) {
             }
         );
         return newUser;
-    });
+    }));
 
     // Remove users who aren't in the new data
     originalUsers.forEach((user) => {

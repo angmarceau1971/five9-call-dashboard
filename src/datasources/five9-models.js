@@ -176,6 +176,19 @@ async function getData(timeFilter, reportModel) {
     return results;
 }
 
+// Returns the last time the user was logged in (last login timestamp + login time)
+async function getLastLoggedInTime(username) {
+    const logins = await AgentLogin.find({
+        agentUsername: username,
+    }).sort({ date: -1 }).limit(1);
+
+    if (logins.length === 0) {
+        return null
+    }
+    const login = logins[0]
+    return new Date(login.date.getTime() + login.loginTime);
+}
+
 
 
 module.exports.CallLog = CallLog;
@@ -190,3 +203,4 @@ module.exports.chatDataSchema = chatDataSchema;
 
 module.exports.getServiceLevelData = getServiceLevelData;
 module.exports.getZipCodeData = getZipCodeData;
+module.exports.getLastLoggedInTime = getLastLoggedInTime;
