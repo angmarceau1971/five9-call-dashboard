@@ -49,6 +49,18 @@ module.exports.SalesTracker = SalesTracker;
 
 
 /**
+ * Messages sent to agents after successful sales
+ */
+const goodJobMessageSchema = mongoose.Schema({
+    message: {
+        type: String,
+        required: true,
+    }
+});
+const GoodJobMessage = mongoose.model('GoodJobMessage', goodJobMessageSchema);
+
+
+/**
  * Save an entry to the tracker.
  * @param {String} username      user who's recording sale
  * @param {String} accountNumber new account number
@@ -84,3 +96,19 @@ let commissionableTypes = [
 function isSale(saleType) {
     return commissionableTypes.includes(saleType);
 }
+
+/**
+ * Return a randomly selected Good Job message
+ * @return {Promise<String>}
+ */
+async function goodJobMessage() {
+    let messages = await GoodJobMessage.aggregate([
+        { $sample: { size: 1 } }
+    ]).lean().exec();
+
+    if (messages.length === 0) {
+        return '';
+    }
+    return messages[0];
+}
+module.exports.goodJobMessage = goodJobMessage;

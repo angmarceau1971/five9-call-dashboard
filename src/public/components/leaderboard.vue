@@ -102,9 +102,9 @@ export default {
         closeTracker: function() {
             this.showTracker = false;
         },
-        // update message, clearing after 5 seconds
+        // update message, clearing after 10 seconds
         updateMessage: function(message) {
-            this.message = `${message} ${goodJobPhrase()}`;
+            this.message = message;
             setTimeout(function clearMessage() {
                 this.message = '';
             }.bind(this), 10000);
@@ -112,16 +112,6 @@ export default {
     }
 }
 
-function goodJobPhrase() {
-    let phrases = [
-        'Good job!', 'Nice work!', 'Well done!', 'Perfecto!', `You're on fuego!`,
-        '🐱', '😸', '😻', 'Far out!', 'Great work!', 'Your wallet thanks you!',
-        'Add that to the savings account!', 'Cha-ching!',
-        "Dollar dollar bill y'all!"
-    ];
-    let i = Math.floor(Math.random() * phrases.length);
-    return phrases[i];
-}
 </script>
 
 <style scoped>
