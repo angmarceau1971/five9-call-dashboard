@@ -236,13 +236,14 @@ router.patch('/users/theme', verify.apiMiddleware(), m.err(async (req, res) => {
 }));
 
 /**
- * Retrieve array of all users in system. Only includes basic info fields:
- *  username, lastName, firstName, and agentGroups
+ * Retrieve array of all users who have been active in the last 32 days. Only
+ * includes the basic info fields:
+ *      username, lastName, firstName, agentGroups
  */
 router.get('/users', verify.apiMiddleware(), m.err(async (req, res) => {
     let dateParam = req.query.date
     let baseDate = dateParam ? moment(dateParam) : moment()
-    let lastActiveDate = baseDate.startOf('month').subtract({ days: 2 }).toDate()
+    let lastActiveDate = baseDate.subtract({ days: 32 }).toDate()
     const userList = await users.getUsersActiveSince(lastActiveDate);
     res.set('Content-Type', 'application/json');
     res.send(JSON.stringify(userList));
