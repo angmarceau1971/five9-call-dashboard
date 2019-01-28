@@ -37,7 +37,12 @@
 
             <select v-model="dtvSaleMade" :class="{complete: dtvSaleMade!==''}">
                 <option disabled value="">DTV Sale Made</option>
-                <-- bind false/true to use actual Boolean values, not strings -->
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+            </select>
+
+            <select v-model="viasatSaleMade" :class="{complete: viasatSaleMade!==''}">
+                <option disabled value="">ViaSat Sale Made</option>
                 <option :value="false">No</option>
                 <option :value="true">Yes</option>
             </select>
@@ -65,6 +70,7 @@ export default {
             accountNumber: '',
             saleType: '',
             dtvSaleMade: '',
+            viasatSaleMade: '',
             // List of possible sale types
             saleTypes: [
                 'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
@@ -79,24 +85,34 @@ export default {
                 ? { top: -this.position.top +'px',
                     left: -this.position.left + 'px' }
                 : { };
-        }
+        },
     },
     methods: {
         save: async function(event) {
             event.preventDefault();
 
-
-            if (!this.saleType || this.dtvSaleMade === '') {
-                let field = !this.saleType ? 'Sale Type' : 'DTV Sale Made';
-                this.message = `Please enter a value for ${field}. :)`;
+            // Form validation - Check that required fields are complete
+            let isFieldMissing = {
+                'Sale Type': !this.saleType,
+                'DTV Sale Made': this.dtvSaleMade === '',
+                'ViaSat Sale Made': this.viasatSaleMade === '',
+            }
+            let missingFieldNames = Object.keys(isFieldMissing).filter((key) => {
+                return isFieldMissing[key];
+            })
+            if (missingFieldNames.length > 0) {
+                let fieldName = missingFieldNames[0];
+                this.message = `Please enter a value for ${fieldName}. :)`;
                 return;
             }
+
             this.message = 'Saving...'
             try {
                 let response = await api.addToTracker({
                     accountNumber: this.accountNumber,
                     saleType: this.saleType,
-                    dtvSaleMade: this.dtvSaleMade || false
+                    dtvSaleMade: this.dtvSaleMade || false,
+                    viasatSaleMade: this.viasatSaleMade || false,
                 });
                 this.$emit('message', response);
             } catch (err) {
@@ -112,10 +128,11 @@ export default {
             this.accountNumber = '';
             this.saleType = '';
             this.dtvSaleMade = '';
+            this.viasatSaleMade = '';
             this.message = '';
             this.$emit('exit');
-        }
-    }
+        },
+    },
 }
 
 </script>

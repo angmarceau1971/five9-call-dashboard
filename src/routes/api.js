@@ -102,7 +102,7 @@ router.post('/reports/customers', verify.apiMiddleware(), m.err(async (req, res)
 router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => {
     let entry = req.body.entry;
     await salesTracker.add(req.user.username, entry.accountNumber,
-        entry.saleType, entry.dtvSaleMade
+        entry.saleType, entry.dtvSaleMade, entry.viasatSaleMade,
     );
     res.status(200).send(`✓ Sale added to tracker.`);
 }));

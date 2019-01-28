@@ -32,6 +32,10 @@ const salesTracker = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    viasatSaleMade: {
+        type: Boolean,
+        default: false,
+    },
     // calculated field (added on save) depending on saleType
     saleMade: {
         type: Boolean,
@@ -54,11 +58,13 @@ module.exports.SalesTracker = SalesTracker;
  * @param {String} accountNumber new account number
  * @param {String} saleType
  * @param {Boolean} dtvSaleMade  true if sold
+ * @param {Boolean} viasatSaleMade  true if sold
  */
-function add(username, accountNumber, saleType, dtvSaleMade) {
+function add(username, accountNumber, saleType, dtvSaleMade, viasatSaleMade) {
     let sale = new SalesTracker({
         username: username, accountNumber: accountNumber,
         saleType: saleType, dtvSaleMade: dtvSaleMade,
+        viasatSaleMade: viasatSaleMade,
         saleMade: isSale(saleType),
         date: new Date()
     });

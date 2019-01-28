@@ -80,7 +80,7 @@ export default {
             let defaultOptions = {
                 dataFromParent: this.data,
                 sortByField: 'estimatedCloseRate',
-                fields: ['username', 'saleMade', 'calls', 'estimatedCloseRate', 'dtvSaleMade'],
+                fields: ['username', 'saleMade', 'calls', 'estimatedCloseRate', 'dtvSaleMade', 'viasatSaleMade'],
                 filter: {},
                 sortAscending: false // sort highest to lowest
             };
