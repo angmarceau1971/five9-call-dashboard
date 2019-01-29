@@ -51,13 +51,13 @@ module.exports.SalesTracker = SalesTracker;
 /**
  * Messages sent to agents after successful sales
  */
-const goodJobMessageSchema = mongoose.Schema({
+const saleMessageSchema = mongoose.Schema({
     message: {
         type: String,
         required: true,
     }
 });
-const GoodJobMessage = mongoose.model('GoodJobMessage', goodJobMessageSchema);
+const SaleMessage = mongoose.model('SaleMessage', saleMessageSchema);
 
 
 /**
@@ -98,11 +98,11 @@ function isSale(saleType) {
 }
 
 /**
- * Return a randomly selected Good Job message
+ * Return a randomly selected sale message
  * @return {Promise<String>}
  */
-async function goodJobMessage() {
-    let messages = await GoodJobMessage.aggregate([
+async function saleMessage() {
+    let messages = await SaleMessage.aggregate([
         { $sample: { size: 1 } }
     ]).exec();
 
@@ -111,4 +111,4 @@ async function goodJobMessage() {
     }
     return messages[0].message;
 }
-module.exports.goodJobMessage = goodJobMessage;
+module.exports.saleMessage = saleMessage;

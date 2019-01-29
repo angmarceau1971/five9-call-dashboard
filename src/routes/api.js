@@ -107,8 +107,8 @@ router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => 
         entry.saleType,
         entry.dtvSaleMade,
     );
-    // Get random "Good Job" message
-    let message = await salesTracker.goodJobMessage()
+    // Get randomized "made the sale" message
+    let message = await salesTracker.saleMessage()
     res.status(200).send(`✓ Sale added to tracker. ${message}`);
 }));
 
@@ -161,22 +161,10 @@ router.get('/message/sent', verify.apiMiddleware(), m.err(async (req, res) => {
 
 
 //////////////////////////////////////
-// Game Elements
-// Return current user's fortune cookies
-router.get('/fortune-cookie', verify.apiMiddleware(),
-            m.err(async (req, res) => {
-    let cookies = await fortune.get(
-        req.user.username, req.query.unreadOnly || false
-    );
-    res.send(JSON.stringify(cookies));
-}));
+// Messaging
 
-router.patch('/fortune-cookie', verify.apiMiddleware(),
-            m.err(async (req, res) => {
-    let cookie = req.body;
-    await fortune.update(cookie);
-    res.send(`Fortune updated!`);
-}));
+
+
 
 
 //////////////////////////////////////
