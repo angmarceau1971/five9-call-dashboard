@@ -117,10 +117,8 @@ const vm = new Vue({
         linkAdder: function() {
             return {
                 name: '',
+                url: '',
                 agentGroups: [],
-                comparator: '<',
-                thresholds: [],
-                field: ''
             }
         },
         linkRemover: function(link) {
