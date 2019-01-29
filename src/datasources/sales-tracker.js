@@ -104,11 +104,11 @@ function isSale(saleType) {
 async function goodJobMessage() {
     let messages = await GoodJobMessage.aggregate([
         { $sample: { size: 1 } }
-    ]).lean().exec();
+    ]).exec();
 
     if (messages.length === 0) {
         return '';
     }
-    return messages[0];
+    return messages[0].message;
 }
 module.exports.goodJobMessage = goodJobMessage;

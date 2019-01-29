@@ -114,8 +114,7 @@ router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => 
 
 //////////////////////////////////////
 // Messaging
-router.post('/message/send', verify.apiMiddleware('supervisor'),
-            m.err(async (req, res) => {
+router.post('/message/send', verify.apiMiddleware('supervisor'), m.err(async (req, res) => {
     let msg = req.body.message;
     msg.from = req.user.username;
     await message.send(msg);
