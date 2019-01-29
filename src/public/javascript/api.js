@@ -358,6 +358,36 @@ export async function deleteLink(link) {
 }
 
 ///////////////////////////////////////////////////////////////////////
+// 'Made the Sale' Messages
+/**
+ * List of all sale messages.
+ * @return {Promise} resolves to array of SaleMessage objects
+ */
+export async function getSaleMessageList() {
+    let response = await request({}, 'sale-message', 'POST');
+    return response.json();
+}
+/**
+ * Updates a saleMessage on server.
+ * @param  {Object}  saleMessage new object
+ * @return {Promise} resolves to response message
+ */
+export async function updateSaleMessage(saleMessage) {
+    let response = await request({ saleMessage: saleMessage }, 'sale-message', 'PUT');
+    return response.text();
+}
+/**
+ * Delete a saleMessage from server.
+ * @param  {Object}  saleMessage object to remove
+ * @return {Promise} resolves to response message
+ */
+export async function deleteSaleMessage(saleMessage) {
+    let response = await request({ saleMessage: saleMessage }, 'sale-message', 'DELETE');
+    return response.text();
+}
+
+
+///////////////////////////////////////////////////////////////////////
 // Skilling jobs
 /**
  * List of available scheduled skilling jobs.

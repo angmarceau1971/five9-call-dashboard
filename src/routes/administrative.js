@@ -15,6 +15,7 @@ const looker = require('../utility/looker');
 const admin = require('../admin/admin');
 const users = require('../authentication/users'); // stores usernames to check auth
 const customData = require('../datasources/custom-upload');
+const salesTracker = require('../datasources/sales-tracker');
 
 // To use this module, require it and pass in router to add endpoints to.
 module.exports.addTo = function(router) {
@@ -229,6 +230,34 @@ module.exports.addTo = function(router) {
         res.set('Content-Type', 'application/text');
         res.status(200).send(message);
     });
+
+
+    //////////////////////////////////////////
+    // Sale Message endpoints
+    // Get list of messages
+    router.post('/sale-message', verify.apiMiddleware(), async (req, res) => {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(await salesTracker.getAllMessages()));
+    });
+    // Modify a message
+    router.put('/sale-message', verify.apiMiddleware('admin'), async (req, res) => {
+        res.set('Content-Type', 'application/text');
+        let message = req.body.saleMessage;
+        try {
+            let response = await salesTracker.updateMessage(message);
+            res.status(200).send(`The Message has been updated.`);
+        } catch (err) {
+            res.status(500).send(`Error while updating message: ${err}.`);
+        }
+    });
+    // Delete a message
+    router.delete('/sale-message', verify.apiMiddleware('admin'), async (req, res) => {
+        const numRemoved = await salesTracker.removeMessage(req.body.saleMessage);
+        const message = `Sale message "${req.body.saleMessage.message}" has been deleted.`;
+        res.set('Content-Type', 'application/text');
+        res.status(200).send(message);
+    });
+
 
     //////////////////////////////////////////
     // Run Looker Look and view data

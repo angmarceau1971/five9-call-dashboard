@@ -112,3 +112,39 @@ async function saleMessage() {
     return messages[0].message;
 }
 module.exports.saleMessage = saleMessage;
+
+
+
+//////////////////////////////////////
+// Sale Message updating functionality
+
+async function updateMessage(message) {
+    const oid = new mongoose.Types.ObjectId(message._id);
+
+    log.message(`Updating ${message.name} to: ${JSON.stringify(message)}`);
+    let response = await SaleMessage.replaceOne(
+        { _id: oid },
+        message
+    );
+    if (response.n > 0) {
+        log.message(`SaleMessage ${message.name} has been modified.`);
+        return response;
+    }
+    log.message(`No match for message ID. Adding new message ${message.name}.`);
+    return SaleMessage.collection.insertOne(message);
+}
+module.exports.updateMessage = updateMessage;
+
+
+function getAllMessages() {
+    return SaleMessage.find({}).exec();
+}
+module.exports.getAllMessages = getAllMessages;
+
+function removeMessage(message) {
+    log.message(`Deleting message ${message.name}.`);
+    const oid = mongoose.Types.ObjectId(message._id);
+    return SaleMessage.deleteOne({ _id: oid }).exec();
+}
+module.exports.removeMessage = removeMessage;
+

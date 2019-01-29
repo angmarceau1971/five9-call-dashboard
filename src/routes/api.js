@@ -161,13 +161,6 @@ router.get('/message/sent', verify.apiMiddleware(), m.err(async (req, res) => {
 
 
 //////////////////////////////////////
-// Messaging
-
-
-
-
-
-//////////////////////////////////////
 // Return ZIP3 JSON
 router.get('/zip3-data', verify.apiMiddleware(), async (req, res) => {
     await sendPublicFile('json/zip3-albers.json', req, res);

@@ -17,6 +17,97 @@ const vm = new Vue({
     methods: {
         ///////////////////////////////////////////////////////
         // Goal functions
+        goalUpdater: async function (goal) {
+            let clean = clone(goal);
+            try {
+                clean.agentGroups = JSON.parse(clean.agentGroups);
+                clean.skillGroups = JSON.parse(clean.skillGroups);
+                clean.thresholds = JSON.parse(clean.thresholds);
+            } catch (err) {
+                return `Unable to save: ${err}.`;
+            }
+            return api.updateGoal(clean);
+        },
+        goalLoader: async function () {
+            let goals = await api.getGoalList();
+            const str = (s) => JSON.stringify(s, null, 2);
+            const stringin = function (goal) {
+                goal.agentGroups = str(goal.agentGroups);
+                goal.skillGroups = str(goal.skillGroups);
+                goal.thresholds = str(goal.thresholds);
+                return goal;
+            }
+            return goals.map(stringin);
+        },
+        goalAdder: function () {
+            return {
+                name: '',
+                agentGroups: [],
+                skillGroups: [],
+                comparator: '<',
+                thresholds: [],
+                field: ''
+            }
+        },
+        goalRemover: function (goal) {
+            return api.deleteGoal(goal);
+        },
+
+
+        ///////////////////////////////////////////////////////
+        // Helpful Link functions
+        linkUpdater: async function (link) {
+            let clean = clone(link);
+            try {
+                clean.agentGroups = JSON.parse(clean.agentGroups);
+            } catch (err) {
+                return `Unable to save: ${err}.`;
+            }
+            return api.updateLink(clean);
+        },
+        linkLoader: async function () {
+            let links = await api.getLinkList();
+            const str = (s) => JSON.stringify(s, null, 2);
+            const stringin = function (link) {
+                link.agentGroups = str(link.agentGroups);
+                return link;
+            }
+            return links.map(stringin);
+        },
+        linkAdder: function () {
+            return {
+                name: '',
+                url: '',
+                agentGroups: [],
+            }
+        },
+        linkRemover: function (link) {
+            return api.deleteLink(link);
+        },
+
+
+        ///////////////////////////////////////////////////////
+        //-Made-the-Sale Messages!
+        saleMessageUpdater: async function (saleMessage) {
+            let clean = clone(saleMessage);
+            return api.updateSaleMessage(clean);
+        },
+        saleMessageLoader: async function () {
+            let saleMessages = await api.getSaleMessageList();
+            return saleMessages;
+        },
+        saleMessageAdder: function () {
+            return {
+                message: '',
+            }
+        },
+        saleMessageRemover: function (saleMessage) {
+            return api.deleteSaleMessage(saleMessage);
+        },
+
+
+        ///////////////////////////////////////////////////////
+        // Layout functions
         layoutUpdater: async function(layout) {
             let clean = clone(layout);
             try {
@@ -54,75 +145,6 @@ const vm = new Vue({
         },
         layoutRemover: function(layout) {
             return api.deleteLayout(layout);
-        },
-
-        ///////////////////////////////////////////////////////
-        // Goal functions
-        goalUpdater: async function(goal) {
-            let clean = clone(goal);
-            try {
-                clean.agentGroups = JSON.parse(clean.agentGroups);
-                clean.skillGroups = JSON.parse(clean.skillGroups);
-                clean.thresholds = JSON.parse(clean.thresholds);
-            } catch (err) {
-                return `Unable to save: ${err}.`;
-            }
-            return api.updateGoal(clean);
-        },
-        goalLoader: async function() {
-            let goals = await api.getGoalList();
-            const str = (s) => JSON.stringify(s, null, 2);
-            const stringin = function(goal) {
-                goal.agentGroups = str(goal.agentGroups);
-                goal.skillGroups = str(goal.skillGroups);
-                goal.thresholds = str(goal.thresholds);
-                return goal;
-            }
-            return goals.map(stringin);
-        },
-        goalAdder: function() {
-            return {
-                name: '',
-                agentGroups: [],
-                skillGroups: [],
-                comparator: '<',
-                thresholds: [],
-                field: ''
-            }
-        },
-        goalRemover: function(goal) {
-            return api.deleteGoal(goal);
-        },
-
-        ///////////////////////////////////////////////////////
-        // Link functions
-        linkUpdater: async function(link) {
-            let clean = clone(link);
-            try {
-                clean.agentGroups = JSON.parse(clean.agentGroups);
-            } catch (err) {
-                return `Unable to save: ${err}.`;
-            }
-            return api.updateLink(clean);
-        },
-        linkLoader: async function() {
-            let links = await api.getLinkList();
-            const str = (s) => JSON.stringify(s, null, 2);
-            const stringin = function(link) {
-                link.agentGroups = str(link.agentGroups);
-                return link;
-            }
-            return links.map(stringin);
-        },
-        linkAdder: function() {
-            return {
-                name: '',
-                url: '',
-                agentGroups: [],
-            }
-        },
-        linkRemover: function(link) {
-            return api.deleteLink(link);
         },
 
         ///////////////////////////////////////////////////////

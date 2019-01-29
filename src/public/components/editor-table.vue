@@ -21,15 +21,16 @@
         <table class="editor-list">
             <thead>
                 <tr>
-                    <th v-for="(header, i) in completeHeaders"
-                        ref="headerRow">
+                    <th v-for="header in completeHeaders"
+                        ref="headerRow"
+                        :key="header">
                         {{ header }}
                     </th>
                 </tr>
             </thead>
 
             <div class="table-body-wrapper">
-                <tr class="row" v-for="(item, i) in items" ref="bodyRows">
+                <tr class="row" v-for="(item, i) in items" ref="bodyRows" :key="i">
                     <slot name="item" :item="item">
                         <p>
                             This is just a dang filler! Use

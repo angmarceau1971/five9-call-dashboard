@@ -23,6 +23,79 @@
             {{ message }}
         </div>
 
+
+
+        <!-- Goals -->
+        <div class="section goals">
+            <h2>Goals</h2>
+            <editor-table @message="updateMessage" :updater="goalUpdater" :loader="goalLoader" :adder="goalAdder" :remover="goalRemover" :headers="['Name', 'Agent Groups', 'Skill Groups', 'Comparator', 'Thresholds', 'Field']">
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input v-model="props.item.name" type="text" />
+                    </td>
+                    <td>
+                        <textarea v-model="props.item.agentGroups" type="text"></textarea>
+                    </td>
+                    <td>
+                        <textarea v-model="props.item.skillGroups" type="text"></textarea>
+                    </td>
+                    <td>
+                        <input v-model="props.item.comparator" type="text" />
+                    </td>
+                    <td>
+                        <textarea v-model="props.item.thresholds" type="text"></textarea>
+                    </td>
+                    <td>
+                        <input v-model="props.item.field" type="text" />
+                    </td>
+
+                </template>
+            </editor-table>
+        </div>
+
+
+
+        <!-- Links -->
+        <div class="section links">
+            <h2>Helpful Links</h2>
+            <editor-table @message="updateMessage" :updater="linkUpdater" :loader="linkLoader" :adder="linkAdder" :remover="linkRemover" :headers="['Name', 'URL', 'Agent Groups']">
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input v-model="props.item.name" type="text" />
+                    </td>
+                    <td>
+                        <input v-model="props.item.url" type="text" />
+                    </td>
+                    <td>
+                        <textarea v-model="props.item.agentGroups" type="text"></textarea>
+                    </td>
+                </template>
+            </editor-table>
+        </div>
+
+
+
+        <!-- Sale Messages -->
+        <div class="section sale-messages">
+            <h2>Sale Messages</h2>
+            <editor-table
+                @message="updateMessage"
+                :updater="saleMessageUpdater"
+                :loader="saleMessageLoader"
+                :adder="saleMessageAdder"
+                :remover="saleMessageRemover"
+                :headers="['Message']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input v-model="props.item.message" type="text" />
+                    </td>
+                </template>
+            </editor-table>
+        </div>
+
+
+
         <!-- Layouts -->
         <div class="section layouts">
             <h2>Layouts</h2>
@@ -88,92 +161,7 @@
             </editor-table>
         </div>
 
-        <!-- Goals -->
-        <div class="section goals">
-            <h2>Goals</h2>
-            <editor-table
-                @message="updateMessage"
-                :updater="goalUpdater"
-                :loader="goalLoader"
-                :adder="goalAdder"
-                :remover="goalRemover"
-                :headers="['Name', 'Agent Groups', 'Skill Groups', 'Comparator', 'Thresholds', 'Field']"
-            >
-                <template slot="item" slot-scope="props">
-                    <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"
-                        />
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.agentGroups"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.skillGroups"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.comparator"
-                            type="text"
-                        />
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.thresholds"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.field"
-                            type="text"
-                        />
-                    </td>
 
-                </template>
-            </editor-table>
-        </div>
-
-        <!-- Links -->
-        <div class="section links">
-            <h2>Helpful Links</h2>
-            <editor-table
-                @message="updateMessage"
-                :updater="linkUpdater"
-                :loader="linkLoader"
-                :adder="linkAdder"
-                :remover="linkRemover"
-                :headers="['Name', 'URL', 'Agent Groups']"
-            >
-                <template slot="item" slot-scope="props">
-                    <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"
-                        />
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.url"
-                            type="text"
-                        />
-                    </td>
-                    <td>
-                        <textarea
-                        v-model="props.item.agentGroups"
-                        type="text"
-                        ></textarea>
-                    </td>
-                </template>
-            </editor-table>
-        </div>
 
         <!-- Fields -->
         <div class="section fields">
@@ -235,6 +223,7 @@
                 </template>
             </editor-table>
         </div>
+
     </div>
     </body>
 
