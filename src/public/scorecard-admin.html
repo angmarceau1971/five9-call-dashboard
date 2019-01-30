@@ -27,8 +27,17 @@
 
         <!-- Goals -->
         <div class="section goals">
-            <h2>Goals</h2>
-            <editor-table @message="updateMessage" :updater="goalUpdater" :loader="goalLoader" :adder="goalAdder" :remover="goalRemover" :headers="['Name', 'Agent Groups', 'Skill Groups', 'Comparator', 'Thresholds', 'Field']">
+            <button class="table-button" @click="toggleTable('goals')">
+                <h2>Goals</h2>
+            </button>
+            <editor-table v-show="showingTable('goals')"
+                @message="updateMessage"
+                :updater="goalUpdater"
+                :loader="goalLoader"
+                :adder="goalAdder"
+                :remover="goalRemover"
+                :headers="['Name', 'Agent Groups', 'Skill Groups', 'Comparator', 'Thresholds', 'Field']"
+            >
                 <template slot="item" slot-scope="props">
                     <td>
                         <input v-model="props.item.name" type="text" />

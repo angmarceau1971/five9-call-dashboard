@@ -11,10 +11,25 @@ const vm = new Vue({
     },
 
     data: {
-        message: ''
+        message: '',
+        showTables: {
+            goals: false,
+            links: false,
+        }
     },
 
     methods: {
+        ////////////////////////////
+        // General UI
+        toggleTable: function (tableName) {
+            this.showTables[tableName] = !this.showTables[tableName];
+        },
+        showingTable: function (tableName) {
+            return this.showTables[tableName];
+        },
+
+
+
         ///////////////////////////////////////////////////////
         // Goal functions
         goalUpdater: async function (goal) {

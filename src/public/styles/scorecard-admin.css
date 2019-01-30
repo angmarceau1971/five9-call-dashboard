@@ -13,6 +13,25 @@
     color: inherit;
 }
 
+/* Table toggling "Header" buttons */
+.table-button {
+    margin: 10px;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    color: hsl(104, 100%, 67%);
+    background-color: hsla(210, 100%, 67%, 0.1);
+}
+.table-button:hover {
+    background-color: hsla(210, 100%, 59%, 0.4);
+
+}
+.table-button h2 {
+    margin: 0;
+    font-size: 2em;
+}
+
+
 /* Small screens */
 @media screen and (max-width: 600px) {
     .content-wrapper {
