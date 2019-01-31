@@ -15,7 +15,10 @@ const vm = new Vue({
         showTables: {
             goals: false,
             links: false,
-        }
+            saleMessages: false,
+            layouts: false,
+            fields: false,
+        },
     },
 
     methods: {
