@@ -60,7 +60,7 @@ module.exports.LOOKER_FIELD_CUSTOMER_COUNT = 'customer.count.field.name';
 Use webpack to transpile the ES6 and Vue components:
 
 ```
-webpack --watch
+webpack --watch --mode=development
 ```
 
 And fire up the server:

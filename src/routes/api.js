@@ -101,16 +101,21 @@ router.post('/reports/customers', verify.apiMiddleware(), m.err(async (req, res)
 // Add an entry to the sales tracker
 router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => {
     let entry = req.body.entry;
-    await salesTracker.add(req.user.username, entry.accountNumber,
-        entry.saleType, entry.dtvSaleMade, entry.viasatSaleMade,
+    await salesTracker.add(
+        req.user.username,
+        entry.accountNumber,
+        entry.saleType,
+        entry.dtvSaleMade,
+        entry.viasatSaleMade,
     );
-    res.status(200).send(`✓ Sale added to tracker.`);
+    // Get randomized "made the sale" message
+    let message = await salesTracker.saleMessage()
+    res.status(200).send(`✓ Sale added to tracker. ${message}`);
 }));
 
 //////////////////////////////////////
 // Messaging
-router.post('/message/send', verify.apiMiddleware('supervisor'),
-            m.err(async (req, res) => {
+router.post('/message/send', verify.apiMiddleware('supervisor'), m.err(async (req, res) => {
     let msg = req.body.message;
     msg.from = req.user.username;
     await message.send(msg);
@@ -153,25 +158,6 @@ router.patch('/message/mark-read', verify.apiMiddleware(), async (req, res) => {
 router.get('/message/sent', verify.apiMiddleware(), m.err(async (req, res) => {
     let msgs = await message.getSent(req.user.username);
     res.send(JSON.stringify(msgs));
-}));
-
-
-//////////////////////////////////////
-// Game Elements
-// Return current user's fortune cookies
-router.get('/fortune-cookie', verify.apiMiddleware(),
-            m.err(async (req, res) => {
-    let cookies = await fortune.get(
-        req.user.username, req.query.unreadOnly || false
-    );
-    res.send(JSON.stringify(cookies));
-}));
-
-router.patch('/fortune-cookie', verify.apiMiddleware(),
-            m.err(async (req, res) => {
-    let cookie = req.body;
-    await fortune.update(cookie);
-    res.send(`Fortune updated!`);
 }));
 
 

@@ -5,13 +5,33 @@
 
 .section {
     background-color: #444;
-    padding: 1em;
-    margin: 1em 0;
     border-radius: 4px;
+    border-bottom: 1px solid black;
 }
 .section.message {
     color: inherit;
 }
+
+/* Table toggling "Header" buttons */
+.table-button {
+    margin: 0px;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    height: 100%;
+    min-height: 50px;
+    color: hsl(104, 100%, 67%);
+    background-color: transparent;
+}
+.table-button:hover {
+    background-color: hsla(210, 100%, 59%, 0.4);
+
+}
+.table-button h2 {
+    margin: 0;
+    font-size: 2em;
+}
+
 
 /* Small screens */
 @media screen and (max-width: 600px) {

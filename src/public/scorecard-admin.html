@@ -23,75 +23,14 @@
             {{ message }}
         </div>
 
-        <!-- Layouts -->
-        <div class="section layouts">
-            <h2>Layouts</h2>
-            <p>Set layouts for various agent groups. One layout should be titled "<em>Main</em>" -- this will be the default for any agent groups who don't have their own layout.</p>
-            <editor-table
-                @message="updateMessage"
-                :updater="layoutUpdater"
-                :loader="layoutLoader"
-                :adder="layoutAdder"
-                :remover="layoutRemover"
-                :headers="['Name', 'Type', 'Default for Agent Groups', 'Optional for Agent Groups', 'Cards', 'Datasources', 'Sort Order', 'Columns']"
-            >
-                <template slot="item" slot-scope="props">
-                    <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"
-                        />
-                    </td>
-                    <td>
-                            <select v-model="props.item.layoutType">
-                            <option value="individual">Individual</option>
-                            <option value="team">Team</option>
-                        </select>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.defaultForAgentGroups"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.optionalForAgentGroups"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.cards"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <textarea
-                            v-model="props.item.datasources"
-                            type="text"
-                        ></textarea>
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.sortOrder"
-                            type="number"
-                        />
-                    </td>
-                    <td>
-                        <input
-                            v-model="props.item.columns"
-                            type="number"
-                        />
-                    </td>
-                </template>
-            </editor-table>
-        </div>
+
 
         <!-- Goals -->
         <div class="section goals">
-            <h2>Goals</h2>
-            <editor-table
+            <button class="table-button" @click="toggleTable('goals')">
+                <h2>Goals</h2>
+            </button>
+            <editor-table v-show="showingTable('goals')"
                 @message="updateMessage"
                 :updater="goalUpdater"
                 :loader="goalLoader"
@@ -101,50 +40,36 @@
             >
                 <template slot="item" slot-scope="props">
                     <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"
-                        />
+                        <input v-model="props.item.name" type="text" />
                     </td>
                     <td>
-                        <textarea
-                            v-model="props.item.agentGroups"
-                            type="text"
-                        ></textarea>
+                        <textarea v-model="props.item.agentGroups" type="text"></textarea>
                     </td>
                     <td>
-                        <textarea
-                            v-model="props.item.skillGroups"
-                            type="text"
-                        ></textarea>
+                        <textarea v-model="props.item.skillGroups" type="text"></textarea>
                     </td>
                     <td>
-                        <input
-                            v-model="props.item.comparator"
-                            type="text"
-                        />
+                        <input v-model="props.item.comparator" type="text" />
                     </td>
                     <td>
-                        <textarea
-                            v-model="props.item.thresholds"
-                            type="text"
-                        ></textarea>
+                        <textarea v-model="props.item.thresholds" type="text"></textarea>
                     </td>
                     <td>
-                        <input
-                            v-model="props.item.field"
-                            type="text"
-                        />
+                        <input v-model="props.item.field" type="text" />
                     </td>
 
                 </template>
             </editor-table>
         </div>
 
+
+
         <!-- Links -->
         <div class="section links">
-            <h2>Helpful Links</h2>
-            <editor-table
+            <button class="table-button" @click="toggleTable('links')">
+                <h2>Helpful Links</h2>
+            </button>
+            <editor-table v-show="showingTable('links')"
                 @message="updateMessage"
                 :updater="linkUpdater"
                 :loader="linkLoader"
@@ -154,31 +79,120 @@
             >
                 <template slot="item" slot-scope="props">
                     <td>
-                        <input
-                            v-model="props.item.name"
-                            type="text"
-                        />
+                        <input v-model="props.item.name" type="text" />
                     </td>
                     <td>
-                        <input
-                            v-model="props.item.url"
-                            type="text"
-                        />
+                        <input v-model="props.item.url" type="text" />
                     </td>
                     <td>
-                        <textarea
-                        v-model="props.item.agentGroups"
-                        type="text"
-                        ></textarea>
+                        <textarea v-model="props.item.agentGroups" type="text"></textarea>
                     </td>
                 </template>
             </editor-table>
         </div>
 
+
+
+        <!-- Sale Messages -->
+        <div class="section sale-messages">
+            <button class="table-button" @click="toggleTable('saleMessages')">
+                <h2>Sale Messages</h2>
+            </button>
+            <editor-table v-show="showingTable('saleMessages')"
+                @message="updateMessage"
+                :updater="saleMessageUpdater"
+                :loader="saleMessageLoader"
+                :adder="saleMessageAdder"
+                :remover="saleMessageRemover"
+                :headers="['Message']"
+            >
+                <template slot="item" slot-scope="props">
+                    <td>
+                        <input v-model="props.item.message" type="text" />
+                    </td>
+                </template>
+            </editor-table>
+        </div>
+
+
+
+        <!-- Layouts -->
+        <div class="section layouts">
+            <button class="table-button" @click="toggleTable('layouts')">
+                <h2>Layouts</h2>
+            </button>
+            <div v-show="showingTable('layouts')">
+                <p>Set layouts for various agent groups. One layout should be titled "<em>Main</em>" -- this will be the default for any agent groups who don't have their own layout.</p>
+                <editor-table
+                    @message="updateMessage"
+                    :updater="layoutUpdater"
+                    :loader="layoutLoader"
+                    :adder="layoutAdder"
+                    :remover="layoutRemover"
+                    :headers="['Name', 'Type', 'Default for Agent Groups', 'Optional for Agent Groups', 'Cards', 'Datasources', 'Sort Order', 'Columns']"
+                >
+                    <template slot="item" slot-scope="props">
+                        <td>
+                            <input
+                                v-model="props.item.name"
+                                type="text"
+                            />
+                        </td>
+                        <td>
+                                <select v-model="props.item.layoutType">
+                                <option value="individual">Individual</option>
+                                <option value="team">Team</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.defaultForAgentGroups"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.optionalForAgentGroups"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.cards"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <textarea
+                                v-model="props.item.datasources"
+                                type="text"
+                            ></textarea>
+                        </td>
+                        <td>
+                            <input
+                                v-model="props.item.sortOrder"
+                                type="number"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                v-model="props.item.columns"
+                                type="number"
+                            />
+                        </td>
+                    </template>
+                </editor-table>
+            </div>
+        </div>
+
+
+
         <!-- Fields -->
         <div class="section fields">
-            <h2>Fields</h2>
-            <editor-table
+            <button class="table-button" @click="toggleTable('fields')">
+                <h2>Fields</h2>
+            </button>
+            <editor-table v-show="showingTable('fields')"
                 @message="updateMessage"
                 :updater="fieldUpdater"
                 :loader="fieldLoader"
@@ -235,6 +249,7 @@
                 </template>
             </editor-table>
         </div>
+
     </div>
     </body>
 
