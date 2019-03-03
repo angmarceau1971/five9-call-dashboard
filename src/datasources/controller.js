@@ -77,22 +77,22 @@ async function getScorecardStatistics({ filter, fields, groupBy, source, joinSou
 
     data = mergeIdToData(data);
     let meta = {};
+
     // Custom sources include some metadata (last updated time)
     if (isCustomData) {
         let ds = await custom.getDatasourceByName(source);
         if (!ds) throw new Error(`Custom data source '${source}' not found!`);
         meta.lastUpdated = ds.lastUpdated;
     }
+
+    // Make any necessary joins (at the application level - NoSQL!)
     if (joinSources && joinSources.length > 0) {
-        console.log(`join on`)
         for (let joinSource of joinSources) {
             let joinStats = await getScorecardStatistics(joinSource);
-            data = joinData(data, joinStats.data, joinSource);
+            data = joinDatasets(data, joinStats.data, joinSource);
         }
     }
-    else {
-        console.log(`no join on`)
-    }
+
     return {
         data: data,
         meta: meta,
@@ -101,7 +101,17 @@ async function getScorecardStatistics({ filter, fields, groupBy, source, joinSou
 module.exports.getScorecardStatistics = getScorecardStatistics;
 
 
-function joinData(data, joinData, joinDatasource) {
+/**
+ * Returns `data` updated with field/values from `joinData`. The data sets are
+ * joined based on the parameters in `joinDatasource` (specifically `joinOn` and
+ * `joinFields`).
+ *
+ * @param  {Array}  data
+ * @param  {Array}  joinData
+ * @param  {Object} joinDatasource
+ * @return {Array}  `data` with fields joined from `joinData`
+ */
+function joinDatasets(data, joinData, joinDatasource) {
     let lookup = {};
     function findMatch(dataRow) {
         let idx = joinDatasource.joinOn.map((f) => dataRow[f.parentField]);
@@ -195,13 +205,13 @@ function createFilter(obj) {
     let filter = Object.keys(obj)
         .filter((key) => key != 'date')
         .map((key) => {
-                return { [key]: obj[key] };
-            });
+            return { [key]: obj[key] };
+        });
     if (obj.date) {
         filter.push({
             date: {
-                $gte: moment(obj.date.$gte, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
-                $lt:  moment(obj.date.$lt, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                $gte: moment.utc(obj.date.$gte, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                $lt:  moment.utc(obj.date.$lt, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
             }
         });
     }
@@ -221,9 +231,9 @@ function createGroup(groupBy, fields) {
     // Summarize based on groupBy fields
     let group = {
         _id: groupBy.reduce((result, field) => {
-                result[field] = `$${field}`;
-                return result;
-            }, {})
+            result[field] = `$${field}`;
+            return result;
+        }, {})
     };
     // Create accumulators for fields based on type
     // Currently, can only use one type for a given request
