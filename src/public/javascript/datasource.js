@@ -90,7 +90,6 @@ export class DataManager {
         );
 
         if (parametersList.length == 0) return [];
-        // console.log(`Refreshing ${parametersList.map((p) => p.frontendSourceName)}`)
 
         // Load data from server
         try {

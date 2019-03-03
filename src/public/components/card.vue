@@ -1,15 +1,3 @@
-/**
- * Container for widget components.
- * Contains various functionality:
- *  - Custom styling for widgets through props `styles`, `styleClasses`, and
- *      `widgetStyles`.
- *  - Handles drag and drop events for each widget within it.
- *  - Can be dragged around other cards by dragging the title h2 (this is handled
- *      in the Dashboard component, Card's parent).
- *  - When widgets are modified, Card receives `modify-widget` events and bubbles
- *      them up to the parent Dashboard.
- */
-
 <template>
 <div class="card metric-wrapper stats-box"
     :class="styleClasses"
@@ -121,6 +109,17 @@ import QueueList from './queue-list.vue';
 import { formatValue } from '../javascript/scorecard-format';
 import { sortOrder } from './drag-n-drop-sort.js';
 
+/**
+ * Container for widget components.
+ * Contains various functionality:
+ *  - Custom styling for widgets through props `styles`, `styleClasses`, and
+ *      `widgetStyles`.
+ *  - Handles drag and drop events for each widget within it.
+ *  - Can be dragged around other cards by dragging the title h2 (this is handled
+ *      in the Dashboard component, Card's parent).
+ *  - When widgets are modified, Card receives `modify-widget` events and bubbles
+ *      them up to the parent Dashboard.
+ */
 export default {
     props: {
         title: String,

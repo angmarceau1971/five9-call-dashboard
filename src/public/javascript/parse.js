@@ -3,7 +3,6 @@
  */
 'use strict';
 import * as hub from './hub';
-const clone = require('ramda/src/clone');
 
 /**
  * Extract an overall value from a set of data, based on the provided field.
@@ -83,6 +82,7 @@ function process(data, field) {
     else if (fieldName == 'connectRate') {
         return sum(data, 'ordersInstalled') / sum(data, 'ordersEntered');
     }
+    // default to sum
     else return sum(data, fieldName);
 }
 
