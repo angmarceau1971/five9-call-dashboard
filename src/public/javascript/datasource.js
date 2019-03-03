@@ -25,6 +25,28 @@
     ],
     "refreshRate": 600,
     "source": "AcdFeed"
+
+    // `joinSources` is optional. If included, data from the "joined" datasources
+    // will be tied in to the base data.
+    "joinSources": [
+        {
+            // All of the fields above will be defined here, except `refreshRate`
+            // which will be inherited from the top level datasource
+            ...datasourceObject,
+            "joinOn": [
+                {
+                    "parentField": "dateDay",
+                    "thisField": "dateDayEtc"
+                },
+                ...
+            ],
+            "joinFields": [
+                { "originalName": "name1", "newName": "name2" },
+                ...
+            ]
+        }
+    ]
+
 }
  */
 'use strict';
@@ -138,5 +160,14 @@ function getParams(datasource) {
         groupBy: datasource.groupBy,
         source: datasource.source
     };
+    if (datasource.joinSources) {
+        params.joinSources = datasource.joinSources.map(getParams);
+    }
+    if (datasource.joinOn) {
+        params.joinOn = datasource.joinOn;
+    }
+    if (datasource.joinFields) {
+        params.joinFields = datasource.joinFields;
+    }
     return params;
 }

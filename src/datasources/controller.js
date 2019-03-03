@@ -12,6 +12,8 @@
 ///////////////////////////
 'use strict';
 const moment = require('moment-timezone'); // dates/times
+const path = require('ramda/src/path');
+const assocPath = require('ramda/src/assocPath');
 
 const log = require('../utility/log'); // recording updates
 const looker = require('../utility/looker'); // Looker API
@@ -32,7 +34,7 @@ const sales = require('./sales-tracker');
  * @param  {Array}  groupBy break down / summarize by these fields
  * @return {Promise} resolves to JSON data matching query
  */
-async function getScorecardStatistics({ filter, fields, groupBy, source }) {
+async function getScorecardStatistics({ filter, fields, groupBy, source, joinSources }) {
     // Get data model and filter object
     let model = getModelFromSourceName(source);
     let isCustomData = (model === custom.CustomData);
@@ -72,19 +74,53 @@ async function getScorecardStatistics({ filter, fields, groupBy, source }) {
         data = await model.find(cleanFilter).lean().exec();
     }
 
-    let finalData = mergeIdToData(data);
+    data = mergeIdToData(data);
     let meta = {};
+    // Custom sources include some metadata (last updated time)
     if (isCustomData) {
         let ds = await custom.getDatasourceByName(source);
         if (!ds) throw new Error(`Custom data source '${source}' not found!`);
         meta.lastUpdated = ds.lastUpdated;
     }
+    if (joinSources && joinSources.length > 0) {
+        console.log(`join on`)
+        for (let joinSource of joinSources) {
+            let joinStats = await getScorecardStatistics(joinSource);
+            data = joinData(data, joinStats.data, joinSource);
+        }
+    }
+    else {
+        console.log(`no join on`)
+    }
     return {
-        data: finalData,
-        meta: meta
+        data: data,
+        meta: meta,
     };
 }
 module.exports.getScorecardStatistics = getScorecardStatistics;
+
+
+function joinData(data, joinData, joinDatasource) {
+    let lookup = {};
+    function findMatch(dataRow) {
+        let idx = joinDatasource.joinOn.map((f) => dataRow[f.parentField]);
+        return path(idx, lookup);
+    }
+
+    for (let row of joinData) {
+        let idx = joinDatasource.joinOn.map((f) => row[f.joinField]);
+        lookup = assocPath(idx, row, lookup);
+    }
+    return data.map((d) => {
+        let joinedRow = findMatch(d);
+        if (!joinedRow) return d;
+        for (let field of joinDatasource.joinFields) {
+            d[field.newName] = joinedRow[field.originalName];
+        }
+        return d;
+    });
+}
+
 
 
 /**
