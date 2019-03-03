@@ -84,6 +84,13 @@ function process(data, field) {
     else if (fieldName == 'connectRate') {
         return sum(data, 'ordersInstalled') / sum(data, 'ordersEntered');
     }
+    else if (fieldName == 'ahtChat') {
+        return (sum(data, 'handleTime') + sum(data, 'acwTime') + sum(data, 'acwNotReadyTime')) /
+            (sum(data, 'calls') - sum(data, 'abandons'));
+    }
+    else if (fieldName == 'talkChat') {
+        return sum(data, 'handleTime') / (sum(data, 'calls') - sum(data, 'abandons'));
+    }
     // default to sum
     else return sum(data, fieldName);
 }

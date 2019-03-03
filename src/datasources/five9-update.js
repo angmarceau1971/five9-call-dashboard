@@ -72,7 +72,8 @@ const headerLookup = {
     'QUEUE TIME': 'speedOfAnswer',
     'MEDIA TYPE': 'mediaType',
     'USER': 'agentUsername',
-    'SESSION GUID': 'sessionGuid'
+    'SESSION GUID': 'sessionGuid',
+    'AFTER CHAT WORK': 'acwTime',
 };
 
 /**
@@ -261,6 +262,7 @@ function parseRow(model, row) {
 
         p.handleTime = seconds(row.handleTime);
         p.speedOfAnswer = seconds(row.speedOfAnswer);
+        p.acwTime = seconds(row.acwTime);
         p.mediaType = row.mediaType;
 
         p.abandons = row.agentName == '' ? 1 : 0;

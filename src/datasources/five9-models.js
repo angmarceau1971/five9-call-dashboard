@@ -80,7 +80,9 @@ const chatDataSchema = mongoose.Schema({
     abandons: Number,
     // number of chats answered within SL
     serviceLevel: { type: Number, default: 0 },
-    mediaType: String
+    mediaType: String,
+    // after chat work / ACW
+    acwTime: Number,
 });
 
 
