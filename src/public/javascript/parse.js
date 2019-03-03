@@ -26,13 +26,15 @@ export function getValueForField(data, field) {
 function process(data, field) {
     let fieldName = fieldNameFromString(field);
     if (fieldName == 'aht') {
-        return sum(data, 'handleTime') / (sum(data, 'calls') - sum(data, 'abandons'));
+        return (sum(data, 'handleTime') + sum(data, 'acwNotReadyTime')) /
+            (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'talk') {
         return sum(data, 'talkTime') / (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'acw') {
-        return sum(data, 'acwTime') / (sum(data, 'calls') - sum(data, 'abandons'));
+        return (sum(data, 'acwTime') + sum(data, 'acwNotReadyTime')) /
+            (sum(data, 'calls') - sum(data, 'abandons'));
     }
     else if (fieldName == 'hold') {
         return sum(data, 'holdTime') / (sum(data, 'calls') - sum(data, 'abandons'));

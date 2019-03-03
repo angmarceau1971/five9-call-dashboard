@@ -14,6 +14,7 @@
 const moment = require('moment-timezone'); // dates/times
 const path = require('ramda/src/path');
 const assocPath = require('ramda/src/assocPath');
+const dissocPath = require('ramda/src/dissocPath');
 
 const log = require('../utility/log'); // recording updates
 const looker = require('../utility/looker'); // Looker API
@@ -104,7 +105,10 @@ function joinData(data, joinData, joinDatasource) {
     let lookup = {};
     function findMatch(dataRow) {
         let idx = joinDatasource.joinOn.map((f) => dataRow[f.parentField]);
-        return path(idx, lookup);
+        let match = path(idx, lookup);
+        // Destroy lookup to prevent duplicated data on join
+        lookup = dissocPath(idx, lookup);
+        return match;
     }
 
     for (let row of joinData) {
