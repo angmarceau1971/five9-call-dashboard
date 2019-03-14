@@ -39,22 +39,24 @@
                     </label>
                     <label>
                         NO
-                        <input type="radio" name="dtv_sale" value="false" v-model="dtvSaleMade" checked/>
+                        <input type="radio" name="dtv_sale" value="false" v-model="dtvSaleMade" />
                     </label>
                 </div>
             </div>
 
-            <!-- <select v-model="dtvSaleMade" :class="{complete: dtvSaleMade!==''}">
-                <option disabled value="">DTV Sale Made</option>
-                <option :value="false">No</option>
-                <option :value="true">Yes</option>
-            </select>
-
-            <select v-model="viasatSaleMade" :class="{complete: viasatSaleMade!==''}">
-                <option disabled value="">ViaSat Sale Made</option>
-                <option :value="false">No</option>
-                <option :value="true">Yes</option>
-            </select> -->
+            <div class="sale-made-wrapper">
+                <label>Viasat Sale Made:</label>
+                <div>
+                    <label>
+                        YES
+                        <input type="radio" name="viasat_sale" value="true" v-model="viasatSaleMade" />
+                    </label>
+                    <label>
+                        NO
+                        <input type="radio" name="viasat_sale" value="false" v-model="viasatSaleMade" />
+                    </label>
+                </div>
+            </div>
 
             <input v-model="accountNumber" placeholder="Account Number (Optional)"
                 :class="{ complete: true }"
@@ -105,11 +107,10 @@ export default {
         save: async function(event) {
             event.preventDefault();
 
-            // Form validation - Check that required fields are complete
+            // Form validation - Check that required fields are complete (right
+            // now, this is only Sale Type)
             let isFieldMissing = {
                 'Sale Type': !this.saleType,
-                'DTV Sale Made': this.dtvSaleMade === '',
-                'ViaSat Sale Made': this.viasatSaleMade === '',
             }
             let missingFieldNames = Object.keys(isFieldMissing).filter((key) => {
                 return isFieldMissing[key];
@@ -120,13 +121,14 @@ export default {
                 return;
             }
 
+            // Send the sale to the server
             this.message = 'Saving...'
             try {
                 let response = await api.addToTracker({
                     accountNumber: this.accountNumber,
                     saleType: this.saleType,
-                    dtvSaleMade: this.dtvSaleMade || false,
-                    viasatSaleMade: this.viasatSaleMade || false,
+                    dtvSaleMade: this.dtvSaleMade,
+                    viasatSaleMade: this.viasatSaleMade,
                 });
                 this.$emit('message', response);
             } catch (err) {
@@ -141,8 +143,8 @@ export default {
         clearAndExit: function() {
             this.accountNumber = '';
             this.saleType = '';
-            this.dtvSaleMade = '';
-            this.viasatSaleMade = '';
+            this.dtvSaleMade = false;
+            this.viasatSaleMade = false;
             this.message = '';
             this.$emit('exit');
         },
@@ -174,12 +176,11 @@ export default {
     justify-content: space-between;
     background-color: hsla(206, 39%, 14%, 0.97);
     width: 500px;
-    height: 80%;
     margin: 3rem auto;
     border-radius: 4px;
 }
 .tracker-form > * {
-    margin: auto;
+    margin: 2rem auto;
     width: 85%;
 }
 
@@ -194,7 +195,7 @@ export default {
     border-radius: 4px;
 }
 .tracker-form input:focus, .tracker-form select:focus, .tracker-form button:focus {
-    filter: drop-shadow(0 3px 10px aliceblue);
+    filter: drop-shadow(0 3px 6px aliceblue);
 }
 .tracker-form .button-wrapper {
     display: flex;
@@ -208,7 +209,7 @@ export default {
     color: hsl(0, 0%, 20%);
 }
 .tracker-form button:hover {
-    filter: drop-shadow(0 5px 20px aliceblue) brightness(1.2);
+    filter: drop-shadow(0 5px 12px aliceblue) brightness(1.2);
 }
 .tracker-form .sale-made-wrapper {
     display: flex;
