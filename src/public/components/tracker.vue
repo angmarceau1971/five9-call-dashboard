@@ -25,17 +25,26 @@
             <h1>Add a Sale</h1>
             <p v-if="message">{{ message }}</p>
 
-            <div class="button-wrapper">
-                <button class="save" @click="save">Save</button>
-                <button class="cancel" @click="cancel">Cancel</button>
-            </div>
-
             <select v-model="saleType" :class="{complete: saleType}">
                 <option disabled value="">Sale Type</option>
-                <option v-for="type in saleTypes" :value="type">{{ type }}</option>
+                <option v-for="type in saleTypes" :value="type" :key="type">{{ type }}</option>
             </select>
 
-            <select v-model="dtvSaleMade" :class="{complete: dtvSaleMade!==''}">
+            <div class="sale-made-wrapper">
+                <label>DTV Sale Made:</label>
+                <div>
+                    <label>
+                        YES
+                        <input type="radio" name="dtv_sale" value="true" v-model="dtvSaleMade" />
+                    </label>
+                    <label>
+                        NO
+                        <input type="radio" name="dtv_sale" value="false" v-model="dtvSaleMade" checked/>
+                    </label>
+                </div>
+            </div>
+
+            <!-- <select v-model="dtvSaleMade" :class="{complete: dtvSaleMade!==''}">
                 <option disabled value="">DTV Sale Made</option>
                 <option :value="false">No</option>
                 <option :value="true">Yes</option>
@@ -45,11 +54,16 @@
                 <option disabled value="">ViaSat Sale Made</option>
                 <option :value="false">No</option>
                 <option :value="true">Yes</option>
-            </select>
+            </select> -->
 
             <input v-model="accountNumber" placeholder="Account Number (Optional)"
                 :class="{ complete: true }"
             />
+
+            <div class="button-wrapper">
+                <button class="save" @click="save">Save</button>
+                <button class="cancel" @click="cancel">Cancel</button>
+            </div>
         </form>
 
     </div>
@@ -69,8 +83,8 @@ export default {
             // Default all fields to empty string, for later validation
             accountNumber: '',
             saleType: '',
-            dtvSaleMade: '',
-            viasatSaleMade: '',
+            dtvSaleMade: false,
+            viasatSaleMade: false,
             // List of possible sale types
             saleTypes: [
                 'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
@@ -154,6 +168,7 @@ export default {
     background-color: hsla(0, 0%, 73%, 0.4);
 }
 .tracker-form {
+    font-size: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -195,6 +210,26 @@ export default {
 .tracker-form button:hover {
     filter: drop-shadow(0 5px 20px aliceblue) brightness(1.2);
 }
+.tracker-form .sale-made-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.tracker-form input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 3px solid white;
+    transition: 0.2s all linear;
+    outline: none;
+    margin-right: 15px;
+}
+.tracker-form input[type="radio"]:checked {
+    background-color: hsl(120, 100%, 52%);
+}
+
 /* Border for filled-in fields */
 .complete {
     border: 2px solid hsl(120, 100%, 52%);
