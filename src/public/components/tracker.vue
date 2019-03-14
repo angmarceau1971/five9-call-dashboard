@@ -58,6 +58,21 @@
                 </div>
             </div>
 
+            <div class="sale-made-wrapper">
+                <label>VoIP Sale Made:</label>
+                <div>
+                    <label>
+                        YES
+                        <input type="radio" name="voip_sale" value="true" v-model="voipSaleMade" />
+                    </label>
+                    <label>
+                        NO
+                        <input type="radio" name="voip_sale" value="false" v-model="voipSaleMade" />
+                    </label>
+                </div>
+            </div>
+
+
             <input v-model="accountNumber" placeholder="Account Number (Optional)"
                 :class="{ complete: true }"
             />
@@ -87,6 +102,7 @@ export default {
             saleType: '',
             dtvSaleMade: false,
             viasatSaleMade: false,
+            voipSaleMade: false,
             // List of possible sale types
             saleTypes: [
                 'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
@@ -129,6 +145,7 @@ export default {
                     saleType: this.saleType,
                     dtvSaleMade: this.dtvSaleMade,
                     viasatSaleMade: this.viasatSaleMade,
+                    voipSaleMade: this.voipSaleMade,
                 });
                 this.$emit('message', response);
             } catch (err) {
@@ -145,6 +162,7 @@ export default {
             this.saleType = '';
             this.dtvSaleMade = false;
             this.viasatSaleMade = false;
+            this.voipSaleMade = false;
             this.message = '';
             this.$emit('exit');
         },
@@ -185,6 +203,7 @@ export default {
 }
 
 .tracker-form h1 {
+    font-size: 2rem;
     color: aliceblue;
 }
 .tracker-form input, .tracker-form select, .tracker-form button {
