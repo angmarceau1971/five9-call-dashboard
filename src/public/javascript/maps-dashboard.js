@@ -27,6 +27,10 @@ $(document).ready(() => {
     // Listen for changes to the filter settings
     setupFilterListeners();
 
+    // Default absolute date range selectors to today
+    $('.start-time').val(moment().format('YYYY-MM-DD') + 'T00:00:00');
+    $('.end-time').val(moment().format('YYYY-MM-DD') + 'T23:59:59');
+
     // Start updating on page load
     $('.filters-wrapper .update').trigger('click');
 });
@@ -80,6 +84,7 @@ function setupFilterListeners() {
     });
 }
 
+
 // Begins a loop of updating the map data every ${refreshRate} seconds
 async function startUpdatingMap(callMap, refreshRate) {
     try {
@@ -92,6 +97,7 @@ async function startUpdatingMap(callMap, refreshRate) {
     timeout = setTimeout(() => startUpdatingMap(callMap, refreshRate),
                          refreshRate * 1000);
 }
+
 
 // Update callMap (d3 map object) based on parameters in page
 async function updateMap(callMap) {
@@ -212,6 +218,7 @@ function isZipWithoutCustomers(zip, customerData) {
 // Return {start:'X',end:'Y'}
 function reportTimeRange() {
     const time = {};
+
     // Are we using absolute dates?
     if ($('.date-type-toggle .absolute').hasClass('checked')) {
         time.start = moment($('.filter.start-time').val())
@@ -220,6 +227,7 @@ function reportTimeRange() {
         time.end   = moment($('.filter.end-time'  ).val())
                         .tz('America/Los_Angeles')
                         .format('YYYY-MM-DD[T]HH:mm:ss');
+
     // Using relative dates
     } else {
         const relativeSelector = $('.relative-date-selector').val();
@@ -244,5 +252,6 @@ function reportTimeRange() {
                             '. Value not recognized.');
         }
     }
+
     return time;
 }
