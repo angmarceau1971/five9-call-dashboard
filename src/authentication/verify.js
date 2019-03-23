@@ -11,10 +11,7 @@ const datasource = require('../datasources/controller');
 
 
 let basePage = '/';
-if (process.env.NODE_ENV == 'production') {
-    basePage = '/dashboard';
-}
-else {
+if (process.env.NODE_ENV !== 'production') {
     basePage = 'localhost:3000';
 }
 

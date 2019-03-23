@@ -94,19 +94,15 @@ router.get('/login-retry', async (req, res) => {
 });
 
 // Post login credentials for dashboard
-let basePage = '/';
-if (process.env.NODE_ENV == 'production') {
-    basePage = '/dashboard';
-}
 router.post('/login',
-    passport.authenticate('local', { successReturnToOrRedirect: basePage,
+    passport.authenticate('local', { successReturnToOrRedirect: '/',
                                      failureRedirect: 'login-retry',
                                      failureFlash: false } )
 );
 router.get('/logout', (req, res) => {
     log.message(`User ${req.user.username} logging out.`);
     req.logout();
-    res.redirect(basePage);
+    res.redirect('/');
 });
 
 
