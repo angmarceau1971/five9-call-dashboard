@@ -55,6 +55,9 @@ module.exports.LOOKER_LOOK_ID = '1234';
 // Looker Look fields
 module.exports.LOOKER_FIELD_ZIP_CODE = 'zip.field.name';
 module.exports.LOOKER_FIELD_CUSTOMER_COUNT = 'customer.count.field.name';
+
+// Base site URL (can leave blank for localhost)
+module.exports.BASE_URL = 'https://www.example.com';
 ```
 
 Use webpack to transpile the ES6 and Vue components:
