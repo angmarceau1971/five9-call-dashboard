@@ -114,11 +114,33 @@
         </div>
 
         <div class="section skill-group">
-            <h3>Upload new Skill Group mapping</h3>
+            <h3>Skill Group mapping</h3>
+            <p>
+                To update the dashboard's skill groups:
+                <ol>
+                    <li>Download the current skill groups with the button below</li>
+                    <li>
+                        Update the downloaded CSV file with your new skills
+                        (using the same ";"-separated format)
+                    </li>
+                    <li>
+                        <em>Upload</em> the updated CSV file with the "Choose File" button
+                    </li>
+                </ol>
+            </p>
+            <hr>
+            <div>
+                <h4>Download</h4>
+                <button @click="downloadSkillGroupMapping">Download Current Skill Groups</button>
+            </div>
+            <hr>
+            <div>
+                <h4>Upload</h4>
                 <input type="file" accept=".csv" name="Skill Group File Upload"
                     ref="fileInput"
                     @change="uploadSkillGroupFile"
                 />
+            </div>
         </div>
 
         <div class="section looker-pull">

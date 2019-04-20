@@ -291,6 +291,24 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
     }
 });
 
+
+/**
+ * Download current skill -> SkillGroup mapping
+ */
+router.get('/skill-group-csv', verify.apiMiddleware('admin'), async (req, res) => {
+    let csv;
+    try {
+        csv = await skillGroup.getCsvData();
+    } catch (err) {
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`${err}\nAn error occurred while creating the skill group CSV download.`);
+        return
+    }
+
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(csv);
+});
+
 /**
  * Delete custom data over a given range.
  * @param {String} req.body.datasourceName collection to upload data to

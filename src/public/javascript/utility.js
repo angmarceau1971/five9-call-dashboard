@@ -39,7 +39,7 @@ export function downloadJsonAsCsv(json, name) {
     download(json2csv(json, {flatten: true, eol: '\r\n'}), name, 'text/csv');
 }
 
-function download(text, name, type) {
+export function download(text, name, type) {
     let a = document.createElement('a');
     let file = new Blob([text], { type: type });
     a.href = URL.createObjectURL(file);

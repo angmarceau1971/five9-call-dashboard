@@ -131,7 +131,7 @@ module.exports.getSkillGroup = getSkillGroup;
 /**
  * For the given Agent Group, returns Skill Groups that this team handles.
  * @param  {String} agentGroup to match
- * @return {Array of Objects} matching skill group objects
+ * @return {Objects[]} matching skill group objects
  */
 function getFromAgentGroup(agentGroup) {
     return [...skillGroupLookup.entries()]
@@ -150,9 +150,25 @@ module.exports.getFromAgentGroup = getFromAgentGroup;
 
 /**
  *
- * @return {Promise -> [Object]} return all skill group objects
+ * @return {Promise<Object[]>} all skill group objects
  */
 function getAll() {
     return SkillGroup.find({});
 }
 module.exports.getAll = getAll;
+
+
+/**
+ * @return {Promise<String CSV>}
+ */
+async function getCsvData() {
+    const csvHeaders = 'name,agentGroups,skills';
+    const groups = await getAll();
+    const csvGroups = groups.map((group) => {
+        const agentGroups = group.agentGroups.join(';');
+        const skills = group.skills.join('; ');
+        return `${group.name},${agentGroups},${skills}`;
+    }).join('\n');
+    return `${csvHeaders}\n${csvGroups}`;
+}
+module.exports.getCsvData = getCsvData;

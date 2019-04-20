@@ -441,7 +441,7 @@ export async function reloadData(params) {
 /**
  * Upload CSV file to custom data source.
  * @param  {Object} params including fields datasourceName and csv
- * @return {Promise}       resolves to string (server response message)
+ * @return {Promise<String>} resolves to server response message
  */
 export async function uploadData(params) {
     try {
@@ -451,6 +451,16 @@ export async function uploadData(params) {
         return err.message;
     }
 }
+
+/**
+ * Download current skill groups
+ * @return {Promise<String CSV>}
+ */
+export async function downloadSkillGroups() {
+    const response = await request({}, 'skill-group-csv', 'GET');
+    return await response.text();
+}
+
 
 /**
  * Delete custom data over a given date range.
