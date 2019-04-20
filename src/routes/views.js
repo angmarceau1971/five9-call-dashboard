@@ -17,6 +17,12 @@ router.get('/', verify.isLoggedIn(), async (req, res) => {
     res.sendFile(dir);
 });
 
+// for backwards compatibility, send /dashboard route to index
+router.get('/dashboard', verify.isLoggedIn(), async (req, res) => {
+    let dir = path.join(__dirname + '/../public/index.html');
+    res.sendFile(dir);
+});
+
 // queue page
 router.get('/queues', verify.isLoggedIn(), async (req, res) => {
     let dir = path.join(__dirname + '/../public/queues.html');
