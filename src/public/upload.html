@@ -114,11 +114,18 @@
         </div>
 
         <div class="section skill-group">
-            <h3>Upload new Skill Group mapping</h3>
+            <h3>Skill Group mapping</h3>
+            <div>
+                <h4>Download</h4>
+                <button @click="downloadSkillGroupMapping">Download Current Skill Groups</button>
+            </div>
+            <div>
+                <h4>Upload</h4>
                 <input type="file" accept=".csv" name="Skill Group File Upload"
                     ref="fileInput"
                     @change="uploadSkillGroupFile"
                 />
+            </div>
         </div>
 
         <div class="section looker-pull">

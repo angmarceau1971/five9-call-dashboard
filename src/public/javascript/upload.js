@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as api from './api';
 import EditorTable from '../components/editor-table.vue';
+import { download } from './utility';
 
 const clone = require('ramda/src/clone');
 
@@ -121,6 +122,11 @@ const vm = new Vue({
         formatDateTime: function(d) {
             if (!d) return 'N/A';
             return moment(d).tz('America/Denver').format('MMM DD YY, h:mm:ss a');
+        },
+
+        downloadSkillGroupMapping: async function() {
+            const csv = await api.downloadSkillGroups();
+            download(csv, 'SkillGroups.csv', 'text/csv');
         },
     }
 });
