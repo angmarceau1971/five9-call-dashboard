@@ -8,9 +8,9 @@ const five9 = require('../utility/five9-interface');
 const log = require('../utility/log');
 const users = require('./users');
 const datasource = require('../datasources/controller');
+const secure_settings = require('../secure_settings.js');
 
-
-let basePage = '/';
+let basePage = secure_settings.BASE_URL;
 if (process.env.NODE_ENV !== 'production') {
     basePage = 'localhost:3000';
 }
