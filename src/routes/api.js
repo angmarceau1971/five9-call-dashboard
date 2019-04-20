@@ -296,10 +296,17 @@ router.post('/upload-data', verify.apiMiddleware('admin'), async (req, res) => {
  * Download current skill -> SkillGroup mapping
  */
 router.get('/skill-group-csv', verify.apiMiddleware('admin'), async (req, res) => {
-    res.set('Content-Type', 'text/csv');
-    res.set('Content-Disposition', 'attachment;filename=DashboardSkillGroups.csv');
-    res.status(200).send('A,B,C\n1,2,3\n4,5,6\n');
+    let csv;
+    try {
+        csv = await skillGroup.getCsvData();
+    } catch (err) {
+        res.set('Content-Type', 'application/text');
+        res.status(500).send(`${err}\nAn error occurred while creating the skill group CSV download.`);
+        return
+    }
 
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(csv);
 });
 
 /**
