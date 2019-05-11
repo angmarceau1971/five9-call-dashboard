@@ -15,6 +15,8 @@ mongoose.Promise = global.Promise;
 // Schema for call log report data
 const callLogSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
+    callId: String,
+    callType: String,
     skill: String,
     skillGroup: String, // calculated via lookup from skill
     zipCode: String,
@@ -27,7 +29,7 @@ const callLogSchema = mongoose.Schema({
 // Schema for ACD queue report data
 const acdFeedSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    callId: Number,
+    callId: String,
     agentUsername: String,
     agentName: String,
     agentGroup: String,

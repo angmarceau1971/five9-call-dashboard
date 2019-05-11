@@ -61,6 +61,7 @@ const headerLookup = {
     'SPEED OF ANSWER':  'speedOfAnswer',
     'TRANSFERS count':  'transfers',
     'CALLS count':  'calls',
+    'CALL TYPE': 'callType',
     // Agent feed fields
     'NOT READY TIME':   'notReadyTime',
     'REASON CODE':  'reasonCode',
@@ -106,12 +107,14 @@ function getHeadersFromCsv(csvHeaderLine) {
  * @return {Promise}
  */
 async function loadData(time) {
-    return await Promise.all([
-        refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed'),
-        refreshDatabase(time, models.AcdFeed, 'Dashboard - ACD Feed'),
+    await Promise.all([
+        refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed - Test Copy'),
         refreshDatabase(time, models.AgentLogin, 'Dashboard - Agent Feed'),
         refreshDatabase(time, models.ChatData, 'Dashboard - Chat Data')
     ]);
+    // Call Log (Data Feed) must be loaded prior to ACD feed so that the log's
+    // Call Types are available for checking Queue Callback status
+    return refreshDatabase(time, models.AcdFeed, 'Dashboard - ACD Feed');
 }
 
 
@@ -210,6 +213,8 @@ function parseRow(model, row) {
         p.serviceLevel = row.serviceLevel * 1;
         p.abandons = row.abandons * 1;
         p.calls = row.calls * 1;
+        p.callId = row.callId;
+        p.callType = row.callType;
 
         // Leave only left 5 digits of zip code
         p.zipCode = row.zipCode.substr(0, 5);
