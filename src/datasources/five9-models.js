@@ -46,7 +46,7 @@ const acdFeedSchema = mongoose.Schema({
     speedOfAnswer: Number,
     abandons: Number,
     // number of calls answered within SL
-    serviceLevel: { type: Number, default: 0 }
+    serviceLevel: { type: Number, default: 0 },
 });
 // Schema for agent login data
 const agentLoginSchema = mongoose.Schema({
@@ -193,6 +193,12 @@ async function getLastLoggedInTime(username) {
     return new Date(login.date.getTime() + login.loginTime*1000);
 }
 
+/**
+ * Maps to the values of the CALL TYPE field in Call Log
+ */
+module.exports.Five9CallType = {
+    QUEUE_CALLBACK: 'Queue Callback',
+}
 
 
 module.exports.CallLog = CallLog;

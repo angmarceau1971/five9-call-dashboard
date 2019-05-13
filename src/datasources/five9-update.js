@@ -150,9 +150,11 @@ async function refreshDatabase(time, reportModel, reportName) {
     await new Promise((resolve, reject) => { // wrap in promise to allow await
         csv({ delimiter: ',', headers: getHeadersFromCsv(csvHeader) })
             .fromString(csvData)
-            .on('json', (res) => {
-                let datum = parseRow(reportModel, res);
-                data.push(datum);
+            .on('json', async (res) => {
+                let datum = await parseRow(reportModel, res);
+                if (datum !== null) {
+                    data.push(datum);
+                }
             })
             .on('done', () => resolve(data))
             .on('error', reject);
@@ -193,9 +195,10 @@ async function refreshDatabase(time, reportModel, reportName) {
  * Takes one row of Five9 data, responds with data formatted for database.
  * @param  {Object} model Mongo collection being updated
  * @param  {Object} row   initial data from Five9 in { field: value } form
- * @return {Object}       formatted data to insert in collection
+ * @return {Object | null} formatted data to insert in collection. `null` if row
+ *                          should not be saved (e.g., queue callback junk row)
  */
-function parseRow(model, row) {
+async function parseRow(model, row) {
     // parsed row object
     const p = {};
     let datestring;
@@ -225,8 +228,12 @@ function parseRow(model, row) {
         p.agentName = row.agentName;
         p.agentGroup = row.agentGroup;
         p.callId = row.callId;
-        p.calls = row.calls * 1;
 
+        if (await isQueueCallback(p.callId, p.agentUsername)) {
+            return null
+        }
+
+        p.calls = row.calls * 1;
         p.handleTime = seconds(row.handleTime);
         p.holdTime = seconds(row.holdTime);
         p.talkTime = seconds(row.talkTime) - p.holdTime;
@@ -307,6 +314,32 @@ async function onReady(fun) {
         await wait(1000);
     }
     return fun();
+}
+
+
+/**
+ * True if the call ID is just a queue callback, not a regular call.
+ *
+ * The call counts as a queue callback if it has a blank or "[None]"
+ * username, _and_ if any of its Call Log entries have a CALL TYPE of "Queue Callback".
+ *
+ */
+async function isQueueCallback(callId, agentUsername) {
+    // Most calls can be ruled out because they have a username assigned
+    const blankUsername = [null, '', '[None]'].includes(agentUsername);
+    if (!blankUsername) {
+        return false;
+    }
+
+    // if there's no username, must check the call type from the call log
+    logEntries = await models.CallLog.find({ callId: callId });
+    if (!logEntries.length) {
+        return false;
+    }
+    if (logEntries.filter((l) => l.callType === models.Five9CallType.QUEUE_CALLBACK).length > 0) {
+        return true;
+    }
+    return false
 }
 
 
