@@ -149,7 +149,8 @@ async function getZipCodeData(params) {
                     $gte: moment(params.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
                     $lte: moment(params.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
                 } }, //date
-                { $or: skillFilter } // skills
+                { $or: skillFilter }, // skills
+                { callType: { $ne: 'Queue Callback' } },
             ] } },
             // Summarize by zip code
             { $group: {
