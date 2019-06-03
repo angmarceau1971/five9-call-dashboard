@@ -108,7 +108,7 @@ function getHeadersFromCsv(csvHeaderLine) {
  */
 async function loadData(time) {
     await Promise.all([
-        refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed - Test Copy'),
+        refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed'),
         refreshDatabase(time, models.AgentLogin, 'Dashboard - Agent Feed'),
         refreshDatabase(time, models.ChatData, 'Dashboard - Chat Data')
     ]);
