@@ -24,7 +24,11 @@ const callLogSchema = mongoose.Schema({
     calls: { type: Number, default: 0 },
     // number of calls answered within SL
     serviceLevel: { type: Number, default: 0 },
-    abandons: { type: Number, default: 0 }
+    abandons: { type: Number, default: 0 },
+    // wait time in "callback" status for Queue Callback calls
+    queueCallbackWaitTime: { type: Number, default: 0 },
+    // non-callback wait time
+    queueWaitTime: { type: Number, default: 0 },
 });
 // Schema for ACD queue report data
 const acdFeedSchema = mongoose.Schema({
@@ -199,6 +203,7 @@ async function getLastLoggedInTime(username) {
  */
 module.exports.Five9CallType = {
     QUEUE_CALLBACK: 'Queue Callback',
+    INBOUND: 'Inbound',
 }
 
 

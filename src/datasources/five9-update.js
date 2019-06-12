@@ -62,6 +62,8 @@ const headerLookup = {
     'TRANSFERS count':  'transfers',
     'CALLS count':  'calls',
     'CALL TYPE': 'callType',
+    'QUEUE CALLBACK WAIT TIME': 'queueCallbackWaitTime',
+    'QUEUE WAIT TIME': 'queueWaitTime',
     // Agent feed fields
     'NOT READY TIME':   'notReadyTime',
     'REASON CODE':  'reasonCode',
@@ -218,6 +220,8 @@ async function parseRow(model, row) {
         p.calls = row.calls * 1;
         p.callId = row.callId;
         p.callType = row.callType;
+        p.queueCallbackWaitTime = seconds(row.queueCallbackWaitTime);
+        p.queueWaitTime = seconds(row.queueWaitTime);
 
         // Leave only left 5 digits of zip code
         p.zipCode = row.zipCode.substr(0, 5);
@@ -248,7 +252,28 @@ async function parseRow(model, row) {
             // Within SL if answered within 60 seconds for _COM skills; 120 for others
             let slThreshold = p.skill.substr(p.skill.length - 4) == '_COM'
                             ? 60 : 120;
-            p.serviceLevel = p.speedOfAnswer < slThreshold ? 1 : 0;
+
+            let slTime = p.speedOfAnswer;
+
+            // if this is a Queue Callback, add in the time waiting for callback
+            let logEntries = await models.CallLog.find({
+                callId: p.callId,
+            });
+            let callbackLogEntries = logEntries.filter((call) => call.callType == models.Five9CallType.QUEUE_CALLBACK)
+            if (callbackLogEntries.length > 0) {
+                if ((callbackLogEntries[0].queueCallbackWaitTime - p.speedOfAnswer) < 1) {
+                    let inboundEntries = logEntries.filter((call) => call.callType === models.Five9CallType.INBOUND)
+                    if (inboundEntries.length > 0) {
+                        let inboundEntry = inboundEntries[0]
+                        slTime = inboundEntry.queueCallbackWaitTime + inboundEntry.queueWaitTime
+                    }
+                    else {
+                        log.message(`no Inbound match for ${callbackLogEntries[0].callId}`, 'warn')
+                    }
+                }
+            }
+
+            p.serviceLevel = slTime < slThreshold ? 1 : 0;
         }
     }
     else if (model == models.AgentLogin) {
@@ -332,7 +357,7 @@ async function isQueueCallback(callId, agentUsername) {
     }
 
     // if there's no username, must check the call type from the call log
-    logEntries = await models.CallLog.find({ callId: callId });
+    let logEntries = await models.CallLog.find({ callId: callId });
     if (!logEntries.length) {
         return false;
     }
