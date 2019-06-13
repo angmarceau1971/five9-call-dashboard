@@ -118,6 +118,7 @@ export default {
 
         // Filter for agents within an agent group
         selectAgentGroups: async function(agentGroups) {
+            this.$emit('select-agent-groups', agentGroups);
             this.selectedAgentGroups = agentGroups;
             this.selectUsers(this.filterUsersInGroup(this.userList));
         },

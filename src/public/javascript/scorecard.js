@@ -212,6 +212,10 @@ const vm = new Vue({
         selectUsers: async function(users) {
             store.commit('setSelectedUsers', users);
         },
+        // Update agent group selection
+        selectAgentGroups: async function (agentGroups) {
+            store.commit('setSelectedAgentGroups', agentGroups);
+        },
         // Turn sup mode on or off
         changeSupMode: function(newMode) {
             store.commit('setSupMode', newMode);

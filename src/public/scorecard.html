@@ -230,6 +230,7 @@
                     <!-- User selector -->
                     <users-selector v-show="showFilters"
                         :user-list="$store.state.userList"
+                        @select-agent-groups="selectAgentGroups"
                         @select-users="selectUsers"
                         @refresh="refresh"
                         @users-loaded="updateUserList"

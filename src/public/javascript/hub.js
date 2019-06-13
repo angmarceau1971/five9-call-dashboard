@@ -47,6 +47,7 @@ export const store = new Vuex.Store({
         timeoutId: null,
         currentUser: '', // username. TODO: is this used?
         selectedUsers: [],
+        selectedAgentGroups: [],
         user: {},
         userList: [], // list of all users for supervisor views
         layouts: [], // list of available layouts
@@ -116,8 +117,12 @@ export const store = new Vuex.Store({
             if (state.selectedUsers.length > 0) return state.selectedUsers;
             else return [state.user];
         },
+        currentAgentGroups: (state) => {
+            if (state.selectedAgentGroups.length > 0) return state.selectedAgentGroups;
+            else return state.user.agentGroups;
+        },
         currentSkills: (state, getters) => {
-            return usersToSkills(state.skillGroups, getters.currentUsers)
+            return usersToSkills(state.skillGroups, getters.currentAgentGroups, getters.currentUsers)
         },
         nameFromUsername: (state) => (username) => {
             let user = state.userList.find((u) => u.username == username);
@@ -155,6 +160,14 @@ export const store = new Vuex.Store({
          */
         setSelectedUsers(state, usersList) {
             state.selectedUsers = usersList;
+        },
+        /**
+         * Set a group of selected agent groups
+         * @param {Object} state
+         * @param {String[]} agentGroupsList
+         */
+        setSelectedAgentGroups(state, agentGroupsList) {
+            state.selectedAgentGroups = agentGroupsList;
         },
         /**
          * Set the current username and user information
@@ -360,8 +373,10 @@ export const getField = store.getters.field;
  * @param  {Array} users
  * @return {Array} list of skills taken by anyone in @param users
  */
-function usersToSkills(skillGroups, users) {
-    let agentGroups = extractValues(users, 'agentGroups');
+function usersToSkills(skillGroups, selectedAgentGroups, users) {
+    let agentGroups = extractValues(users, 'agentGroups').filter(
+        (group) => selectedAgentGroups.includes(group)
+    );
     return extractValues(
         skillGroups.filter((skillGroup) =>
             intersection(skillGroup.agentGroups, agentGroups).length > 0
