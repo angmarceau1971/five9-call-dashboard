@@ -136,4 +136,8 @@ const server = app.listen(port, async () => {
     }
 });
 
+// Prevent socket termination (can cause 502 Bad Gateway errors)
+// See https://adamcrowder.net/posts/node-express-api-and-aws-alb-502/
+server.keepAliveTimeout = 65000; // 65 seconds
+
 module.exports = server;
