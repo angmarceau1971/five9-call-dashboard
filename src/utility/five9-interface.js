@@ -34,15 +34,14 @@ async function openStatisticsSession() {
         if (fault != '') throw new Error('Set Session Parameters issue: ' + fault);
         return response;
     }
-
-    log.error('setSessionParameters status != 200, response:' + JSON.stringify(response), 'five9 response', response);
-    throw new Error('Set sessions parameters HTTP status code: ' + response.statusCode);
-    return response;
+    else {
+        log.error('setSessionParameters status != 200, response:' + JSON.stringify(response), 'five9 response', response);
+        throw new Error('Set sessions parameters HTTP status code: ' + response.statusCode);
+    }
 }
 
 // Get CSV string of report results from Five9
 async function getReportResults(params) {
-    var reportResults;
     const id = await request(params, 'configuration');
 
     // Wait til the report is finished running
@@ -99,8 +98,8 @@ function jsonToSOAP(json, requestType) {
 }
 
 /**
- * Gets the actual returned value/data out of JSON from the server.
- * @param  {Object}  json           JSON returned from Five9 API
+ * Gets the actual returned value/data out of SOAP from the server.
+ * @param  {String}  soap           SOAP string returned from Five9 API
  * @param  {String}  service        request endpoint
  * @param  {Boolean} returnMultiple include multiple data points from the SOAP `return`
  *                                      value. true for getUsersGeneralInfo.
