@@ -16,6 +16,7 @@ function connect() {
            // settings to prevent deprecation warnings
            useNewUrlParser: true,
            useFindAndModify: false,
+           useCreateIndex: true,
         });
     };
     connect();
