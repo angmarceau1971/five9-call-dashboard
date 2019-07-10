@@ -12,7 +12,10 @@ function connect() {
         await mongoose.connect(secure.MONGODB_URI, {
            keepAlive: 1000,
            connectTimeoutMS: 10000,
-           reconnectTries: Number.MAX_VALUE
+           reconnectTries: Number.MAX_VALUE,
+           // settings to prevent deprecation warnings
+           useNewUrlParser: true,
+           useFindAndModify: false,
         });
     };
     connect();
