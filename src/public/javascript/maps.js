@@ -17,7 +17,6 @@ export default class CallMap {
             height = 500;
 
         this.calls = d3.map(data, (d) => d.key);
-        let minValue = d3.min(data, (d) => d.value[field]);
         let maxValue = d3.max(data, (d) => d.value[field]);
 
         this.x = d3.scaleLinear()

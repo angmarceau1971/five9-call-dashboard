@@ -109,11 +109,9 @@ function getHeadersFromCsv(csvHeaderLine) {
  * @return {Promise}
  */
 async function loadData(time) {
-    await Promise.all([
-        refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed'),
-        refreshDatabase(time, models.AgentLogin, 'Dashboard - Agent Feed'),
-        refreshDatabase(time, models.ChatData, 'Dashboard - Chat Data')
-    ]);
+    await refreshDatabase(time, models.CallLog, 'Dashboard - Data Feed');
+    await refreshDatabase(time, models.AgentLogin, 'Dashboard - Agent Feed');
+    await refreshDatabase(time, models.ChatData, 'Dashboard - Chat Data');
     // Call Log (Data Feed) must be loaded prior to ACD feed so that the log's
     // Call Types are available for checking Queue Callback status
     return refreshDatabase(time, models.AcdFeed, 'Dashboard - ACD Feed');
@@ -128,10 +126,12 @@ async function loadData(time) {
  * @return {Promise}            resolves when data loads
  */
 async function refreshDatabase(time, reportModel, reportName) {
-    let csvData;
+    // start a transaction
+    const session = await reportModel.db.startSession();
+    session.startTransaction();
 
     // Get CSV data
-    // Calls by zips data
+    let csvData;
     const reportParameters = five9.getParameters('runReport', null,
                         criteriaTimeStart=time.start, criteriaTimeEnd=time.end, reportName);
 
@@ -168,8 +168,10 @@ async function refreshDatabase(time, reportModel, reportName) {
             date: {
                 $gte: time.start,
                 $lte: time.end
-            }
-        }, (err, success) => {
+            },
+        },
+        { session: session },
+        (err, success) => {
             if (err) {
                 log.error(`Error deleting data in report model: ${err}`);
                 reject(err);
@@ -181,15 +183,21 @@ async function refreshDatabase(time, reportModel, reportName) {
 
     // Insert the new data
     if (data.length == 0) return;
-    return new Promise ((resolve, reject) => {
-        reportModel.collection.insertMany(data, (err, docs) => {
-            if (err) {
-                log.error(`Error inserting data in report model: ${err}`);
-                reject(err);
+    await new Promise ((resolve, reject) => {
+        reportModel.collection.insertMany(
+            data,
+            { session: session },
+            (err, docs) => {
+                if (err) {
+                    log.error(`Error inserting data in report model: ${err}`);
+                    reject(err);
+                }
+                resolve(docs);
             }
-            resolve(docs);
-        });
+        );
     });
+    await session.commitTransaction();
+    session.endSession();
 }
 
 
@@ -325,23 +333,6 @@ async function parseRow(model, row) {
 
 
 
-// Calls fun() once database is finished updating
-async function onReady(fun) {
-    function wait(ms) {
-        return new Promise((resolve, reject) => {
-            setTimeout(resolve, ms);
-        });
-    }
-    let waited = 0;
-    while (currentlyUpdatingData && waited < 50000) {
-        // log.message(`Report.onReady called while database is updating; waiting 1000ms`);
-        waited += 1000;
-        await wait(1000);
-    }
-    return fun();
-}
-
-
 /**
  * True if the call ID is just a queue callback, not a regular call.
  *
@@ -372,4 +363,3 @@ module.exports.getHeadersFromCsv = getHeadersFromCsv;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.refreshDatabase = refreshDatabase;
 module.exports.loadData = loadData;
-module.exports.onReady = onReady;

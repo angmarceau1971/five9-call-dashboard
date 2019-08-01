@@ -42,18 +42,16 @@ const addAdminRoutes = require('./administrative').addTo(router);
  */
 router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
     m.err(async (req, res) => {
-        await five9Update.onReady(async () => {
-            let dataPromises = req.body.map(async (ds) => {
-                let stats = await datasource.getScorecardStatistics(ds);
-                return {
-                    data: stats.data,
-                    meta: stats.meta,
-                    source: ds
-                };
-            });
-            res.set('Content-Type', 'application/json');
-            res.send(JSON.stringify(await Promise.all(dataPromises)));
-        })
+        let dataPromises = req.body.map(async (ds) => {
+            let stats = await datasource.getScorecardStatistics(ds);
+            return {
+                data: stats.data,
+                meta: stats.meta,
+                source: ds
+            };
+        });
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(await Promise.all(dataPromises)));
     })
 );
 
@@ -61,18 +59,15 @@ router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
 router.post('/queue-stats', verify.apiMiddleware(), async (req, res) => {
     try {
         // Send data as response when loaded
-        async function sendResponse() {
-            let data;
-            try {
-                data = await queue.getData();
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
-            } catch (err) {
-                res.set('Content-Type', 'application/text');
-                res.status(500).send(`An error occurred on the server while getting queue stats: ${err}`);
-            }
+        let data;
+        try {
+            data = await queue.getData();
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        } catch (err) {
+            res.set('Content-Type', 'application/text');
+            res.status(500).send(`An error occurred on the server while getting queue stats: ${err}`);
         }
-        queue.onReady(sendResponse);
     } catch (err) {
         log.error('Error during api/queue-stats: ' + JSON.stringify(err));
         res.set('Content-Type', 'application/text');
@@ -364,7 +359,7 @@ async function reloadReports(time) {
 
 
 /**
- * Handles all reporting data requests.
+ * Handles reporting data requests.
  * @param  {Express request} req
  * @param  {Express response} res
  * @param  {Function} dataGetter function that retreives actual data from DB
@@ -373,20 +368,16 @@ async function reloadReports(time) {
 async function handleReportRequest(req, res, dataGetter) {
     try {
         // Send data as response when loaded
-        async function sendResponse() {
-            let data;
-            try {
-                data = await dataGetter(req.body);
-                res.set('Content-Type', 'application/json');
-                res.send(JSON.stringify(data));
-            } catch (err) {
-                log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
-                res.set('Content-Type', 'application/text');
-                res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
-            }
+        let data;
+        try {
+            data = await dataGetter(req.body);
+            res.set('Content-Type', 'application/json');
+            res.send(JSON.stringify(data));
+        } catch (err) {
+            log.error(`Error during handleReportRequest(${dataGetter.name}): ` + JSON.stringify(err));
+            res.set('Content-Type', 'application/text');
+            res.status(500).send(`An error occurred on the server while getting report data: ${err}`);
         }
-        five9Update.onReady(sendResponse);
-
     } catch (err) {
         log.error(`Error during handleReportRequest(${dataGetter.name}): ${err}`);
         res.set('Content-Type', 'application/text');

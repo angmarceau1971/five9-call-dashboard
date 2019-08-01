@@ -140,23 +140,7 @@ function jsonToViewData(json,
 
 
 
-// Calls fun() once database is finished updating
-async function onReady(fun) {
-    function wait(ms) {
-        return new Promise((resolve, reject) => {
-            setTimeout(resolve, ms);
-        });
-    }
-    let waited = 0;
-    while (currentlyUpdatingData && waited < 30000) {
-        waited += 1000;
-        await wait(1000);
-    }
-    fun();
-}
-
 
 module.exports.QueueStats = QueueStats;
 module.exports.scheduleUpdate = scheduleUpdate;
 module.exports.getData = getData;
-module.exports.onReady = onReady;

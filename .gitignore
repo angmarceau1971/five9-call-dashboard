@@ -1,4 +1,5 @@
 /node_modules/
+/data/
 secret_settings.*
 api_url.js
 local_settings.js

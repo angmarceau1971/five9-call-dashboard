@@ -58,6 +58,8 @@ async function generateLookup() {
         });
     });
 }
+module.exports.generateLookup = generateLookup;
+
 mongoose.connection.on('connected', generateLookup);
 
 /**
