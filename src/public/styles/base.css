@@ -201,9 +201,9 @@ button {
     border-radius: 20px;
     text-align: center;
     line-height: 40px;
-    color: #888;
     font-size: 1.5em;
-    background-color: hsla(0,0%,75%, 0.4);
+    color: #888;
+    background-color: hsl(0, 1%, 86%);
 }
 .round-button span {
     text-align: center;

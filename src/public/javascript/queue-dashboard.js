@@ -12,6 +12,8 @@ async function startItUp() {
     gizmo = new GizmoManager();
     await gizmo.load();
 
+    loadUserTheme();
+
     // listen for sign-in button press
     $('.play-pause').click(async (event) => {
         // prevent redirection
@@ -283,3 +285,13 @@ function jsonToViewData(json,
     }
     return data;
 }
+
+async function loadUserTheme() {
+    console.log('loadUserTheme')
+    let user = await api.getUserInformation();
+    console.log(user);
+    if (user.theme.color === 'dark') {
+        document.getElementById('theme_css').removeAttribute('disabled');
+    }
+}
+

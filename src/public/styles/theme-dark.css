@@ -64,3 +64,13 @@ svg text {
 .font-color-secondary {
     color: hsl(0, 0%, 67%);
 }
+
+.round-button {
+    color: #aaa;
+    background-color: hsla(240, 2%, 22%, 0.89);
+}
+.round-button:hover {
+    border: none;
+    background-color: hsl(23, 2%, 40%);
+    color: black;
+}
