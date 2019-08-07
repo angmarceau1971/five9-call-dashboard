@@ -1,4 +1,4 @@
-html {
+body, html {
     background: hsl(240, 6%, 9%);
 }
 body, body button  {
@@ -56,6 +56,9 @@ svg text {
 }
 .red {
     color: hsl(345, 100%, 75%);
+}
+.light-grey {
+    color: #aaa;
 }
 
 .font-color-secondary {

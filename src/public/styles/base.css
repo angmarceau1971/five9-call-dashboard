@@ -5,7 +5,7 @@ body, html {
     width: 100%;
     height: 100%;
     background: linear-gradient(to right, hsl(32, 35%, 92%), hsl(144, 0%, 94%));
-    color: #444;
+    color: #666;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -16,10 +16,6 @@ input, button, select, textarea, optgroup, option {
 
 body * {
     box-sizing: border-box;
-}
-
-.message {
-    color: #666;
 }
 
 .content-wrapper {
@@ -37,7 +33,7 @@ body * {
                 0 1px 3px rgba(12,13,14,0.1),
                 0 4px 20px rgba(12,13,14,0.035),
                 0 1px 1px rgba(12,13,14,0.025);
-    color: #666;
+    
 }
 
 /* Hidden elements */
@@ -99,13 +95,13 @@ body * {
     margin: 0.25em;
 }
 
-.stats-box .sub-metric-wrapper .agents-ready-for-calls,
-.stats-box .sub-metric-wrapper .calls-in-sl {
+.green {
     color: hsl(120, 35%, 50%);
 }
-.stats-box .sub-metric-wrapper .agents-on-call { color: #888; }
-.stats-box .sub-metric-wrapper .agents-not-ready-for-calls,
-.stats-box .sub-metric-wrapper .calls-out-of-sl {
+.light-grey {
+    color: #888;
+}
+.red {
     color: hsl(0, 55%, 60%);
 }
 
