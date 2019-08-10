@@ -197,7 +197,7 @@ button {
 .round-button {
     width: 40px;
     height: 40px;
-    margin: 1em;
+    margin: 1em 0.5em;
     border-radius: 20px;
     text-align: center;
     line-height: 40px;

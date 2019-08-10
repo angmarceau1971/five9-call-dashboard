@@ -14,6 +14,7 @@ const skillGroup = require('../datasources/skill-group.js');
 // Default user theme
 const DefaultTheme = {
     color: 'dark',
+    colorQueues: 'dark',
     lightBackgroundImageUrl: '',
     darkBackgroundImageUrl: '',
     useBackgroundImage: false,
@@ -39,9 +40,15 @@ const usersSchema = mongoose.Schema({
     fullName: String,
     // Theme options
     theme: {
-        color: { // dark or light theme
+        // dark or light theme
+        color: {
             type: String,
             default: DefaultTheme.color,
+        },
+        // dark or light theme for Queues page
+        colorQueues: {
+            type: String,
+            default: DefaultTheme.colorQueues,
         },
         lightBackgroundImageUrl: {
             type: String,
@@ -68,6 +75,7 @@ const usersSchema = mongoose.Schema({
 
 // Model to store users
 const Users = mongoose.model('Users', usersSchema);
+module.exports.Users = Users;
 
 
 ////////////////////////////////////////////////

@@ -51,12 +51,17 @@ async function startItUp() {
 
     // Trigger "play" button to start updating when page is loaded.
     $('.play-pause').trigger('click');
+
+    // UI: Text size and Theme toggles
     $('.big-display').click(function(event) {
         if (document.getElementById('big-display').href.slice(-4) != '.css') {
             document.getElementById('big-display').href = `styles/big-display.css`;
         } else {
             document.getElementById('big-display').href = '';
         }
+    });
+    $('.toggle-theme').click(function(event) {
+        console.log('toggle')
     });
 };
 window.addEventListener('load', startItUp);
@@ -287,10 +292,9 @@ function jsonToViewData(json,
 }
 
 async function loadUserTheme() {
-    console.log('loadUserTheme')
     let user = await api.getUserInformation();
-    console.log(user);
-    if (user.theme.color === 'dark') {
+    console.log(user)
+    if (user.theme.colorQueues === 'dark') {
         document.getElementById('theme_css').removeAttribute('disabled');
     }
 }

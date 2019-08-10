@@ -112,7 +112,7 @@ const server = app.listen(port, async () => {
 
     try {
         // Set up initial database connection
-        database.connect();
+        await database.connect();
 
         // Update customers database from Looker every 8 hours
         customers.scheduleUpdate(8 * 3600 * 1000);
