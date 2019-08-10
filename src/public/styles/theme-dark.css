@@ -1,8 +1,11 @@
 body, html {
     background: hsl(240, 6%, 9%);
 }
-body, body button  {
+body, body button {
     color: #f9f9f9;
+}
+body .text-dark {
+    color: #666;
 }
 button {
     background-color: hsl(210, 100%, 67%);

@@ -21,14 +21,26 @@
     </head>
     <body>
         <div class="content-wrapper">
-            <!-- Pop-up menu to adjust skill filters -->
-            <div class="modal">
+            <!-- Pop-up menu to adjust skill filters. (HTML Template.) -->
+            <div class="modal text-dark">
                 <div class="modal-content">
                     <span class="close" title="Close without saving">&times;</span>
                     <p>
                         <input class="gizmo-name" type="text" placeholder="Gizmo Name" />
                     </p>
-                    <textarea class="skills" placeholder="Skills for Gizmo"
+
+                    <input id="skill-filter-group-radio" type="radio" name="skill-filter-type" value="skill-group">
+                    <select class="skill-groups">
+                        <option disabled selected>Select a skill group</option>
+                    </select>
+
+                    <br><br>
+                    <div><i>Or</i></div>
+                    <br>
+
+                    <input id="skill-filter-list-radio" type="radio" name="skill-filter-type" value="skill-list">
+                    <label for="skill-filter-type">List of skills:</label>
+                    <textarea class="skills" placeholder="List skills here (comma-separated). Leave blank for all skills. 🐈"
                               title="Skills for Gizmo"></textarea>
                     <div class="button-wrapper">
                         <button class="btn save" title="Save and close">Save</button>
@@ -45,6 +57,8 @@
                 <button class="play-pause btn round-button" title="Start or stop updating">&#9658;</button>
                 <!-- Big-screen display mode -->
                 <button class="big-display btn round-button" title="Toggle big-screen display"><i class="fas fa-tv"></i></button>
+                <!-- Default widgets -->
+                <button class="reset-gizmos btn round-button" title="Reset all widgets to default"><i class="fas fa-redo-alt"></i></button>
                 <!-- Pick dark/light theme -->
                 <button class="toggle-theme btn round-button" title="Toggle theme color"><i class="fas fa-image"></i></button>
             </div>
