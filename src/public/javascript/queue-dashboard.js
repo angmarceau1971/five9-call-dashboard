@@ -8,11 +8,14 @@ let timeout = null;
 // Object to manage the gizmos (queue widgets)
 let gizmo = null;
 
+// Current user
+let user = null;
+
 async function startItUp() {
     gizmo = new GizmoManager();
     await gizmo.load();
 
-    loadUserTheme();
+    user = await loadUserTheme();
 
     // listen for sign-in button press
     $('.play-pause').click(async (event) => {
@@ -60,8 +63,9 @@ async function startItUp() {
             document.getElementById('big-display').href = '';
         }
     });
-    $('.toggle-theme').click(function(event) {
-        console.log('toggle')
+    $('.toggle-theme').click(async function(event) {
+        await toggleTheme(user);
+        user = await loadUserTheme();
     });
 };
 window.addEventListener('load', startItUp);
@@ -293,9 +297,29 @@ function jsonToViewData(json,
 
 async function loadUserTheme() {
     let user = await api.getUserInformation();
-    console.log(user)
     if (user.theme.colorQueues === 'dark') {
         document.getElementById('theme_css').removeAttribute('disabled');
     }
+    else {
+        document.getElementById('theme_css').setAttribute('disabled', null);
+    }
+    return user;
+}
+
+async function toggleTheme(user) {
+    if (!user || !user.theme) {
+        console.error('User object not valid:', user);
+        return;
+    }
+    let newColorQueues = null;
+    if (user.theme.colorQueues === 'light') {
+        newColorQueues = 'dark';
+    } else {
+        newColorQueues = 'light';
+    }
+
+    user.theme.colorQueues = newColorQueues;
+    const msg = await api.updateUserTheme(user.username, user.theme);
+    console.log(msg);
 }
 
