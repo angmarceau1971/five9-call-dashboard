@@ -13,7 +13,7 @@ let user = null;
 
 async function startItUp() {
     gizmo = new GizmoManager();
-    await gizmo.load();
+    await gizmo.load(true);
 
     user = await loadUserTheme();
 
@@ -128,8 +128,8 @@ function refreshView(data, serviceLevelData) {
     // update each gizmo on the screen
     $('.gizmo').each((i, gizmoElement) => {
         const thisGizmo = gizmo.gizmos[gizmoElement.id];
-        let name = thisGizmo.name;
         let skills = thisGizmo.skillFilter;
+
         // Clear old queue list from gizmo
         thisGizmo.queueList = [];
 
