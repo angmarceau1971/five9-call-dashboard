@@ -205,12 +205,12 @@ button {
     color: #888;
     background-color: hsl(0, 1%, 86%);
 }
-.round-button span {
+.round-button span, .rectangle-button span {
     text-align: center;
     width: 40px;
     margin: auto;
 }
-.round-button:hover {
+.round-button:hover, .rectangle-button:hover {
     border: none;
     background-color: hsl(23, 60%, 82%);
     color: black;
@@ -218,6 +218,19 @@ button {
 .round-button:last-child {
     margin-right: 0;
 }
+
+.rectangle-button {
+    width: 120px;
+    height: 40px;
+    margin: 1em 0.5em;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 1.5em;
+    color: #888;
+    background-color: hsl(0, 1%, 86%);
+}
+
 
 .btn:hover {
     color: #444;

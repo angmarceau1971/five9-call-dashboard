@@ -68,11 +68,11 @@ svg text {
     color: hsl(0, 0%, 67%);
 }
 
-.round-button {
+.round-button, .rectangle-button {
     color: #aaa;
     background-color: hsla(240, 2%, 22%, 0.89);
 }
-.round-button:hover {
+.round-button:hover, .rectangle-button:hover {
     border: none;
     background-color: hsl(23, 2%, 40%);
     color: black;

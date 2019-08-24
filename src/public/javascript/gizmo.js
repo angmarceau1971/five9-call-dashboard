@@ -174,12 +174,29 @@ export default function GizmoManager() {
         this.save();
     }.bind(this));
 
-    $('.edit-buttons .reset-gizmos').click(async function() {
-        this.skillGroups = await api.getSkillGroups();
-        this.setupDefaultGizmos();
-        $('.gizmo').remove();
-        this.save();
-        this.load(true);
+    $('.edit-buttons .reset-gizmos').click(function() {
+        $('.message').html(`
+            <p>
+            Are you sure you want to reset all widgets to defaults?
+            <div>
+                <button id="reset-gizmos-yes" class="rectangle-button" width="50">Reset</button>
+                <button id="reset-gizmos-no" class="rectangle-button" width="50">Cancel</button>
+            </div>
+            </p>
+        `);
+        $('#reset-gizmos-yes').click(async function() {
+            this.skillGroups = await api.getSkillGroups();
+            this.setupDefaultGizmos();
+            $('.gizmo').remove();
+            this.save();
+            this.load(true);
+            $('.message').empty();
+            setTimeout(() => $('.play-pause').trigger('click'), 1000);
+            setTimeout(() => $('.play-pause').trigger('click'), 1500);
+        }.bind(this));
+        $('#reset-gizmos-no').click(async function() {
+            $('.message').empty();
+        }.bind(this));
     }.bind(this));
 
 
