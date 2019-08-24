@@ -1,5 +1,7 @@
 import * as api from './api';
 
+const SKILL_GROUP_NULL_VAL = 'no_skill_group_selected'; // null perspiration
+
 // Handling of queue gizmo widgets.
 // Manages state and DOM (modals to edit skills & name).
 export default function GizmoManager() {
@@ -43,18 +45,20 @@ export default function GizmoManager() {
     this.remove = function(gizmoID) {
         document.getElementById(gizmoID).remove();
         delete this.gizmos[gizmoID];
-        this.save();
+        this.save(this.gizmos);
     }
 
     // Which gizmo is currently edited in the skill menu? This function will
     // update that gizmo's attributes.
-    this.updateCurrent = function(name, skills, skillGroups, useSkillGroupFilter) {
+    this.updateCurrent = function(name, skills, skillGroup, useSkillGroupFilter) {
         this.gizmos[this.openGizmoId].name        = name;
-        this.gizmos[this.openGizmoId].skillFilter = skillStringToArray(skills);
         this.gizmos[this.openGizmoId].useSkillGroupFilter = useSkillGroupFilter;
         if (useSkillGroupFilter) {
-            this.gizmos[this.openGizmoId].skillGroupFilter = [skillGroups];
+            this.gizmos[this.openGizmoId].skillGroupFilter = [skillGroup];
+            let group = this.skillGroups.find((group) => group.name === skillGroup);
+            this.gizmos[this.openGizmoId].skillFilter = group.skills;
         } else {
+            this.gizmos[this.openGizmoId].skillFilter = skillStringToArray(skills);
             this.gizmos[this.openGizmoId].skillGroupFilter = [];
         }
     }
@@ -68,6 +72,7 @@ export default function GizmoManager() {
         gizmo.find('.skills-edit-toggle').click(function (event) {
             // Show the modal...
             $('.modal').css('display', 'block');
+            $('.modal-message').text('');
             // Track currently open menu...
             this.openGizmoId = id;
             // And set modal values to match this gizmo
@@ -103,7 +108,7 @@ export default function GizmoManager() {
                     `<option ${val === selectedSkillGroup ? 'selected' : '' }></option>`
                 ).attr('value', val).text(text));
             };
-            makeOption('null_perspiration', 'Select a skill group');
+            makeOption(SKILL_GROUP_NULL_VAL, 'Select a skill group');
             for (let skillGroup of this.skillGroups) {
                 makeOption(skillGroup.name, skillGroup.name);
             }
@@ -112,7 +117,9 @@ export default function GizmoManager() {
             skillGroupSelect.on('change', function(e) {
                 let name = e.target.value;
                 let newGroup = this.skillGroups.find((group) => group.name === name);
-                $('.modal').find('.skills').val(newGroup.skills)
+                if (newGroup) {
+                    $('.modal').find('.skills').val(newGroup.skills);
+                }
             }.bind(this));
         }.bind(this));
 
@@ -137,7 +144,7 @@ export default function GizmoManager() {
     };
 
     // set up modal window for editing skills.
-    $('.modal').find('.close, .cancel, .save').click(function closeModal() {
+    $('.modal').find('.close, .cancel').click(function closeModal() {
         $('.modal').css('display', 'none')
     });
     $('.modal').find('.remove').click(function deleteGizmo() {
@@ -156,9 +163,16 @@ export default function GizmoManager() {
         const skills = $('.modal .skills').val();
         const skillGroups = $('.modal .skill-groups').val();
 
+        // prevent saving if "Select a skill group" is selected
+        if (isUsingSkillGroups && skillGroups === SKILL_GROUP_NULL_VAL) {
+            $('.modal-message').text('Please select a Skill Group or list of skills.');
+            return;
+        }
+        $('.modal').css('display', 'none');
+
         $('#' + this.openGizmoId).find('.department-name').html(name);
         this.updateCurrent(name, skills, skillGroups, isUsingSkillGroups);
-        this.save();
+        this.save(this.gizmos);
     }.bind(this));
 
     // On cancel, revert to last saved/cached state
@@ -171,7 +185,7 @@ export default function GizmoManager() {
         let newId = this.build();
         this.setupInteractions(newId);
         // save current state to local storage
-        this.save();
+        this.save(this.gizmos);
     }.bind(this));
 
     $('.edit-buttons .reset-gizmos').click(function() {
@@ -179,8 +193,8 @@ export default function GizmoManager() {
             <p>
             Are you sure you want to reset all widgets to defaults?
             <div>
-                <button id="reset-gizmos-yes" class="rectangle-button" width="50">Reset</button>
-                <button id="reset-gizmos-no" class="rectangle-button" width="50">Cancel</button>
+                <button id="reset-gizmos-yes" class="rectangle-button">Reset</button>
+                <button id="reset-gizmos-no" class="rectangle-button">Cancel</button>
             </div>
             </p>
         `);
@@ -188,7 +202,7 @@ export default function GizmoManager() {
             this.skillGroups = await api.getSkillGroups();
             this.setupDefaultGizmos();
             $('.gizmo').remove();
-            this.save();
+            this.save(this.gizmos);
             this.load(true);
             $('.message').empty();
             setTimeout(() => $('.play-pause').trigger('click'), 1000);
@@ -201,8 +215,8 @@ export default function GizmoManager() {
 
 
     // Save gizmos to local storage
-    this.save = function() {
-        const data = JSON.stringify(this.gizmos);
+    this.save = function(gizmos) {
+        const data = JSON.stringify(gizmos);
         localStorage.setItem('user_gizmos', data);
     }
 
@@ -222,16 +236,39 @@ export default function GizmoManager() {
         }, {});
     }
 
+    // Update `gizmos` so that the skills for any gizmos with set Skill Groups
+    // are correct. Assumes `this.skillGroups` is up-to-date.
+    this.syncSkillGroups = function(gizmos) {
+        let isChanged = false;
+        for (let gizmo of Object.values(gizmos)) {
+            if (gizmo.useSkillGroupFilter && (gizmo.skillGroupFilter || []).length > 0) {
+                let name = gizmo.skillGroupFilter[0];
+                let skillGroup = this.skillGroups.find((group) => group.name === name);
+                if (!skillGroup) {
+                    console.error(`No skill group named "${name}" found while syncing skills.`);
+                    continue;
+                }
+                gizmo.skillFilter = skillGroup.skills;
+                isChanged = true;
+            }
+        }
+        if (isChanged) {
+            console.info(`Gizmo skill filters have been synced. Saving any changes.`)
+            this.save(gizmos);
+        }
+        return gizmos;
+    }
+
     // Load gizmos from local storage on startup
     this.load = async function(rebuildDom) {
         let data = localStorage.getItem('user_gizmos');
         this.skillGroups = await api.getSkillGroups();
-        if (!data) {
+        if (!data || !JSON.parse(data)) {
             this.setupDefaultGizmos();
-            console.log('Loading default gizmos:', this.gizmos);
+            console.info('Loading default gizmos:', this.gizmos);
         } else {
-            this.gizmos = JSON.parse(data);
-            console.log('Loading saved gizmos:', this.gizmos);
+            this.gizmos = this.syncSkillGroups(JSON.parse(data));
+            console.info('Loading saved gizmos:', this.gizmos);
         }
         // Build view
         for (const id of Object.keys(this.gizmos)) {
