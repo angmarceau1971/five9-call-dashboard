@@ -243,7 +243,7 @@ button {
     color: hsl(236, 19%, 70%)
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 750px) {
     .stats-box.gizmo {
         width: 180px;
     }
