@@ -48,7 +48,7 @@ router.post('/statistics', verify.apiMiddleware(), verify.userAccess(),
                 return {
                     data: stats.data,
                     meta: stats.meta,
-                    source: ds
+                    source: ds,
                 };
             });
             res.set('Content-Type', 'application/json');

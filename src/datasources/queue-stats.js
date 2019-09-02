@@ -93,7 +93,7 @@ function jsonToViewData(json,
         includeFields=['SkillName', 'CallsInQueue',
                         'CurrentLongestQueueTime', 'AgentsLoggedIn',
                         'AgentsNotReadyForCalls', 'AgentsOnCall',
-                        'AgentsReadyForCalls']) {
+                        'AgentsReadyForCalls', 'QueueCallbacks']) {
     // Remove spaces from column headers
     let columns = json['columns'][0]['values'][0]['data'];
     columns = columns.map((header, i) => header.replace(/ /g, ''));
