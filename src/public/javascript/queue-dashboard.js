@@ -221,7 +221,8 @@ function refreshView(data, serviceLevelData) {
 
 
 // Update queue list in DOM
-// ${gizmo} object to build list on. ${table} element storing list.
+// ${gizmo} object to build list on
+// ${table} HTMLElement storing list.
 function createQueueList(thisGizmo, table) {
     table.empty(); // clear old list
 
