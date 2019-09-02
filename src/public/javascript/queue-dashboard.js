@@ -142,7 +142,8 @@ function refreshView(data, serviceLevelData) {
             agentsReady = 0,
             serviceLevel = 0,
             callsOffered = 0,
-            abandons = 0;
+            abandons = 0,
+            queueCallbacks = 0;
 
         for (let i=0; i < data.length; i++) {
             let queue = data[i];
@@ -150,6 +151,7 @@ function refreshView(data, serviceLevelData) {
             if (skills.includes(queue['SkillName']) || skills.length == 0) {
                 // Real-time queue metrics
                 callsInQueue += queue['CallsInQueue'];
+                queueCallbacks += queue['QueueCallbacks'] || 0;
                 maxWait = Math.max(maxWait, queue['CurrentLongestQueueTime']);
                 agentsLoggedIn = Math.max(agentsLoggedIn, queue['AgentsLoggedIn']);
                 agentsNotReady = Math.max(agentsNotReady, queue['AgentsNotReadyForCalls']);
@@ -196,6 +198,7 @@ function refreshView(data, serviceLevelData) {
         $(gizmoElement).find('.calls-out-of-sl').text(callsOffered - serviceLevel);
 
         $(gizmoElement).find('.metric.calls-in-queue').text(callsInQueue);
+        $(gizmoElement).find('.metric.queue-callbacks').text(queueCallbacks);
         $(gizmoElement).find('.metric.max-wait').text(waitString);
         $(gizmoElement).find('.agents-logged-in').text(agentsLoggedIn);
         $(gizmoElement).find('.agents-not-ready-for-calls').text(agentsNotReady);
