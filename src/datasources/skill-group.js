@@ -153,7 +153,7 @@ module.exports.getFromAgentGroup = getFromAgentGroup;
  * @return {Promise<Object[]>} all skill group objects
  */
 function getAll() {
-    return SkillGroup.find({});
+    return SkillGroup.find({}).sort('name');
 }
 module.exports.getAll = getAll;
 
