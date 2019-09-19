@@ -156,19 +156,6 @@ function refreshView(data, serviceLevelData) {
                 agentsOnCall = Math.max(agentsOnCall, queue['AgentsOnCall']);
                 agentsReady = Math.max(agentsReady, queue['AgentsReadyForCalls']);
 
-                // Calculate SL and abandon rate
-                let metrics = serviceLevelData.reduce((totals, current) => {
-                    if (current.skill == queue['SkillName']) {
-                        totals.serviceLevel += current.serviceLevel;
-                        totals.calls += current.calls;
-                        totals.abandons += current.abandons;
-                    }
-                    return totals;
-                }, { serviceLevel: 0, calls: 0, abandons: 0 });
-                serviceLevel += metrics.serviceLevel;
-                callsOffered += metrics.calls;
-                abandons += metrics.abandons;
-
                 // Add to list of skills in queue
                 if (queue['CallsInQueue'] > 0) {
                     thisGizmo.queueList.push({
@@ -178,6 +165,21 @@ function refreshView(data, serviceLevelData) {
                     });
                 }
             }
+        }
+
+        for (let skill of skills) {
+            // Calculate SL and abandon rate
+            let metrics = serviceLevelData.reduce((totals, current) => {
+                if (current.skill === skill) {
+                    totals.serviceLevel += current.serviceLevel;
+                    totals.calls += current.calls;
+                    totals.abandons += current.abandons;
+                }
+                return totals;
+            }, { serviceLevel: 0, calls: 0, abandons: 0 });
+            serviceLevel += metrics.serviceLevel;
+            callsOffered += metrics.calls;
+            abandons += metrics.abandons;
         }
 
         // Format wait time from seconds to MM:SS or HH:MM:SS

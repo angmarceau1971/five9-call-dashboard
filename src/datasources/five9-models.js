@@ -106,8 +106,8 @@ const AgentLogin = mongoose.model('AgentLogin', agentLoginSchema);
 // Summarize call and service level data by skill. Params should give start
 // and end time for data.
 async function getServiceLevelData(params) {
-    return new Promise((resolve, reject) => {
-        AcdFeed.aggregate([
+    return new Promise(async (resolve, reject) => {
+        let callData = await AcdFeed.aggregate([
             // Filter for the selected date and skills
             { $match:
                 { date: {
@@ -132,8 +132,41 @@ async function getServiceLevelData(params) {
         // Respond with the data
         ], (err, data) => {
             if (err) reject(err);
-            resolve(data);
+            return data;
         });
+
+        let chatData = await ChatData.aggregate([
+            // Filter for the selected date and skills
+            { $match:
+                {
+                    date: {
+                        $gte: moment(params.start, 'YYYY-MM-DD[T]HH:mm:ss').toDate(),
+                        $lte: moment(params.end, 'YYYY-MM-DD[T]HH:mm:ss').toDate()
+                    },
+                    mediaType: 'Chat',
+                },
+            },
+            // Summarize all as "Chat"
+            { $group: {
+                _id: '$mediaType',
+                calls: { $sum: '$calls' },
+                serviceLevel: { $sum: '$serviceLevel' },
+                abandons: { $sum: '$abandons' }
+            } },
+            { $project: { // name key as `skill` instead of `_id`
+                _id: 0,
+                skill: '$_id',
+                calls: '$calls',
+                serviceLevel: '$serviceLevel',
+                abandons: '$abandons'
+            } }
+        // Respond with the data
+        ], (err, data) => {
+            if (err) reject(err);
+            return data;
+        });
+
+        resolve(callData.concat(chatData));
     });
 }
 

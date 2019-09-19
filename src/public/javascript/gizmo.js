@@ -1,6 +1,13 @@
 import * as api from './api';
 
 const SKILL_GROUP_NULL_VAL = 'no_skill_group_selected'; // null perspiration
+// Chat is hardcoded to accept different data feed. TODO: make this less reliant
+// on front-end.
+const CHAT_SKILL_GROUP = {
+    agentGroups: ['Chat'],
+    name: 'Chat',
+    skills: ['Chat'],
+};
 
 // Handling of queue gizmo widgets.
 // Manages state and DOM (modals to edit skills & name).
@@ -48,8 +55,7 @@ export default function GizmoManager() {
         this.save(this.gizmos);
     }
 
-    // Which gizmo is currently edited in the skill menu? This function will
-    // update that gizmo's attributes.
+    // Updates the gizmo that is currently being edited
     this.updateCurrent = function(name, skills, skillGroup, useSkillGroupFilter) {
         this.gizmos[this.openGizmoId].name        = name;
         this.gizmos[this.openGizmoId].useSkillGroupFilter = useSkillGroupFilter;
@@ -100,7 +106,7 @@ export default function GizmoManager() {
                 }
             });
 
-            // build skill group select list
+            // build (or rebuild) skill group select list
             let selectedSkillGroup = (selectedGizmo.skillGroupFilter || []).length ? selectedGizmo.skillGroupFilter[0] : null
             let skillGroupSelect = $('.modal').find('.skill-groups').empty();
             function makeOption(val, text) {
@@ -116,7 +122,9 @@ export default function GizmoManager() {
             // Sync Skills List text with selected skill group
             skillGroupSelect.on('change', function(e) {
                 let name = e.target.value;
-                let newGroup = this.skillGroups.find((group) => group.name === name);
+                let newGroup = this.skillGroups.find(
+                    (group) => group.name === name,
+                );
                 if (newGroup) {
                     $('.modal').find('.skills').val(newGroup.skills);
                 }
@@ -199,7 +207,7 @@ export default function GizmoManager() {
             </p>
         `);
         $('#reset-gizmos-yes').click(async function() {
-            this.skillGroups = await api.getSkillGroups();
+            await this.loadSkillGroups();
             this.setupDefaultGizmos();
             $('.gizmo').remove();
             this.save(this.gizmos);
@@ -259,10 +267,16 @@ export default function GizmoManager() {
         return gizmos;
     }
 
+    this.loadSkillGroups = async function() {
+        this.skillGroups = await api.getSkillGroups();
+        this.skillGroups.push(CHAT_SKILL_GROUP);
+    }
+
     // Load gizmos from local storage on startup
     this.load = async function(rebuildDom) {
         let data = localStorage.getItem('user_gizmos');
-        this.skillGroups = await api.getSkillGroups();
+        await this.loadSkillGroups();
+        console.info('Skill Groups:', this.skillGroups);
         if (!data || !JSON.parse(data)) {
             this.setupDefaultGizmos();
             console.info('Loading default gizmos:', this.gizmos);
