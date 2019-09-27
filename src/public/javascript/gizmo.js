@@ -46,6 +46,11 @@ export default function GizmoManager() {
         // set name for DOM
         $(gizmo).find('.department-name').html(this.gizmos[id].name);
 
+        // for chat widget, hide non-chat metrics
+        if (this.gizmos[id].skillFilter[0] === 'Chat') {
+            $(gizmo).find('.hide-for-chat').addClass('hidden');
+        }
+
         return id;
     }
 
