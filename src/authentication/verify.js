@@ -86,6 +86,7 @@ function userAccess() {
     return async function(req, res, next) {
         // Allow access if request isn't sensitive (only contains custom data for
         // current user)
+        // It's a sensitive request, and the user isn't an admin or supervisor
         let needsToBeSup = false;
         for (let params of req.body) {
             if (await couldBeSensitive(params, req.user.username)) {
@@ -101,12 +102,10 @@ function userAccess() {
             await users.isAdmin(req.user.username)) {
                 return next();
         }
-        // It's a sensitive request, and the user isn't an admin or supervisor
+
+        // Failed the test: Log the full request body as a string
         log.error(`Access to data forbidden for ${req.user.username}'s request'.`,
-                  'forbidden', {
-                      username: req.user.username,
-                      requestBody: req.body
-                  });
+                  'forbidden', JSON.stringify(req.body));
         res.set('Content-Type', 'application/text');
         res.status(403).send('Could not allow access to requested resource. Sorry!');
     }
