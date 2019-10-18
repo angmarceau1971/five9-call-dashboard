@@ -28,15 +28,19 @@ const salesTracker = mongoose.Schema({
             'UP - Upgrade', 'VO - Video Only', 'Reseller'
         ]
     },
+    voipSaleMade: {
+        type: Boolean,
+        default: false,
+    },
+    transferredToThirdParty: {
+        type: Boolean,
+        default: false,
+    },
     dtvSaleMade: {
         type: Boolean,
         default: false
     },
     viasatSaleMade: {
-        type: Boolean,
-        default: false,
-    },
-    voipSaleMade: {
         type: Boolean,
         default: false,
     },
@@ -73,20 +77,20 @@ const SaleMessage = mongoose.model('SaleMessage', saleMessageSchema);
  * @param {String} username      user who's recording sale
  * @param {String} accountNumber new account number
  * @param {String} saleType
- * @param {Boolean} dtvSaleMade     true if sold
- * @param {Boolean} viasatSaleMade  true if sold
  * @param {Boolean} voipSaleMade    true if sold
+ * @param {Boolean} transferredToThirdParty
  */
 function add(
-    username, accountNumber, saleType, dtvSaleMade, viasatSaleMade, voipSaleMade,
+    username, accountNumber, saleType, voipSaleMade, transferredToThirdParty,
 ) {
     let sale = new SalesTracker({
-        username: username, accountNumber: accountNumber,
-        saleType: saleType, dtvSaleMade: dtvSaleMade,
-        viasatSaleMade: viasatSaleMade,
+        username: username,
+        accountNumber: accountNumber,
+        saleType: saleType,
+        transferredToThirdParty: transferredToThirdParty,
         voipSaleMade: voipSaleMade,
         saleMade: isSale(saleType),
-        date: new Date()
+        date: new Date(),
     });
     return sale.save();
 }
