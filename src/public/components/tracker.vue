@@ -31,34 +31,6 @@
             </select>
 
             <div class="sale-made-wrapper">
-                <label>DTV Sale Made:</label>
-                <div>
-                    <label>
-                        YES
-                        <input type="radio" name="dtv_sale" value="true" v-model="dtvSaleMade" />
-                    </label>
-                    <label>
-                        NO
-                        <input type="radio" name="dtv_sale" value="false" v-model="dtvSaleMade" />
-                    </label>
-                </div>
-            </div>
-
-            <div class="sale-made-wrapper">
-                <label>Viasat Sale Made:</label>
-                <div>
-                    <label>
-                        YES
-                        <input type="radio" name="viasat_sale" value="true" v-model="viasatSaleMade" />
-                    </label>
-                    <label>
-                        NO
-                        <input type="radio" name="viasat_sale" value="false" v-model="viasatSaleMade" />
-                    </label>
-                </div>
-            </div>
-
-            <div class="sale-made-wrapper">
                 <label>VoIP Sale Made:</label>
                 <div>
                     <label>
@@ -72,6 +44,19 @@
                 </div>
             </div>
 
+            <div class="sale-made-wrapper">
+                <label>3rd Party Transfer:</label>
+                <div>
+                    <label>
+                        YES
+                        <input type="radio" name="transferred_to_third_party" value="true" v-model="transferredToThirdParty" />
+                    </label>
+                    <label>
+                        NO
+                        <input type="radio" name="transferred_to_third_party" value="false" v-model="transferredToThirdParty" />
+                    </label>
+                </div>
+            </div>
 
             <input v-model="accountNumber" placeholder="Account Number (Optional)"
                 :class="{ complete: true }"
@@ -100,9 +85,8 @@ export default {
             // Default all fields to empty string, for later validation
             accountNumber: '',
             saleType: '',
-            dtvSaleMade: false,
-            viasatSaleMade: false,
             voipSaleMade: false,
+            transferredToThirdParty: false,
             // List of possible sale types
             saleTypes: [
                 'NC - New Connect', 'RS - Restart / Reconnect', 'TR - Transfer',
@@ -143,9 +127,8 @@ export default {
                 let response = await api.addToTracker({
                     accountNumber: this.accountNumber,
                     saleType: this.saleType,
-                    dtvSaleMade: this.dtvSaleMade,
-                    viasatSaleMade: this.viasatSaleMade,
                     voipSaleMade: this.voipSaleMade,
+                    transferredToThirdParty: this.transferredToThirdParty,
                 });
                 this.$emit('message', response);
             } catch (err) {
@@ -160,9 +143,8 @@ export default {
         clearAndExit: function() {
             this.accountNumber = '';
             this.saleType = '';
-            this.dtvSaleMade = false;
-            this.viasatSaleMade = false;
             this.voipSaleMade = false;
+            this.transferredToThirdParty = false;
             this.message = '';
             this.$emit('exit');
         },

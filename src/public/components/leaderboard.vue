@@ -82,7 +82,7 @@ export default {
                 sortByField: 'estimatedCloseRate',
                 fields: [
                     'username', 'saleMade', 'calls', 'estimatedCloseRate',
-                    'dtvSaleMade', 'viasatSaleMade', 'voipSaleMade',
+                    'voipSaleMade', 'transferredToThirdParty',
                 ],
                 filter: {},
                 sortAscending: false // sort highest to lowest

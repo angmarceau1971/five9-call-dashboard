@@ -105,9 +105,8 @@ router.post('/tracker/sales', verify.apiMiddleware(), m.err(async (req, res) => 
         req.user.username,
         entry.accountNumber,
         entry.saleType,
-        entry.dtvSaleMade,
-        entry.viasatSaleMade,
         entry.voipSaleMade,
+        entry.transferredToThirdParty,
     );
     // Get randomized "made the sale" message
     let message = await salesTracker.saleMessage()
