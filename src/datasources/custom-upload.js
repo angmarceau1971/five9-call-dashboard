@@ -63,7 +63,12 @@ const customDatasourceSchema = mongoose.Schema({
     // object to lookup fields, format: { LookerFieldName: DashboardFieldName }
     lookerFieldLookup: {
         type: Object
-    }
+    },
+    // active: if false, data source will not be automatically updated
+    active: {
+        type: Boolean,
+        default: true
+    },
 });
 
 const CustomDatasource = mongoose.model(

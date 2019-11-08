@@ -276,7 +276,7 @@ async function scheduleLookerUpdates(interval) {
         log.error(`Error while retrieving Looker authentication token: ${err}.`);
     }
     // Check each Customer Datasource that is Looker-based, updating from Looker
-    let sources = await custom.CustomDatasource.find({ fromLooker: true })
+    let sources = await custom.CustomDatasource.find({ fromLooker: true, active: { $ne: false } })
                                                .lean().exec();
     for (let source of sources) {
         try {

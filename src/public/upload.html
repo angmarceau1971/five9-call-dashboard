@@ -64,7 +64,7 @@
                 :updater=datasourceUpdater
                 :adder=datasourceAdder
                 :headers="['Name', 'Last Updated', 'Fields', 'Default Update Type',
-                           'From Looker?', 'Look ID', 'Looker Field Lookup']"
+                           'From Looker?', 'Look ID', 'Looker Field Lookup', 'Active']"
                 @message="updateMessage"
             >
                 <template slot="item" slot-scope="props">
@@ -108,6 +108,17 @@
 
                     <td>
                         <textarea v-model="props.item.lookerFieldLookup"></textarea>
+                    </td>
+
+                    <td>
+                        <select v-model="props.item.active">
+                            <option value="true">
+                                True
+                            </option>
+                            <option value="false">
+                                False
+                            </option>
+                        </select>
                     </td>
                 </template>
             </editor-table>
